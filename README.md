@@ -3,11 +3,13 @@
 
 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner
 
+<img src='http://111.229.179.154/web-pdm-pre.png'>
+
 
 
 # 在线体验
 
-[Demo](http://111.229.179.154/g6 "Demo")
+[Demo](http://111.229.179.154 "Demo")
 
 
 # 快速启动
