@@ -16,7 +16,6 @@
     "ak-webpack": "^1.0.4",
     "typescript": "^3.8.2"
   },
-  "gitHead": "871b3ab227ef0e7a04a7f56c3c77a01f2d89f350",
   "dependencies": {
     "@antv/g6": "3.3.6",
     "classnames": "^2.2.6",
