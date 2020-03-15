@@ -1,0 +1,67 @@
+
+.console-g6-page {
+  display: flex ;
+  flex:1;
+  flex-direction: row;
+  overflow: hidden;
+  height: calc(100% - 24px);
+  .g6-graph {
+    // width: calc(100% - 250px)
+    // padding-left: 16px;
+    flex:1;
+    width:0;
+  }
+
+  .g6-info {
+    width: 50px;
+  }
+
+  .g6-modelnavi {
+    width: 300px;
+    margin-bottom: 16px;
+
+
+    .console-models-tree {
+      overflow: auto;
+      display: flex ;
+      flex-direction: column;
+
+      height: 100%;
+      margin-left: 16px;
+      margin-right: 16px;
+      .console-erd-search {
+        margin-top: 16px;
+        height:35px;
+        margin-bottom: 8px;
+        // margin-right: 30px;
+        margin-left: 10px;
+        display: flex;
+        .console-erd-add {
+          font-size: 20px;
+          // margin-right: 25px;
+          color: rgba(0,0,0,0.40);
+          cursor: pointer;
+            margin-left: 5px;
+        }
+      }
+      .header {
+        height: 50px;
+        // border-bottom:1px solid rgba(0, 0, 0, 0.1);
+      }
+
+
+      .console-models-tree-tree{
+         flex:1;
+         overflow: hidden;
+         padding-right: 15px;
+      }
+
+
+
+   }
+
+  }
+
+}
+
+

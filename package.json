@@ -1,0 +1,37 @@
+{
+  "name": "web-pdm",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf public &&  NODE_ENV=production webpack --config node_modules/ak-webpack/src/index.js --mode production  --colors --max_old_space_size=1024",
+    "watch": "time webpack-dev-server  --watch-poll --config node_modules/ak-webpack/src/index.js --mode development"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^16.9.22",
+    "@types/react-dom": "^16.8.4",
+    "ak-webpack": "^1.0.4",
+    "typescript": "^3.8.2"
+  },
+  "gitHead": "871b3ab227ef0e7a04a7f56c3c77a01f2d89f350",
+  "dependencies": {
+    "@antv/g6": "3.3.6",
+    "classnames": "^2.2.6",
+    "react-dnd": "^9.3.4",
+    "react-dnd-html5-backend": "^9.3.4",
+    "react-dom": "^16.9.0",
+    "react-scrollbars-custom": "^4.0.21",
+    "stats": "^1.0.0",
+    "stats.js": "^0.17.0",
+    "with-dnd-context": "^1.0.4",
+    "antd": "^3.26.12",
+    "dva": "^2.6.0-beta.14",
+    "immer": "^4.0.0",
+    "react": "^16.8.6",
+    "xml2js": "^0.4.23",
+    "@iarna/rtf-to-html": "^1.1.0"
+  }
+}
