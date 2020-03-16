@@ -3,7 +3,7 @@
 
 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner
 
-<img src='http://111.229.179.154/web-pdm-pre.png'>
+<img target="_bank" src='https://raw.githubusercontent.com/lusess123/web-pdm/master/doc/web-pdm-pre.png'>
 
 
 
