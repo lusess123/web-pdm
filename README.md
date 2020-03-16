@@ -36,8 +36,8 @@ npm run watch
 
 # 感谢
 
-[G6](https://g6.antv.vision/zh/ "G6"){:target="_blank"}
+[G6](https://g6.antv.vision/zh/)
 
-[DVA](https://dvajs.com/guide/ "DVA"){:target="_blank"}
+[DVA](https://dvajs.com/guide/)
 
-[pdm-to-json](https://github.com/shermam/pdm-to-json "pdm-to-json"){:target="_blank"}
+[pdm-to-json](https://github.com/shermam/pdm-to-json)
