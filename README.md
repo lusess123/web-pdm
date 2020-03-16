@@ -9,7 +9,7 @@
 
 # 在线体验
 
-[Demo](https://zyking.fun "Demo"){:target="_blank"}
+[Demo](https://zyking.fun "Demo")
 
 
 # 快速启动
