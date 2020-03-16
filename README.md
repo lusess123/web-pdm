@@ -9,7 +9,7 @@
 
 # 在线体验
 
-[Demo](https://zyking.fun "Demo")
+[Demo](https://zyking.fun "Demo"){:target="_blank"}
 
 
 # 快速启动
@@ -36,8 +36,8 @@ npm run watch
 
 # 感谢
 
-[G6](https://g6.antv.vision/zh/ "G6")
+[G6](https://g6.antv.vision/zh/ "G6"){:target="_blank"}
 
-[DVA](https://dvajs.com/guide/ "DVA")
+[DVA](https://dvajs.com/guide/ "DVA"){:target="_blank"}
 
-[pdm-to-json](https://github.com/shermam/pdm-to-json "pdm-to-json")
+[pdm-to-json](https://github.com/shermam/pdm-to-json "pdm-to-json"){:target="_blank"}
