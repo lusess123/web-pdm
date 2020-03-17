@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
   "main": "src/index.tsx",
-  "files":["src"],
+  "files": [
+    "src"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf public &&  NODE_ENV=production webpack --config node_modules/ak-webpack/src/index.js --mode production  --colors --max_old_space_size=1024",
@@ -15,7 +17,7 @@
   "devDependencies": {
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.8.4",
-    "ak-webpack": "^1.0.4",
+    "ak-webpack": "^1.0.5",
     "typescript": "^3.8.2"
   },
   "dependencies": {
