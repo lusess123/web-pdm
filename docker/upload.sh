@@ -1,0 +1,1 @@
+ scp -r ./ root@IP:/root/webpdm-docker
