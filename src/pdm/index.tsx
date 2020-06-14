@@ -1,6 +1,6 @@
 import { InboxOutline } from '@ant-design/icons'
 import { message, Upload } from 'antd'
-import { useDispatch } from 'dva'
+import { useDispatch } from '../hook'
 import React from 'react'
 const PdmToJson = require('./pdm-json')
 import { ConvertTo } from './util'

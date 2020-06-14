@@ -1,6 +1,6 @@
 
 import { Input, Tree } from 'antd'
-import { useDispatch, useSelector } from 'dva'
+import { useDispatch, useSelector } from '../../hook'
 import _ from 'lodash'
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Scroll from 'react-scrollbars-custom'

@@ -17,24 +17,25 @@
   "devDependencies": {
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.8.4",
-    "ak-webpack": "^1.0.5",
+    "ak-webpack": "^1.0.6",
     "typescript": "^3.8.2"
   },
   "dependencies": {
     "@antv/g6": "3.3.6",
+    "@iarna/rtf-to-html": "^1.1.0",
+    "antd": "^3.26.12",
     "classnames": "^2.2.6",
+    "dva": "^2.6.0-beta.14",
+    "immer": "^4.0.0",
+    "react": "^16.8.6",
     "react-dnd": "^9.3.4",
     "react-dnd-html5-backend": "^9.3.4",
     "react-dom": "^16.9.0",
     "react-scrollbars-custom": "^4.0.21",
     "stats": "^1.0.0",
     "stats.js": "^0.17.0",
+    "unstated-next": "^1.1.0",
     "with-dnd-context": "^1.0.4",
-    "antd": "^3.26.12",
-    "dva": "^2.6.0-beta.14",
-    "immer": "^4.0.0",
-    "react": "^16.8.6",
-    "xml2js": "^0.4.23",
-    "@iarna/rtf-to-html": "^1.1.0"
+    "xml2js": "^0.4.23"
   }
 }

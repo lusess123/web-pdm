@@ -2,7 +2,7 @@
 import { Button, Icon, Modal, Popover, Radio, Select, Switch, Tooltip } from 'antd'
 const RadioGroup = Radio.Group
 import classNames from 'classnames'
-import { useDispatch, useSelector } from 'dva'
+import { useDispatch, useSelector } from '../../hook'
 import React, { useCallback, useEffect, useRef, useState } from 'react' // import { exitFullscreen, launchIntoFullscreen } from './../util'
 import intl from './../util/intel'
 const confirm = Modal.confirm

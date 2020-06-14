@@ -1,6 +1,6 @@
 
 import { Empty, Spin  } from 'antd'
-import { useDispatch } from 'dva'
+import { useDispatch } from '../hook'
 import React, {
   useCallback,
   useEffect,

@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'dva'
+import { useDispatch, useSelector } from '../../hook'
 import React, {
   useCallback,
   useEffect,
