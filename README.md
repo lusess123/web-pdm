@@ -28,7 +28,7 @@ npm run watch
 
 ## 0.0.2
 
-状态管理从 DVA 改成轻量级的uunstated-next
+状态管理从 DVA 改成轻量级的unstated-next
 
 ## 0.0.1
 
