@@ -26,6 +26,10 @@ npm run watch
 - [ ]  模型在线新增和编辑
 - [ ]  导出SQL语句
 
+## 0.0.2
+
+状态管理从 DVA 改成轻量级的uunstated-next
+
 ## 0.0.1
 
 - [x]  typescript npm 源码发布
