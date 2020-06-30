@@ -3,7 +3,7 @@ import { Input, Tree } from 'antd'
 import { useDispatch, useSelector } from '../../hook'
 import _ from 'lodash'
 import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import Scroll from 'react-scrollbars-custom'
+import Scroll from 'react-custom-scrollbars'
 
 import { useLoadData } from '../hooks/callback'
 import './style.scss'
@@ -113,12 +113,20 @@ export default forwardRef((props: any, ref) => {
 
         <div className='console-erd-search'>
 
-          <NaviInput allowClear onChange={(e) => {searchOnChange(e.target.value) }} placeholder={intl.get('模型筛选').d('模型筛选')} />
+          <NaviInput allowClear size="small"  onChange={(e) => {searchOnChange(e.target.value) }} placeholder={intl.get('模型筛选').d('模型筛选')} />
           {/* <Button className='console-erd-add' type='text' icon='plus'  onClick={() => { toolBarCommand('insertModel') }} /> */}
           </div>
 
           </div>
-      <Scroll>
+          <div className='navitree-warp'>
+      <Scroll 
+        autoHide
+        autoHeight
+        autoHideTimeout={1000}
+        autoHideDuration={200}
+        autoHeightMin={'100%'}
+        autoHeightMax={'100%'}
+        >
         <NaviTree className='console-models-tree-tree'  ref={ref} expandedKeys={store.expandedKeys} onCheck={(checkKeys) => {
       dispatch({
         type: `${namespace}/onCheck`,
@@ -215,7 +223,9 @@ export default forwardRef((props: any, ref) => {
               </TreeNode>
         })}
         </TreeNode>
-      </NaviTree></Scroll>
+      </NaviTree>
+      </Scroll>
+      </div>
   </div>), [store.checkedKeys, store.currentModel, store.expandedKeys, store.modules, store.models, store.search])
 })
 

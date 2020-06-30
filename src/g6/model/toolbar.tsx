@@ -1,17 +1,30 @@
 
 import { Button, Icon, Modal, Popover, Radio, Select, Switch, Tooltip } from 'antd'
 const RadioGroup = Radio.Group
+import { FileMarkdownOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import { useDispatch, useSelector } from '../../hook'
 import React, { useCallback, useEffect, useRef, useState } from 'react' // import { exitFullscreen, launchIntoFullscreen } from './../util'
 import intl from './../util/intel'
+import Pdm from '../../pdm'
+
+
 const confirm = Modal.confirm
 const { Option } = Select
 const zoomInClick = ({ toolBarCommand, update}) =>  { toolBarCommand && toolBarCommand('max-zoom'); update(+new Date())}
 const zoomOutClick = ({toolBarCommand, update}) => { toolBarCommand && toolBarCommand('min-zoom'); update(+new Date()) }
 
 
+const IconRenders = {
+  'container' : <BorderOutlined />,
+  'arrow-up': <ArrowUpOutlined />,
+  'arrow-down': <ArrowDownOutlined />,
+  'arrow-left': <ArrowLeftOutlined />,
+  'arrow-right': <ArrowRightOutlined />,
+  'retweet': <RetweetOutlined />,
+  'pdm' : <FileMarkdownOutlined />
 
+}
 
 
 const changeTwoDecimal_f = (x) => {
@@ -52,6 +65,16 @@ const BaseCommandList: any[] = [
 //     update(+new Date())
 //   },
 // },
+
+{
+  title: intl.get('导入pdm文件').d('导入pdm文件'),
+  key: 'pdm',
+  icon: 'pdm',
+  render: () => {
+  return <Pdm><FileMarkdownOutlined /></Pdm>
+  },
+  click: ()=>{}
+},
 
 {
   title: intl.get('全景').d('全景'),
@@ -113,6 +136,8 @@ const BaseCommandList: any[] = [
     graph.paint()
   },
 },
+
+
 //  {
 //   title: intl.get('保存位置').d('保存位置'),
 //   key: 'save-position',
@@ -141,6 +166,7 @@ const BaseCommandList: any[] = [
   },
 
 },
+
 // {
 //   title: intl.get('上一步').d('上一步'),
 //   key: 'last',
@@ -244,7 +270,7 @@ export default (({
         <Switch checkedChildren='聚合' unCheckedChildren='字段' size='small' onChange={arrangeLayout} checked={isArrangeLayout} />
         </span>
         </Tooltip>
-    <Tooltip title={intl.get('放大').d('放大')} ><span className='command-btn zoomleft' onClick={zoomInClick.bind(this, { toolBarCommand, graph, update })} ><Icon type='zoom-in' /></span></Tooltip>
+    <Tooltip title={intl.get('放大').d('放大')} ><span className='command-btn zoomleft' onClick={zoomInClick.bind(this, { toolBarCommand, graph, update })} ><ZoomInOutlined /></span></Tooltip>
     <span className='zoomNum noselect'>
     <Popover footer={false} content={<RadioGroup value={zoomNum * 2} onChange={zoomChange} >
         <Radio value={200}>100%</Radio>
@@ -254,14 +280,14 @@ export default (({
       {graph && `${zoomNum}%` }
       </Popover>
       </span>
-    <Tooltip title={intl.get('缩小').d('缩小')} ><span className='command-btn' onClick={zoomOutClick.bind(this, { toolBarCommand, graph, update })}><Icon type='zoom-out' /></span></Tooltip>
+    <Tooltip title={intl.get('缩小').d('缩小')} ><span className='command-btn' onClick={zoomOutClick.bind(this, { toolBarCommand, graph, update })}><ZoomOutOutlined /></span></Tooltip>
 
    {
      BaseCommandList.filter((c) => !c.data || currentModel).filter((c) => c.title !== intl.get('保存').d('保存') || saveFun).map((command) => {
       return (
       <RenderPopConfirm title={command.title} isConfirm={command.isConfirm} key={command.key} btnRender={<Tooltip title={command.title} ><span className={classNames(['command-btn', {
         'command-btn-data': !!command.data,
-      }])} onClick={command.click.bind(this, toolBarCommand, graph, update)}><Icon type={command.icon} /></span></Tooltip>}  />)
+      }])} onClick={command.click.bind(this, toolBarCommand, graph, update)}>{command.render ? command.render() : IconRenders[command.icon]}</span></Tooltip>}  />)
     })
     }
 

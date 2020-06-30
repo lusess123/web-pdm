@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf public &&  NODE_ENV=production webpack --config node_modules/ak-webpack/src/index.js --mode production  --colors --max_old_space_size=1024 && cp -r ./public docker/public",
-    "watch": "time webpack-dev-server  --watch-poll --config node_modules/ak-webpack/src/index.js --mode development",
+    "watch": "time webpack-dev-server  --watch-poll --config ./webconfig.config.js --mode development",
     "publish-npm": "npm config set registry http://registry.npmjs.org && npm publish && npm config set registry https://registry.npm.taobao.org"
   },
   "author": "",
@@ -23,11 +23,12 @@
   "dependencies": {
     "@antv/g6": "3.3.6",
     "@iarna/rtf-to-html": "^1.1.0",
-    "antd": "^3.26.12",
+    "antd": "^4.3.5",
     "classnames": "^2.2.6",
     "dva": "^2.6.0-beta.14",
     "immer": "^4.0.0",
     "react": "^16.8.6",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dnd": "^9.3.4",
     "react-dnd-html5-backend": "^9.3.4",
     "react-dom": "^16.9.0",

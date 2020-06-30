@@ -5,6 +5,7 @@ import { Tree } from './tree'
 export * from './type'
 import DvaModel from './page/dva-model'
 import { ErdPage } from './g6/model'
+import './style.scss'
 
 export {
   DvaModel,

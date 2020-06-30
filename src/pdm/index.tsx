@@ -5,15 +5,12 @@ import React from 'react'
 const PdmToJson = require('./pdm-json')
 import { ConvertTo } from './util'
 
-const { Dragger } = Upload
-
-export default ({width, title}) => {
+export default ({children}) => {
   const dispatch =  useDispatch()
 
   const props = {
     name: 'file',
     multiple: true,
-    // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     transformFile(file) {
       return new Promise((resolve) => {
         const reader = new FileReader()
@@ -45,11 +42,9 @@ export default ({width, title}) => {
   }
 
   return   (
-  <Dragger {...props} style={{width}}>
-  <p className='ant-upload-drag-icon'>
-  {title || 'PDM'}
-  </p>
-</Dragger>
+  <Upload {...props}>
+  {children}
+</Upload>
  )
 }
 

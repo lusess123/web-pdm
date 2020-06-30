@@ -300,7 +300,7 @@ export default (
     <div
       className='console-g6-page'
     >
-    {Pdm && erdLoading && <Pdm />}
+    {/* {Pdm && erdLoading && <Pdm />} */}
       <div
         className='console-erd-fps'
         ref={(ref) => {
@@ -309,14 +309,6 @@ export default (
       />
       <div
         className='g6-modelnavi'
-        style={
-          isFullScreen
-            ? {
-                height: 'calc(100vh)',
-                overflow: 'scroll',
-              }
-            : {}
-        }
       >
         <ModelNavi
           namespace={namespace}

@@ -4,12 +4,20 @@
   flex:1;
   flex-direction: row;
   overflow: hidden;
-  height: calc(100% - 24px);
+  height: 100%;
   .g6-graph {
     // width: calc(100% - 250px)
     // padding-left: 16px;
+    margin-right: 16px;
     flex:1;
     width:0;
+    height: 100%;
+    .ant-spin-nested-loading {
+      height: 100%;
+      .ant-spin-container {
+        height:  100%;
+      }
+    }
   }
 
   .g6-info {
@@ -17,22 +25,40 @@
   }
 
   .g6-modelnavi {
-    width: 300px;
+    width: 270px;
     margin-bottom: 16px;
+    height: 100%;
 
 
     .console-models-tree {
-      overflow: auto;
+      overflow: hidden;
       display: flex ;
       flex-direction: column;
+      padding-bottom: 72px;
 
       height: 100%;
-      margin-left: 16px;
-      margin-right: 16px;
+      margin-right: 25px;
+     
+      .header {
+        height: 35px;
+        margin-top: 15px;
+      }
+
+      .navitree-warp {
+        flex: 1;
+        // overflow-y: scroll;
+        display: flex;
+        flex-direction:column;
+        margin-top: 3px;
+        // margin-bottom: 24px;
+        height: 100%;
+        margin-left: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
       .console-erd-search {
-        margin-top: 16px;
-        height:35px;
-        margin-bottom: 8px;
+        margin-top: 3px;
+        // height:35px;
+        margin-bottom: 4px;
         // margin-right: 30px;
         margin-left: 10px;
         display: flex;
@@ -44,16 +70,22 @@
             margin-left: 5px;
         }
       }
-      .header {
-        height: 50px;
-        // border-bottom:1px solid rgba(0, 0, 0, 0.1);
-      }
+      // .header {
+      //   // height: 50px;
+      //   // border-bottom:1px solid rgba(0, 0, 0, 0.1);
+      // }
 
 
       .console-models-tree-tree{
          flex:1;
-         overflow: hidden;
-         padding-right: 15px;
+        //  overflow: hidden;
+         padding-right: 5px;
+         .ant-tree-treenode {
+           width: 100%;
+         }
+        //  div.ant-tree-treenode:hover {
+        //   background-color: red;
+        // }
       }
 
 

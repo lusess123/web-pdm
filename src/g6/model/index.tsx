@@ -297,7 +297,7 @@ export const ErdPage = (props) => {
     setZoom,
   } = useLocal()
 
-  useUpdateItem({currentModel : props.currentModel , graph, nodes: props.graph.nodes})
+  useUpdateItem({currentModel : props.currentModel , graph, nodes: props.graph?.nodes})
 
   useEffect(() => {
     if (graph && props.width > 0 && props.height > 0) {
@@ -337,7 +337,7 @@ export const ErdPage = (props) => {
   }, [props.graph])
 
   return (
-     <div>
+     <div className='model-page'>
     <Toolbar setUpdateId={props.setUpdateId} namespace={props.namespace} zoom={zoom} {...props} graph={graph} currentModel={props.currentModel} toolBarCommands={props.toolBarCommands} />
     <div id='graph' ref={(ref) => containerRef.current = ref} className='graph' /></div>)
 }
