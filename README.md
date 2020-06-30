@@ -26,9 +26,16 @@ npm run watch
 - [ ]  模型在线新增和编辑
 - [ ]  导出SQL语句
 
+
+## 0.0.3
+
+- [x]  升级antd 从V3到V4
+- [x]  美化布局样式
+- [x]  .PDM 文件上传按钮调整到工具栏
+
 ## 0.0.2
 
-状态管理从 DVA 改成轻量级的unstated-next
+- [x] 状态管理从 DVA 改成轻量级的unstated-next
 
 ## 0.0.1
 
