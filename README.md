@@ -4,7 +4,7 @@
 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner
 
 <img target="_bank" src='https://raw.githubusercontent.com/lusess123/web-pdm/master/doc/web-pdm-pre.png'>
-
+[ER图的设计与实现](https://www.yuque.com/antv/g6-blog/nbaywp “ER图的设计与实现”)
 
 
 # 在线体验
