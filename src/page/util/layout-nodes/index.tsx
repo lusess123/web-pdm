@@ -27,8 +27,10 @@ export const layOutNodesByG6 = (nodes: any[], edges: any[], groups: any[], setNo
   } else {
   const subgraphLayout = new G6.Layout.force({
     // center: [500, 450],
-    // height: 3000,
-    // width: 3000,
+    // nodeSize: 700,
+    // nodeStrength: -30,
+    linkDistance:200,
+    nodeSpacing: -250 ,
     preventOverlap: true,
     onLayoutEnd: () => {
       // alert('onLayoutEnd')

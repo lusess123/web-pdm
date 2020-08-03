@@ -6,7 +6,7 @@ import { register } from './model-node'
 import './model.scss'
 import Toolbar from './toolbar'
 // import intl from './../util/intel'
-
+const MINZOOM = 0.01
 export const render = (container, data, props, setZoom) => {
   let width = props.width
   let height = props.height
@@ -16,34 +16,40 @@ export const render = (container, data, props, setZoom) => {
     // groupByTypes: false,
     fitView: true,
     container,
-    minZoom: 0.01,
+    minZoom: MINZOOM,
     width,
     height,
-    autoPaint: false,
+    // autoPaint: false,
     animate: true,
     defaultEdge : styleConfig.default.edge,
     edgeStateStyles: {
       default: styleConfig.default.edge,
     },
     modes: {
-      default: [{
-        type: 'drag-node',
-        updateEdge: false,
-        enableDelegate: true,
-      }, 'drag-canvas', {
+      default: [ 
+         'drag-canvas', {
         type: 'zoom-canvas',
-        minZoom: 0.001,
+        minZoom: MINZOOM,
         maxZoom: 2.1,
-      },  'drag-group', 'drag-node-with-group', 'collapse-expand-group'],
+      },
+      {
+        type: 'drag-node',
+        enableDelegate: true,
+        // delegate: false,
+        // delegateStyle: {
+        //   strokeOpacity: 0, fillOpacity: 0
+        // }
+      }, 
+     ],
     },
     plugins: [
-    //   new G6.Minimap({
-    //   // type: 'delegate',
-    //   viewportClassName: 'g6-minimap-viewport-erd',
-    //   delegateStyle: {
-    //     fill: 'rgba(0,0,0,0.10)',
-    //   },
-    // })
+      new G6.Minimap({
+      type: 'delegate',
+      viewportClassName: 'g6-minimap-viewport-erd',
+      delegateStyle: {
+        fill: 'rgba(0,0,0,0.10)',
+      },
+    })
   ],
   })
   graph.data({nodes, edges: data.edges})
@@ -262,30 +268,37 @@ export const render = (container, data, props, setZoom) => {
   return graph
 }
 
-const useUpdateItem = ({currentModel, graph, nodes}) => {
+const useUpdateItem = ({currentModel, graph}) => {
       useEffect(() => {
 
         if (graph) {
+          const gnodes =  graph.getNodes()
+          if(!gnodes.length) return
           // alert(nodes.length)
           const zoomNum = graph.getZoom()
-          graph.getNodes().forEach((node) => {
+          // alert(JSON.stringify(nodes))
+          gnodes.forEach((node) => {
           if (node.isSys) return
           const nodeModel =  node.getModel()
           const nodeId = nodeModel.id
           const data = nodeModel ? nodeModel.data : undefined
+          const isNoModule =  (currentModel || '').indexOf('module-') >= 0 &&   ((data && data.moduleKey) !== currentModel)
+          const isKeySharp = zoomNum  <= 0.30 * 2
+          const isCardSharp =  zoomNum <= 0.05 * 2
+          // alert(isKeySharp)
           graph.updateItem(node, {
             selected: nodeId === currentModel,
             noSelected: node !== currentModel,
-            isNoModule:  (currentModel || '').indexOf('module-') >= 0 &&   ((data && data.moduleKey) !== currentModel),
-            isKeySharp:  zoomNum  <= 0.30 * 2,
-            isCardSharp: zoomNum <= 0.05 * 2,
+            isNoModule,
+            isKeySharp  ,
+            isCardSharp,
           })
         })
 
           graph.paint()
       }
 
-       }, [currentModel, graph && graph.getZoom(), nodes])
+       }, [currentModel, graph && graph.getZoom(), graph?.getNodes()])
 }
 
 export const ErdPage = (props) => {
@@ -297,14 +310,27 @@ export const ErdPage = (props) => {
     setZoom,
   } = useLocal()
 
-  useUpdateItem({currentModel : props.currentModel , graph, nodes: props.graph?.nodes})
 
   useEffect(() => {
     if (graph && props.width > 0 && props.height > 0) {
+      // alert(props.width)
       graph.changeSize(props.width, props.height)
       graph.fitView(0) //  alert(props.width)
+
     }
   }, [props.width, props.height])
+
+  useEffect(() => { 
+     if(graph && graph.getNodes().length) {
+      graph.fitView(0)
+      // alert(111) 
+     }
+    
+    }, [graph?.getNodes().length >= 1])
+
+
+  useUpdateItem({currentModel : props.currentModel , graph})
+
   useEffect(() => {
     register({colors: props.colors})
     const g = render(containerRef.current, props.graph, props, setZoom)

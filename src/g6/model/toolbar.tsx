@@ -1,7 +1,7 @@
 
 import { Button, Icon, Modal, Popover, Radio, Select, Switch, Tooltip } from 'antd'
 const RadioGroup = Radio.Group
-import { FileMarkdownOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
+import { FileMarkdownOutlined, UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import { useDispatch, useSelector } from '../../hook'
 import React, { useCallback, useEffect, useRef, useState } from 'react' // import { exitFullscreen, launchIntoFullscreen } from './../util'
@@ -22,7 +22,9 @@ const IconRenders = {
   'arrow-left': <ArrowLeftOutlined />,
   'arrow-right': <ArrowRightOutlined />,
   'retweet': <RetweetOutlined />,
-  'pdm' : <FileMarkdownOutlined />
+  'pdm' : <FileMarkdownOutlined />,
+  'lock': <LockOutlined />,
+  'unlock': <UnlockOutlined />
 
 }
 
@@ -42,6 +44,7 @@ const changeTwoDecimal_f = (x) => {
 　　while (s_x.length <= pos_decimal + 2) {
 　　　　s_x += '0'
 　　}
+  if(s_x >= 100) return 100
 　　return s_x
 }
 const BaseCommandList: any[] = [
@@ -65,6 +68,15 @@ const BaseCommandList: any[] = [
 //     update(+new Date())
 //   },
 // },
+{
+  title: intl.get('锁定最小比例').d('锁定最小比例'),
+  key: 'lock-min',
+  icon: 'lock',
+  render: () => {
+  return  <LockOutlined />
+  },
+  click: ()=>{}
+},
 
 {
   title: intl.get('导入pdm文件').d('导入pdm文件'),

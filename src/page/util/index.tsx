@@ -5,9 +5,10 @@ export const layOutNodes = _layOutNodes
 export const layOutNodesByG6 = _layOutNodesByG6
 
 const showLable = (node) => {
-  return !node.name || node.name === node.originalKey
-    ? node.originalKey
-    : `${node.name} (${node.originalKey})`
+  // return !node.name || node.name === node.originalKey
+  //   ? node.originalKey
+  //   : `${node.name} (${node.originalKey})`
+  return node.name || node.originalKey
 }
 
 const eq = (fun) => {
@@ -86,7 +87,7 @@ export const getNodes = (models, checkedKeys styleConfig) => {
         hide: checkedKeys.indexOf('model-' + model.key) === -1,
         // groupId: `module-${model.moduleKey}`,
         config: {
-          width: 400,
+          width: 300,
           headerHeight: 48,
           fieldHeight: 32,
           labelSize: 14 ,

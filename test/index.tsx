@@ -33,3 +33,5 @@ const ErdPdmPage =  (props) => {
 // // 启动应用
 // app.start('#app')
 init(ErdPdmPage)
+// document.appendChild(new HTMLDivElement({}))
+// import './testg6'

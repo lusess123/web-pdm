@@ -370,28 +370,28 @@ export const register = ({ colors }) => {
         },
       })
 
-      group.addShape('text', {
-        visible: !cfg.isKeySharp,
-        name: data.key,
-        fontFamily: '',
-        draggable: true,
-        attrs: {
-          fontFamily: 'iconFont',
-          x: -(config.width / 2) + 20,
-          y: -(getLength(data.fields.length) * config.fieldHeight / 2),
-          text: '😎',
-          // text: '\ue6b2',
-          id: 'headerlabel1',
-          cursor: 'move',
-          fontSize: config.headerHeight / 2,
-          // opacity: !cfg.isKeySharp ? 1 : 0,
-          className: 'headerlabel',
-          textBaseline: 'middle',
-          textAlign: 'left',
-          // radius: [2, 4],
-          fill: nodeColors.font,
-        },
-      })
+      // group.addShape('text', {
+      //   visible: !cfg.isKeySharp,
+      //   name: data.key,
+      //   fontFamily: '',
+      //   draggable: true,
+      //   attrs: {
+      //     fontFamily: 'iconFont',
+      //     x: -(config.width / 2) + 20,
+      //     y: -(getLength(data.fields.length) * config.fieldHeight / 2),
+      //     text: '😎',
+      //     // text: '\ue6b2',
+      //     id: 'headerlabel1',
+      //     cursor: 'move',
+      //     fontSize: config.headerHeight / 2,
+      //     // opacity: !cfg.isKeySharp ? 1 : 0,
+      //     className: 'headerlabel',
+      //     textBaseline: 'middle',
+      //     textAlign: 'left',
+      //     // radius: [2, 4],
+      //     fill: nodeColors.font,
+      //   },
+      // })
 
       group.addShape('text', {
         visible: !cfg.isKeySharp,
@@ -400,7 +400,7 @@ export const register = ({ colors }) => {
         draggable: true,
         attrs: {
           // fontFamily: 'iconFont',
-          x: -(config.width / 2) + 20 + 30,
+          x: -(config.width / 2) + 20 ,
           y: -(getLength(data.fields.length) * config.fieldHeight / 2),
           text:  data.label,
           // text: '\ue6b2',
@@ -704,15 +704,15 @@ export const register = ({ colors }) => {
 
             // click: 'fieldEdit',
             y: -((config.headerHeight + getLength(data.fields.length) * config.fieldHeight) / 2) + config.headerHeight + config.fieldHeight * index + config.fieldHeight / 2,
-            text: isForeign ? `${relationModel}(${Relation[field.type]})` : `[${field.type}]`,
+            text: isForeign ?( field.type && Relation[field.type] ? `${relationModel}(${Relation[field.type] ||''})` : relationModel) : `[${field.type || ''}]`,
             id: 'field',
             textBaseline: 'middle',
             fieldName: field.key,
             arg: field,
             fontSize: config.labelSize,
-            click: 'fieldSelect',
+            click: isForeign ? 'fieldSelect' : undefined,
             textAlign: 'right',
-            cursor: 'pointer',
+            cursor: isForeign ? 'pointer' : 'undefined',
             // opacity: !cfg.isKeySharp ? 1 : 0,
             // radius: [2, 4],
             // fill: field.isForeign ?   'black' : 'black',

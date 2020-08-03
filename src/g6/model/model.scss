@@ -30,10 +30,15 @@
   position: absolute;
   right: 25px;
   bottom: 40px;
+  padding: 5px;
+  overflow: visible !important;
+  // margin-top: 10px;
+  // margin-right: 10px;
   background: #FFFFFF;
-  border: 4px solid rgba(0,0,0,0.10);
-  border-radius: 3px 0 0 3px;
-  border-radius: 3px 0px 0px 3px;
+  border: 0px solid rgba(0,0,0,0.10);
+  
+  // border-radius: 3px 0 0 3px;
+  // border-radius: 3px 0px 0px 3px;
 }
 
 .graph {
@@ -56,6 +61,8 @@
 
 .g6-minimap-viewport-erd {
   border: 1px solid rgba(0,0,0,0.06);
+  margin-top: 2px;
+  margin-right: 2px;
 }
 
 .console-erd-toolbar {
@@ -63,8 +70,7 @@
    width: 100%;
   //  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   //  border-left: 1px solid rgba(0, 0, 0, 0.1);
-   height: 48px;
-   padding-top: 10px;
+   height: 28px;
 
    .split-span {
     margin-right: 30px;
@@ -98,7 +104,6 @@
 
    .command-btn {
 
-    vertical-align:middle;
       margin: 8px;
       font-size: 18px;
       // margin-right: 25px;

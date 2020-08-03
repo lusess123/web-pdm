@@ -313,6 +313,7 @@ export default (
         <ModelNavi
           namespace={namespace}
           Tree={props.Tree}
+          bottomHeight={props.bottomHeight || 50}
           Input={props.Input}
           Pdm={Pdm}
           toolBarCommand={toolBarCommand}
@@ -341,7 +342,7 @@ export default (
             setGraph={(g) => (graphRef.current = g)}
             changeNodes={checkedKeys}
             checkedKeys={checkedKeys}
-            height={G6GraphDomRef.current.offsetHeight - 80}
+            height={G6GraphDomRef.current.offsetHeight - 54}
             graph={graph}
             update={updateId}
             colors={colors}

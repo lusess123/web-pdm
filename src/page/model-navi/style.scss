@@ -1,5 +1,6 @@
 
 .console-g6-page {
+  background-color: #fff;
   display: flex ;
   flex:1;
   flex-direction: row;
@@ -34,14 +35,13 @@
       overflow: hidden;
       display: flex ;
       flex-direction: column;
-      padding-bottom: 72px;
+      padding-bottom: 50px;
 
       height: 100%;
       margin-right: 25px;
      
       .header {
-        height: 35px;
-        margin-top: 15px;
+        height: 28px;
       }
 
       .navitree-warp {
@@ -49,7 +49,7 @@
         // overflow-y: scroll;
         display: flex;
         flex-direction:column;
-        margin-top: 3px;
+        // margin-top: 8px;
         // margin-bottom: 24px;
         height: 100%;
         margin-left: 10px;

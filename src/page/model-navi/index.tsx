@@ -106,7 +106,7 @@ export default forwardRef((props: any, ref) => {
   } = NaviTree
 
   return useMemo(() => (
-  <div className='console-models-tree tree-erd' ref={(refDiv) => {
+  <div className='console-models-tree' style={{paddingBottom: props.bottomHeight}} ref={(refDiv) => {
     consoleModelsRef.current = refDiv
   }}>
     <div className='header'>

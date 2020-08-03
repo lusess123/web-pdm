@@ -8,9 +8,11 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf public &&  NODE_ENV=production webpack --config node_modules/ak-webpack/src/index.js --mode production  --colors --max_old_space_size=1024 && cp -r ./public docker/public",
+    "build": "rm -rf public &&  NODE_ENV=production webpack --config ./webconfig.config.js --mode production  --colors --max_old_space_size=1024 && rm -rf docker/public  && cp -r ./public docker/public",
     "watch": "time webpack-dev-server  --watch-poll --config ./webconfig.config.js --mode development",
-    "publish-npm": "npm config set registry http://registry.npmjs.org && npm publish && npm config set registry https://registry.npm.taobao.org"
+    "publish-npm": "npm config set registry http://registry.npmjs.org && npm publish && npm config set registry https://registry.npm.taobao.org",
+    "publish-docker": "cd ./docker && sh build.sh",
+    "publish-server": "cd ./docker && sh upload.sh"
   },
   "author": "",
   "license": "ISC",
@@ -21,7 +23,7 @@
     "typescript": "^3.8.2"
   },
   "dependencies": {
-    "@antv/g6": "3.3.6",
+    "@antv/g6": "^3.6.0",
     "@iarna/rtf-to-html": "^1.1.0",
     "antd": "^4.3.5",
     "classnames": "^2.2.6",
