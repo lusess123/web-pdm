@@ -10,7 +10,10 @@
 
 # 在线体验
 
-[Demo](http://zyking.xyz:5080/demo/ "Demo")
+
+[定制版Demo](http://zyking.xyz:5080/demo/ "定制版Demo")
+
+[基本版Demo](http://zyking.xyz:5002/ "基本版Demo")
 
 
 # 快速启动
