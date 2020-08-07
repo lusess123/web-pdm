@@ -7,7 +7,6 @@ export interface IModel {
   originalKey: string,
   aggregateRoot?: string,
   belongAggregate?: string,
-  // aggregateRoot:  m.aggregateRoot,
   aggregateModelKey?: string,
   type: string,
 }
