@@ -18,6 +18,25 @@
 
 [基本版Demo](http://zyking.xyz:5002/ "基本版Demo")
 
+# 下个版本的想法
+
+redux有一个最佳实践就是要 data normalization ，简单的说就是拍平数据存储，尽量缩短数据的嵌套层次。这个其实是遵循关系数据的范式设计。
+
+这样我们在设计状态的时候，其实就是在设计数据库
+
+ORM 可以让数据库schema 变成对象模型
+表的外键关联就转换成对象间的引用
+
+这样前端的状态结构可以通过一张ER呈现出来，就象我们在一个业务系统之前会设计好ER 图，通过这张ER图，可以很直观的呈现业务逻辑特征和复杂度。
+
+我们甚至可以直接在ER图操作进行设计调整和修改，通常使用的工具是power-designer。
+
+Web-pdm 要做成在线版本的power-designer 工具。同时，根据上述理论，他可以成为某个前端状态管理库（取个名字就叫 boxer）的配套设计工具。
+
+boxer的设计也是站在巨人的肩膀之上，调研了特性相近的库redux-orm 和 mobx-state-tree , 最终选择了mobx-state-tree 做为轮子 ,一个很重要的原因是类型支持得更好。boxer 的设想是对mobx-state-tree的一层封装。
+
+Web-pdm 做为一个boxer  的配套工具 ，其开发也是通过boxer 来完成的，本身前端的状态管理足够复杂， 可以做为boxer的一个案例和最佳实践。在Web-pdm 页面上设计好模型 和 关联关系后， 可以一键生成boxer（mobx-state-tree） 的模型定义代码（以后甚至可以做到双向生成），然后对于模型可以增加action 让模型充血（ rich domain model）
+
 
 # 快速启动
 
