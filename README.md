@@ -31,7 +31,7 @@ ORM 可以让数据库schema 变成对象模型
 
 我们甚至可以直接在ER图操作进行设计调整和修改，通常使用的工具是power-designer。
 
-Web-pdm 要做成在线版本的power-designer 工具。同时，根据上述理论，他可以成为某个前端状态管理库（取个名字就叫 boxer）的配套设计工具。
+Web-pdm 要做成在线版本的power-designer 工具。同时，根据上述理论，一个应用场景是，他可以成为某个前端状态管理库（取个名字就叫 boxer）的配套设计工具。
 
 boxer的设计也是站在巨人的肩膀之上，调研了特性相近的库redux-orm 和 mobx-state-tree , 最终选择了mobx-state-tree 做为轮子 ,一个很重要的原因是类型支持得更好。boxer 的设想是对mobx-state-tree的一层封装。
 
