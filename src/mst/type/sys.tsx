@@ -7,7 +7,7 @@ export const Sys = types.model({
     layouting : false,
     isArrangeLayout: false,
     expandedKeys: types.array(types.string),
-    // currentModel: types.maybeNull(types.reference(types.late(()=>Model)))
+    currentModel: '',
     checkedKeys: types.array(types.string)
 }).actions(self => {
      return {
@@ -19,6 +19,10 @@ export const Sys = types.model({
          },
          setCheckedKeys: (keys:string[]) => {
                self.checkedKeys.replace(keys)
+         },
+         setCurrentModel: (keys:string[]) => {
+             const newKey = keys.length > 1 ? keys[1] : keys[0]
+             self.currentModel = newKey
          }
      }
 })

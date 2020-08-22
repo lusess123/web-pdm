@@ -49,13 +49,8 @@ export const RootStore = types.model({
 
 
             })
-
-
-
-          
-
       },
-
+      
 
 
 

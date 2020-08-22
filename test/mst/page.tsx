@@ -15,10 +15,6 @@ export default observer(() => {
          console.dir(snapshot)
          sessionStorage.setItem('web-pdm', JSON.stringify(snapshot))
     })
-
-  // window.onload=function(){
-  //       alert("加载完成");
-  // }
     const localdata = sessionStorage.getItem('web-pdm')
     if(!localdata) {
       data.init({ modelData: ModelTest, moduleData: ModuleTest })
@@ -28,17 +24,6 @@ export default observer(() => {
     }
     
 
-    
-    
-    window.onbeforeunload = event => {
-      console.log('onbeforeload！！！！！')
-      alert('')
-      // if (event) {
-      //     // event.returnValue = '关闭提示';
-      //     alert('关闭')
-      // }
-  }
-
   }, [])
-  return  [...data.Modules.values()].length && <Page />
+  return <Page />
 })

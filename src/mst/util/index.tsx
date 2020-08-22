@@ -85,6 +85,6 @@ export const json = (obj, replacer?, space?) => {
 
 
   export function mapToArrary<T>(mapObj: Map<string,T>) {
-      return  [ ...mapObj.values]
+      return  [ ...mapObj.values()]
 
   }
