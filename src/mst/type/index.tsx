@@ -25,6 +25,9 @@ export const RootStore = types.model({
 }
 ))
 .actions(self => ({
+      meCreate(data) {
+         
+      },
       init({ modelData, moduleData }) {
            
             let moduleHas = {}
@@ -47,7 +50,7 @@ export const RootStore = types.model({
 
             })
 
-            
+
 
           
 

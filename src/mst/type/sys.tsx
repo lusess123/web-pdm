@@ -8,7 +8,7 @@ export const Sys = types.model({
     isArrangeLayout: false,
     expandedKeys: types.array(types.string),
     // currentModel: types.maybeNull(types.reference(types.late(()=>Model)))
-    selectKeys: types.array(types.string)
+    checkedKeys: types.array(types.string)
 }).actions(self => {
      return {
          toggleArrangeLayout : () => {
@@ -17,8 +17,8 @@ export const Sys = types.model({
          setExpandedKeys : (keys:string[] ) => {
                self.expandedKeys.replace(keys)
          },
-         setSelectKeys: (keys:string[]) => {
-               self.selectKeys.replace(keys)
+         setCheckedKeys: (keys:string[]) => {
+               self.checkedKeys.replace(keys)
          }
      }
 })
