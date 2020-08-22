@@ -7,6 +7,7 @@ import getAllModulesTest from './g6-test/mock/module-test'
 
 import init from  './unstated'
 
+
 const ErdPdmPage =  (props) => {
    const { getModels, getModules } = {
     getModels: async () =>  ({ res: getAllModelsTest }),
@@ -20,18 +21,25 @@ const ErdPdmPage =  (props) => {
        />
    )
 }
+// init(ErdPdmPage)
+
+import MstPage from './mst'
+
 
 // // 创建应用
-// const app = dva()
+const app = dva()
 // app.model(DvaModel({namespace: 'erd'}) as any)
 // // 注册视图
-// app.router(() => (
-//   <div>
-//    <ErdPdmPage />
-//   </div>
-// ))
+app.router(() => (
+  <div>
+  <MstPage />
+  </div>
+))
 // // 启动应用
-// app.start('#app')
-init(ErdPdmPage)
+app.start('#app')
+// init(ErdPdmPage)
 // document.appendChild(new HTMLDivElement({}))
 // import './testg6'
+
+// const i = 9
+// const fff = [0..i]
