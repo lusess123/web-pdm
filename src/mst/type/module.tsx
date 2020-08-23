@@ -1,19 +1,18 @@
-import { types, Instance, getParent } from "mobx-state-tree"
-import { Model } from './model'
+import { types, Instance, getRoot } from "mobx-state-tree"
+import { RootInstance } from "../type"
 
 export const Module = types.model({
     id: types.identifier,
     name: types.string,
     label: types.string,
-    // models: types.map(types.reference(types.late(()=>Model))),
 }).views(self => ({
-     get models() {
-
-       const mst = getParent(self,2)
-       const models = [...mst.Models.values()].filter(a => a.module === self)
-       return models
+     get models(){
+       const mst: RootInstance  = getRoot(self)
+       const models:any = [...mst.Models.values()].filter(a=>a.moduleId === self.id)
+       return models 
 
     }
 }))
 
 export type TModule = Instance<typeof Module>;
+

@@ -1,5 +1,5 @@
-import { types, Instance } from "mobx-state-tree"
-import { Model } from "./model"
+import { types } from "mobx-state-tree"
+
 
 
 export const Sys = types.model({

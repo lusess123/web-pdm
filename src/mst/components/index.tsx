@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { CreateComponent } from '../util'
 import ModelNavi from './model-navi'
+import GraphPage from '../graph'
 
 export default CreateComponent({
     displayName: 'page',
@@ -13,9 +14,10 @@ export default CreateComponent({
                 <ModelNavi />
             </div>
             <div className='g6-graph'>
-                <Spin tip='layout...'>
+                {/* <Spin tip='layout...'>
                     <Empty style={{ textAlign: 'center' }} description='正在绘制模型图...' />
-                </Spin>
+                </Spin> */}
+                <GraphPage />
             </div>
         </div>
     }

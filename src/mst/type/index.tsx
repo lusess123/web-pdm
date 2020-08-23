@@ -3,6 +3,7 @@ import { Model } from './model'
 import { Module } from './module'
 import { Field } from './field'
 import { Sys } from './sys'
+import { createData, createLinks } from '../graph/data'
 
 
 function S4() {
@@ -25,35 +26,50 @@ export const RootStore = types.model({
 }
 ))
 .actions(self => ({
-      meCreate(data) {
-         
-      },
+
       init({ modelData, moduleData }) {
            
-            let moduleHas = {}
-            moduleData.forEach(module => {
+            let moduleHas: Record<string,string> = {}
+            moduleData.forEach((module : any) => {
                   const key = NewGuid().toString()
                   self.Modules.put(Module.create({ id: key, label: module.name, name: module.key }))
-                  moduleHas[ module.key] = key
+                  moduleHas[module.key] = key
                   self.sys.expandedKeys.push(key)
 
             })
 
-            modelData.forEach(model => {
+            modelData.forEach((model :any)=> {
                   const key = NewGuid().toString()
-                  self.Models.put(Model.create({ id: key, label: model.name, name: model.key, module: moduleHas[model.moduleKey] || '' }))
-                  model.fields.forEach(field => {
+                  self.Models.put(Model.create({ id: key, label: model.name, name: model.key, moduleId: moduleHas[model.moduleKey] || '' }))
+                  model.fields.forEach((field:any) => {
                         const _key = NewGuid().toString()
-                        self.Fields.put(Field.create({ id: _key, label: field.name, name: field.key, type: field.type || 'string', model: key }))
+                        self.Fields.put(Field.create({ id: _key,typeMeta: field.typeMeta, label: field.name, name: field.key, type: field.type || 'string', modelId: key }))
                   })
 
 
             })
       },
-      
 
+      findModelByName(name: string) {
+          return [...self.Models.values()].find(a=>a.name === name)
+      }
 
-
+})).views(self => ({
+      get Nodes(): any {
+          const data = createData(self)
+          const itemString = sessionStorage.getItem('console-erd-graph')
+          const item = itemString && JSON.parse(itemString)
+          if(item)
+          return data.map(a=> ({
+                ...a,
+                x: item[a.id].x,
+                y: item[a.id].y
+          }))
+          return data
+      },
+      get edges() :any {
+          return createLinks(self)
+      }
 }))
 
 export type RootInstance = Instance<typeof RootStore>;
