@@ -37,7 +37,7 @@ export const RootStore = types.model({
                   self.sys.expandedKeys.push(key)
 
             })
-
+            let modelsKeys: string[] = []
             modelData.forEach((model :any)=> {
                   const key = NewGuid().toString()
                   self.Models.put(Model.create({ id: key, label: model.name, name: model.key, moduleId: moduleHas[model.moduleKey] || '' }))
@@ -45,9 +45,10 @@ export const RootStore = types.model({
                         const _key = NewGuid().toString()
                         self.Fields.put(Field.create({ id: _key,typeMeta: field.typeMeta, label: field.name, name: field.key, type: field.type || 'string', modelId: key }))
                   })
-
+                  modelsKeys.push(key)
 
             })
+            self.sys.setCheckedKeys(modelsKeys)
       },
 
       findModelByName(name: string) {

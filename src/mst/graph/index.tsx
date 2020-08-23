@@ -4,6 +4,8 @@ import { useMst } from '../context'
 import register from './item'
 import { observer } from 'mobx-react-lite'
 import './model.scss'
+import GraphEvent from './event'
+import { initStyle } from './item/style'
 
 export default observer(() => {
   const { setRef } = useLocal()
@@ -31,11 +33,13 @@ const useLocal = () => {
 
 const render = (container: any, nodes: any, edges: any) => {
   const height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight - 450
+  const styleConfig = initStyle({primaryColor: 'blue'}).style
   const graph = new G6.Graph({
     height,
     width: container.offsetWidth - 20,
     container,
     fitView: true,
+    fitCenter: true,
     animate: true,
     defaultNode: {
       color: '#5B8FF9',
@@ -49,6 +53,11 @@ const render = (container: any, nodes: any, edges: any) => {
         fill: '#9EC9FF',
       }
     },
+    defaultEdge : styleConfig.default.edge,
+    edgeStateStyles: {
+      default: styleConfig.default.edge,
+    },
+    minZoom: 0.001,
 
     //   layout1 : {
     //   alphaDecay: 0.2 ,
@@ -79,7 +88,8 @@ const render = (container: any, nodes: any, edges: any) => {
         'drag-canvas', {
           type: 'zoom-canvas',
           minZoom: 0.0001,
-          // maxZoom: 2.1,
+          maxZoom: 2.1,
+          enableOptimize: true,
         },
         {
           type: 'drag-node',
@@ -97,47 +107,34 @@ const render = (container: any, nodes: any, edges: any) => {
       })
     ]
   })
-  graph.on('node:dragend1', () => {
-    const nodes = graph.getNodes().reduce((pre, n) => {
-      const { x, y, id } = n.getModel()
-      return {
-        ...pre,
-        [id!]: {
-          x,
-          y,
-        },
-      }
-    }, {})
-    sessionStorage.setItem('console-erd-graph', JSON.stringify(nodes))
-  })
-  graph.on('canvas:dragend', () => {
-    const canvasElement = graph.get('canvas').get('el')
-    canvasElement.style.cursor = 'grab'
-
-  })
+  GraphEvent(graph)
   const x = nodes[0].x
   graph.data({ nodes, edges })
+  graph.isLayouting = true
   graph.render()
   // alert(nodes[0].x)
   if (!x)
+    // graph.isLayouting = true
     graph.updateLayout({
-      // alphaDecay: 0.2,
+      alphaDecay: 0.2,
       type: 'force',
       preventOverlap: true,
       onLayoutEnd: () => {
-        graph.fitView(0)
+        
         // console.log(nodes)
+        graph.isLayouting = false
+        graph.fitView(0)
         // const nodes = graph.getNodes()
-        const nodes = graph.getNodes().reduce((pre, n) => {
-          const { x, y, id } = n.getModel()
-          return {
-            ...pre,
-            [id!]: {
-              x,
-              y,
-            },
-          }
-        }, {})
+        // const nodes = graph.getNodes().reduce((pre, n) => {
+        //   const { x, y, id } = n.getModel()
+        //   return {
+        //     ...pre,
+        //     [id!]: {
+        //       x,
+        //       y,
+        //     },
+        //   }
+        // }, {})
         // sessionStorage.setItem('console-erd-graph', JSON.stringify(nodes))
       }
 

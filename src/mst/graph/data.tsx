@@ -2,110 +2,118 @@ import { RootInstance } from '../type'
 import { mapToArrary } from '../util'
 import { initStyle } from './item/style'
 
-const getLength  = (length: number) => {
+const getLength = (length: number) => {
   return length >= 20 ? length : 20
- }
+}
 
-export const createData = (root : RootInstance) => {
-    const { style } = initStyle({primaryColor : 'blue'}) 
-    const res = mapToArrary(root.Models).map( m => {
-          return {
-              id: 'model-' + m.id,
-              type: 'console-model-Node',
-              isKeySharp: false,
-              config: {
-                width: 300,
-                headerHeight: 48,
-                fieldHeight: 32,
-                labelSize: 14 ,
-                styleConfig: style
-              },
-              data: {
-                moduleKey: m.moduleId,
-                label: m.label,
-                fields: m.fields,
-                key: m.id,
-                name: m.name,
-                tag: 'aggregate',
-                // aggregateRoot:  model.aggregateRoot,
-                // aggregateModelKey: model.aggregateModelKey,
-                // belongAggregate: model.belongAggregate,
-                nodeSize:  ((48 +  getLength(m.fields.length) * 48) / 6) *6  / 6,
-              },
-              size:   ((48 +  getLength(m.fields.length) * 48) / 6) *6 ,
-          }
-    })
-    if(res.length > 0 ) return res.concat([createSysNode() as any])
-    return res
+const { style } = initStyle({ primaryColor: 'blue' })
+
+export const createData = (root: RootInstance) => {
+
+  const res = mapToArrary(root.Models).map(m => {
+    return {
+      id: 'model-' + m.id,
+      type: 'console-model-Node',
+      isKeySharp: false,
+      config: {
+        width: 300,
+        headerHeight: 48,
+        fieldHeight: 32,
+        labelSize: 14,
+        styleConfig: style
+      },
+      data: {
+        moduleKey: m.moduleId,
+        label: m.label,
+        fields: m.fields,
+        key: m.id,
+        name: m.name,
+        tag: 'aggregate',
+        // aggregateRoot:  model.aggregateRoot,
+        // aggregateModelKey: model.aggregateModelKey,
+        // belongAggregate: model.belongAggregate,
+        nodeSize: ((48 + getLength(m.fields.length) * 48) / 6) * 6 / 6,
+      },
+      size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
+    }
+  })
+  if (res.length > 0) return res.concat([createSysNode() as any])
+  return res
 }
 
 const createSysNode = () => {
 
-  return  {
+  return {
     id: 'model-SYS-CENTER-POINT',
     type: 'circle',
     isSys: true,
     isKeySharp: true,
-    size:  10,
+    size: 10,
   }
 
 }
 
-export const createLinks = (root : RootInstance) => {
-    const links = [...root.Models.values()].reduce((pre, model) => {
+export const createLinks = (root: RootInstance) => {
+  const links = [...root.Models.values()].reduce((pre, model) => {
 
-       const sysLink = {
-        key: 'model-' + model.id +'~'+'model-SYS-CENTER-POINT',
-        source: 'model-' + model.id,
-        // target: 'model-' + relationModel!.id,
+    const sysLink = {
+      key: 'model-' + model.id + '~' + 'model-SYS-CENTER-POINT',
+      source: 'model-' + model.id,
+      // target: 'model-' + relationModel!.id,
+      visible: false,
+      isSys: true,
+      style: {
         visible: false,
-        isSys : true,
-        style: {
-          visible: false,
-        },
-        target: 'model-SYS-CENTER-POINT',
-        type: 'console-line',
-      }
-        
-       const fieldLinks = (model.fields).reduce((fPre, field, i) => {
-          const isRelation =   field.typeMeta && field.typeMeta.type === 'Relation' && field.typeMeta?.relationModel
-          // const { id } = field
-          if (isRelation) {
+      },
+      target: 'model-SYS-CENTER-POINT',
+      type: 'console-line',
+    }
 
-            const relationModel = root.findModelByName(field.typeMeta?.relationModel)     
-            return [
-              ...fPre,
-              {
-                key: 'model-' + model.id +'~'+'model-' + relationModel!.id,
-                source: 'model-' + model.id,
-                target: 'model-' + relationModel!.id,
-                // sourceAnchor,
-                // // targetAnchor: sourceAnchor,
-                // targetAnchor:  model.key === field.typeMeta.relationModel ? (sourceAnchor - 1) : undefined,
-                fieldIndex: i,
-                // fieldsLength: l,
-                type: 'console-line',
-                label: field.type,
-                labelAutoRotate: true,
-                loopCfg: {
-                  // position: 'top',
-                  clockwise: true, // dist: 200,
-                  dist: 100,
-                },
-              },
-            ]
-          } else return fPre
-        }, [])
-  
-       return [
-        ...pre,
-        ...fieldLinks,
-        sysLink
-      ]
+    const fieldLinks = (model.fields).reduce((fPre, field, i) => {
+      const isRelation = field.typeMeta && field.typeMeta.type === 'Relation' && field.typeMeta?.relationModel
+      // const { id } = field
+      if (isRelation) {
+
+        const relationModel = root.findModelByName(field.typeMeta!.relationModel)
+
+        const isTo = true
+        const l = Object.keys(model.fields).length
+        const sourceAnchor = !isTo ? (i + 2) : (2 + i + l)
+        
+        return [
+          ...fPre,
+          {
+            key: 'model-' + model.id + '~' + 'model-' + relationModel!.id,
+            source: 'model-' + model.id,
+            target: 'model-' + relationModel!.id,
+            sourceAnchor,
+            // // targetAnchor: sourceAnchor,
+            // targetAnchor:  model.key === field.typeMeta.relationModel ? (sourceAnchor - 1) : undefined,
+            fieldIndex: i,
+            // fieldsLength: l,
+            style: style.default.edge,
+            type: 'console-line',
+            label: field.type,
+            labelAutoRotate: true,
+            loopCfg: {
+              // position: 'top',
+              clockwise: true, // dist: 200,
+              dist: 100,
+            },
+          },
+        ]
+      } else return fPre
     }, [])
-    return links
-  }
-  
+
+    return [
+      ...pre,
+      ...fieldLinks,
+      sysLink
+    ]
+  }, [])
+  return links
+}
+
 
 
 
@@ -145,8 +153,8 @@ export const createLinks = (root : RootInstance) => {
 //           6 ,
 //         }
 //       })
-  
+
 //     return nodeRes.length > 0 ? nodeRes.concat([createSysNode()]) : nodeRes
-  
+
 //     // })
 //   }
