@@ -109,8 +109,7 @@ export const getNodes = (models, checkedKeys styleConfig) => {
         },
         type: 'console-model-Node',
         isKeySharp: true,
-        size:   ((48 +  getLength(model.fields.length) * 48) / 6) *
-        6 ,
+        size:   ((48 +  getLength(model.fields.length) * 48) / 6) *6 ,
       }
     })
 

@@ -12,8 +12,8 @@ const { TreeNode, OptionBuilder } = Tree
 
 
 type IModelNaviProps = {
-  modules: [],
-  model: []
+  modules?: [],
+  model?: []
 }
 
 

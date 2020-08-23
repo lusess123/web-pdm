@@ -7,7 +7,7 @@ import GraphPage from '../graph'
 
 export default CreateComponent({
     displayName: 'page',
-    render(props: any) {
+    render() {
         return <div className='console-g6-page'>
             <div className='console-erd-fps' />
             <div className='g6-modelnavi'>

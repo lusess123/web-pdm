@@ -1,13 +1,38 @@
 import { RootInstance } from '../type'
 import { mapToArrary } from '../util'
+import { initStyle } from './item/style'
+
+const getLength  = (length: number) => {
+  return length >= 20 ? length : 20
+ }
 
 export const createData = (root : RootInstance) => {
+    const { style } = initStyle({primaryColor : 'blue'}) 
     const res = mapToArrary(root.Models).map( m => {
           return {
               id: 'model-' + m.id,
-              data: m,
               type: 'console-model-Node',
-              isKeySharp: true,
+              isKeySharp: false,
+              config: {
+                width: 300,
+                headerHeight: 48,
+                fieldHeight: 32,
+                labelSize: 14 ,
+                styleConfig: style
+              },
+              data: {
+                moduleKey: m.moduleId,
+                label: m.label,
+                fields: m.fields,
+                key: m.id,
+                name: m.name,
+                tag: 'aggregate',
+                // aggregateRoot:  model.aggregateRoot,
+                // aggregateModelKey: model.aggregateModelKey,
+                // belongAggregate: model.belongAggregate,
+                nodeSize:  ((48 +  getLength(m.fields.length) * 48) / 6) *6  / 6,
+              },
+              size:   ((48 +  getLength(m.fields.length) * 48) / 6) *6 ,
           }
     })
     if(res.length > 0 ) return res.concat([createSysNode() as any])
