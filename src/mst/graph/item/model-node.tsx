@@ -58,7 +58,7 @@ export const register = () => {
             children.forEach((s) => {
                 const id = s.attr('id')
 
-                this.allRender(cfg, s)
+                // this.allRender(cfg, s)
 
                 // setNodeStateAttr('default', s, cfg)
                 // isNoModule && setNodeStateAttr('isNoModule', s , cfg)
@@ -300,10 +300,13 @@ export const register = () => {
             //     })
             // })
             data.fields.forEach((field, index) => {
-                const {
-                    relationModel,
-                    isForeign,
-                } = field
+                // const {
+                //     relationModel,
+                //     // isForeign,
+                // } = field
+
+                const isForeign = field.typeMeta
+                const relationModel = field?.typeMeta?.relationModel
 
                 const y = -((config.headerHeight + getLength(data.fields.length) * config.fieldHeight) / 2) + config.headerHeight + config.fieldHeight * index + config.fieldHeight / 2 - 2
                 group.addShape('rect', {
@@ -347,7 +350,7 @@ export const register = () => {
                 })
 
                 isForeign && group.addShape('circle', {
-                    visible: false,
+                    visible: true,
                     name: field.id,
                     draggable: true,
                     attrs: {
@@ -414,7 +417,7 @@ export const register = () => {
  
 
                 isForeign && group.addShape('circle', {
-                    visible: false,
+                    visible: true,
                     name: field.id,
                     draggable: true,
                     attrs: {
@@ -466,6 +469,7 @@ export const register = () => {
             let keyShape = group!.addShape('rect', {
                 name: data.key,
                 draggable: true,
+                // visible: false,
                 attrs: {
                     id: 'keySharp',
                     x: -(config.width / 2),

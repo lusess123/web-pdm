@@ -14,8 +14,9 @@ export default (graph:any) => {
     const bottomRight = graph.getPointByCanvas(gWidth, gHeight)
     graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
       const model = node.getModel()
-      if (model.isSys) {
-        node.getContainer().hide()
+      if (model.isSys || !model.visible) {
+        // node.getContainer().hide()
+        graph.hideItem(node)
         return
       }
       if (isExporting) return
@@ -47,7 +48,7 @@ export default (graph:any) => {
           graph.updateItem(edge, { targetAnchor })
       }
 
-      if (targetModel.isSys) {
+      if (targetModel.isSys || !targetModel.visible || !sourceNode.getModel().visible) {
         edge.hide()
         return
       }

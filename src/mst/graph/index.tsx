@@ -3,6 +3,7 @@ import G6 from '@antv/g6'
 import { useMst } from '../context'
 import register from './item'
 import { observer } from 'mobx-react-lite'
+import { toJS } from 'mobx'
 import './model.scss'
 import GraphEvent from './event'
 import { initStyle } from './item/style'
@@ -16,12 +17,27 @@ const useLocal = () => {
   const mst = useMst()
 
   const containerRef = useRef({})
+  const erdGraph = useRef<any>(null)
   useEffect(() => { register() }, [])
   useEffect(
     () => {
-      if (mst.Nodes.length)
-        render(containerRef.current, mst.Nodes, mst.edges)
-    }, [mst.Nodes.length > 0])
+      const { Nodes , edges } = mst
+      if (!erdGraph.current) {
+         erdGraph.current = render(containerRef.current, mst.Nodes, mst.edges)
+         erdGraph.current.fitView(0)
+      }
+      else {
+
+        // erdGraph.current.changeData({ nodes: Nodes, edges })
+        //erdGraph.current.changeData({ nodes: mst.Nodes, edges: mst.edges })
+        //erdGraph.current.render()
+        // erdGraph.current.isLayouting = true
+        // alert(JSON.stringify( mst.Nodes))
+        console.log(Nodes)
+        layout(erdGraph.current,  Nodes , edges)
+        erdGraph.current.fitView(0)
+      }
+    }, [mst.Nodes])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
   return {
     containerRef,
@@ -58,6 +74,21 @@ const render = (container: any, nodes: any, edges: any) => {
       default: styleConfig.default.edge,
     },
     minZoom: 0.001,
+    // layout: {
+    //   type: 'force',
+    //   condense: true,
+    //   cols: 3,
+    //   workerEnabled: true,
+    //   linkDistance: 0 ,
+    //   alphaDecay: 0.2 ,
+    //   preventOverlap: true,
+    //   collideStrength: 0.5,
+    //   nodeSpacing: -180,
+    //   onLayoutEnd: () => {
+    //     graph.isLayouting = false
+    //     graph.fitView(0)
+    //   }
+    // }
 
     //   layout1 : {
     //   alphaDecay: 0.2 ,
@@ -89,7 +120,7 @@ const render = (container: any, nodes: any, edges: any) => {
           type: 'zoom-canvas',
           minZoom: 0.0001,
           maxZoom: 2.1,
-          enableOptimize: true,
+          // enableOptimize: true,
         },
         {
           type: 'drag-node',
@@ -108,20 +139,61 @@ const render = (container: any, nodes: any, edges: any) => {
     ]
   })
   GraphEvent(graph)
-  const x = nodes[0].x
+  // const x = nodes[0].x
   graph.data({ nodes, edges })
   graph.isLayouting = true
   graph.render()
+  // layout(graph, nodes)
+  return graph
+}
+
+
+
+const layout = (graph, nodes: any, edges) => {
+  graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
+     [node.x, node.y] = [undefined, undefined];
+  })
+  graph.clear()
+
+  graph.changeData({nodes, edges})
+
+  graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
+    // node.x = undefined
+    // node.y = undefined
+    const model = node.getModel()
+    if (!model.visible) {
+      // node.getContainer().hide()
+      graph.hideItem(node)
+      // return
+    }
+  })
+
+  const _edges = graph.getEdges()
+  _edges.forEach((edge: any) => {
+    let sourceNode = edge.get('sourceNode')
+    let targetNode = edge.get('targetNode')
+    const targetModel = targetNode.getModel()
+    if (!targetModel.visible || !sourceNode.getModel().visible) {
+      edge.hide()
+      // return
+    }
+  })
+
   // alert(nodes[0].x)
-  if (!x)
-    // graph.isLayouting = true
+  // if (nodes.length > 0 &&  !nodes[0].x)
+    graph.isLayouting = true
     graph.updateLayout({
-      alphaDecay: 0.2,
+
       type: 'force',
+      condense: true,
+      cols: 3,
+      workerEnabled: true,
+      linkDistance: 0 ,
+      alphaDecay: 0.2 ,
       preventOverlap: true,
+      collideStrength: 0.5,
+      nodeSpacing: -180,
       onLayoutEnd: () => {
-        
-        // console.log(nodes)
         graph.isLayouting = false
         graph.fitView(0)
         // const nodes = graph.getNodes()
@@ -139,5 +211,9 @@ const render = (container: any, nodes: any, edges: any) => {
       }
 
     })
-}
+    // graph.layout()
+    graph.fitView(0)
 
+    return graph
+
+}

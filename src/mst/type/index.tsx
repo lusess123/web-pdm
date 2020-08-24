@@ -58,6 +58,7 @@ export const RootStore = types.model({
 })).views(self => ({
       get Nodes(): any {
           const data = createData(self)
+      //     alert(JSON.stringify(data))
           const itemString = sessionStorage.getItem('console-erd-graph')
           const item = itemString && JSON.parse(itemString)
           if(item)

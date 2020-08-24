@@ -15,6 +15,7 @@ export const createData = (root: RootInstance) => {
       id: 'model-' + m.id,
       type: 'console-model-Node',
       isKeySharp: false,
+      visible: !!root.sys.checkedKeys.find(a=>a === m.id),
       config: {
         width: 300,
         headerHeight: 48,
@@ -36,7 +37,7 @@ export const createData = (root: RootInstance) => {
       },
       size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
     }
-  })
+  }).filter(a=>a.visible)
   if (res.length > 0) return res.concat([createSysNode() as any])
   return res
 }
@@ -47,8 +48,12 @@ const createSysNode = () => {
     id: 'model-SYS-CENTER-POINT',
     type: 'circle',
     isSys: true,
+    visible: true,
     isKeySharp: true,
     size: 10,
+    style: {
+      opacity: 0
+    }
   }
 
 }
@@ -56,17 +61,22 @@ const createSysNode = () => {
 export const createLinks = (root: RootInstance) => {
   const links = [...root.Models.values()].reduce((pre, model) => {
 
+    if(!root.sys.checkedKeys.find(a=>a === model.id)) return pre
+    
     const sysLink = {
       key: 'model-' + model.id + '~' + 'model-SYS-CENTER-POINT',
       source: 'model-' + model.id,
       // target: 'model-' + relationModel!.id,
-      visible: false,
+      // visible: false,
       isSys: true,
-      style: {
-        visible: false,
-      },
+      // style: {
+      //   visible: false,
+      // },
       target: 'model-SYS-CENTER-POINT',
       type: 'console-line',
+      style: {
+        opacity: 0
+      }
     }
 
     const fieldLinks = (model.fields).reduce((fPre, field, i) => {
@@ -75,6 +85,7 @@ export const createLinks = (root: RootInstance) => {
       if (isRelation) {
 
         const relationModel = root.findModelByName(field.typeMeta!.relationModel)
+        if(!relationModel || !root.sys.checkedKeys.find(a=>a === relationModel!.id)) return fPre
 
         const isTo = true
         const l = Object.keys(model.fields).length
@@ -111,7 +122,7 @@ export const createLinks = (root: RootInstance) => {
       sysLink
     ]
   }, [])
-  return links
+  return links.filter(a=>!!a)
 }
 
 
