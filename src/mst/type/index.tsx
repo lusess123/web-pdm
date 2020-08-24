@@ -59,14 +59,14 @@ export const RootStore = types.model({
       get Nodes(): any {
           const data = createData(self)
       //     alert(JSON.stringify(data))
-          const itemString = sessionStorage.getItem('console-erd-graph')
-          const item = itemString && JSON.parse(itemString)
-          if(item)
-          return data.map(a=> ({
-                ...a,
-                x: item[a.id].x,
-                y: item[a.id].y
-          }))
+      //     const itemString = sessionStorage.getItem('console-erd-graph')
+      //     const item = itemString && JSON.parse(itemString)
+      //     if(item)
+      //     return data.map(a=> ({
+      //           ...a,
+      //           x: item[a.id].x,
+      //           y: item[a.id].y
+      //     }))
           return data
       },
       get edges() :any {

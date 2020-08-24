@@ -33,7 +33,7 @@ const useLocal = () => {
         //erdGraph.current.render()
         // erdGraph.current.isLayouting = true
         // alert(JSON.stringify( mst.Nodes))
-        console.log(Nodes)
+        console.log('h:',Nodes)
         layout(erdGraph.current,  Nodes , edges)
         erdGraph.current.fitView(0)
       }
@@ -150,11 +150,12 @@ const render = (container: any, nodes: any, edges: any) => {
 
 
 const layout = (graph, nodes: any, edges) => {
-  graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
-     [node.x, node.y] = [undefined, undefined];
-  })
-  graph.clear()
+  // graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
+  //    [node.x, node.y] = [undefined, undefined];
+  // })
+  // graph.clear()
 
+  // graph.changeData({nodes, edges})
   graph.changeData({nodes, edges})
 
   graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
@@ -211,6 +212,7 @@ const layout = (graph, nodes: any, edges) => {
       }
 
     })
+   
     // graph.layout()
     graph.fitView(0)
 
