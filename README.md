@@ -48,7 +48,8 @@
 
    boxer的设计也是站在巨人的肩膀之上，调研了特性相近的库redux-orm 和 mobx-state-tree , 最终选择了mobx-state-tree 做为轮子 ,一个很重要的原因是类型支持得更好。boxer 的设想是对mobx-state-tree的一层封装。
 
-    Web-pdm 做为一个boxer  的配套工具 ，其开发也是通过boxer 来完成的，本身前端的状态管理足够复杂， 可以做为boxer的一个案例和最佳实践。在Web-pdm 页面上设计好模型 和 关联关系后， 可以一键生成boxer（mobx-state-tree） 的模型定义代码（以后甚至可以做到双向生成），然后对于模型可以增加action 让模型充血（ rich domain model）
+   Web-pdm 做为一个boxer  的配套工具 ，其开发也是通过boxer 来完成的，本身前端的状态管理足够复杂， 可以做为boxer的一个案例和最佳实践。
+   在Web-pdm 页面上设计好模型 和 关联关系后， 可以一键生成boxer（mobx-state-tree） 的模型定义代码（以后甚至可以做到双向生成），然后对于模型可以增加action 让模型充血（ rich domain model）
 
 
 # 快速启动
