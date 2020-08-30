@@ -22,11 +22,10 @@
 
 redux有一个最佳实践就是要 data normalization ，简单的说就是拍平数据存储，尽量缩短数据的嵌套层次。这个其实是遵循关系数据的范式设计。
 同样的，另外一个的状态管理框架mobx作者官方博客里面直接就这么说：
-`
 
-The second important idea behind MobX is that for any app that is more complex than TodoMVC, you will often need a data graph, instead of a normalized tree, to store the state in a mentally manageable yet optimal way. Graphs enable referential consistency and avoid data duplication so that it can be guaranteed that derived values are never stale.（
+
+`
 MobX 背后的第二个重要思想是，对于任何比 TodoMVC 更复杂的应用，您通常需要一个数据图，而不是规范化的树，以一种精神上可管理但最佳的方式存储状态。图形支持引用一致性，并避免数据重复，以便保证派生值永远不会过时。
-）
 
 `
 
