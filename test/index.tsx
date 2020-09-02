@@ -31,9 +31,7 @@ const app = dva()
 // app.model(DvaModel({namespace: 'erd'}) as any)
 // // 注册视图
 app.router(() => (
-  <div>
   <MstPage />
-  </div>
 ))
 // // 启动应用
 app.start('#app')

@@ -41,7 +41,7 @@
       margin-right: 25px;
      
       .header {
-        height: 28px;
+        height: 56px;
       }
 
       .navitree-warp {
@@ -62,6 +62,9 @@
         // margin-right: 30px;
         margin-left: 10px;
         display: flex;
+        .right {
+          float: right;
+        }
         .console-erd-add {
           font-size: 20px;
           // margin-right: 25px;
