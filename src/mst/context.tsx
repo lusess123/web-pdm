@@ -1,7 +1,7 @@
 
 import { createContext, useContext } from 'react'
 
-import { RootStore, RootInstance } from './type'
+import { RootInstance , createStore } from './type'
 
 
 
@@ -15,9 +15,4 @@ export function useMst() {
   return store;
 }
 
-export const rootStore = RootStore.create({
-    sys : {
-        isArrangeLayout : false ,
-        layouting: true ,
-        search: ''
-    }});
+export const rootStore = createStore()

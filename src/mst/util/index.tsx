@@ -88,3 +88,7 @@ export const json = (obj, replacer?, space?) => {
       return  [ ...mapObj.values()]
 
   }
+
+  export const intlLiteral = (text: string) => {
+     return text
+  }

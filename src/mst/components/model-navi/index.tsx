@@ -1,11 +1,15 @@
 
 import { Input, Button, Dropdown, Menu,Select } from 'antd'
 import { EllipsisOutlined } from '@ant-design/icons';
+// import { debounce } from 'lodash'
+
 import { Tree } from '../../../tree'
-import _ from 'lodash'
+import { TModel } from '../../type/model'
+import { RootInstance } from '../../type'
+// import _ from 'lodash'
 import React, { useCallback } from 'react'
 import Scroll from 'react-custom-scrollbars'
-import { CreateComponent, renderJson } from '../../util'
+import { CreateComponent, renderJson, intlLiteral } from '../../util'
 import { useMst } from '../../context'
 import './style.scss'
 
@@ -17,12 +21,29 @@ type IModelNaviProps = {
   model?: []
 }
 
+ const getTreeNodeTitle = (model: TModel, root : RootInstance ) => {
+     return <OptionBuilder data={{
+      title: root.renderModelTitle(model) ,
+      options: [{
+        title: <span> {intlLiteral('定位模型')}</span>,
+      },
+      {
+        title: <span> {intlLiteral('查看')}</span>
+      },
+      {
+        title: <span> {intlLiteral('移除')}</span>
+      },
+    ],
+    }} />
+ }
+
 
 export default CreateComponent<IModelNaviProps>(
   {
-    render(props) {
+    render(_) {
+     
       const mst = useMst()
-      const { modules, onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
+      const { onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
       return <div className='console-models-tree'>
         <div className='header'>
           <div className='console-erd-search'>
@@ -30,9 +51,9 @@ export default CreateComponent<IModelNaviProps>(
                 Sys.tabOrTree && <Select defaultValue={Sys.currentModule} value={Sys.currentModule}  className="select-after" onChange={changeModuleValue}>
                 {
                   [
-                    <Option value={''}>所有</Option>,
+                    <Select.Option value={''}>所有</Select.Option>,
                     ...([...mst.Modules.values()].map((module) => {
-                    return  <Option value={module.id} key={module.id}>{module.label}</Option>
+                    return  <Select.Option value={module.id} key={module.id}>{module.label}</Select.Option>
                     }))
                   ]
                 }
@@ -53,13 +74,13 @@ export default CreateComponent<IModelNaviProps>(
         </div>
         <div className='navitree-warp'>
           <Scroll autoHide autoHeight autoHideTimeout={1000} autoHideDuration={200} autoHeightMin={'100%'} autoHeightMax={'100%'} >
-           <Tree className='console-models-tree-tree' onSelect={mst.sys.setCurrentModel} selectedKeys={[mst.sys.currentModel]} checkedKeys={[...mst.sys.checkedKeys]} onCheck={mst.sys.setCheckedKeys}  checkable onExpand={onExpand}  multiple  expandedKeys={[...mst.sys.expandedKeys]} >
+           <Tree className='console-models-tree-tree' onSelect={mst.sys.setCurrentModel} selectedKeys={[mst.sys.currentModel]} checkedKeys={[...mst.sys.checkedKeys]} onCheck={mst.sys.setCheckedKeys.bind(mst.sys)}  checkable onExpand={onExpand}  multiple  expandedKeys={[...mst.sys.expandedKeys]} >
               {
                 !mst.sys.tabOrTree && mst.moduleList.map(m => {
                   return (
-                    <TreeNode title={m.label} key={m.id}>
+                    <TreeNode title={m.name} key={m.id}>
                        {[...m.models.values()].filter(model => model.filterModel() ).map(model => {
-                         return  <TreeNode key={model.id} title={model.renderModelTitle()}></TreeNode>
+                         return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst)} />
                        })}
                     </TreeNode>
                   )
@@ -67,7 +88,7 @@ export default CreateComponent<IModelNaviProps>(
               }
               {  
                 mst.sys.tabOrTree && [...mst.Models.values()].filter(model=> ((!mst.sys.currentModule || model.moduleId === mst.sys.currentModule) && model.filterModel())).map(model => {
-                  return  <TreeNode key={model.id} title={model.renderModelTitle()}></TreeNode>
+                  return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst)} />
                 })
               }
             </Tree>
@@ -83,11 +104,13 @@ export default CreateComponent<IModelNaviProps>(
 
 const useLocal = () => {
   const mst = useMst()
+  // const setSearch = useCallback( debounce(mst.sys.setSearch, 300), []);
+  const setSearch = mst.sys.setSearch;
   return {
     get modules() { 
         return mst.moduleList
       },
-   onExpand(expandedKeys) {
+   onExpand(expandedKeys: string[]) {
       mst.sys.setExpandedKeys(expandedKeys)
     },
 
@@ -100,15 +123,15 @@ const useLocal = () => {
     checkAllCancleFun() {
 
     },
-    toggleShowNameOrLabel() {
-
-    },
-    toggleTabOrTree : mst.sys.toggleTabOrTree,
+    toggleShowNameOrLabel: mst.sys.toggleShowNameOrLabel,
+    toggleTabOrTree : mst.sys.toggleTabOrTree.bind(mst.sys),
     get Sys() {
        return mst.sys
     },
-    changeModuleValue: mst.sys.changeModuleValue,
-    setSearch :  useCallback( (e) =>  { mst.sys.setSearch(e.target.value ) } , []) 
+    changeModuleValue: mst.sys.changeModuleValue.bind(mst.sys),
+    setSearch :  useCallback( (e) =>  {
+          setSearch(e.target.value )
+       } , []) 
 
   }
 }

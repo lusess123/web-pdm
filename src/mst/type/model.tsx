@@ -1,36 +1,41 @@
-import { types, Instance, getRoot } from "mobx-state-tree"
-import { TField } from './field'
+
+import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone'
 import { RootInstance } from '../type'
 import { renderModelTitle } from '../util/label'
+import { computed } from 'mobx'
 
 
+@model("webpdm/Model")
+export class TModel extends Model({
 
-export const Model = types.model({
-    id: types.identifier,
-    name: types.string,
-    label: types.string,
-    moduleId: ""
-}).named('模型').views(self => ({
+    id: prop<string>(),
+    name: prop<string>(),
+    label: prop(''),
+    moduleId: prop(''),
 
-    get fields(): TField[] {
-        const root: RootInstance = getRoot(self)
+}) {
+    @computed
+    get fields(): any[] {
+        const root: RootInstance = getRoot(this)
         const fields = [...root.Fields.values()]
-        return  fields.filter(a=>a.model === self)
+        return fields.filter(a => a.modelId === this.id)
     }
 
-})).actions(self => ({
+    @modelAction
     renderModelTitle() {
-         const root: RootInstance = getRoot(self)
-         return renderModelTitle(self.label, root.sys.search, root.sys.showNameOrLabel, self.name)
-    },
-    filterModel() {
-        const root: RootInstance = getRoot(self)
-        const search = root.sys.search
-        return !search ||  (root.sys.showNameOrLabel ? self.name.indexOf(search) >=0 : self.label.indexOf(search) >= 0)
+        const root: RootInstance = getRoot(this)
+        return renderModelTitle(this.label, root.sys.search, root.sys.showNameOrLabel, this.name)
     }
-}))
 
-export type TModel = Instance<typeof Model>;
+    @modelAction
+    filterModel() {
+        const root: RootInstance = getRoot(this)
+        const search = root.sys.search
+        return !search || (root.sys.showNameOrLabel ? this.name.indexOf(search) >= 0 : this.label.indexOf(search) >= 0)
+    }
+}
+
+
 
 
 

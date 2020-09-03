@@ -1,42 +1,48 @@
-import { types, Instance, getRoot } from "mobx-state-tree"
-import { Model } from './model'
-// import { RootInstance } from '../type'
+import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone'
+import { computed } from 'mobx'
+import { RootInstance } from '../type'
 
-export const MetaType = types.model({
-    relationModel: types.string,
-    type: 'Relation',
-})
 
-export const Field = types.model({
-    id: types.identifier,
-    name: types.string,
-    label: types.string,
-    type : types.string ,
-    typeMeta: types.maybeNull(MetaType),
-    modelId: ""
-}).actions(self => ({
-     changeLabel() {
-         self.label = (+new Date() + '')
-     }
-})).named('字段').views(self => ({
+@model("webpdm/MetaType")
+export class MetaType extends Model({
+    relationModel: prop<string>(),
+    type: prop('Relation')
+}) {
 
-      get relationModel(): Instance<typeof Model> | null {
-         if(self.typeMeta && self.typeMeta.relationModel) {
-            const root: any  = getRoot(self)
-            const model = root.findModelByName(self.typeMeta.relationModel)
+}
+
+
+@model("webpdm/TField")
+export class TField extends Model({
+    id: prop<string>(),
+    name: prop<string>(),
+    label: prop<string>(),
+    type: prop<string>(),
+    typeMeta: prop<MetaType | undefined>(),
+    modelId: prop<string>('')
+
+}) {
+    
+    @computed
+    get relationModel() {
+        if (this.typeMeta && this.typeMeta.relationModel) {
+            const root: RootInstance = getRoot(this)
+            const model = root.findModelByName(this.typeMeta.relationModel)
             // typeof model
             return model
-            
-         }
-         return null
-        
-      },
 
-      get model() {
-        const root: any = getRoot(self);
-        return [...root.Models.values()].find(a=>a.id === self.modelId)
-      }
-}))
+        }
+        return null
 
-export type TField = Instance<typeof Field>;
+    }
+   
+    @computed
+    get model() {
+        const root: RootInstance = getRoot(this);
+        return [...root.Models.values()].find(a => a.id === this.modelId)
+    }
+
+}
+
+
 

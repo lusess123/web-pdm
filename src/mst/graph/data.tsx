@@ -1,5 +1,6 @@
+import { getSnapshot } from 'mobx-keystone'
 import { RootInstance } from '../type'
-import { mapToArrary } from '../util'
+// import { mapToArrary } from '../util'
 import { initStyle } from './item/style'
 
 const getLength = (length: number) => {
@@ -10,7 +11,7 @@ const { style } = initStyle({ primaryColor: 'blue' })
 
 export const createData = (root: RootInstance) => {
 
-  const res = mapToArrary(root.Models).map(m => {
+  const res = [...root.Models.values()].map(m => {
     return {
       id: 'model-' + m.id,
       type: 'console-model-Node',
@@ -26,7 +27,7 @@ export const createData = (root: RootInstance) => {
       data: {
         moduleKey: m.moduleId,
         label: m.label,
-        fields: m.fields,
+        fields: m.fields.map(a=>getSnapshot(a)),
         key: m.id,
         name: m.name,
         tag: 'aggregate',

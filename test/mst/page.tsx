@@ -1,5 +1,6 @@
 import React, { useState, isValidElement, useEffect } from 'react'
-import { onSnapshot, applySnapshot } from 'mobx-state-tree'
+// import { onSnapshot, applySnapshot } from 'mobx-state-tree'
+import { getSnapshot, applySnapshot, onSnapshot, fromSnapshot } from 'mobx-keystone'
 import { useMst, rootStore } from '../../src/mst/context'
 import { observer, useLocalStore, useObserver } from 'mobx-react-lite'
 import { CreateComponent, renderJson } from '../../src/mst/util'

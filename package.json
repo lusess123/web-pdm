@@ -30,6 +30,7 @@
     "dva": "^2.6.0-beta.14",
     "immer": "^4.0.0",
     "mobx": "^5.15.5",
+    "mobx-keystone": "^0.46.0",
     "mobx-react-lite": "^2.0.7",
     "mobx-state-tree": "^3.17.2",
     "react": "^16.8.6",

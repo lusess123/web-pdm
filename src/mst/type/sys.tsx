@@ -1,40 +1,59 @@
-import { types } from "mobx-state-tree"
+import { model, Model, prop, modelAction } from 'mobx-keystone'
+
+@model("webpdm/TSys")
+export class TSys extends Model({
+    search: prop(''),
+    layouting: prop(false),
+    isArrangeLayout: prop(false),
+    expandedKeys: prop<string[]>(() => []),
+    currentModel: prop(''),
+    currentModule: prop(''),
+    checkedKeys: prop<string[]>(() => []),
+    showNameOrLabel: prop(false),
+    tabOrTree: prop(false),
+}) {
 
 
+    @modelAction
+    toggleArrangeLayout() {
+        this.isArrangeLayout = !this.isArrangeLayout
+    }
+    @modelAction
+    setExpandedKeys = (keys: string[]) => {
+        this.expandedKeys = keys
+    }
+    @modelAction
+    setCheckedKeys = (keys: string[]) => {
+        debugger
+        this.checkedKeys = keys
+    }
 
-export const Sys = types.model({
-    search: '',
-    layouting : false,
-    isArrangeLayout: false,
-    expandedKeys: types.array(types.string),
-    currentModel: '',
-    currentModule: '',
-    checkedKeys: types.array(types.string),
-    showNameOrLabel: false,
-    tabOrTree: false
-}).actions(self => {
-     return {
-         toggleArrangeLayout : () => {
-             self.isArrangeLayout = !self.isArrangeLayout
-         },
-         setExpandedKeys : (keys:string[] ) => {
-               self.expandedKeys.replace(keys)
-         },
-         setCheckedKeys: (keys:string[]) => {
-               self.checkedKeys.replace(keys)
-         },
-         setCurrentModel: (keys:string[]) => {
-             const newKey = keys.length > 1 ? keys[1] : keys[0]
-             self.currentModel = newKey
-         },
-         toggleTabOrTree: () => {
-             self.tabOrTree = !self.tabOrTree
-         },
-         changeModuleValue: (module:string) => {
-             self.currentModule = module
-         },
-         setSearch : (search : string) => {
-             self.search = search
-         }
-     }
-})
+    @modelAction
+    setCurrentModel(keys: string[]){
+        const newKey = keys.length > 1 ? keys[1] : keys[0]
+        this.currentModel = newKey
+    }
+    @modelAction
+    toggleTabOrTree = () => {
+        this.tabOrTree = !this.tabOrTree
+    }
+    @modelAction
+    changeModuleValue = (module: string) => {
+        this.currentModule = module
+    }
+    @modelAction
+    setSearch = (search: string) => {
+        this.search = search
+    }
+    @modelAction
+    toggleShowNameOrLabel = () => {
+        this.showNameOrLabel = !this.showNameOrLabel
+    }
+
+    onInit() {
+        // alert('sys onInit')
+        this.toggleShowNameOrLabel = this.toggleShowNameOrLabel.bind(this)
+    }
+
+}
+
