@@ -111,7 +111,9 @@ export class RootInstance extends Model({
       }
       @modelAction
       checkAllFun() {
-            this.sys.checkedKeys = []
+            const currentModule = this.sys.currentModule
+            const modelIds = currentModule ? this.Modules.get(currentModule)?.models?.map(a=> a.id) : [...this.Models.values()].map(a=>a.id)
+            this.sys.checkedKeys = union(this.sys.checkedKeys, modelIds)
       }
       @modelAction
       checkAllCancleFun() {
