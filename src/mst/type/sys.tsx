@@ -1,4 +1,4 @@
-import { model, Model, prop, modelAction } from 'mobx-keystone'
+import { model, Model, prop, modelAction, UndoStore } from 'mobx-keystone'
 
 @model("webpdm/TSys")
 export class TSys extends Model({
@@ -11,6 +11,8 @@ export class TSys extends Model({
     checkedKeys: prop<string[]>(() => []),
     showNameOrLabel: prop(false),
     tabOrTree: prop(false),
+    snapshot: prop(true),
+    // undoData: prop<UndoStore>(() => new UndoStore({})),
 }) {
 
 

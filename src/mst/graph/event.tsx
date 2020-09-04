@@ -1,8 +1,18 @@
-import _ from 'lodash'
+import { debounce, throttle } from 'lodash'
+import { Graph } from '@antv/g6'
+ import { RootInstance } from '../type'
 
-export default (graph:any) => {
+export default (graph:Graph, mst : RootInstance) => {
+
+  graph.on('wheelzoom', throttle(() => {
+    // console.log(graph.getZoom())
+    // alert()
+    mst.graph.setZoom(graph.getZoom())
+
+    // whZoom()
+  },300))
    
-  graph.on('beforepaint', _.throttle(() => {
+  graph.on('beforepaint', throttle(() => {
     // alert()
     if(graph.isLayouting) return
     const isExporting = graph['isExporting']

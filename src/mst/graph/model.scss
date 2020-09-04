@@ -85,6 +85,8 @@
     display: none;
   }
 
+ 
+
 
   .zoomNum {
      font-size: 17px;
@@ -110,6 +112,11 @@
       color: rgba(0,0,0,0.40);
       cursor: pointer;
    }
+
+  .enable {
+    color: #000 ;
+   }
+
    .zoomleft {
     margin-right: 10px;
   }

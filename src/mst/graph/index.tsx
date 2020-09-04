@@ -1,61 +1,78 @@
 import React, { useEffect, useRef, useCallback } from 'react'
-import G6 from '@antv/g6'
+import G6, { Graph } from '@antv/g6'
 import { useMst } from '../context'
 import register from './item'
 import { observer } from 'mobx-react-lite'
-import { toJS } from 'mobx'
+import ToolBar from '../components/model-toolbar'
 import './model.scss'
 import GraphEvent from './event'
 import { initStyle } from './item/style'
+// import mst from 'test/mst'
+
 
 export default observer(() => {
-  const { setRef } = useLocal()
-  return <div ref={setRef} className='graph' />
+  const { setRef, erdGraph } = useLocal()
+  return <>
+  <ToolBar graph={erdGraph} />
+  <div ref={setRef} className='graph' />
+  </>
 })
 
 const useLocal = () => {
   const mst = useMst()
 
-  const containerRef = useRef({})
-  const erdGraph = useRef<any>(null)
+  const containerRef = useRef(null)
+  const erdGraphRef = useRef<Graph>(null)
   useEffect(() => { register() }, [])
   useEffect(
     () => {
+      // alert()
       const { Nodes , edges } = mst
-      if (!erdGraph.current) {
-         erdGraph.current = render(containerRef.current, mst.Nodes, mst.edges)
-         erdGraph.current.fitView(0)
+      if (!erdGraphRef.current) {
+         erdGraphRef.current = render(containerRef.current, mst.Nodes, mst.edges, mst)
+         erdGraphRef.current.fitView(0)
       }
       else {
-
-        // erdGraph.current.changeData({ nodes: Nodes, edges })
-        //erdGraph.current.changeData({ nodes: mst.Nodes, edges: mst.edges })
-        //erdGraph.current.render()
-        // erdGraph.current.isLayouting = true
-        // alert(JSON.stringify( mst.Nodes))
-        console.log('h:',Nodes)
-        layout(erdGraph.current,  Nodes , edges)
-        erdGraph.current.fitView(0)
+        layout(erdGraphRef.current,  Nodes , edges, mst)
+        erdGraphRef.current.fitView(0)
       }
-    }, [mst.Nodes])
+    }, [ mst.Nodes])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
+  useEffect(() => {
+    const graph = erdGraphRef.current
+    if(graph) {
+      const gwidth = graph.get('width')
+      const gheight = graph.get('height')
+      const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
+
+      graph.zoomTo(mst.graph.zoom, point)
+    }
+
+  } , [mst.graph.zoom])
   return {
     containerRef,
-    setRef
+    setRef,
+    erdGraph : erdGraphRef.current
   }
 }
 
 // const MINZOOM = 0.01
-
-const render = (container: any, nodes: any, edges: any) => {
+// const toolbar = new G6.ToolBar();
+// const edgeBundling = new G6.Bundling({
+//   bundleThreshold: 0.6,
+//   K: 100,
+// });
+const render = (container: any, nodes: any, edges: any, mst) => {
   const height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight - 450
   const styleConfig = initStyle({primaryColor: 'blue'}).style
+
   const graph = new G6.Graph({
     height,
     width: container.offsetWidth - 20,
     container,
     fitView: true,
     fitCenter: true,
+    enabledStack: true,
     animate: true,
     defaultNode: {
       color: '#5B8FF9',
@@ -74,45 +91,6 @@ const render = (container: any, nodes: any, edges: any) => {
       default: styleConfig.default.edge,
     },
     minZoom: 0.001,
-    // layout: {
-    //   type: 'force',
-    //   condense: true,
-    //   cols: 3,
-    //   workerEnabled: true,
-    //   linkDistance: 0 ,
-    //   alphaDecay: 0.2 ,
-    //   preventOverlap: true,
-    //   collideStrength: 0.5,
-    //   nodeSpacing: -180,
-    //   onLayoutEnd: () => {
-    //     graph.isLayouting = false
-    //     graph.fitView(0)
-    //   }
-    // }
-
-    //   layout1 : {
-    //   alphaDecay: 0.2 ,
-    //   type: 'force',
-    //   // collideStrength: 0.5,
-    //   // nodeSpacing: (d) => {
-    //   //   if (d.id === 'model-SYS-CENTER-POINT') {
-    //   //     return 500;
-    //   //   }
-    //   //   return -150;
-    //   // },
-
-    //   // nodeStrength: d => {
-    //   //   if (d.id === 'model-SYS-CENTER-POINT') {
-    //   //     return : 500;
-    //   //   }
-    //   //   return 0;
-    //   // },
-    //   preventOverlap: true,
-    //   onLayoutEnd: () => {
-    //     graph.fitView(0)
-    //   }
-
-    // },
 
     modes: {
       default: [
@@ -129,6 +107,7 @@ const render = (container: any, nodes: any, edges: any) => {
       ],
     },
     plugins: [
+      // toolbar,
       new G6.Minimap({
         type: 'delegate',
         viewportClassName: 'g6-minimap-viewport-erd',
@@ -138,8 +117,9 @@ const render = (container: any, nodes: any, edges: any) => {
       })
     ]
   })
-  GraphEvent(graph)
+  GraphEvent(graph, mst)
   // const x = nodes[0].x
+  // edgeBundling.bundling({ nodes, edges });
   graph.data({ nodes, edges })
   graph.isLayouting = true
   graph.render()
@@ -149,13 +129,7 @@ const render = (container: any, nodes: any, edges: any) => {
 
 
 
-const layout = (graph, nodes: any, edges) => {
-  // graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
-  //    [node.x, node.y] = [undefined, undefined];
-  // })
-  // graph.clear()
-
-  // graph.changeData({nodes, edges})
+const layout = (graph, nodes: any, edges, mst) => {
   graph.changeData({nodes, edges})
 
   graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
@@ -180,8 +154,6 @@ const layout = (graph, nodes: any, edges) => {
     }
   })
 
-  // alert(nodes[0].x)
-  // if (nodes.length > 0 &&  !nodes[0].x)
     graph.isLayouting = true
     graph.updateLayout({
 
@@ -197,6 +169,8 @@ const layout = (graph, nodes: any, edges) => {
       onLayoutEnd: () => {
         graph.isLayouting = false
         graph.fitView(0)
+        // mst.graph.setZoom(graph.getZoom())
+        
         // const nodes = graph.getNodes()
         // const nodes = graph.getNodes().reduce((pre, n) => {
         //   const { x, y, id } = n.getModel()
@@ -213,7 +187,6 @@ const layout = (graph, nodes: any, edges) => {
 
     })
    
-    // graph.layout()
     graph.fitView(0)
 
     return graph

@@ -1,6 +1,6 @@
 
 import { createContext, useContext } from 'react'
-
+import { undoMiddleware } from 'mobx-keystone'
 import { RootInstance , createStore } from './type'
 
 
@@ -16,3 +16,4 @@ export function useMst() {
 }
 
 export const rootStore = createStore()
+export const undoManager = undoMiddleware(rootStore)

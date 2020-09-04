@@ -1,13 +1,16 @@
 
-import { model, Model, prop, modelAction, prop_mapObject, objectMap } from 'mobx-keystone'
+import { model, Model, prop, modelAction, prop_mapObject, objectMap, applySnapshot } from 'mobx-keystone'
 import { computed } from 'mobx'
 
 import { TModel } from './model'
 import { TModule } from './module'
 import { TField } from './field'
 import { TSys } from './sys'
+import { TGraph } from './graph'
 import { createData, createLinks } from '../graph/data'
 import { renderModelTitle } from '../util/label'
+import StateStack from '../state-stack'
+import { undoManager } from '../context'
 
 
 
@@ -30,6 +33,7 @@ export class RootInstance extends Model({
       Models: MapProp<TModel>(),
       Modules: MapProp<TModule>(),
       Fields: MapProp<TField>(),
+      graph: prop<TGraph>(()=> new TGraph({}))
 
 }) {
       @computed
@@ -82,6 +86,29 @@ export class RootInstance extends Model({
             })
             this.sys.setCheckedKeys(modelsKeys)
       }
+      @modelAction
+      undo() {
+      //     const current = StateStack.DataList.length - 1
+      //     const state : any = StateStack.DataList[current - 1]
+      //     const state = StateStack.undo()
+      //     console.log(state)
+      //     window.lockSnapshot = true
+      undoManager.undo()
+      //     this.sys.snapshot = false
+      // alert('undo ' + state.sys.showNameOrLabel)
+      //     applySnapshot(this,state)
+      //     window.lockSnapshot = false
+
+      }
+
+      @modelAction
+      redo() {
+            // const state = StateStack.redo()
+            // console.log(state)
+            // window.lockSnapshot = true
+            // applySnapshot(this,state)
+            undoManager.redo()
+      }
 
 }
 
@@ -93,7 +120,8 @@ export const createStore = () => {
                   isArrangeLayout: false,
                   layouting: true,
                   search: ''
-            })
+            }),
+            graph : new TGraph({})
       })
 }
 

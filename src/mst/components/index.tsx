@@ -5,6 +5,7 @@ import { CreateComponent } from '../util'
 import ModelNavi from './model-navi'
 import GraphPage from '../graph'
 
+
 export default CreateComponent({
     displayName: 'page',
     render() {
@@ -17,6 +18,7 @@ export default CreateComponent({
                 {/* <Spin tip='layout...'>
                     <Empty style={{ textAlign: 'center' }} description='正在绘制模型图...' />
                 </Spin> */}
+                {/* <ToolBar /> */}
                 <GraphPage />
             </div>
         </div>
