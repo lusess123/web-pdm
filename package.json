@@ -26,7 +26,7 @@
   "dependencies": {
     "@antv/g6": "^3.6.0",
     "@iarna/rtf-to-html": "^1.1.0",
-    "antd": "^4.3.5",
+    "antd": "^4.6.2",
     "classnames": "^2.2.6",
     "dva": "^2.6.0-beta.14",
     "immer": "^4.0.0",

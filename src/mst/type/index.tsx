@@ -84,7 +84,7 @@ export class RootInstance extends Model({
                   modelsKeys.push(key)
 
             })
-            this.sys.setCheckedKeys(modelsKeys)
+            this.sys.checkedKeys = modelsKeys
       }
       @modelAction
       undo() {
