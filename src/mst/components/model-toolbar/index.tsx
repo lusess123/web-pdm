@@ -6,7 +6,7 @@ import React, { isValidElement } from 'react'
 import { observer, useObserver, Observer, useLocalStore } from 'mobx-react-lite'
 import { changeTwoDecimal_f , CreateComponent  } from '../../util'
 import { useMst } from '../../context'
-import StateStack from '../../state-stack'
+// import StateStack from '../../state-stack'
 import { undoManager } from '../../context'
 
 const IconRenders = {
@@ -39,7 +39,7 @@ export default observer(({ graph } : { graph : any}) => {
   <div className='console-erd-toolbar'>
     <div className='right'>
     <ButtonActon title='撤销' disable={!undoManager.canUndo}  icon={<RollbackOutlined />} onClick={mst.undo.bind(mst)} />
-    <ButtonActon title='重做' disable={!undoManager.canRedo}  icon={<RollbackOutlined style={{transform: 'scaleX(-1)'}} />} onClick={mst.redo.bind(mst)} />
+    <ButtonActon title='重做' disable={!undoManager.canRedo} icon={<RollbackOutlined style={{transform: 'scaleX(-1)'}} />} onClick={mst.redo.bind(mst)} />
     <ButtonActon title='放大' disable={zoomNum >=100 } icon='max' onClick={mst.graph.maxZoom.bind(mst.graph, graph)} />
     <span className='zoomNum noselect'>
       {graph && `${(zoomNum) >= 100 ? 100 :(zoomNum) }%` }

@@ -1,7 +1,7 @@
 
 import { model, Model, prop, modelAction, prop_mapObject, objectMap, applySnapshot } from 'mobx-keystone'
 import { computed } from 'mobx'
-
+import { without, union } from 'lodash'
 import { TModel } from './model'
 import { TModule } from './module'
 import { TField } from './field'
@@ -9,7 +9,7 @@ import { TSys } from './sys'
 import { TGraph } from './graph'
 import { createData, createLinks } from '../graph/data'
 import { renderModelTitle } from '../util/label'
-import StateStack from '../state-stack'
+// import StateStack from '../state-stack'
 import { undoManager } from '../context'
 
 
@@ -108,6 +108,29 @@ export class RootInstance extends Model({
             // window.lockSnapshot = true
             // applySnapshot(this,state)
             undoManager.redo()
+      }
+      @modelAction
+      checkAllFun() {
+            this.sys.checkedKeys = []
+      }
+      @modelAction
+      checkAllCancleFun() {
+            const currentModule = this.sys.currentModule
+            // const models = [...this.Models.values()]
+            const modelIds = this.Modules.get(currentModule)?.models?.map(a=> a.id)
+            this.sys.checkedKeys = [...without([...this.sys.checkedKeys], ...(modelIds|| []))]
+      }
+
+      @modelAction
+      setCheckedKeys = (keys: string[]) => {
+          if(!this.sys.tabOrTree) {
+              this.sys.checkedKeys = keys
+          } else {
+              const modelKeys = [...this.Models.values()].filter(a=> !this.sys.currentModule || a.moduleId === this.sys.currentModule).map(a=>a.id)
+              const withoutKeys = without(modelKeys, ...keys)
+              this.sys.checkedKeys = union(without(this.sys.checkedKeys, ...withoutKeys), keys)
+          }
+          
       }
 
 }

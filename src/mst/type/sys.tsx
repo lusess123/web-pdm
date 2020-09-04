@@ -24,11 +24,7 @@ export class TSys extends Model({
     setExpandedKeys = (keys: string[]) => {
         this.expandedKeys = keys
     }
-    @modelAction
-    setCheckedKeys = (keys: string[]) => {
-        debugger
-        this.checkedKeys = keys
-    }
+
 
     @modelAction
     setCurrentModel(keys: string[]){

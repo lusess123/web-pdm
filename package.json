@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash": "^4.14.161",
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.8.4",
     "ak-webpack": "^1.0.6",
