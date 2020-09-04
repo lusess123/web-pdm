@@ -1,13 +1,19 @@
 import { debounce, throttle } from 'lodash'
 import { Graph } from '@antv/g6'
- import { RootInstance } from '../type'
+import { RootInstance } from '../type'
+
+
 
 export default (graph:Graph, mst : RootInstance) => {
+
+  const setZoom = debounce((zoom)=> {
+    mst.graph.setZoom(zoom)
+  }, 500)
 
   graph.on('wheelzoom', throttle(() => {
     // console.log(graph.getZoom())
     // alert()
-    mst.graph.setZoom(graph.getZoom())
+    setZoom(graph.getZoom())
 
     // whZoom()
   },300))
