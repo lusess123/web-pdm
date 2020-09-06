@@ -15,7 +15,7 @@ export default () => {
    </div>)
 
 }
-
+// const click = () => alert()
 const OptionBuilder = ({data}) => {
  const { title, options = [] } = data
  const [ showMenu , setShowMenu ] = useState(false)

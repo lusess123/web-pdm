@@ -4,7 +4,7 @@ import { computed } from 'mobx'
 import { without, union } from 'lodash'
 import { TModel } from './model'
 import { TModule } from './module'
-import { TField } from './field'
+import { TField ,MetaType  } from './field'
 import { TSys } from './sys'
 import { TGraph } from './graph'
 import { createData, createLinks } from '../graph/data'
@@ -79,7 +79,7 @@ export class RootInstance extends Model({
                   this.Models.set(key, new TModel({ id: key, label: model.name, name: model.key, moduleId: moduleHas[model.moduleKey] || '' }))
                   model.fields.forEach((field: any) => {
                         const _key = NewGuid().toString()
-                        this.Fields.set(_key, new TField({ id: _key, typeMeta: field.typeMeta, label: field.name, name: field.key, type: field.type || 'string', modelId: key }))
+                        this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.name, name: field.key, type: field.type || 'string', modelId: key }))
                   })
                   modelsKeys.push(key)
 

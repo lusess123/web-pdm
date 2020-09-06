@@ -29,7 +29,12 @@ export const createData = (root: RootInstance) => {
       data: {
         moduleKey: m.moduleId,
         label: m.label,
-        fields: m.fields.map(a=>getSnapshot(a)),
+        fields: m.fields.map( a => (
+          { 
+            ...getSnapshot(a) , 
+            relationModel: getSnapshot(a.relationModel)
+          
+          }) ),
         key: m.id,
         name: m.name,
         tag: 'aggregate',
@@ -41,6 +46,7 @@ export const createData = (root: RootInstance) => {
       size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
     }
   }).filter(a=>a.visible)
+  console.log(res)
   if (res.length > 0) return res.concat([createSysNode() as any])
   return res
 }

@@ -482,7 +482,9 @@ export const register = () => {
 
                         // click: 'fieldEdit',
                         y: -((config.headerHeight + getLength(data.fields.length) * config.fieldHeight) / 2) + config.headerHeight + config.fieldHeight * index + config.fieldHeight / 2,
-                        text: isForeign ? (field.type && Relation[field.type] ? `${relationModel}(${Relation[field.type] || ''})` : relationModel) : `[${field.type || ''}]`,
+                        text: isForeign ? (field.type && Relation[field.type] ? `${relationModel}(${Relation[field.type] || ''})` : (showNameOrLabel ? field?.relationModel?.name : field?.relationModel?.label)) : `[${field.type || ''}]`,
+                        fieldLable: isForeign ? (field.type && Relation[field.type] ? `${relationModel}(${Relation[field.type] || ''})` : field?.relationModel?.name) : `[${field.type || ''}]`,
+                        nameLable:  isForeign ? (field.type && Relation[field.type] ? `${relationModel}(${Relation[field.type] || ''})` : field?.relationModel?.label) : `[${field.type || ''}]`,
                         id: 'field',
                         textBaseline: 'middle',
                         fieldName: field.id,

@@ -9,6 +9,19 @@ export class MetaType extends Model({
     type: prop('Relation')
 }) {
 
+    @computed get relationModelData()  {
+        const root: RootInstance = getRoot(this)
+        const model = [...root.Models.values()].find(a=>a.name === this.relationModel)
+        if(model) {
+            return {
+                name : model.name,
+                label : model.label,
+                id : model.id
+            }
+        }
+        return null
+    }
+
 }
 
 

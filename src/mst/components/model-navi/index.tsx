@@ -24,15 +24,17 @@ type IModelNaviProps = {
  const getTreeNodeTitle = (model: TModel, root : RootInstance ) => {
      return <OptionBuilder data={{
       title: root.renderModelTitle(model) ,
+     
       options: [{
         title: <span> {intlLiteral('定位模型')}</span>,
+        click: (e) =>  {  root.sys.centerCurrentModel([model.id]) ;    e.stopPropagation(); } ,
       },
       {
         title: <span> {intlLiteral('查看')}</span>
       },
-      {
-        title: <span> {intlLiteral('移除')}</span>
-      },
+      // {
+      //   title: <span> {intlLiteral('移除')}</span>
+      // },
     ],
     }} />
  }

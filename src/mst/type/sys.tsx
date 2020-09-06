@@ -1,5 +1,6 @@
-import { model, Model, prop, modelAction, UndoStore } from 'mobx-keystone'
-
+import { model, Model, prop, modelAction, UndoStore, getRoot } from 'mobx-keystone'
+import { RootInstance } from './index'
+import { toCenter } from '../util/graph'
 @model("webpdm/TSys")
 export class TSys extends Model({
     search: prop(''),
@@ -29,8 +30,37 @@ export class TSys extends Model({
     @modelAction
     setCurrentModel(keys: string[]){
         const newKey = keys.length > 1 ? keys[1] : keys[0]
+        const root : RootInstance = getRoot(this)
+        //root.graph.G6Graph
+        const graph = root.graph.G6Graph
+        if(graph) {
+            const item = graph.findById('model-'+ newKey)
+            if(item)
+            item.toFront()
+        }
         this.currentModel = newKey
+
     }
+
+    @modelAction
+    centerCurrentModel(keys: string[]){
+        const newKey = keys.length > 1 ? keys[1] : keys[0]
+        this.currentModel = newKey
+        const root : RootInstance = getRoot(this)
+        //root.graph.G6Graph
+        const graph = root.graph.G6Graph
+        if(graph) {
+            const item = graph.findById('model-'+ newKey)
+            if(item)
+            item.toFront()
+            toCenter(item, graph)
+        }
+        //toCenter(   , root.graph.G6Graph)
+    }
+
+
+
+
     @modelAction
     toggleTabOrTree = () => {
         this.tabOrTree = !this.tabOrTree

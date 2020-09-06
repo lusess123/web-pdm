@@ -25,7 +25,7 @@ export  const initStyle = ({primaryColor}) => {
    default: {
      node: {
        fill: '#FFFFFF',
-       shadowColor: 'rgba(0,0,0,0.01)',
+       shadowColor: 'rgba(0,0,0,0.1)',
        shadowBlur: 15,
        shadowOffsetX: 8,
        shadowOffsetY: 8,

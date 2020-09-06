@@ -1,9 +1,19 @@
-import { model, Model, prop, modelAction } from 'mobx-keystone'
+import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone'
 import { Graph } from '@antv/g6'
 @model("webpdm/TGraph")
 export class TGraph extends Model({
     zoom: prop(0)
 }){
+     G6Graph :Graph
+    //  @modelAction
+     setG6Graph(graph: Graph) {
+        // alert(this.$modelId)
+         this.G6Graph = graph
+        // alert(this.$modelId)
+        //  window.yyy = getRoot(this)
+        //  alert( 'yyy.graph.G6Graph' + yyy.graph.G6Graph)
+     }
+
      @modelAction
      setZoom(zoom: number) {
         this.zoom = zoom

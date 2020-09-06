@@ -5,18 +5,20 @@ import { RootInstance } from '../type'
 
 
 export default (graph:Graph, mst : RootInstance) => {
-
+  // alert(mst === window.kkk)
+  // alert(mst.graph.G6Graph)
   const setZoom = debounce((zoom)=> {
     mst.graph.setZoom(zoom)
-  }, 500)
+  }, 100)
 
   graph.on('wheelzoom', throttle(() => {
     // console.log(graph.getZoom())
     // alert()
-    setZoom(graph.getZoom())
+    // setZoom(graph.getZoom())
+    mst.graph.setZoom(graph.getZoom())
 
     // whZoom()
-  },300))
+  },100))
    
   graph.on('beforepaint', throttle(() => {
     // alert()
@@ -106,23 +108,35 @@ export default (graph:Graph, mst : RootInstance) => {
     const {
       target,
     } = ev
-
+    
     if (target.attr('click')) {
       // props.toolBarCommand && props.toolBarCommand('click', {
       //   node: ev.item.getModel().id,
       //   arg: target.attr('arg'),
       //   click: target.attr('click'),
       // })
+      // alert(mst.graph === window.ggg)
+      // alert(mst.graph.G6Graph)
+      // mst.graph.setG6Graph('3333')
+      // alert(mst === window.kkk)
+      // alert(window.kkk.graph.G6Graph)
+      // mst.graph.setG6Graph(graph)
 
-      alert(JSON.stringify({
-           node: ev.item.getModel().id,
-           arg: target.attr('arg'),
-           click: target.attr('click'),
-      }))
+      // alert(JSON.stringify({
+      //      node: ev.item.getModel().id,
+      //      arg: target.attr('arg'),
+      //      click: target.attr('click'),
+      // }))
+      if(target.attr('arg')?.relationModel?.id) {
+        mst.sys.centerCurrentModel([target.attr('arg')?.relationModel?.id])
+      }
+      
+
     } else {
        if(ev.item.getModel().id) {
          const id :string = ev.item.getModel().id
          const modelId = id.replace('model-', '')
+        //  ev.item.toFront()
          mst.sys.setCurrentModel([modelId])
         //  alert(id.replace('model-', ''))
        }
@@ -150,7 +164,7 @@ export default (graph:Graph, mst : RootInstance) => {
     graph.setAutoPaint(autoPaint)
   })
 
-  
+
   graph.on('node:mousemove', (ev) => {
     const {
       target,
@@ -189,6 +203,54 @@ export default (graph:Graph, mst : RootInstance) => {
     graph.paint()
     graph.setAutoPaint(autoPaint)
   })
+  
+  graph.on('node:dragend', (ev) => {
+    // const shape = ev.target
+    const node = ev.item
+    const edges = node.getEdges()
+    const x = ev.x
+    edges.forEach((edge) => {
+      const sourceNode = edge.getSource()
+      const targetNode = edge.getTarget()
 
+      if (node === sourceNode) {
+        const edgeModel = edge.getModel()
+        const isTo = x < targetNode.getModel().x
+        const i = edgeModel.fieldIndex
+        const l = edgeModel.fieldsLength
+        if (sourceNode === targetNode) {
+          graph.updateItem(edge, {
+            // sourceAnchor: !isTo ? i + 2 : 2 + i + l,
+            // targetAnchor: edge.targetAnchor,
+          })
+        } else {
+          graph.updateItem(edge, {
+            sourceAnchor: !isTo ? i + 2 : 2 + i + l,
+            // targetAnchor: isTo ? 0 : 1,
+          })
+
+        }
+
+      } else {
+        const edgeModel = edge.getModel()
+        const isTo = sourceNode.getModel().x < x
+        const i = edgeModel.fieldIndex
+        const l = edgeModel.fieldsLength
+
+        if (sourceNode === targetNode) {
+          graph.updateItem(edge, {
+            // sourceAnchor: !isTo ? i + 2 : 2 + i + l,
+            // targetAnchor: undefined,
+          })
+        } else {
+          graph.updateItem(edge, {
+            sourceAnchor: !isTo ? i + 2 : 2 + i + l,
+            // targetAnchor: isTo ? 0 : 1,
+          })
+        }
+      }
+    }) // ----获取所有的边
+    graph.paint() 
+  })
 
 }

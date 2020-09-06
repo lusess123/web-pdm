@@ -22,6 +22,7 @@ export default observer(() => {
 
 const useLocal = () => {
   const mst = useMst()
+  // window.kkk = mst
 
   const containerRef = useRef(null)
   const erdGraphRef = useRef<Graph>(null)
@@ -32,7 +33,14 @@ const useLocal = () => {
       const { Nodes , edges } = mst
       if (!erdGraphRef.current) {
         //  alert(mst.Nodes.length)
+        // alert(mst === window.kkk)
          erdGraphRef.current = render(containerRef.current, mst.Nodes, mst.edges, mst)
+        //  alert(mst.graph.$modelId)
+        async(() => {
+          mst.graph.setG6Graph(erdGraphRef.current)
+        })
+        
+        //  window.kkk1 = mst
       }
       else {
         // alert(mst.Nodes.length)
@@ -40,7 +48,7 @@ const useLocal = () => {
         erdGraphRef.current.fitView(0)
       }
       
-    }, [ JSON.stringify(mst.Nodes.map(a=>a.id))])
+    }, [ JSON.stringify(mst.Nodes.map(a=>a.id)), mst])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
   useEffect(() => {
     const graph = erdGraphRef.current
@@ -103,6 +111,7 @@ const render = (container: any, nodes: any, edges: any, mst) => {
       default: styleConfig.default.edge,
     },
     minZoom: 0.001,
+    maxZoom: 1.1,
     // layout : {
     //   type: 'force',
     //   condense: true,
@@ -146,6 +155,7 @@ const render = (container: any, nodes: any, edges: any, mst) => {
       })
     ]
   })
+  // alert(mst === window.kkk)
   GraphEvent(graph, mst)
   // const x = nodes[0].x
   // edgeBundling.bundling({ nodes, edges });
