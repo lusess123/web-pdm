@@ -67,6 +67,12 @@ const createSysNode = () => {
 
 }
 
+const Relation = {
+  ToOne: '1:1',
+  ToMany: '1:n',
+  lookup:'查找'
+}
+
 export const createLinks = (root: RootInstance) => {
   const links = [...root.Models.values()].reduce((pre, model) => {
 
@@ -110,6 +116,7 @@ export const createLinks = (root: RootInstance) => {
             // // targetAnchor: sourceAnchor,
             // targetAnchor:  model.key === field.typeMeta.relationModel ? (sourceAnchor - 1) : undefined,
             fieldIndex: i,
+            tooltip: `<div>从 <span class='text'>${relationModel?.label}</span> 到 <span class='text'>${model?.label}</span> ${Relation[field.type]||field.type} 关系</div>`
             // fieldsLength: l,
             style: style.default.edge,
             type: 'console-line',

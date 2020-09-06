@@ -142,6 +142,18 @@ const render = (container: any, nodes: any, edges: any, mst) => {
           type: 'drag-node',
           // enableDelegate: true,
         },
+        {
+          type: 'edge-tooltip',
+          formatText: (model) => {
+            return model.tooltip;
+          },
+          offset: 10
+        },
+        // {
+        //   type: 'activate-relations',
+        //   resetSelected: true,
+        //   trigger: 'click'
+        // },
       ],
     },
     plugins: [
