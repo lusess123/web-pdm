@@ -1,0 +1,60 @@
+import { useEffect, useRef } from 'react'
+import { Graph } from '@antv/g6'
+
+export type IUseUpdateItem = {
+    currentModel : string, 
+    graph : Graph, 
+    showNameOrLabel : boolean
+}
+
+export const useUpdateItem = ({ currentModel, graph, showNameOrLabel } : IUseUpdateItem) => {
+    const firstRef = useRef(true)
+    useEffect(() => {
+      const modelId= 'model-' +currentModel
+      if(graph)  {
+          if(firstRef.current){
+            firstRef.current = false
+            return 
+          }
+       }
+      if (graph && !firstRef.current) {
+        const gnodes = graph.getNodes()
+        if (!gnodes.length) return
+        // alert(nodes.length)
+        const zoomNum = graph.getZoom()
+        // alert(JSON.stringify(nodes))
+        gnodes.forEach((node) => {
+          if (node.isSys) return
+          const nodeModel = node.getModel()
+          const nodeId = nodeModel.id
+          const data = nodeModel ? nodeModel.data : undefined
+          const isNoModule = (modelId || '').indexOf('module-') >= 0 && ((data && data.moduleKey) !== modelId)
+          const isKeySharp = zoomNum <= 0.4
+          // const isCardSharp = zoomNum <= 0.05 * 2
+          // const isKeySharp = false
+          const isCardSharp = false
+          // alert(isKeySharp)
+          graph.updateItem(node, {
+            selected: nodeId === modelId,
+            noSelected: nodeId !== modelId,
+            isNoModule,
+            isKeySharp,
+            isCardSharp,
+            showNameOrLabel
+          })
+        })
+  
+        //  const edges = graph.getEdges()
+        //  if(edges.length && currentModel){
+        //     edges.forEach(edge => {
+        //       if (edge.isSys) return
+        //       graph.setItemState(edge, 'active', true )
+        //       // edge.attr('stroke','red')
+        //     })
+        //  }
+  
+        // graph.paint()
+      }
+  
+    }, [currentModel, showNameOrLabel, graph?.getZoom()])
+  }

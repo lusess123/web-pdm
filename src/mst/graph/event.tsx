@@ -101,4 +101,94 @@ export default (graph:Graph, mst : RootInstance) => {
     const canvasElement = graph.get('canvas').get('el')
     canvasElement.style.cursor = 'grab'
   })
+
+  graph.on('node:click', (ev) => {
+    const {
+      target,
+    } = ev
+
+    if (target.attr('click')) {
+      // props.toolBarCommand && props.toolBarCommand('click', {
+      //   node: ev.item.getModel().id,
+      //   arg: target.attr('arg'),
+      //   click: target.attr('click'),
+      // })
+
+      alert(JSON.stringify({
+           node: ev.item.getModel().id,
+           arg: target.attr('arg'),
+           click: target.attr('click'),
+      }))
+    } else {
+       if(ev.item.getModel().id) {
+         const id :string = ev.item.getModel().id
+         const modelId = id.replace('model-', '')
+         mst.sys.setCurrentModel([modelId])
+        //  alert(id.replace('model-', ''))
+       }
+    }
+  })
+
+  graph.on('node:mouseout', (ev) => {
+    const {
+      item,
+    } = ev
+    const autoPaint = graph.get('autoPaint')
+    graph.setAutoPaint(false)
+    item.getContainer().findAll((sharp) => sharp.attr('fieldHover')).forEach((sharp) => {
+      if (sharp.attr('fill-old')) {
+        sharp.attr('fill', sharp.attr('fill-old'))
+        sharp.attr('fill-old', undefined)
+      }
+
+      if (sharp.attr('opacity-old')) {
+        sharp.attr('opacity', sharp.attr('opacity-old'))
+        sharp.attr('opacity-old', undefined)
+      }
+    })
+    graph.paint()
+    graph.setAutoPaint(autoPaint)
+  })
+
+  
+  graph.on('node:mousemove', (ev) => {
+    const {
+      target,
+      item,
+    } = ev // alert(target.attr('text'))
+
+    const autoPaint = graph.get('autoPaint')
+    graph.get('canvas').set('localRefresh', false)
+    graph.setAutoPaint(false) // if (target.attr('fieldBg')) {
+    //   item.setState('fieldHover-' + target.attr('fieldName'), true)
+    // }
+
+    const fieldName = target.attr('fieldName')
+    item.getContainer().findAll((sharp) => sharp.attr('fieldHover')).forEach((sharp) => {
+      if (sharp.attr('fill-old')) {
+        sharp.attr('fill', sharp.attr('fill-old'))
+        sharp.attr('fill-old', undefined)
+      }
+
+      if (sharp.attr('fieldHoverShow')) {
+        sharp.attr('opacity', 0) // sharp.attr('opacity-old', undefined)
+      }
+
+      if (sharp.attr('fieldName') === fieldName) {
+        sharp.attr('fill-old', sharp.attr('fill'))
+        sharp.attr('fill', sharp.attr('fieldBg') ? 'rgb(204,204,204)' : 'white')
+
+        if (sharp.attr('fieldHoverShow')) {
+          sharp.attr('opacity-old', sharp.attr('opacity')) // alert(sharp.attr('opacity'))
+
+          sharp.attr('opacity', 1)
+        }
+      }
+    }) // item.refresh()
+
+    graph.paint()
+    graph.setAutoPaint(autoPaint)
+  })
+
+
 }

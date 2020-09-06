@@ -74,7 +74,7 @@ export default CreateComponent<IModelNaviProps>(
         </div>
         <div className='navitree-warp'>
           <Scroll autoHide autoHeight autoHideTimeout={1000} autoHideDuration={200} autoHeightMin={'100%'} autoHeightMax={'100%'} >
-           <Tree className='console-models-tree-tree' onSelect={mst.sys.setCurrentModel} selectedKeys={[mst.sys.currentModel]} checkedKeys={[...mst.sys.checkedKeys]} onCheck={mst.setCheckedKeys.bind(mst)}  checkable onExpand={onExpand}  multiple  expandedKeys={[...mst.sys.expandedKeys]} >
+           <Tree className='console-models-tree-tree' onSelect={mst.sys.setCurrentModel.bind(mst.sys)} selectedKeys={[mst.sys.currentModel]} checkedKeys={[...mst.sys.checkedKeys]} onCheck={mst.setCheckedKeys.bind(mst)}  checkable onExpand={onExpand}  multiple  expandedKeys={[...mst.sys.expandedKeys]} >
               {
                 !mst.sys.tabOrTree && mst.moduleList.map(m => {
                   return (

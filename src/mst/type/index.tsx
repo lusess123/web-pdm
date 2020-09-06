@@ -42,7 +42,7 @@ export class RootInstance extends Model({
       }
 
       @computed
-      get Nodes(): any {
+      get Nodes() {
             const data = createData(this)
             return data
       }
@@ -118,6 +118,7 @@ export class RootInstance extends Model({
       @modelAction
       checkAllCancleFun() {
             const currentModule = this.sys.currentModule
+            if(!currentModule) this.sys.checkedKeys = []
             // const models = [...this.Models.values()]
             const modelIds = this.Modules.get(currentModule)?.models?.map(a=> a.id)
             this.sys.checkedKeys = [...without([...this.sys.checkedKeys], ...(modelIds|| []))]

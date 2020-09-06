@@ -7,6 +7,8 @@ import ToolBar from '../components/model-toolbar'
 import './model.scss'
 import GraphEvent from './event'
 import { initStyle } from './item/style'
+import { useUpdateItem } from './hooks'
+import { tuple } from 'antd/lib/_util/type'
 // import mst from 'test/mst'
 
 
@@ -29,14 +31,16 @@ const useLocal = () => {
       // alert()
       const { Nodes , edges } = mst
       if (!erdGraphRef.current) {
+        //  alert(mst.Nodes.length)
          erdGraphRef.current = render(containerRef.current, mst.Nodes, mst.edges, mst)
-         erdGraphRef.current.fitView(0)
       }
       else {
+        // alert(mst.Nodes.length)
         layout(erdGraphRef.current,  Nodes , edges, mst)
         erdGraphRef.current.fitView(0)
       }
-    }, [ mst.Nodes])
+      
+    }, [ JSON.stringify(mst.Nodes.map(a=>a.id))])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
   useEffect(() => {
     const graph = erdGraphRef.current
@@ -49,6 +53,12 @@ const useLocal = () => {
     }
 
   } , [mst.graph.zoom])
+
+  useUpdateItem({
+    currentModel : mst.sys.currentModel,
+    graph : erdGraphRef.current as any,
+    showNameOrLabel: mst.sys.showNameOrLabel
+  })
   return {
     containerRef,
     setRef,
@@ -63,7 +73,8 @@ const useLocal = () => {
 //   K: 100,
 // });
 const render = (container: any, nodes: any, edges: any, mst) => {
-  const height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight - 450
+  const height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 45
+  // alert(height)
   const styleConfig = initStyle({primaryColor: 'blue'}).style
 
   const graph = new G6.Graph({
@@ -71,6 +82,7 @@ const render = (container: any, nodes: any, edges: any, mst) => {
     width: container.offsetWidth - 20,
     container,
     fitView: true,
+
     fitCenter: true,
     enabledStack: true,
     animate: true,
@@ -91,12 +103,29 @@ const render = (container: any, nodes: any, edges: any, mst) => {
       default: styleConfig.default.edge,
     },
     minZoom: 0.001,
+    // layout : {
+    //   type: 'force',
+    //   condense: true,
+    //   cols: 3,
+    //   // workerEnabled: true,
+    //   linkDistance: 0 ,
+    //   alphaDecay: 0.2 ,
+    //   preventOverlap: true,
+    //   collideStrength: 0.5,
+    //   nodeSpacing: -180,
+    //   onLayoutEnd: () => {
+    //     graph.isLayouting = false
+    //     graph.fitView(0)
+
+    // },
 
     modes: {
       default: [
         'drag-canvas', {
           type: 'zoom-canvas',
           minZoom: 0.0001,
+          // enableOptimize: true,
+          // optimizeZoom: true,
           maxZoom: 2.1,
           // enableOptimize: true,
         },
@@ -129,33 +158,36 @@ const render = (container: any, nodes: any, edges: any, mst) => {
 
 
 
-const layout = (graph, nodes: any, edges, mst) => {
+const layout = (graph : Graph, nodes: any, edges, mst) => {
+  // graph.clear()
   graph.changeData({nodes, edges})
 
-  graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
-    // node.x = undefined
-    // node.y = undefined
-    const model = node.getModel()
-    if (!model.visible) {
-      // node.getContainer().hide()
-      graph.hideItem(node)
-      // return
-    }
-  })
+  // graph.getNodes().filter((a) => !a.isSys).forEach((node: any) => {
+  //   // node.x = undefined
+  //   // node.y = undefined
+  //   const model = node.getModel()
+  //   if (!model.visible) {
+  //     // node.getContainer().hide()
+  //     graph.hideItem(node)
+  //     // return
+  //   }
+  // })
 
-  const _edges = graph.getEdges()
-  _edges.forEach((edge: any) => {
-    let sourceNode = edge.get('sourceNode')
-    let targetNode = edge.get('targetNode')
-    const targetModel = targetNode.getModel()
-    if (!targetModel.visible || !sourceNode.getModel().visible) {
-      edge.hide()
-      // return
-    }
-  })
+  // const _edges = graph.getEdges()
+  // _edges.forEach((edge: any) => {
+  //   let sourceNode = edge.get('sourceNode')
+  //   let targetNode = edge.get('targetNode')
+  //   const targetModel = targetNode.getModel()
+  //   if (!targetModel.visible || !sourceNode.getModel().visible) {
+  //     edge.hide()
+  //     // return
+  //   }
+  // })
+
+  // alert(graph.getNodes().length)
 
     graph.isLayouting = true
-    graph.updateLayout({
+    async(() => graph.updateLayout({
 
       type: 'force',
       condense: true,
@@ -169,26 +201,16 @@ const layout = (graph, nodes: any, edges, mst) => {
       onLayoutEnd: () => {
         graph.isLayouting = false
         graph.fitView(0)
-        // mst.graph.setZoom(graph.getZoom())
-        
-        // const nodes = graph.getNodes()
-        // const nodes = graph.getNodes().reduce((pre, n) => {
-        //   const { x, y, id } = n.getModel()
-        //   return {
-        //     ...pre,
-        //     [id!]: {
-        //       x,
-        //       y,
-        //     },
-        //   }
-        // }, {})
-        // sessionStorage.setItem('console-erd-graph', JSON.stringify(nodes))
       }
 
-    })
+    }))
    
-    graph.fitView(0)
+    // graph.fitView(0)
 
     return graph
 
+}
+
+const async = (fun) => {
+  setTimeout(fun,500)
 }

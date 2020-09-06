@@ -42,6 +42,7 @@ export interface IModelNodeShapeCfg extends ModelConfig  {
     hide?: boolean
     inactive?: boolean
     isCardSharp?: boolean
+    showNameOrLabel? : boolean
 }
 export interface IField {
     id: string

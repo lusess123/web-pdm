@@ -17,6 +17,8 @@ export const createData = (root: RootInstance) => {
       type: 'console-model-Node',
       isKeySharp: false,
       visible: !!root.sys.checkedKeys.find(a=>a === m.id),
+      selected: m.id === root.sys.currentModel,
+      showNameOrLabel: root.sys.showNameOrLabel,
       config: {
         width: 300,
         headerHeight: 48,

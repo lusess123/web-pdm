@@ -52,6 +52,7 @@ export const register = () => {
                 isCardSharp,
                 out,
                 isNoModule,
+                showNameOrLabel
             } = cfg
             const group = item.getContainer()
             const children = group.get('children')
@@ -118,11 +119,16 @@ export const register = () => {
 
                     case 'headerlabel0':
                     case 'headerlabel1':
+                        const fieldLable1 = s.attr('fieldLable')
+                        if(fieldLable1) {
+                            s.attr('text', showNameOrLabel ? fieldLable1 :  s.attr('nameLable'))
+                        }
                         s.set('visible', !cfg.isKeySharp && !cfg.isCardSharp)
                         // s.attr('opacity', 1)
                         break
                     case 'header':
                         // s.attr('opacity', !cfg.isKeySharp ? 1 : 0)
+                        s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : colors.blue)
                         s.set('visible', !cfg.isCardSharp)
                         // s.attr('opacity', 1)
                         break
@@ -131,7 +137,19 @@ export const register = () => {
                     case 'headerlabel3':
                         // s.attr('opacity', cfg.isKeySharp ? 1 : 0)
                         // s.attr('opacity', inactive && !into && !out && !active ? 0.2 : 1)
-                        s.set('visible', cfg.isKeySharp && !cfg.isCardSharp)
+                        // s.set('visible', cfg.isKeySharp && !cfg.isCardSharp)
+
+                        const _showNameOrLabel = s.get('showNameOrLabel') 
+                        if(_showNameOrLabel && showNameOrLabel) {
+                          s.set('visible', cfg.isKeySharp && !cfg.isCardSharp)
+                        } else {
+                          if(!_showNameOrLabel && !showNameOrLabel)
+                          s.set('visible', cfg.isKeySharp && !cfg.isCardSharp) 
+                          else {
+                            s.set('visible', false) 
+                          }
+                        }
+
                         break
 
                     case 'field':
@@ -143,6 +161,11 @@ export const register = () => {
                         s.set('visible', !cfg.isKeySharp) //   Object.entries(cfg.config.styleConfig.active.node).forEach(([k, v]) => {
                         //     s.attr(k, v)
                         // })
+
+                        const fieldLable = s.attr('fieldLable')
+                        if(fieldLable) {
+                           s.attr('text', showNameOrLabel ? fieldLable :  s.attr('nameLable'))
+                        }
 
                         break
 
@@ -166,11 +189,11 @@ export const register = () => {
         },
 
         render(cfg: IModelNodeShapeCfg, group : GGroup){
-            const { config, data } = cfg
+            const { config, data, selected, showNameOrLabel } = cfg
 
-            const bg = data.aggregateRoot ? colors.blue : colors.head
-            const font = data.aggregateRoot ? colors.white : colors.blue
-            const mFront = data.aggregateRoot ? colors.white : colors.black
+            const bg = data.aggregateRoot || 1 ? colors.blue : colors.head
+            const font = data.aggregateRoot || 1 ? colors.white : colors.blue
+            const mFront = data.aggregateRoot  || 1? colors.white : colors.black
 
             const nodeColors = { bg, font, mFront }
 
@@ -195,7 +218,7 @@ export const register = () => {
                     // shadowOffsetX: 1,
                     // shadowOffsetY: 2,
                     // radius: [2, 4],
-                    fill: nodeColors.bg,
+                    fill:  selected ? config.styleConfig.selected.node.stroke : nodeColors.bg,
                 },
             })
 
@@ -208,7 +231,9 @@ export const register = () => {
                     // fontFamily: 'iconFont',
                     x: -(config.width / 2) + 20,
                     y: -(getLength(data.fields.length) * config.fieldHeight / 2),
-                    text: data.label,
+                    text:  showNameOrLabel ? data.name : data.label,
+                    fieldLable: data.name,
+                    nameLable:  data.label,
                     // text: '\ue6b2',
                     id: 'headerlabel1',
                     cursor: 'move',
@@ -299,6 +324,59 @@ export const register = () => {
             //         },
             //     })
             // })
+
+            const nameList = [data.label]
+            const height = config.headerHeight + (data.fields.length >= 12 ? data.fields.length  : 12) * config.fieldHeight
+            const nameLength = nameList.length
+            nameList.forEach((nameText, index) => {
+              group.addShape('text', {
+                visible: cfg.isKeySharp && !showNameOrLabel,
+                name: nameText,
+                showNameOrLabel: false,
+                draggable: true,
+                attrs: {
+                x: 0,
+                y: - height / 2 + height / (nameLength + 1) * (index + 1),
+                fontSize: config.width / 5,
+                text: nameText,
+                  // opacity: index === nameLength - 1 ? 1 : 0.3,
+                id: 'headerlabel2',
+                className: 'headerlabel',
+                textBaseline: 'middle',
+                textAlign: 'center',
+                  // radius: [2, 4],
+                fill: 'black',
+                },
+              })
+            }) 
+      
+            // const nameList1 = ((data.key.replace(/\(/, '-').replace(/\)/, '')) || '').split('_').flatMap((nameStr) => nameStr.split('-')).flatMap((nameStr) => nameStr.split('/')).flatMap((a) => getSplitStrings(a)).filter((a) => a)
+            const nameList1 = [data.name]
+            const height1 = config.headerHeight + (data.fields.length >= 12 ? data.fields.length  : 12) * config.fieldHeight
+            const nameLength1 = nameList.length
+            nameList1.forEach((nameText, index) => {
+              group.addShape('text', {
+                visible: cfg.isKeySharp && showNameOrLabel,
+                showNameOrLabel: true,
+                name: nameText,
+                draggable: true,
+                attrs: {
+                x: 0,
+                y: - height1 / 2 + height1 / (nameLength1 + 1) * (index + 1),
+                fontSize: config.width / 5,
+                text: nameText,
+                  // opacity: index === nameLength - 1 ? 1 : 0.3,
+                id: 'headerlabel2',
+                className: 'headerlabel',
+                textBaseline: 'middle',
+                textAlign: 'center',
+                  // radius: [2, 4],
+                fill: 'black',
+                },
+              })
+            })
+
+
             data.fields.forEach((field, index) => {
                 // const {
                 //     relationModel,
@@ -379,7 +457,9 @@ export const register = () => {
                         draggable: true,
                         // click: 'fieldEdit',
                         y: -((config.headerHeight + getLength(data.fields.length) * config.fieldHeight) / 2) + config.headerHeight + config.fieldHeight * index + config.fieldHeight / 2,
-                        text: field.label,
+                        text:  showNameOrLabel ? field.name : field.label,
+                        fieldLable: field.name,
+                        nameLable:  field.label,
                         fieldName: field.id,
                         arg: field.name,
                         fontSize: config.labelSize,
@@ -464,7 +544,7 @@ export const register = () => {
         },
 
         draw(cfg: IModelNodeShapeCfg, group) {
-            const { config, data } = cfg
+            const { config, data, selected } = cfg
             const height = config.headerHeight + getLength(data.fields.length) * config.fieldHeight
             let keyShape = group!.addShape('rect', {
                 name: data.key,
@@ -479,6 +559,7 @@ export const register = () => {
                     // fill:'red',
                     height: height + 10,
                     ...cfg.config.styleConfig.default.node,
+                    stroke: selected ? cfg.config.styleConfig.selected.node.stroke : cfg.config.styleConfig.default.node.stroke
                 },
             })
 
