@@ -191,14 +191,17 @@ export const register = () => {
         render(cfg: IModelNodeShapeCfg, group : GGroup){
             const { config, data, selected, showNameOrLabel } = cfg
 
-            const bg = data.aggregateRoot || 1 ? colors.blue : colors.head
-            const font = data.aggregateRoot || 1 ? colors.white : colors.blue
-            const mFront = data.aggregateRoot  || 1? colors.white : colors.black
+            // const bg = data.aggregateRoot || 1 ? colors.blue : colors.head
+            // const font = data.aggregateRoot || 1 ? colors.white : colors.blue
+            // const mFront = data.aggregateRoot  || 1? colors.white : colors.black
 
+            const bg =  colors.blue 
+            const font = colors.white
+            const mFront = colors.white
             const nodeColors = { bg, font, mFront }
 
             group.addShape('rect', {
-                visible: !cfg.isKeySharp,
+                // visible: !cfg.isKeySharp,
                 name: data.key,
                 draggable: true,
                 attrs: {
