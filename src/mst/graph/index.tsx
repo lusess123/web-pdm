@@ -8,7 +8,7 @@ import './model.scss'
 import GraphEvent from './event'
 import { initStyle } from './item/style'
 import { useUpdateItem } from './hooks'
-import { tuple } from 'antd/lib/_util/type'
+import { RootInstance } from '../type'
 // import mst from 'test/mst'
 
 
@@ -50,22 +50,23 @@ const useLocal = () => {
       
     }, [ mst.sys.checkedKeys, mst])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
-  useEffect(() => {
-    const graph = erdGraphRef.current
-    if(graph) {
-      const gwidth = graph.get('width')
-      const gheight = graph.get('height')
-      const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
+  // useEffect(() => {
+  //   const graph = erdGraphRef.current
+  //   if(graph) {
+  //     const gwidth = graph.get('width')
+  //     const gheight = graph.get('height')
+  //     const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
 
-      graph.zoomTo(mst.graph.zoom, point)
-    }
+  //     graph.zoomTo(mst.graph.zoom, point)
+  //   }
 
-  } , [mst.graph.zoom])
+  // } , [mst.graph.zoom])
 
   useUpdateItem({
     currentModel : mst.sys.currentModel,
     graph : erdGraphRef.current as any,
-    showNameOrLabel: mst.sys.showNameOrLabel
+    showNameOrLabel: mst.sys.showNameOrLabel,
+    zoom: mst.graph.zoom
   })
   return {
     containerRef,
@@ -94,22 +95,17 @@ const render = (container: any, nodes: any, edges: any, mst) => {
     fitCenter: true,
     enabledStack: true,
     animate: true,
-    defaultNode: {
-      color: '#5B8FF9',
-      style: {
-        fill: '#9EC9FF',
-        lineWidth: 3,
-      },
-    },
-    nodeStateStyles: {
-      default: {
-        fill: '#9EC9FF',
-      }
-    },
-    defaultEdge : styleConfig.default.edge,
+    
+    // animate: true,
+    defaultEdge: styleConfig.default.edge,
     edgeStateStyles: {
       default: styleConfig.default.edge,
+      active: {
+        opacity: 1,
+        size: 3,
+      }
     },
+
     minZoom: 0.001,
     maxZoom: 1.1,
     // layout : {
@@ -180,7 +176,7 @@ const render = (container: any, nodes: any, edges: any, mst) => {
 
 
 
-const layout = (graph : Graph, nodes: any, edges, mst) => {
+const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
   // graph.clear()
   graph.changeData({nodes, edges})
 
@@ -223,6 +219,7 @@ const layout = (graph : Graph, nodes: any, edges, mst) => {
       onLayoutEnd: () => {
         graph.isLayouting = false
         graph.fitView(0)
+        mst.graph.setZoom(graph.getZoom())
       }
 
     }))

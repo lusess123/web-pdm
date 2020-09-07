@@ -16,6 +16,7 @@ export class TGraph extends Model({
 
      @modelAction
      setZoom(zoom: number) {
+        //  alert(zoom)
         this.zoom = zoom
      }
      @modelAction
@@ -76,6 +77,20 @@ export class TGraph extends Model({
         _graph.isExporting = undefined
         _graph.zoomTo(oldZoom)
         
+     }
+
+     actionEdges(currentModel:string) {
+        this.G6Graph.getEdges().forEach(edge => {
+            const edgeData = edge.getModel()
+            if(edgeData.target !== 'model-SYS-CENTER-POINT') {
+                edge.setState('active', false)
+                if(edgeData.source === 'model-' +currentModel || edgeData.target === 'model-' +currentModel ){
+                    edge.setState('active', true)
+                }
+            }
+            
+            
+        })
      }
      
 }

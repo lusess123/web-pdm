@@ -39,6 +39,7 @@ export class TSys extends Model({
             item.toFront()
         }
         this.currentModel = newKey
+        root.graph.actionEdges(newKey)
 
     }
 

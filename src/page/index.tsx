@@ -285,7 +285,7 @@ export default (
       }
 
       if (name === 'delModel') {
-        alert()
+        // alert()
         dispatch({
           type: `${namespace}/delModel`,
         })

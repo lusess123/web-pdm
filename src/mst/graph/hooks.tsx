@@ -5,9 +5,10 @@ export type IUseUpdateItem = {
     currentModel : string, 
     graph : Graph, 
     showNameOrLabel : boolean
+    zoom : number
 }
 
-export const useUpdateItem = ({ currentModel, graph, showNameOrLabel } : IUseUpdateItem) => {
+export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom } : IUseUpdateItem) => {
     const firstRef = useRef(true)
     useEffect(() => {
       const modelId= 'model-' +currentModel
@@ -17,11 +18,14 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel } : IUseUpd
             return 
           }
        }
-      if (graph && !firstRef.current) {
+      //  alert()
+      // if (graph && !firstRef.current) {
+        if (graph) {
         const gnodes = graph.getNodes()
         if (!gnodes.length) return
         // alert(nodes.length)
         const zoomNum = graph.getZoom()
+        // alert(zoomNum)
         // alert(JSON.stringify(nodes))
         gnodes.forEach((node) => {
           if (node.isSys) return
@@ -56,5 +60,5 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel } : IUseUpd
         // graph.paint()
       }
   
-    }, [currentModel, showNameOrLabel, graph?.getZoom()])
+    }, [currentModel, showNameOrLabel,  zoom <= 0.4])
   }

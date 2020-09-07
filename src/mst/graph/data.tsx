@@ -15,7 +15,7 @@ export const createData = (root: RootInstance) => {
     return {
       id: 'model-' + m.id,
       type: 'console-model-Node',
-      isKeySharp: false,
+      isKeySharp: root.graph.zoom <= 0.4,
       visible: !!root.sys.checkedKeys.find(a=>a === m.id),
       selected: m.id === root.sys.currentModel,
       showNameOrLabel: root.sys.showNameOrLabel,
