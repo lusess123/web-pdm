@@ -46,6 +46,7 @@ export default observer(({ graph } : { graph : any}) => {
     </span>
     <ButtonActon title='缩小' disable={zoomNum < 5 } icon='min' onClick={mst.graph.minZoom.bind(mst.graph, graph)} />
     <ButtonActon title='全景' icon='container' onClick={mst.graph.container.bind(mst.graph, graph)} />
+    <ButtonActon title='下载图片' icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
     </div>
 
     </div>)

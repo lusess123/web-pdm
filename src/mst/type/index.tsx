@@ -44,6 +44,7 @@ export class RootInstance extends Model({
       @computed
       get Nodes() {
             const data = createData(this)
+            // alert(data.length)
             return data
       }
 

@@ -48,7 +48,7 @@ const useLocal = () => {
         erdGraphRef.current.fitView(0)
       }
       
-    }, [ JSON.stringify(mst.Nodes.map(a=>a.id)), mst])
+    }, [ mst.sys.checkedKeys, mst])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
   useEffect(() => {
     const graph = erdGraphRef.current
