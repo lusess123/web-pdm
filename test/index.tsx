@@ -1,31 +1,14 @@
 import dva from 'dva'
 import React from 'react'
-import Page , { DvaModel } from '../src'
-import getAllModelsTest from './g6-test/mock/model-test'
-import getAllModulesTest from './g6-test/mock/module-test'
-
-
-import init from  './unstated'
-
-
-const ErdPdmPage =  (props) => {
-   const { getModels, getModules } = {
-    getModels: async () =>  ({ res: getAllModelsTest }),
-    getModules: async () => ({ res: getAllModulesTest }),
-   }
-   return (
-   <Page {...props}
-     getModels={getModels}
-     getModules={getModules}
-     isFullScreen
-       />
-   )
-}
+import ReactDom from 'react-dom'
+// import Page , { DvaModel } from '../src'
+// import getAllModelsTest from './g6-test/mock/model-test'
+// import getAllModulesTest from './g6-test/mock/module-test'
 // init(ErdPdmPage)
 
 import MstPage from './mst'
 
-
+// alert()
 // // 创建应用
 const app = dva()
 // app.model(DvaModel({namespace: 'erd'}) as any)
@@ -33,6 +16,7 @@ const app = dva()
 app.router(() => (
   <MstPage />
 ))
+
 // // 启动应用
 app.start('#app')
 // init(ErdPdmPage)
@@ -41,3 +25,5 @@ app.start('#app')
 
 // const i = 9
 // const fff = [0..i]
+
+ReactDom.render(<MstPage />, document.getElementById('app'))
