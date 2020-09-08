@@ -1,8 +1,8 @@
-import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone'
+import { model, Model, prop, modelAction, getRoot, SnapshotInOf } from 'mobx-keystone'
 import { computed } from 'mobx'
 import { RootInstance } from '../type'
 
-
+export type Field = SnapshotInOf<TField>
 @model("webpdm/MetaType")
 export class MetaType extends Model({
     relationModel: prop<string>(),

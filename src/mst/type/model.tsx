@@ -1,9 +1,11 @@
 
-import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone'
+import { model, Model, prop, modelAction, getRoot, SnapshotOutOf } from 'mobx-keystone'
 import { RootInstance } from '../type'
 import { renderModelTitle } from '../util/label'
 import { computed } from 'mobx'
 
+
+export type InModel = SnapshotOutOf<TModel>
 
 @model("webpdm/Model")
 export class TModel extends Model({
