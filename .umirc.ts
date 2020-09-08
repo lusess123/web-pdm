@@ -8,26 +8,8 @@ export default defineConfig({
   logo:
     'https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png',
   outputPath: 'docs-dist',
-  alias: {
-     "web-pdm" :'/es'
-  },
-  chainWebpack(memo, { env, webpack, createCSSRule }) {
-    // 设置 alias
-    memo.resolve.alias.set('webpdm', '/src');
-  },
-  // includes: ['doc'],
   mode: 'doc',
-  // theme: {
-  //   '@c-primary': '#ff652f',
-  // },
-  antd: {
-    // dark: true,
-    // compact: true,
-  },
   resolve : {
-    includes: ['docs'],
-    // previewLangs: []
-
+    includes: ['docs']
   }
-  // more config: https://d.umijs.org/config
 });
