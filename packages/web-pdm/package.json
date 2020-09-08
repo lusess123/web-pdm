@@ -1,5 +1,5 @@
 {
-  "name": "web-pdm-doc",
+  "name": "web-pdm",
   "version": "0.1.2",
   "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
   "main": "es/index.js",
@@ -26,7 +26,6 @@
     "@types/react-dom": "^16.8.4",
     "@umijs/plugin-antd": "^0.8.0",
     "ak-webpack": "^1.0.15",
-    "dumi": "^1.0.34",
     "father": "^2.29.9",
     "typescript": "^3.8.2",
     "wrappy": "^1.0.2",
@@ -43,16 +42,12 @@
     "mobx": "^5.15.5",
     "mobx-keystone": "^0.46.0",
     "mobx-react-lite": "^2.0.7",
-    "mobx-state-tree": "^3.17.2",
     "react": "^16.8.6",
     "react-custom-scrollbars": "^4.2.1",
     "react-dnd": "^9.3.4",
     "react-dnd-html5-backend": "^9.3.4",
     "react-dom": "^16.9.0",
     "react-scrollbars-custom": "^4.0.21",
-    "stats": "^1.0.0",
-    "stats.js": "^0.17.0",
-    "unstated-next": "^1.1.0",
     "with-dnd-context": "^1.0.4",
     "xml2js": "^0.4.23"
   }
