@@ -114,6 +114,7 @@ export class RootInstance extends Model({
                   modelsKeys.push(key)
 
             })
+            this.sys.checkedKeys = modelsKeys
 
             if(sys?.height) {
                   this.sys.height = sys.height
