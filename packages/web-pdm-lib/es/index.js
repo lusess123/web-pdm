@@ -15,7 +15,8 @@ import { applySnapshot, onSnapshot, withoutUndo } from 'mobx-keystone';
 import { useMst } from './context';
 import { observer } from 'mobx-react-lite';
 import { Provider, createRootStore } from './context';
-import MSTPage from './components'; // import './style.scss'
+import MSTPage from './components';
+export * from './type/config'; // import './style.scss'
 
 export var Page = observer(function (_ref) {
   var models = _ref.models,
