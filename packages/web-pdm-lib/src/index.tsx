@@ -4,6 +4,7 @@ import { useMst  } from './context'
 import { observer } from 'mobx-react-lite'
 import { Provider, createRootStore  } from './context'
 import MSTPage from './components'
+export * from './type/config'
 // import './style.scss'
 
 
