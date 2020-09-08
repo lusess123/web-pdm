@@ -37,7 +37,9 @@ const useLocal = () => {
          erdGraphRef.current = render(containerRef.current, mst.Nodes, mst.edges, mst)
         //  alert(mst.graph.$modelId)
         async(() => {
+          
           mst.graph.setG6Graph(erdGraphRef.current)
+          // layout(erdGraphRef.current,  Nodes , edges, mst)
         })
         
         //  window.kkk1 = mst
@@ -108,21 +110,23 @@ const render = (container: any, nodes: any, edges: any, mst) => {
 
     minZoom: 0.001,
     maxZoom: 1.1,
-    // layout : {
-    //   type: 'force',
-    //   condense: true,
-    //   cols: 3,
-    //   // workerEnabled: true,
-    //   linkDistance: 0 ,
-    //   alphaDecay: 0.2 ,
-    //   preventOverlap: true,
-    //   collideStrength: 0.5,
-    //   nodeSpacing: -180,
-    //   onLayoutEnd: () => {
-    //     graph.isLayouting = false
-    //     graph.fitView(0)
-
-    // },
+    layout : {
+      type: 'force',
+      condense: true,
+      cols: 3,
+      workerEnabled: true,
+      linkDistance: 0 ,
+      alphaDecay: 0.2 ,
+      preventOverlap: true,
+      collideStrength: 0.5,
+      nodeSpacing: -180,
+      onLayoutEnd: () => {
+        graph.isLayouting = false
+        graph.fitView(0)
+        // alert()
+        mst.graph.setZoom(graph.getZoom())
+      }
+    },
 
     modes: {
       default: [
@@ -219,6 +223,7 @@ const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
       onLayoutEnd: () => {
         graph.isLayouting = false
         graph.fitView(0)
+        // alert()
         mst.graph.setZoom(graph.getZoom())
       }
 

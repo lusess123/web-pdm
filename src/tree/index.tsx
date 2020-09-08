@@ -1,17 +1,18 @@
-import { Dropdown, Menu, Tree  } from 'antd'
+import { Dropdown, Menu, Tree as AntTree  } from 'antd'
 import React, { useState, useCallback } from 'react'
+// import 'antd/dist/antd.less'
 import './style.scss'
 
-const { TreeNode  } = Tree
+const { TreeNode  } = AntTree
 export default () => {
  return (
    <div className='tree-erd'>
-    <Tree>
+    <AntTree>
        <TreeNode title='111' key='1'>
            <TreeNode title='111' key='2' />
            <TreeNode title={<OptionBuilder data={{title:   'ddddd', options: [{title: 'aaa'}]}} />} key='3' />
        </TreeNode>
-     </Tree>
+     </AntTree>
    </div>)
 
 }
@@ -39,8 +40,6 @@ const OptionBuilder = ({data}) => {
   </div>)
 }
 // alert()
-Tree.OptionBuilder = OptionBuilder
+AntTree.OptionBuilder = OptionBuilder
 
-export {
-  Tree,
-}
+export const Tree = AntTree

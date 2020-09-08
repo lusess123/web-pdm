@@ -1,9 +1,11 @@
 import React from 'react'
-import { Provider, rootStore  } from '../../src/mst/context'
-import Page, { SmartTodo } from './page'
+import ReactDom from 'react-dom'
+import ModelTest from '../g6-test/mock/model-test'
+import ModuleTest from '../g6-test/mock/module-test'
+ import WebPdm from '../../src'
 
-export default () => {
-    return <Provider value={rootStore}>
-     <Page />
-    </Provider>
-}
+
+ReactDom.render(
+ <WebPdm models={ModelTest} modules={ModuleTest} key={'demo'} />, 
+  document.getElementById('app')||document.getElementById('root')
+)

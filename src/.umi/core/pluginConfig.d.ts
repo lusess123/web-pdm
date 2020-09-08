@@ -188,6 +188,11 @@ export interface IConfigFromPlugins {
     indexName?: string;
     debug?: boolean;
   };
+  antd?: {
+    dark?: boolean;
+    compact?: boolean;
+    config?: {};
+  };
   sass?: {
     implementation?: any;
     sassOptions?: {};

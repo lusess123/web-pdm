@@ -12,7 +12,7 @@ export function getRoutes() {
   {
     "path": "/",
     "component": (props) => require('react').createElement(require('../../../node_modules/@umijs/preset-dumi/lib/themes/default/layout.js').default, {
-      ...{"menus":{"*":{"*":[{"path":"/","title":"README","meta":{"order":null}}],"/demo":[{"path":"/demo","title":"Index","meta":{}}]}},"locales":[],"navs":{"*":[{"path":"/demo","title":"Demo"}]},"title":"web-pdm","logo":"https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png","mode":"site"},
+      ...{"menus":{"*":{"*":[{"path":"/","title":"README","meta":{"order":null}},{"title":"Demo","path":"/demo","meta":{},"children":[{"path":"/demo","title":"Index","meta":{}}]}]}},"locales":[],"navs":{},"title":"web-pdm","logo":"https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png","desc":"一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","mode":"doc"},
       ...props,
     }),
     "routes": [
@@ -36,7 +36,7 @@ export function getRoutes() {
           "updatedTime": 1599496405000,
           "slugs": [],
           "title": "Index",
-          "nav": {
+          "group": {
             "path": "/demo",
             "title": "Demo"
           }
