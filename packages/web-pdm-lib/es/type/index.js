@@ -200,6 +200,7 @@ export var RootInstance = (_dec = model("webpdm/RootStore"), _dec(_class = (_cla
         });
         modelsKeys.push(key);
       });
+      this.sys.checkedKeys = modelsKeys;
 
       if (sys === null || sys === void 0 ? void 0 : sys.height) {
         this.sys.height = sys.height;
