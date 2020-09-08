@@ -1,6 +1,6 @@
 {
   "name": "web-pdm-doc",
-  "version": "0.1.2",
+  "version": "0.0.1",
   "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -8,15 +8,7 @@
     "es"
   ],
   "scripts": {
-    "start": "dumi dev",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf public &&  NODE_ENV=production webpack --config ./webconfig.config.js --mode production  --colors --max_old_space_size=1024 && rm -rf docker/public  && cp -r ./public docker/public",
-    "watch": "time webpack-dev-server  --watch-poll --config ./webconfig.config.js --mode development",
-    "publish-npm": "npm config set registry http://registry.npmjs.org && npm publish && npm config set registry https://registry.npm.taobao.org",
-    "publish-docker": "cd ./docker && sh build.sh",
-    "publish-server": "cd ./docker && sh upload.sh",
-    "dev": "father doc dev",
-    "build-lib": "father build"
+    "start": "dumi dev"
   },
   "author": "北名",
   "license": "ISC",
@@ -25,35 +17,7 @@
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.8.4",
     "@umijs/plugin-antd": "^0.8.0",
-    "ak-webpack": "^1.0.15",
     "dumi": "^1.0.34",
-    "father": "^2.29.9",
-    "typescript": "^3.8.2",
-    "wrappy": "^1.0.2",
-    "xtend": "^4.0.2",
     "@umijs/plugin-sass": "^1.1.1"
-  },
-  "dependencies": {
-    "@antv/g6": "^3.6.0",
-    "@iarna/rtf-to-html": "^1.1.0",
-    "antd": "^4.6.2",
-    "classnames": "^2.2.6",
-    "dva": "^2.6.0-beta.14",
-    "immer": "^4.0.0",
-    "mobx": "^5.15.5",
-    "mobx-keystone": "^0.46.0",
-    "mobx-react-lite": "^2.0.7",
-    "mobx-state-tree": "^3.17.2",
-    "react": "^16.8.6",
-    "react-custom-scrollbars": "^4.2.1",
-    "react-dnd": "^9.3.4",
-    "react-dnd-html5-backend": "^9.3.4",
-    "react-dom": "^16.9.0",
-    "react-scrollbars-custom": "^4.0.21",
-    "stats": "^1.0.0",
-    "stats.js": "^0.17.0",
-    "unstated-next": "^1.1.0",
-    "with-dnd-context": "^1.0.4",
-    "xml2js": "^0.4.23"
   }
 }
