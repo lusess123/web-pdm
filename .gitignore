@@ -105,3 +105,4 @@ dist
 .history/
 public/
 docker/public/
+src/.umi/

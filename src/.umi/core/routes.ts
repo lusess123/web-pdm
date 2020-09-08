@@ -33,7 +33,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "src/demo/index.md",
-          "updatedTime": 1599487997561,
+          "updatedTime": 1599496405000,
           "slugs": [],
           "title": "Index",
           "nav": {
