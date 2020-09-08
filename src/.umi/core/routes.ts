@@ -5,14 +5,14 @@ import { plugin } from './plugin';
 export function getRoutes() {
   const routes = [
   {
-    "path": "/_demos/index",
-    "component": require('../../../test/mst/index.tsx').default,
+    "path": "/_demos/erd",
+    "component": require('../../../docs/erd.tsx').default,
     "exact": true
   },
   {
     "path": "/",
     "component": (props) => require('react').createElement(require('../../../node_modules/@umijs/preset-dumi/lib/themes/default/layout.js').default, {
-      ...{"menus":{"*":{"*":[{"path":"/","title":"README","meta":{"order":null}},{"title":"Demo","path":"/demo","meta":{},"children":[{"path":"/demo","title":"Index","meta":{}}]}]}},"locales":[],"navs":{},"title":"web-pdm","logo":"https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png","desc":"一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","mode":"doc"},
+      ...{"menus":{"*":{"*":[{"path":"/","title":"README","meta":{"order":null}},{"path":"/er图demo","title":"ER图demo","meta":{}}]}},"locales":[],"navs":{},"title":"web-pdm","logo":"https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png","desc":"一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","mode":"doc"},
       ...props,
     }),
     "routes": [
@@ -28,20 +28,16 @@ export function getRoutes() {
         "title": "README"
       },
       {
-        "path": "/demo",
-        "component": require('../../demo/index.md').default,
+        "path": "/er图demo",
+        "component": require('../../../docs/ER图demo.md').default,
         "exact": true,
         "meta": {
-          "filePath": "src/demo/index.md",
-          "updatedTime": 1599496405000,
+          "filePath": "docs/ER图demo.md",
+          "updatedTime": 1599558740320,
           "slugs": [],
-          "title": "Index",
-          "group": {
-            "path": "/demo",
-            "title": "Demo"
-          }
+          "title": "ER图demo"
         },
-        "title": "Index"
+        "title": "ER图demo"
       }
     ],
     "title": "web-pdm"

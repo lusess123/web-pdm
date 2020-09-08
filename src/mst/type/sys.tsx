@@ -13,6 +13,7 @@ export class TSys extends Model({
     showNameOrLabel: prop(false),
     tabOrTree: prop(false),
     snapshot: prop(true),
+    height: prop<number|undefined|string>('100%')
     // undoData: prop<UndoStore>(() => new UndoStore({})),
 }) {
 

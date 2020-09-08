@@ -46,7 +46,7 @@ export default CreateComponent<IModelNaviProps>(
      
       const mst = useMst()
       const { onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
-      return <div className='console-models-tree'>
+      return <div className='console-models-tree' height={mst.sys.height} style={{height: mst.sys.height}}>
         <div className='header'>
           <div className='console-erd-search'>
             <Input allowClear value={mst.sys.search}  size="small" onChange={setSearch} addonAfter={

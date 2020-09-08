@@ -84,7 +84,10 @@ const useLocal = () => {
 //   K: 100,
 // });
 const render = (container: any, nodes: any, edges: any, mst) => {
-  const height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 45
+  const documentHeight = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)
+  const height = mst.sys.height === '100%' ? ( documentHeight - 45) : (mst.sys.height - 45)
+  // const height = mst.sys.height
+  // alert(height)
   // alert(height)
   const styleConfig = initStyle({primaryColor: 'blue'}).style
 

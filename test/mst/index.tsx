@@ -6,6 +6,6 @@ import ModuleTest from '../g6-test/mock/module-test'
 
 
 ReactDom.render(
- <WebPdm models={ModelTest} modules={ModuleTest} key={'demo'} />, 
+ <WebPdm models={ModelTest} modules={ModuleTest} key={'demo'}  />, 
   document.getElementById('app')||document.getElementById('root')
 )

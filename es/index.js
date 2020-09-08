@@ -4,10 +4,13 @@ import { useMst } from './mst/context';
 import { observer } from 'mobx-react-lite';
 import { Provider, rootStore } from './mst/context';
 import MSTPage from './mst/components';
+import './style.scss';
 export var Page = observer(function (_ref) {
   var models = _ref.models,
       modules = _ref.modules,
-      key = _ref.key;
+      key = _ref.key,
+      classNames = _ref.classNames,
+      style = _ref.style;
   var data = useMst();
   useEffect(function () {
     onSnapshot(data, function (snapshot) {
@@ -29,7 +32,10 @@ export var Page = observer(function (_ref) {
       });
     }
   }, []);
-  return /*#__PURE__*/React.createElement(MSTPage, null);
+  return /*#__PURE__*/React.createElement(MSTPage, {
+    classNames: classNames,
+    style: style
+  });
 });
 export default (function (_ref2) {
   var models = _ref2.models,

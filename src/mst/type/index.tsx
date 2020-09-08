@@ -64,7 +64,7 @@ export class RootInstance extends Model({
       }
 
       @modelAction
-      init({ modelData, moduleData }: { modelData: any, moduleData: any }) {
+      init({ modelData, moduleData, height }: { modelData: any, moduleData: any, height: any }) {
 
             let moduleHas: Record<string, string> = {}
             moduleData.forEach((module: any) => {
@@ -86,6 +86,8 @@ export class RootInstance extends Model({
 
             })
             this.sys.checkedKeys = modelsKeys
+            this.sys.height = height
+            // alert( this.sys.height)
       }
       @modelAction
       undo() {
@@ -140,15 +142,18 @@ export class RootInstance extends Model({
 }
 
 
-export const createStore = () => {
+export const createStore = (props = { sys : {} , graph: {}}) => {
       return new RootInstance({
             $modelId: 'webpdm',
             sys: new TSys({
                   isArrangeLayout: false,
                   layouting: true,
-                  search: ''
+                  search: '',
+                  ...props.sys
             }),
-            graph : new TGraph({})
+            graph : new TGraph({
+                  ...props.graph
+            })
       })
 }
 
