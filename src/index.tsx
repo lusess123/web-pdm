@@ -15,7 +15,7 @@ export const Page = observer(({ models, modules, key, className, style, height }
       })
       const localdata = sessionStorage.getItem('web-pdm'+ key)
       if(!localdata) {
-        withoutUndo(() => data.init({ modelData: models, moduleData: modules, height }))
+        withoutUndo(() => data.initData(models, modules))
       } else {
         const sdata = JSON.parse(localdata)
         sdata.sys.height = height

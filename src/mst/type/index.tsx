@@ -11,6 +11,7 @@ import { createData, createLinks } from '../graph/data'
 import { renderModelTitle } from '../util/label'
 // import StateStack from '../state-stack'
 import { undoManager } from '../context'
+import { SysConfig, ModelConfig, ModuleConfig } from './config'
 
 
 
@@ -89,6 +90,37 @@ export class RootInstance extends Model({
             this.sys.height = height
             // alert( this.sys.height)
       }
+      
+      @modelAction
+      initData( models : ModelConfig[] , modules: ModuleConfig[], sys: SysConfig) {
+
+            let moduleHas: Record<string, string> = {}
+            modules.forEach((module) => {
+                  const key = NewGuid().toString()
+                  this.Modules.set(key, new TModule({ id: key, label: module.label, name: module.name }))
+                  moduleHas[module.name] = key
+                  this.sys.expandedKeys.push(key)
+            })
+
+
+            let modelsKeys: string[] = []
+            models.forEach((model) => {
+                  const key = NewGuid().toString()
+                  this.Models.set(key, new TModel({ id: key, label: model.name, name: model.name, moduleId: moduleHas[model.module] || '' }))
+                  model.fields.forEach((field) => {
+                        const _key = NewGuid().toString()
+                        this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.label, name: field.name, type: field.type || 'string', modelId: key }))
+                  })
+                  modelsKeys.push(key)
+
+            })
+
+            if(sys?.height) {
+                  this.sys.height = sys.height
+            }
+      }
+
+
       @modelAction
       undo() {
       //     const current = StateStack.DataList.length - 1

@@ -1,14 +1,14 @@
 export default [
   {
     name: '金融',
-    key: '金融',
+    label: '金融',
   },
   {
     name: 'ERP',
-    key: 'ERP',
+    label: 'ERP',
   },
   {
-    name: '汽修',
-    key: 'T9engSQ',
+    label: '汽修',
+    name: 'T9engSQ',
   },
 ]
