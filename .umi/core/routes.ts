@@ -50,7 +50,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "docs/api.md",
-          "updatedTime": 1599616314000,
+          "updatedTime": 1599621252000,
           "slugs": [],
           "title": "Api"
         },

@@ -6,13 +6,13 @@ import { Provider, createRootStore } from './context';
 import MSTPage from './components';
 export * from './type/config';
 // import './style.scss'
-export const Page = observer(({ models, modules, key, className, style, height }) => {
+export const Page = observer(({ models, modules, erdkey, className, style, height }) => {
     const data = useMst();
     useEffect(() => {
         onSnapshot(data, snapshot => {
-            sessionStorage.setItem('web-pdm' + key, JSON.stringify(snapshot));
+            sessionStorage.setItem('web-pdm' + erdkey, JSON.stringify(snapshot));
         });
-        const localdata = sessionStorage.getItem('web-pdm' + key);
+        const localdata = sessionStorage.getItem('web-pdm' + erdkey);
         if (!localdata) {
             withoutUndo(() => data.initData(models, modules));
         }
@@ -24,7 +24,7 @@ export const Page = observer(({ models, modules, key, className, style, height }
     }, []);
     return React.createElement(MSTPage, { className: className, style: style });
 });
-export default ({ models, modules, key, className, style, height }) => {
+export default ({ models, modules, erdkey, className, style, height }) => {
     const [rootStore] = useState(() => {
         return createRootStore({
             sys: {
@@ -33,5 +33,5 @@ export default ({ models, modules, key, className, style, height }) => {
         });
     });
     return React.createElement(Provider, { value: rootStore },
-        React.createElement(Page, { models: models, modules: modules, key: key, className: className, style: style, height: height }));
+        React.createElement(Page, { models: models, modules: modules, erdkey: erdkey, className: className, style: style, height: height }));
 };

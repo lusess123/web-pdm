@@ -12,12 +12,12 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom } : I
     const firstRef = useRef(true)
     useEffect(() => {
       const modelId= 'model-' +currentModel
-      if(graph)  {
-          if(firstRef.current){
-            firstRef.current = false
-            return 
-          }
-       }
+      // if(graph)  {
+      //     if(firstRef.current){
+      //       firstRef.current = false
+      //       return 
+      //     }
+      //  }
       //  alert()
       // if (graph && !firstRef.current) {
         if (graph) {

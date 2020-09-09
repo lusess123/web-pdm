@@ -1,4 +1,5 @@
 /// <reference types="react" />
+import { UndoManager } from 'mobx-keystone';
 import { TModel } from './model';
 import { TModule } from './module';
 import { TField } from './field';
@@ -13,6 +14,8 @@ declare const RootInstance_base: import("mobx-keystone")._Model<unknown, {
     graph: import("mobx-keystone").OptionalModelProp<TGraph, TGraph>;
 }>;
 export declare class RootInstance extends RootInstance_base {
+    undoManager: UndoManager;
+    setUndoManager(undoManager: UndoManager): void;
     get moduleList(): TModule[];
     get Nodes(): {
         id: string;

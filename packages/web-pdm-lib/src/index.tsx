@@ -37,7 +37,7 @@ export default ({ models, modules, erdkey, className,  style, height}) => {
       })
     })
     return <Provider value={rootStore}>
-     <Page models={models} modules={modules} key={erdkey} className={className} style={style} height={height} />
+     <Page models={models} modules={modules} erdkey={erdkey} className={className} style={style} height={height} />
     </Provider>
 }
 

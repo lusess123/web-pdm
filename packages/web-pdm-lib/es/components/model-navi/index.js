@@ -30,7 +30,7 @@ export default CreateComponent({
     render(_) {
         const mst = useMst();
         const { onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal();
-        return React.createElement("div", { className: 'console-models-tree', height: mst.sys.height, style: { height: mst.sys.height } },
+        return React.createElement("div", { className: 'console-models-tree', style: { height: mst.sys.height } },
             React.createElement("div", { className: 'header' },
                 React.createElement("div", { className: 'console-erd-search' },
                     React.createElement(Input, { allowClear: true, value: mst.sys.search, size: "small", onChange: setSearch, addonAfter: Sys.tabOrTree && React.createElement(Select, { defaultValue: Sys.currentModule, value: Sys.currentModule, className: "select-after", onChange: changeModuleValue }, [
@@ -54,7 +54,7 @@ export default CreateComponent({
                 React.createElement(Scroll, { autoHide: true, autoHeight: true, autoHideTimeout: 1000, autoHideDuration: 200, autoHeightMin: '100%', autoHeightMax: '100%' },
                     React.createElement(Tree, { className: 'console-models-tree-tree', onSelect: mst.sys.setCurrentModel.bind(mst.sys), selectedKeys: [mst.sys.currentModel], checkedKeys: [...mst.sys.checkedKeys], onCheck: mst.setCheckedKeys.bind(mst), checkable: true, onExpand: onExpand, multiple: true, expandedKeys: [...mst.sys.expandedKeys] },
                         !mst.sys.tabOrTree && mst.moduleList.map(m => {
-                            return (React.createElement(TreeNode, { title: m.name, key: m.id }, [...m.models.values()].filter(model => model.filterModel()).map(model => {
+                            return (React.createElement(TreeNode, { title: mst.sys.showNameOrLabel ? m.name : m.label, key: m.id }, [...m.models.values()].filter(model => model.filterModel()).map(model => {
                                 return React.createElement(TreeNode, { key: model.id, title: getTreeNodeTitle(model, mst) });
                             })));
                         }),

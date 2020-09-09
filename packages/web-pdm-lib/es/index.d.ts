@@ -1,10 +1,10 @@
 import React from 'react';
 export * from './type/config';
 export declare const Page: React.FunctionComponent<any>;
-declare const _default: ({ models, modules, key, className, style, height }: {
+declare const _default: ({ models, modules, erdkey, className, style, height }: {
     models: any;
     modules: any;
-    key: any;
+    erdkey: any;
     className: any;
     style: any;
     height: any;

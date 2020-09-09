@@ -3,7 +3,7 @@ export default [
     name: 'bd_Quota_Apply',
     originalKey: 'bd_Quota_Apply',
     label: '额度申请',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -89,7 +89,7 @@ export default [
     name: 'bd_PayInfo',
     originalKey: 'bd_PayInfo',
     label: '打款信息',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -238,7 +238,7 @@ export default [
     name: 'bd_Draft_Element',
     originalKey: 'bd_Draft_Element',
     label: '票面要素',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -322,7 +322,7 @@ export default [
     name: 'db_Draft_Number',
     originalKey: 'db_Draft_Number',
     label: '票号',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -364,7 +364,7 @@ export default [
     name: 'bd_Pay_Other',
     originalKey: 'bd_Pay_Other',
     label: '其他信息',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -418,7 +418,7 @@ export default [
     name: 'bd_Pay_Apply',
     originalKey: 'bd_Pay_Apply',
     label: '划款申请',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -484,7 +484,7 @@ export default [
     name: 'bd_Quota_Day',
     originalKey: 'bd_Quota_Day',
     label: '每日额度',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -534,7 +534,7 @@ export default [
     name: 'bd_User',
     originalKey: 'bd_User',
     label: '用户信息',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -554,7 +554,7 @@ export default [
     name: 'bd_Message',
     originalKey: 'bd_Message',
     label: '系统消息',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -598,7 +598,7 @@ export default [
     name: 'bd_User_Message',
     originalKey: 'bd_User_Message',
     label: '用户消息',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',
@@ -634,7 +634,7 @@ export default [
     name: 'bd_Operation_Log',
     originalKey: 'bd_Operation_Log',
     label: '操作日志',
-    module: '金融',
+    module: 'finance',
     fields: [
       {
         type: 'nvarchar(50)',

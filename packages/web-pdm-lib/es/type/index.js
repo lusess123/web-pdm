@@ -14,8 +14,6 @@ import { TSys } from './sys';
 import { TGraph } from './graph';
 import { createData, createLinks } from '../graph/data';
 import { renderModelTitle } from '../util/label';
-// import StateStack from '../state-stack'
-import { undoManager } from '../context';
 function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
@@ -45,6 +43,9 @@ let RootInstance = class RootInstance extends Model({
                 this.sys.checkedKeys = union(without(this.sys.checkedKeys, ...withoutKeys), keys);
             }
         };
+    }
+    setUndoManager(undoManager) {
+        this.undoManager = undoManager;
     }
     get moduleList() {
         return [...this.Modules.values()];
@@ -96,7 +97,7 @@ let RootInstance = class RootInstance extends Model({
         let modelsKeys = [];
         models.forEach((model) => {
             const key = NewGuid().toString();
-            this.Models.set(key, new TModel({ id: key, label: model.name, name: model.name, moduleId: moduleHas[model.module] || '' }));
+            this.Models.set(key, new TModel({ id: key, label: model.label, name: model.name, moduleId: moduleHas[model.module] || '' }));
             model.fields.forEach((field) => {
                 const _key = NewGuid().toString();
                 this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new MetaType(field.typeMeta) : undefined), label: field.label, name: field.name, type: field.type || 'string', modelId: key }));
@@ -114,7 +115,7 @@ let RootInstance = class RootInstance extends Model({
         //     const state = StateStack.undo()
         //     console.log(state)
         //     window.lockSnapshot = true
-        undoManager.undo();
+        this.undoManager.undo();
         //     this.sys.snapshot = false
         // alert('undo ' + state.sys.showNameOrLabel)
         //     applySnapshot(this,state)
@@ -125,7 +126,7 @@ let RootInstance = class RootInstance extends Model({
         // console.log(state)
         // window.lockSnapshot = true
         // applySnapshot(this,state)
-        undoManager.redo();
+        this.undoManager.redo();
     }
     checkAllFun() {
         var _a, _b;

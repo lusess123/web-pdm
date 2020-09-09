@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { changeTwoDecimal_f, CreateComponent } from '../../util';
 import { useMst } from '../../context';
 // import StateStack from '../../state-stack'
-import { undoManager } from '../../context';
+// import { undoManager } from '../../context'
 const IconRenders = {
     'container': React.createElement(BorderOutlined, null),
     'arrow-up': React.createElement(ArrowUpOutlined, null),
@@ -25,6 +25,7 @@ const IconRenders = {
 export default observer(({ graph }) => {
     var _a;
     const mst = useMst();
+    const undoManager = mst.undoManager;
     const zoomNum = graph && changeTwoDecimal_f(parseFloat(((_a = mst.graph) === null || _a === void 0 ? void 0 : _a.zoom) * 100) + '') || 0;
     if (!graph)
         return React.createElement("div", { className: 'console-erd-toolbar' }, "\u6B63\u5728\u521D\u59CB\u5316\u4E2D....");

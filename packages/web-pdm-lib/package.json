@@ -1,6 +1,6 @@
 {
   "name": "web-pdm",
-  "version": "0.1.8",
+  "version": "0.2.1",
   "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -20,7 +20,7 @@
     
     "copy": "rm -rf es && mkdir es && cp -R src/* es && find es -name '*.ts' | xargs rm -f && find es -name '*.tsx' | xargs rm -f",
     "dist": "rm -rf dist && TS_NODE_PROJECT=\"./tsconfig-for-webpack-config.json\" webpack --config webpack.config.ts --mode development",
-    "tsc": "tsc src/*.tsx src/**/*.ts src/**/*.tsx  --allowSyntheticDefaultImports true -d --lib es6,dom --experimentalDecorators true -t es6 --moduleResolution node --jsx react --outDir es"
+    "tsc": "tsc src/*.tsx  src/**/*.tsx  --allowSyntheticDefaultImports true -d --lib es6,dom --experimentalDecorators true -t es6 --moduleResolution node --jsx react --outDir es"
   },
   "author": "北名",
   "license": "ISC",
