@@ -50,6 +50,8 @@ export declare class RootInstance extends RootInstance_base {
                         endArrow: {
                             path: string;
                             d: number;
+                            fill: string;
+                            shadowColor: string;
                         };
                         opacity: number;
                         radius: number;

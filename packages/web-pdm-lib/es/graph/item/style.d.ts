@@ -28,6 +28,8 @@ export declare const initStyle: ({ primaryColor }: {
                 endArrow: {
                     path: string;
                     d: number;
+                    fill: string;
+                    shadowColor: string;
                 };
                 opacity: number;
                 radius: number;

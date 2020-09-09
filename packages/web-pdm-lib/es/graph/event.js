@@ -50,12 +50,16 @@ export default (graph, mst) => {
             let sourceNode = edge.get('sourceNode');
             let targetNode = edge.get('targetNode');
             const targetModel = targetNode.getModel();
-            if (!edge.getModel().self) {
-                const isTo = targetModel.x > sourceNode.getModel().x;
-                const targetAnchor = (isTo ? 0 : 1);
-                if (targetModel.targetAnchor !== targetAnchor)
-                    // edge.set('targetAnchor', targetAnchor)
-                    graph.updateItem(edge, { targetAnchor });
+            const edgeModel = edge.getModel();
+            if (!edgeModel.self && !edgeModel.isSys) {
+                const isTo = sourceNode.getModel().x < targetNode.getModel().x;
+                const i = edgeModel.fieldIndex;
+                const l = edgeModel.fieldsLength;
+                // const isTo = targetModel.x > sourceNode.getModel().x
+                const sourceAnchor = (!isTo ? i + 2 : 2 + i + l);
+                // if (targetModel.targetAnchor !== targetAnchor)
+                //   // edge.set('targetAnchor', targetAnchor)
+                graph.updateItem(edge, { sourceAnchor });
             }
             if (!targetModel.visible || !sourceNode.getModel().visible) {
                 edge.hide();
@@ -168,46 +172,52 @@ export default (graph, mst) => {
         graph.paint();
         graph.setAutoPaint(autoPaint);
     });
-    graph.on('node:dragend', (ev) => {
+    graph.on('node:dragend1', (ev) => {
         // const shape = ev.target
         const node = ev.item;
         const edges = node.getEdges();
         const x = ev.x;
+        // alert(edges.length)
         edges.forEach((edge) => {
             const sourceNode = edge.getSource();
             const targetNode = edge.getTarget();
-            if (node === sourceNode) {
-                const edgeModel = edge.getModel();
-                const isTo = x < targetNode.getModel().x;
-                const i = edgeModel.fieldIndex;
-                const l = edgeModel.fieldsLength;
-                if (sourceNode === targetNode) {
-                    graph.updateItem(edge, {
-                    // sourceAnchor: !isTo ? i + 2 : 2 + i + l,
-                    // targetAnchor: edge.targetAnchor,
-                    });
+            if (!targetNode.getModel().isSys) {
+                if (node === sourceNode) {
+                    const edgeModel = edge.getModel();
+                    // if(edgeModel.isSys) return 
+                    const isTo = x < targetNode.getModel().x;
+                    const i = edgeModel.fieldIndex;
+                    const l = edgeModel.fieldsLength;
+                    if (sourceNode === targetNode) {
+                        // graph.updateItem(edge, {
+                        //   targetAnchor: !isTo ? i + 2 : 2 + i + l,
+                        //   // targetAnchor: edge.targetAnchor,
+                        // })
+                    }
+                    else {
+                        //alert(x + '  ' + targetNode.getModel().x+ ' == ' +(isTo ? i + 2 : 2 + i + l) )
+                        graph.updateItem(edge, {
+                            sourceAnchor: !isTo ? i + 2 : 2 + i + l,
+                        });
+                    }
                 }
                 else {
-                    graph.updateItem(edge, {
-                        sourceAnchor: !isTo ? i + 2 : 2 + i + l,
-                    });
-                }
-            }
-            else {
-                const edgeModel = edge.getModel();
-                const isTo = sourceNode.getModel().x < x;
-                const i = edgeModel.fieldIndex;
-                const l = edgeModel.fieldsLength;
-                if (sourceNode === targetNode) {
-                    graph.updateItem(edge, {
-                    // sourceAnchor: !isTo ? i + 2 : 2 + i + l,
-                    // targetAnchor: undefined,
-                    });
-                }
-                else {
-                    graph.updateItem(edge, {
-                        sourceAnchor: !isTo ? i + 2 : 2 + i + l,
-                    });
+                    const edgeModel = edge.getModel();
+                    // if(edgeModel.isSys) return 
+                    const isTo = sourceNode.getModel().x < x;
+                    const i = edgeModel.fieldIndex;
+                    const l = edgeModel.fieldsLength;
+                    if (sourceNode === targetNode) {
+                        graph.updateItem(edge, {
+                            sourceAnchor: !isTo ? i + 2 : 2 + i + l,
+                            targetAnchor: undefined,
+                        });
+                    }
+                    else {
+                        graph.updateItem(edge, {
+                            sourceAnchor: !isTo ? i + 2 : 2 + i + l,
+                        });
+                    }
                 }
             }
         }); // ----获取所有的边

@@ -87,7 +87,7 @@ export const createLinks = (root) => {
                 if (!relationModel || !root.sys.checkedKeys.find(a => a === relationModel.id))
                     return fPre;
                 const isTo = true;
-                const l = Object.keys(model.fields).length;
+                const l = model.fields.length;
                 const sourceAnchor = !isTo ? (i + 2) : (2 + i + l);
                 return [
                     ...fPre,
@@ -97,10 +97,10 @@ export const createLinks = (root) => {
                         target: 'model-' + relationModel.id,
                         sourceAnchor,
                         // // targetAnchor: sourceAnchor,
-                        // targetAnchor:  model.key === field.typeMeta.relationModel ? (sourceAnchor - 1) : undefined,
+                        targetAnchor: model.id === relationModel.id ? (sourceAnchor - 1) : undefined,
                         fieldIndex: i,
                         // tooltip: `<div>从 <span class='text'>${relationModel?.label}</span> 到 <span class='text'>${model?.label}</span> ${Relation[field.type]||field.type} 关系</div>`
-                        // fieldsLength: l,
+                        fieldsLength: l,
                         style: style.default.edge,
                         type: 'console-line',
                         label: field.type,
