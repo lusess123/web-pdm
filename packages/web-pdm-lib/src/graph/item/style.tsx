@@ -40,8 +40,11 @@ export  const initStyle = ({primaryColor}) => {
        size: 2,
        lineAppendWidth: 4,
        endArrow: {
-         path: 'M 6,0 L -6,-6 L -3,0 L -6,6 Z',
-         d: 4,
+         path: 'M 24,0 L -24,-12 L 8,0 L -24,12 Z',
+         d: 2,
+         fill: 'rgba(11,108,149)',
+         shadowColor: 'rgba(0,0,0,0.1)',
+        //  opacity: 1,
        },
        opacity: 0.2,
        radius: 5,

@@ -9,7 +9,7 @@ export type IUseUpdateItem = {
 }
 
 export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom } : IUseUpdateItem) => {
-    const firstRef = useRef(true)
+    // const firstRef = useRef(true)
     useEffect(() => {
       const modelId= 'model-' +currentModel
       // if(graph)  {
@@ -28,7 +28,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom } : I
         // alert(zoomNum)
         // alert(JSON.stringify(nodes))
         gnodes.forEach((node) => {
-          if (node.isSys) return
+          if (!node.isSys){
           const nodeModel = node.getModel()
           const nodeId = nodeModel.id
           const data = nodeModel ? nodeModel.data : undefined
@@ -46,6 +46,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom } : I
             isCardSharp,
             showNameOrLabel
           })
+          }
         })
   
         //  const edges = graph.getEdges()
