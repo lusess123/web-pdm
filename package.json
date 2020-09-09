@@ -8,7 +8,10 @@
     "es"
   ],
   "scripts": {
-    "start": "dumi dev"
+    "start": "dumi dev",
+    "docs:build": "dumi build  &&  rm -rf  docker/public && cp -rf ./docs-dist/**/*  docker/public",
+    "publish-docker": "cd ./docker && sh build.sh",
+    "publish-server": "cd ./docker && sh upload.sh"
   },
   "author": "北名",
   "license": "ISC",

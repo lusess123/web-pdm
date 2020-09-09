@@ -1,2 +1,2 @@
-docker build -t webpdm  .   
-docker run -d -it -p 5002:80  webpdm 
+docker build -t webpdmdoc  .   
+docker run -d -it -p 5012:80  webpdmdoc
