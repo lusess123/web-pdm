@@ -30,4 +30,3 @@ const renderTitleGreen = (isSpec, title) => {
     const greenStyle = isSpec ? { color: 'green' } : {};
     return (React.createElement("span", { style: greenStyle }, title));
 };
-//# sourceMappingURL=label.js.map

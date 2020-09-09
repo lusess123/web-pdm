@@ -82,4 +82,3 @@ export const initStyle = ({ primaryColor }) => {
         style,
     };
 };
-//# sourceMappingURL=style.js.map

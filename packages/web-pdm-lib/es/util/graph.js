@@ -18,4 +18,3 @@ export const toCenter = (item, graph) => {
     const graphHeight = height / 2;
     graph.translate(0, (-graphHeight + itemHight / 2 + 120));
 };
-//# sourceMappingURL=graph.js.map

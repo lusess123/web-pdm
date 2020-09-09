@@ -35,4 +35,3 @@ export default ({ models, modules, key, className, style, height }) => {
     return React.createElement(Provider, { value: rootStore },
         React.createElement(Page, { models: models, modules: modules, key: key, className: className, style: style, height: height }));
 };
-//# sourceMappingURL=index.js.map

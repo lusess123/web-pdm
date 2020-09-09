@@ -214,4 +214,3 @@ export default (graph, mst) => {
         graph.paint();
     });
 };
-//# sourceMappingURL=event.js.map

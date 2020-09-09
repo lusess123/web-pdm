@@ -74,4 +74,3 @@ export const changeTwoDecimal_f = (x) => {
         return 100;
     return s_x;
 };
-//# sourceMappingURL=index.js.map

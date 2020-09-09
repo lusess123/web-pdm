@@ -27,4 +27,3 @@ const OptionBuilder = ({ data }) => {
 // alert()
 AntTree["OptionBuilder"] = OptionBuilder;
 export const Tree = AntTree;
-//# sourceMappingURL=index.js.map

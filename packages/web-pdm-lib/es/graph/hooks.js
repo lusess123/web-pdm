@@ -52,4 +52,3 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom }) =>
         }
     }, [currentModel, showNameOrLabel, zoom <= 0.4]);
 };
-//# sourceMappingURL=hooks.js.map

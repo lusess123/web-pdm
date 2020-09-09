@@ -95,4 +95,3 @@ const useLocal = () => {
         }, [])
     };
 };
-//# sourceMappingURL=index.js.map

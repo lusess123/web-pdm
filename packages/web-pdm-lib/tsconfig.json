@@ -30,6 +30,9 @@
     "preserveSymlinks":true,
     "outDir": "./es",
   },
+  "include": [
+    "src/**/*"
+  ],
   "exclude": ["node_modules", "es", "dist", "webconfig.config.js", "test"]
   
 }

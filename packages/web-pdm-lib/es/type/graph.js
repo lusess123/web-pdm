@@ -1,6 +1,10 @@
-import { __decorate, __metadata } from "tslib";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { model, Model, prop, modelAction } from 'mobx-keystone';
-import { Graph } from '@antv/g6';
 let TGraph = class TGraph extends Model({
     zoom: prop(0)
 }) {
@@ -83,37 +87,21 @@ let TGraph = class TGraph extends Model({
     }
 };
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], TGraph.prototype, "setZoom", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Graph]),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], TGraph.prototype, "minZoom", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Graph]),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], TGraph.prototype, "maxZoom", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Graph]),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], TGraph.prototype, "container", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], TGraph.prototype, "downAsImage", null);
 TGraph = __decorate([
     model("webpdm/TGraph")
 ], TGraph);
 export { TGraph };
-//# sourceMappingURL=graph.js.map

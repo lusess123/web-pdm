@@ -202,4 +202,3 @@ const layout = (graph, nodes, edges, mst) => {
 const async = (fun) => {
     setTimeout(fun, 500);
 };
-//# sourceMappingURL=index.js.map

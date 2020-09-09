@@ -24,10 +24,7 @@ export const createData = (root) => {
             data: {
                 moduleKey: m.moduleId,
                 label: m.label,
-                fields: m.fields.map(a => ({
-                    ...getSnapshot(a),
-                    relationModel: getSnapshot(a.relationModel)
-                })),
+                fields: m.fields.map(a => (Object.assign(Object.assign({}, getSnapshot(a)), { relationModel: getSnapshot(a.relationModel) }))),
                 key: m.id,
                 name: m.name,
                 tag: 'aggregate',
@@ -165,4 +162,3 @@ export const createLinks = (root) => {
 //     return nodeRes.length > 0 ? nodeRes.concat([createSysNode()]) : nodeRes
 //     // })
 //   }
-//# sourceMappingURL=data.js.map

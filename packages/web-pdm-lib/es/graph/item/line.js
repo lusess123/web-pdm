@@ -7,4 +7,3 @@ export default () => {
         labelAutoRotate: true,
     }, 'cubic');
 };
-//# sourceMappingURL=line.js.map

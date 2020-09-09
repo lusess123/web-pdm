@@ -15,4 +15,3 @@ export const undoManager = undoMiddleware(rootStore);
 export const createRootStore = (props) => {
     return createStore(props);
 };
-//# sourceMappingURL=context.js.map

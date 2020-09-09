@@ -490,21 +490,12 @@ export const register = () => {
                 name: data.key,
                 draggable: true,
                 // visible: false,
-                attrs: {
-                    id: 'keySharp',
-                    x: -(config.width / 2),
-                    y: -height / 2,
-                    width: config.width,
-                    cursor: 'move',
+                attrs: Object.assign(Object.assign({ id: 'keySharp', x: -(config.width / 2), y: -height / 2, width: config.width, cursor: 'move', 
                     // fill:'red',
-                    height: height + 10,
-                    ...cfg.config.styleConfig.default.node,
-                    stroke: selected ? cfg.config.styleConfig.selected.node.stroke : cfg.config.styleConfig.default.node.stroke
-                },
+                    height: height + 10 }, cfg.config.styleConfig.default.node), { stroke: selected ? cfg.config.styleConfig.selected.node.stroke : cfg.config.styleConfig.default.node.stroke }),
             });
             this.render(cfg, group);
             return keyShape;
         },
     }, 'single-shape');
 };
-//# sourceMappingURL=model-node.js.map

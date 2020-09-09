@@ -4,4 +4,3 @@ export default () => {
     register();
     lineRegister();
 };
-//# sourceMappingURL=index.js.map

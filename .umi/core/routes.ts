@@ -12,7 +12,7 @@ export function getRoutes() {
   {
     "path": "/",
     "component": (props) => require('react').createElement(require('../../node_modules/@umijs/preset-dumi/lib/themes/default/layout.js').default, {
-      ...{"menus":{"*":{"*":[{"path":"/","title":"README","meta":{"order":null}},{"path":"/er图demo","title":"ER图demo","meta":{}}]}},"locales":[],"navs":{},"title":"web-pdm","logo":"https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png","desc":"一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","mode":"doc"},
+      ...{"menus":{"*":{"*":[{"path":"/","title":"README","meta":{"order":null}},{"path":"/api","title":"Api","meta":{}},{"path":"/er图demo","title":"ER图demo","meta":{}}]}},"locales":[],"navs":{},"title":"web-pdm","logo":"https://user-images.githubusercontent.com/9554297/83762004-a0761b00-a6a9-11ea-83b4-9c8ff721d4b8.png","desc":"一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","mode":"doc"},
       ...props,
     }),
     "routes": [
@@ -38,6 +38,18 @@ export function getRoutes() {
           "title": "ER图demo"
         },
         "title": "ER图demo"
+      },
+      {
+        "path": "/api",
+        "component": require('../../docs/api.md').default,
+        "exact": true,
+        "meta": {
+          "filePath": "docs/api.md",
+          "updatedTime": 1599611252960,
+          "slugs": [],
+          "title": "Api"
+        },
+        "title": "Api"
       }
     ],
     "title": "web-pdm"

@@ -6,4 +6,3 @@ const Snippet$1 = t.model("Snippet", {
 export const Snippet = Snippet$1.props({
     annotations: t.array(t.late(() => Annotation))
 });
-//# sourceMappingURL=snippet.js.map

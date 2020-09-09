@@ -16,7 +16,7 @@
     "@umijs/plugin-sass": "^1.1.1",
     "dumi": "^1.0.34",
     "typescript": "^4.0.2",
-    "web-pdm": "^0.1.5",
+    "web-pdm": "^0.1.6",
     "xtend": "^4.0.2",
     "yargs-parser": "^19.0.4"
   }

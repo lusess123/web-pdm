@@ -78,4 +78,3 @@ export const getRightAnch = (num, x = 1) => {
 export const getLength = (length) => {
     return length >= 8 ? length : 8;
 };
-//# sourceMappingURL=util.js.map

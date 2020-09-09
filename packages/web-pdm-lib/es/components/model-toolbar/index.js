@@ -45,4 +45,3 @@ const ButtonActon = CreateComponent({
             React.createElement("span", { className: classNames({ 'enable': !props.disable, 'command-btn': true }), onClick: !props.disable ? props.onClick : undefined }, IconRender));
     }
 });
-//# sourceMappingURL=index.js.map

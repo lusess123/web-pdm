@@ -1,4 +1,9 @@
-import { __decorate, __metadata } from "tslib";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { model, Model, prop, modelAction, objectMap } from 'mobx-keystone';
 import { computed } from 'mobx';
 import { without, union } from 'lodash';
@@ -139,71 +144,40 @@ let RootInstance = class RootInstance extends Model({
     }
 };
 __decorate([
-    computed,
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [])
+    computed
 ], RootInstance.prototype, "moduleList", null);
 __decorate([
-    computed,
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [])
+    computed
 ], RootInstance.prototype, "Nodes", null);
 __decorate([
-    computed,
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [])
+    computed
 ], RootInstance.prototype, "edges", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], RootInstance.prototype, "findModelByName", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [TModel]),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], RootInstance.prototype, "renderModelTitle", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], RootInstance.prototype, "init", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Array, Array, Object]),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], RootInstance.prototype, "initData", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], RootInstance.prototype, "undo", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], RootInstance.prototype, "redo", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], RootInstance.prototype, "checkAllFun", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    modelAction
 ], RootInstance.prototype, "checkAllCancleFun", null);
 __decorate([
-    modelAction,
-    __metadata("design:type", Object)
+    modelAction
 ], RootInstance.prototype, "setCheckedKeys", void 0);
 RootInstance = __decorate([
     model("webpdm/RootStore")
@@ -212,15 +186,7 @@ export { RootInstance };
 export const createStore = (props = { sys: {}, graph: {} }) => {
     return new RootInstance({
         $modelId: 'webpdm',
-        sys: new TSys({
-            isArrangeLayout: false,
-            layouting: true,
-            search: '',
-            ...props.sys
-        }),
-        graph: new TGraph({
-            ...props.graph
-        })
+        sys: new TSys(Object.assign({ isArrangeLayout: false, layouting: true, search: '' }, props.sys)),
+        graph: new TGraph(Object.assign({}, props.graph))
     });
 };
-//# sourceMappingURL=index.js.map

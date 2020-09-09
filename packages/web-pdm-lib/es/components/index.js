@@ -18,4 +18,3 @@ export default CreateComponent({
                 React.createElement(GraphPage, null)));
     }
 });
-//# sourceMappingURL=index.js.map
