@@ -1,1 +1,0 @@
-<code src="./type-erd.tsx"  />

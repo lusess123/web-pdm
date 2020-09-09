@@ -1,4 +1,6 @@
+
 export type MetaTypeConfig = {
+    
     relationModel: string,
     type: 'Relation'
 }
