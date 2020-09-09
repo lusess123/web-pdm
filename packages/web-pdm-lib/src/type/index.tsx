@@ -1,5 +1,5 @@
 
-import { model, Model, prop, modelAction, objectMap } from 'mobx-keystone'
+import { model, Model, prop, modelAction, objectMap, UndoManager } from 'mobx-keystone'
 import { computed } from 'mobx'
 import { without, union } from 'lodash'
 import { TModel } from './model'
@@ -10,7 +10,7 @@ import { TGraph } from './graph'
 import { createData, createLinks } from '../graph/data'
 import { renderModelTitle } from '../util/label'
 // import StateStack from '../state-stack'
-import { undoManager } from '../context'
+// import { undoManager } from '../context'
 import { SysConfig, ModelConfig, ModuleConfig } from './config'
 
 
@@ -37,6 +37,13 @@ export class RootInstance extends Model({
       graph: prop<TGraph>(()=> new TGraph({}))
 
 }) {
+
+      undoManager : UndoManager
+
+      setUndoManager(undoManager: UndoManager) {
+         this.undoManager = undoManager
+      }
+
       @computed
       get moduleList() {
             return [...this.Modules.values()]
@@ -106,7 +113,7 @@ export class RootInstance extends Model({
             let modelsKeys: string[] = []
             models.forEach((model) => {
                   const key = NewGuid().toString()
-                  this.Models.set(key, new TModel({ id: key, label: model.name, name: model.name, moduleId: moduleHas[model.module] || '' }))
+                  this.Models.set(key, new TModel({ id: key, label: model.label, name: model.name, moduleId: moduleHas[model.module] || '' }))
                   model.fields.forEach((field) => {
                         const _key = NewGuid().toString()
                         this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.label, name: field.name, type: field.type || 'string', modelId: key }))
@@ -129,7 +136,7 @@ export class RootInstance extends Model({
       //     const state = StateStack.undo()
       //     console.log(state)
       //     window.lockSnapshot = true
-      undoManager.undo()
+      this.undoManager.undo()
       //     this.sys.snapshot = false
       // alert('undo ' + state.sys.showNameOrLabel)
       //     applySnapshot(this,state)
@@ -143,7 +150,7 @@ export class RootInstance extends Model({
             // console.log(state)
             // window.lockSnapshot = true
             // applySnapshot(this,state)
-            undoManager.redo()
+            this.undoManager.redo()
       }
       @modelAction
       checkAllFun() {

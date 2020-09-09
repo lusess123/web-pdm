@@ -21,13 +21,31 @@ export default defineConfig({
   //   '@c-primary': '#ff652f',
   // },
   antd: {
-    // dark: true,
+    dark: true,
     // compact: true,
   },
   resolve : {
     includes: ['docs'],
     // previewLangs: []
 
-  }
+  },
+  plugins: [
+    // ref: https://umijs.org/plugin/umi-plugin-react.html
+    [
+      'umi-plugin-react',
+      {
+        antd: true, // 重点在这里。。。我没有发现到antd是false
+        dva: false,
+        dynamicImport: false,
+        title: 'simple-umi',
+        dll: false,
+ 
+        routes: {
+          exclude: [/components\//],
+        },
+      },
+    ],
+  ],
+
   // more config: https://d.umijs.org/config
 });

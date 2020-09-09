@@ -106,3 +106,4 @@ dist
 public/
 docker/public/
 src/.umi/
+.umi/

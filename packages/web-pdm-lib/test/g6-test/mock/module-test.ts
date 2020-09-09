@@ -1,11 +1,11 @@
 export default [
   {
-    name: '金融',
+    name: 'finance',
     label: '金融',
   },
   {
     name: 'ERP',
-    label: 'ERP',
+    label: '进销存',
   },
   {
     label: '汽修',

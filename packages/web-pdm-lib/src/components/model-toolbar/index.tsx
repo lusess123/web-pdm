@@ -7,7 +7,7 @@ import { observer, useObserver, Observer, useLocalStore } from 'mobx-react-lite'
 import { changeTwoDecimal_f , CreateComponent  } from '../../util'
 import { useMst } from '../../context'
 // import StateStack from '../../state-stack'
-import { undoManager } from '../../context'
+// import { undoManager } from '../../context'
 
 const IconRenders = {
   'container' : <BorderOutlined />,
@@ -30,6 +30,7 @@ const IconRenders = {
 export default observer(({ graph } : { graph : any}) => {
  
   const mst = useMst()
+  const undoManager = mst.undoManager
 
   const zoomNum = graph && changeTwoDecimal_f(parseFloat(mst.graph?.zoom * 100) + '') || 0
 

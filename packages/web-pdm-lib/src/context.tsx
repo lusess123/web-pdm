@@ -15,8 +15,10 @@ export function useMst() {
   return store;
 }
 
-export const rootStore = createStore()
-export const undoManager = undoMiddleware(rootStore)
+// export const rootStore = createStore()
+// export const undoManager = undoMiddleware(rootStore)
 export const createRootStore = (props) => {
-   return createStore(props)
+   const rootStore = createStore(props)
+   rootStore.setUndoManager(undoMiddleware(rootStore))
+   return rootStore
 }

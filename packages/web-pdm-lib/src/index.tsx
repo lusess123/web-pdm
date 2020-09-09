@@ -8,13 +8,13 @@ export * from './type/config'
 // import './style.scss'
 
 
-export const Page = observer<any>(({ models, modules, key, className, style, height }) => {
+export const Page = observer<any>(({ models, modules, erdkey, className, style, height }) => {
     const data = useMst()
     useEffect(() => {
       onSnapshot(data, snapshot => {
-           sessionStorage.setItem('web-pdm' + key, JSON.stringify(snapshot))
+           sessionStorage.setItem('web-pdm' + erdkey, JSON.stringify(snapshot))
       })
-      const localdata = sessionStorage.getItem('web-pdm'+ key)
+      const localdata = sessionStorage.getItem('web-pdm'+ erdkey)
       if(!localdata) {
         withoutUndo(() => data.initData(models, modules))
       } else {
@@ -28,7 +28,7 @@ export const Page = observer<any>(({ models, modules, key, className, style, hei
     return <MSTPage className={className} style={style} />
   })
 
-export default ({ models, modules, key, className,  style, height}) => {
+export default ({ models, modules, erdkey, className,  style, height}) => {
     const [rootStore] = useState(() => {
       return createRootStore({
         sys : {
@@ -37,7 +37,7 @@ export default ({ models, modules, key, className,  style, height}) => {
       })
     })
     return <Provider value={rootStore}>
-     <Page models={models} modules={modules} key={key} className={className} style={style} height={height} />
+     <Page models={models} modules={modules} key={erdkey} className={className} style={style} height={height} />
     </Provider>
 }
 

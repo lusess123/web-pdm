@@ -46,7 +46,7 @@ export default CreateComponent<IModelNaviProps>(
      
       const mst = useMst()
       const { onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
-      return <div className='console-models-tree' height={mst.sys.height} style={{height: mst.sys.height}}>
+      return <div className='console-models-tree' style={{height: mst.sys.height}}>
         <div className='header'>
           <div className='console-erd-search'>
             <Input allowClear value={mst.sys.search}  size="small" onChange={setSearch} addonAfter={
@@ -80,7 +80,7 @@ export default CreateComponent<IModelNaviProps>(
               {
                 !mst.sys.tabOrTree && mst.moduleList.map(m => {
                   return (
-                    <TreeNode title={m.name} key={m.id}>
+                    <TreeNode title={mst.sys.showNameOrLabel ? m.name : m.label} key={m.id}>
                        {[...m.models.values()].filter(model => model.filterModel() ).map(model => {
                          return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst)} />
                        })}
