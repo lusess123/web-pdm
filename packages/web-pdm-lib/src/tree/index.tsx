@@ -40,6 +40,6 @@ const OptionBuilder = ({data}) => {
   </div>)
 }
 // alert()
-AntTree.OptionBuilder = OptionBuilder
+AntTree["OptionBuilder"] = OptionBuilder
 
-export const Tree = AntTree
+export const Tree : any = AntTree

@@ -1,19 +1,18 @@
 import { createContext, useContext } from 'react';
 import { undoMiddleware } from 'mobx-keystone';
 import { createStore } from './type';
-var RootStoreContext = createContext(null);
-export var Provider = RootStoreContext.Provider;
+const RootStoreContext = createContext(null);
+export const Provider = RootStoreContext.Provider;
 export function useMst() {
-  var store = useContext(RootStoreContext);
-
-  if (store === null) {
-    throw new Error("Store cannot be null, please add a context provider");
-  }
-
-  return store;
+    const store = useContext(RootStoreContext);
+    if (store === null) {
+        throw new Error("Store cannot be null, please add a context provider");
+    }
+    return store;
 }
-export var rootStore = createStore();
-export var undoManager = undoMiddleware(rootStore);
-export var createRootStore = function createRootStore(props) {
-  return createStore(props);
+export const rootStore = createStore();
+export const undoManager = undoMiddleware(rootStore);
+export const createRootStore = (props) => {
+    return createStore(props);
 };
+//# sourceMappingURL=context.js.map

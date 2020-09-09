@@ -8,12 +8,17 @@
     "jsx": "react",
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "declaration": true,
+    // "noEmitOnError":true,
     // "suppressImplicitAnyIndexErrors":false,
     "sourceMap": true,
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "noImplicitAny": true,
+    // "noImplicitAny": true,
+    "allowJs": true,
+    // "noEmit": true ,
+    // "skipLibCheck":true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "downlevelIteration": true,
@@ -22,7 +27,9 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules":false,
-    "preserveSymlinks":true
-  }
+    "preserveSymlinks":true,
+    "outDir": "./es",
+  },
+  "exclude": ["node_modules", "es", "dist", "webconfig.config.js", "test"]
   
 }

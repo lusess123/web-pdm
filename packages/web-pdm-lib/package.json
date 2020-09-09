@@ -1,6 +1,6 @@
 {
   "name": "web-pdm",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -16,21 +16,25 @@
     "publish-docker": "cd ./docker && sh build.sh",
     "publish-server": "cd ./docker && sh upload.sh",
     "dev": "father doc dev",
-    "build-lib": "father build"
+    "build-lib": "father build",
+    "tsc" : "rm -rf es && tsc"
   },
   "author": "北名",
   "license": "ISC",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^5.0.2",
     "@types/lodash": "^4.14.161",
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.8.4",
     "@umijs/plugin-antd": "^0.8.0",
+    "@umijs/plugin-sass": "^1.1.1",
     "ak-webpack": "^1.0.15",
     "father": "^2.29.9",
+    "rollup-plugin-typescript2": "^0.27.2",
     "typescript": "^3.8.2",
     "wrappy": "^1.0.2",
-    "xtend": "^4.0.2",
-    "@umijs/plugin-sass": "^1.1.1"
+    "xdg-basedir": "^4.0.0",
+    "xtend": "^4.0.2"
   },
   "dependencies": {
     "@antv/g6": "^3.6.0",

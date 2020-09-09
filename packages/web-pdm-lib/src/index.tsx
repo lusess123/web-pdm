@@ -8,7 +8,7 @@ export * from './type/config'
 // import './style.scss'
 
 
-export const Page = observer(({ models, modules, key, className, style, height }) => {
+export const Page = observer<any>(({ models, modules, key, className, style, height }) => {
     const data = useMst()
     useEffect(() => {
       onSnapshot(data, snapshot => {

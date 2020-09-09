@@ -1,5 +1,5 @@
 
-import { model, Model, prop, modelAction, prop_mapObject, objectMap, applySnapshot } from 'mobx-keystone'
+import { model, Model, prop, modelAction, objectMap } from 'mobx-keystone'
 import { computed } from 'mobx'
 import { without, union } from 'lodash'
 import { TModel } from './model'
@@ -92,7 +92,7 @@ export class RootInstance extends Model({
       }
       
       @modelAction
-      initData( models : ModelConfig[] , modules: ModuleConfig[], sys: SysConfig) {
+      initData( models : ModelConfig[] , modules: ModuleConfig[], sys?: SysConfig) {
 
             let moduleHas: Record<string, string> = {}
             modules.forEach((module) => {

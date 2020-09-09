@@ -1,5 +1,6 @@
 const fs = require('fs');
 const nodePath = require('path');
+// import typescript from 'rollup-plugin-typescript2';
 const extraBabelPlugins = [
   [
     'babel-plugin-import',
@@ -12,14 +13,14 @@ const extraBabelPlugins = [
   ],
 ];
 export default {
-  esm: 'babel',
+  esm: "rollup",
   disableTypeCheck: true,
-  // lessInBabelMode: {
-  //   javascriptEnabled: true,
-  //   sourceMap: {},
-  // },
+  lessInBabelMode: {
+    javascriptEnabled: true,
+    sourceMap: {},
+  },
   extraBabelPlugins,
-  // extractCSS: true,
+  extractCSS: true,
   // extraExternals: ['lodash', 'classnames'],
-  // extraRollupPlugins: [],
+  extraRollupPlugins: [],
 };
