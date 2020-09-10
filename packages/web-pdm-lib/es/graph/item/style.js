@@ -36,7 +36,7 @@ export const initStyle = ({ primaryColor }) => {
                 lineWidth: 2,
                 size: 2,
                 lineAppendWidth: 4,
-                endArrow: {
+                startArrow: {
                     path: 'M 24,0 L -24,-12 L 8,0 L -24,12 Z',
                     d: 2,
                     fill: 'rgba(11,108,149)',

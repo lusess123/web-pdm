@@ -29,7 +29,7 @@ export declare const createData: (root: RootInstance) => {
                     lineWidth: number;
                     size: number;
                     lineAppendWidth: number;
-                    endArrow: {
+                    startArrow: {
                         path: string;
                         d: number;
                         fill: string;

@@ -193,6 +193,7 @@ export interface IConfigFromPlugins {
     compact?: boolean;
     config?: {};
   };
+  esbuild?: {};
   sass?: {
     implementation?: any;
     sassOptions?: {};

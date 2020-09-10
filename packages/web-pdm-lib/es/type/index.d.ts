@@ -47,7 +47,7 @@ export declare class RootInstance extends RootInstance_base {
                         lineWidth: number;
                         size: number;
                         lineAppendWidth: number;
-                        endArrow: {
+                        startArrow: {
                             path: string;
                             d: number;
                             fill: string;

@@ -1,17 +1,17 @@
 // @ts-nocheck
-import { ApplyPluginsType } from '/Users/beiming/work/github/web-pdm/node_modules/@umijs/runtime';
+import { ApplyPluginsType, dynamic } from '/Users/beiming/work/github/web-pdm/node_modules/@umijs/runtime';
 import { plugin } from './plugin';
 
 export function getRoutes() {
   const routes = [
   {
-    "path": "/_demos/erd",
-    "component": require('../../docs/erd.tsx').default,
+    "path": "/_demos/type-erd",
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__type-erd' */'../../docs/type-erd.tsx')}),
     "exact": true
   },
   {
-    "path": "/_demos/type-erd",
-    "component": require('../../docs/type-erd.tsx').default,
+    "path": "/_demos/erd",
+    "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__erd' */'../../docs/erd.tsx')}),
     "exact": true
   },
   {
@@ -23,11 +23,11 @@ export function getRoutes() {
     "routes": [
       {
         "path": "/",
-        "component": require('../../docs/index.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__index.md' */'../../docs/index.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/index.md",
-          "updatedTime": 1599637024279,
+          "updatedTime": 1599642389000,
           "title": "web-pdm - 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
           "order": 10,
           "hero": {
@@ -63,11 +63,11 @@ export function getRoutes() {
       },
       {
         "path": "/config",
-        "component": require('../../docs/config/index.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__config__index.md' */'../../docs/config/index.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/config/index.md",
-          "updatedTime": 1599642084215,
+          "updatedTime": 1599642389000,
           "order": 1,
           "nav": {
             "order": 2,
@@ -108,11 +108,11 @@ export function getRoutes() {
       },
       {
         "path": "/demo",
-        "component": require('../../docs/demo/index.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__demo__index.md' */'../../docs/demo/index.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/demo/index.md",
-          "updatedTime": 1599642143711,
+          "updatedTime": 1599642389000,
           "order": 1,
           "title": "例子",
           "nav": {
@@ -127,11 +127,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide/ddd",
-        "component": require('../../docs/guide/ddd.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__ddd.md' */'../../docs/guide/ddd.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/ddd.md",
-          "updatedTime": 1599641411781,
+          "updatedTime": 1599642389000,
           "legacy": "/ddd",
           "slugs": [
             {
@@ -153,11 +153,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide/faq",
-        "component": require('../../docs/guide/faq.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__faq.md' */'../../docs/guide/faq.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/faq.md",
-          "updatedTime": 1599639543855,
+          "updatedTime": 1599642389000,
           "title": "FAQ",
           "slugs": [],
           "nav": {
@@ -172,11 +172,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide/getting-started",
-        "component": require('../../docs/guide/getting-started.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__getting-started.md' */'../../docs/guide/getting-started.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/getting-started.md",
-          "updatedTime": 1599641553120,
+          "updatedTime": 1599642389000,
           "title": "快速上手",
           "order": 9,
           "nav": {
@@ -193,11 +193,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide",
-        "component": require('../../docs/guide/index.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__index.md' */'../../docs/guide/index.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/index.md",
-          "updatedTime": 1599641360504,
+          "updatedTime": 1599642389000,
           "title": "介绍",
           "nav": {
             "title": "指南",
@@ -254,11 +254,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide/migration",
-        "component": require('../../docs/guide/migration.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__migration.md' */'../../docs/guide/migration.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/migration.md",
-          "updatedTime": 1599639659463,
+          "updatedTime": 1599642389000,
           "legacy": "/migration",
           "slugs": [
             {
@@ -280,11 +280,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide/model",
-        "component": require('../../docs/guide/model.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__model.md' */'../../docs/guide/model.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/model.md",
-          "updatedTime": 1599642231947,
+          "updatedTime": 1599642389000,
           "slugs": [],
           "title": "Model",
           "nav": {
@@ -299,11 +299,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide/next",
-        "component": require('../../docs/guide/next.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__next.md' */'../../docs/guide/next.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/next.md",
-          "updatedTime": 1599640781395,
+          "updatedTime": 1599642389000,
           "legacy": "/next",
           "slugs": [
             {
@@ -340,11 +340,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide/relation",
-        "component": require('../../docs/guide/relation.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__relation.md' */'../../docs/guide/relation.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/relation.md",
-          "updatedTime": 1599642237726,
+          "updatedTime": 1599642389000,
           "slugs": [],
           "title": "Relation",
           "nav": {
@@ -359,11 +359,11 @@ export function getRoutes() {
       },
       {
         "path": "/guide/toolbar",
-        "component": require('../../docs/guide/toolbar.md').default,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: 'docs__guide__toolbar.md' */'../../docs/guide/toolbar.md')}),
         "exact": true,
         "meta": {
           "filePath": "docs/guide/toolbar.md",
-          "updatedTime": 1599640152867,
+          "updatedTime": 1599642389000,
           "title": "基本操作",
           "slugs": [],
           "nav": {

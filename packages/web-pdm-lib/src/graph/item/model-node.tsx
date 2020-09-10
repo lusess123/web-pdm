@@ -25,12 +25,12 @@ export const register = () => {
             return [[0, config.headerHeight / 2 / h], // 左上方
             [1, config.headerHeight / 2 / h], // 右上方
             ...fields.map((_, index) => {
-                const x = 10 / config.width
+                const x = 5 / config.width
                 const l = config.headerHeight + config.fieldHeight * (index + 1) - config.fieldHeight / 2
                 const y = l / h
                 return [x, y]
             }), ...fields.map((_, index) => {
-                const x = (config.width - 10) / config.width
+                const x = (config.width - 5) / config.width
                 const l = config.headerHeight + config.fieldHeight * (index + 1) - config.fieldHeight / 2
                 const y = l / h
                 return [x, y]

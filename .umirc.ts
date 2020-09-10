@@ -12,6 +12,10 @@ export default defineConfig({
   resolve : {
     includes: ['docs']
   },
+  dynamicImport: {},
+  // mpa: {},
+  antd: {},
+  // esbuild: {},
   menus: {
     '/guide': [
       {
