@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite';
 import { Provider, createRootStore } from './context';
 import MSTPage from './components';
 export * from './type/config';
-// import './style.scss'
 export const Page = observer(({ models, modules, erdkey, className, style, height }) => {
     const data = useMst();
     useEffect(() => {
@@ -24,14 +23,16 @@ export const Page = observer(({ models, modules, erdkey, className, style, heigh
     }, []);
     return React.createElement(MSTPage, { className: className, style: style });
 });
-export default ({ models, modules, erdkey, className, style, height }) => {
+const WebPDM = ({ models, modules, erdkey, className, onIgnoreEdge, style, height }) => {
     const [rootStore] = useState(() => {
         return createRootStore({
             sys: {
-                height
+                height,
+                onIgnoreEdge
             }
         });
     });
     return React.createElement(Provider, { value: rootStore },
         React.createElement(Page, { models: models, modules: modules, erdkey: erdkey, className: className, style: style, height: height }));
 };
+export default WebPDM;

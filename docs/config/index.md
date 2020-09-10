@@ -11,7 +11,7 @@ toc: menu
 # props
 
 
- <code src="../type-erd.tsx"  />
+ <code src="../type-erd.tsx"  inline />
 
 
 ## models 

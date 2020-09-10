@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom }) => {
+export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, checkNum }) => {
     // const firstRef = useRef(true)
     useEffect(() => {
         const modelId = 'model-' + currentModel;
@@ -16,7 +16,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom }) =>
             if (!gnodes.length)
                 return;
             // alert(nodes.length)
-            const zoomNum = graph.getZoom();
+            // const zoomNum = graph.getZoom()
             // alert(zoomNum)
             // alert(JSON.stringify(nodes))
             gnodes.forEach((node) => {
@@ -25,7 +25,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom }) =>
                     const nodeId = nodeModel.id;
                     const data = nodeModel ? nodeModel.data : undefined;
                     const isNoModule = (modelId || '').indexOf('module-') >= 0 && ((data && data.moduleKey) !== modelId);
-                    const isKeySharp = zoomNum <= 0.4;
+                    const isKeySharp = zoom <= 0.4;
                     // const isCardSharp = zoomNum <= 0.05 * 2
                     // const isKeySharp = false
                     const isCardSharp = false;
@@ -50,5 +50,5 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom }) =>
             //  }
             // graph.paint()
         }
-    }, [currentModel, showNameOrLabel, zoom <= 0.4]);
+    }, [currentModel, showNameOrLabel, zoom >= 0.4]);
 };

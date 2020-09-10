@@ -13,7 +13,7 @@ export declare type ModelConfig = {
     label: string;
     fields: FieldConfig[];
     module: string;
-    type: string;
+    type?: string;
 };
 export declare type ModuleConfig = {
     name: string;

@@ -16,12 +16,12 @@ export const register = () => {
             return [[0, config.headerHeight / 2 / h],
                 [1, config.headerHeight / 2 / h],
                 ...fields.map((_, index) => {
-                    const x = 10 / config.width;
+                    const x = 5 / config.width;
                     const l = config.headerHeight + config.fieldHeight * (index + 1) - config.fieldHeight / 2;
                     const y = l / h;
                     return [x, y];
                 }), ...fields.map((_, index) => {
-                    const x = (config.width - 10) / config.width;
+                    const x = (config.width - 5) / config.width;
                     const l = config.headerHeight + config.fieldHeight * (index + 1) - config.fieldHeight / 2;
                     const y = l / h;
                     return [x, y];
@@ -101,7 +101,7 @@ export const register = () => {
                     case 'header':
                         // s.attr('opacity', !cfg.isKeySharp ? 1 : 0)
                         s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : colors.blue);
-                        s.set('visible', !cfg.isCardSharp);
+                        s.set('visible', !cfg.isCardSharp && !cfg.isKeySharp);
                         // s.attr('opacity', 1)
                         break;
                     case 'headerlabel2':
@@ -160,7 +160,7 @@ export const register = () => {
             const mFront = colors.white;
             const nodeColors = { bg, font, mFront };
             group.addShape('rect', {
-                // visible: !cfg.isKeySharp,
+                visible: !cfg.isKeySharp,
                 name: data.key,
                 draggable: true,
                 attrs: {

@@ -13,7 +13,12 @@ export function useMst() {
 // export const rootStore = createStore()
 // export const undoManager = undoMiddleware(rootStore)
 export const createRootStore = (props) => {
-    const rootStore = createStore(props);
+    var _a;
+    const onIgnoreEdge = (_a = props === null || props === void 0 ? void 0 : props.sys) === null || _a === void 0 ? void 0 : _a.onIgnoreEdge;
+    const newProps = onIgnoreEdge ? Object.assign(Object.assign({}, props), { sys: Object.assign(Object.assign({}, props.sys), { onIgnoreEdge: undefined }) }) : props;
+    const rootStore = createStore(newProps);
+    if (onIgnoreEdge)
+        rootStore.sys.onIgnoreEdge = onIgnoreEdge;
     rootStore.setUndoManager(undoMiddleware(rootStore));
     return rootStore;
 };

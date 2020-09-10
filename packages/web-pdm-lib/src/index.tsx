@@ -18,7 +18,7 @@ export interface IWebPdmProps {
   onIgnoreEdge?: (field: FieldConfig) => boolean
 }
 
-export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className, style, height }) => {
+export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className, style, height, onIgnoreEdge }) => {
     const data = useMst()
     useEffect(() => {
       onSnapshot(data, snapshot => {
@@ -30,7 +30,14 @@ export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className
       } else {
         const sdata = JSON.parse(localdata)
         sdata.sys.height = height
-        withoutUndo(() => applySnapshot(data,sdata))
+        withoutUndo(() => 
+        {
+          applySnapshot(data,sdata)
+          data.sys.setOnIgnoreEdge(onIgnoreEdge)
+        }
+          
+          )
+       
       }
       
   
@@ -38,17 +45,17 @@ export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className
     return <MSTPage className={className} style={style} />
   })
 
-const WebPDM :SFC<IWebPdmProps>  = ({ models, modules, erdkey, className, onIgnoreEdge, style, height}) => {
+const WebPDM :SFC<IWebPdmProps>  = (props) => {
     const [rootStore] = useState(() => {
       return createRootStore({
         sys : {
-          height,
-          onIgnoreEdge
+          height: props.height,
+          onIgnoreEdge: props.onIgnoreEdge
         }
       })
     })
     return <Provider value={rootStore}>
-     <Page models={models} modules={modules} erdkey={erdkey} className={className} style={style} height={height} />
+     <Page {...props} />
     </Provider>
 }
 

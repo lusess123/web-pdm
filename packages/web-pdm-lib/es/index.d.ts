@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { SFC } from 'react';
+import { ModelConfig, ModuleConfig, FieldConfig } from './type/config';
 export * from './type/config';
-export declare const Page: React.FunctionComponent<any>;
-declare const _default: ({ models, modules, erdkey, className, style, height }: {
-    models: any;
-    modules: any;
-    erdkey: any;
-    className: any;
-    style: any;
-    height: any;
-}) => JSX.Element;
-export default _default;
+export interface IWebPdmProps {
+    models: ModelConfig[];
+    modules: ModuleConfig[];
+    erdkey: string;
+    className?: string;
+    style?: any;
+    height?: string | number;
+    onIgnoreEdge?: (field: FieldConfig) => boolean;
+}
+export declare const Page: React.FunctionComponent<IWebPdmProps>;
+declare const WebPDM: SFC<IWebPdmProps>;
+export default WebPDM;

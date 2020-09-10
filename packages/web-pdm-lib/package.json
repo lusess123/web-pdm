@@ -1,6 +1,6 @@
 {
   "name": "web-pdm",
-  "version": "0.2.3-dev.1",
+  "version": "0.2.3-dev.2",
   "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf public &&  NODE_ENV=production webpack --config ./webconfig.config.js --mode production  --colors --max_old_space_size=1024 && rm -rf docker/public  && cp -r ./public docker/public",
     "watch": "time webpack-dev-server  --watch-poll --config ./webconfig.config.js --mode development",
-    "publish-npm": "npm config set registry http://registry.npmjs.org && npm publish && npm config set registry https://registry.npm.taobao.org",
+    "publish-npm": "npm run build-lib ; npm publish --registry=http://registry.npmjs.org",
     "publish-docker": "cd ./docker && sh build.sh",
     "publish-server": "cd ./docker && sh upload.sh",
     "dev": "father doc dev",

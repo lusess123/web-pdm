@@ -21,6 +21,7 @@ const useLocal = () => {
     const containerRef = useRef(null);
     const erdGraphRef = useRef(null);
     useEffect(() => { register(); }, []);
+    const checkRef = useRef(+new Date());
     useEffect(() => {
         // alert()
         const { Nodes, edges } = mst;
@@ -51,11 +52,13 @@ const useLocal = () => {
     //     graph.zoomTo(mst.graph.zoom, point)
     //   }
     // } , [mst.graph.zoom])
+    //  alert('useUpdateItem' + mst.graph.zoom)
     useUpdateItem({
         currentModel: mst.sys.currentModel,
         graph: erdGraphRef.current,
         showNameOrLabel: mst.sys.showNameOrLabel,
-        zoom: mst.graph.zoom
+        zoom: mst.graph.zoom,
+        checkNum: checkRef.current
     });
     return {
         containerRef,
@@ -97,19 +100,21 @@ const render = (container, nodes, edges, mst) => {
         maxZoom: 1.1,
         layout: {
             type: 'force',
-            condense: true,
-            cols: 3,
+            // condense: true,
+            // cols: 3,
             workerEnabled: true,
-            linkDistance: 0,
+            // linkDistance: 0 ,
             alphaDecay: 0.2,
             preventOverlap: true,
             collideStrength: 0.5,
-            nodeSpacing: -180,
+            nodeSpacing: -100,
             onLayoutEnd: () => {
                 graph.isLayouting = false;
                 graph.fitView(0);
                 // alert()
+                // alert('end' + graph.getZoom())
                 mst.graph.setZoom(graph.getZoom());
+                // checkRef.current = + new Date()
             }
         },
         modes: {

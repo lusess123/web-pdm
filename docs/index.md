@@ -23,9 +23,20 @@ $ npm i web-pdm
 
 ## 快速体验
 
- <code src="./type-erd.tsx"  />
+ <code src="./type-erd.tsx" defaultShowCode  />
 
-## 谁在使用
+
+## 反馈与共建
+
+```jsx | inline
+import React from 'react';
+import Groupjpeg from './assets/group.jpeg'
+export default () => <img src={Groupjpeg} width="260" />;
+```
+
+
+
+
 
 
 

@@ -41,6 +41,7 @@ export class TField extends Model({
         if (this.typeMeta && this.typeMeta.relationModel) {
             const root: RootInstance = getRoot(this)
             const model = root.findModelByName(this.typeMeta.relationModel)
+            // console.log(model)
             // typeof model
             return model
 

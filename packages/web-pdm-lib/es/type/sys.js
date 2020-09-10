@@ -38,6 +38,9 @@ let TSys = class TSys extends Model({
             this.showNameOrLabel = !this.showNameOrLabel;
         };
     }
+    setOnIgnoreEdge(onIgnoreEdge) {
+        this.onIgnoreEdge = onIgnoreEdge;
+    }
     toggleArrangeLayout() {
         this.isArrangeLayout = !this.isArrangeLayout;
     }
@@ -66,6 +69,7 @@ let TSys = class TSys extends Model({
                 item.toFront();
             toCenter(item, graph);
         }
+        root.graph.setZoom(graph.getZoom());
         //toCenter(   , root.graph.G6Graph)
     }
     onInit() {

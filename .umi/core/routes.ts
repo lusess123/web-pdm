@@ -54,8 +54,8 @@ export function getRoutes() {
             },
             {
               "depth": 2,
-              "value": "谁在使用",
-              "heading": "谁在使用"
+              "value": "反馈与共建",
+              "heading": "反馈与共建"
             }
           ]
         },
@@ -67,7 +67,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "docs/config/index.md",
-          "updatedTime": 1599642389000,
+          "updatedTime": 1599730740000,
           "order": 1,
           "nav": {
             "order": 2,
@@ -100,6 +100,11 @@ export function getRoutes() {
               "depth": 2,
               "value": "style",
               "heading": "style"
+            },
+            {
+              "depth": 2,
+              "value": "onIgnoreEdge",
+              "heading": "onignoreedge"
             }
           ],
           "title": "props"

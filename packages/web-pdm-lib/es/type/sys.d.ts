@@ -1,3 +1,4 @@
+import { FieldConfig } from './config';
 declare const TSys_base: import("mobx-keystone")._Model<unknown, {
     search: import("mobx-keystone").OptionalModelProp<string, string>;
     layouting: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
@@ -12,6 +13,8 @@ declare const TSys_base: import("mobx-keystone")._Model<unknown, {
     height: import("mobx-keystone").OptionalModelProp<string | number, string | number>;
 }>;
 export declare class TSys extends TSys_base {
+    onIgnoreEdge: (filed: FieldConfig) => boolean;
+    setOnIgnoreEdge(onIgnoreEdge: any): void;
     toggleArrangeLayout(): void;
     setExpandedKeys: (keys: string[]) => void;
     setCurrentModel(keys: string[]): void;
