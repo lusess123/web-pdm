@@ -24,6 +24,8 @@
 
 [基本版Demo](http://zyking.xyz:5002/ "基本版Demo")
 
+[模型](http://zyking.xyz:5012/_demos/type-erd/"模型")
+
 
 
 # 快速启动
@@ -31,4 +33,8 @@
 npm i 
 
 npm run watch
+
+# 反馈与共建
+
+<img src='http://zyking.xyz:5012/static/group.1959d82a.jpeg' width='260'>
 
