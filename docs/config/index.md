@@ -79,3 +79,6 @@ export type ModuleConfig = {
 - 说明： 容器的样式设置
 - 类型： html style  对象
 
+## onIgnoreEdge
+- 说明： 是否忽略连接线的创建
+- 类型： (field: FieldConfig) => boolean
