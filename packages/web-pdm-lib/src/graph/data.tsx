@@ -94,11 +94,14 @@ export const createLinks = (root: RootInstance) => {
       }
     }
 
+    
+
     const fieldLinks = (model.fields).reduce((fPre, field, i) => {
       const isRelation = field.typeMeta && field.typeMeta.type === 'Relation' && field.typeMeta?.relationModel
       // const { id } = field
       if (isRelation) {
-
+         if(root.sys.onIgnoreEdge && root.sys.onIgnoreEdge(field)) return fPre
+        //if(field?.typeMeta?.relationModel === 'base_User' && (confirmEnding(field.name, 'createdBy') || confirmEnding(field.name,'updatedBy')  ) ) return fPre
         const relationModel = root.findModelByName(field.typeMeta!.relationModel)
         if(!relationModel || !root.sys.checkedKeys.find(a=>a === relationModel!.id)) return fPre
 
@@ -120,7 +123,7 @@ export const createLinks = (root: RootInstance) => {
             fieldsLength: l,
             style: style.default.edge,
             type: 'console-line',
-            label: field.type,
+            // label: field.type,
             labelAutoRotate: true,
             loopCfg: {
               // position: 'top',

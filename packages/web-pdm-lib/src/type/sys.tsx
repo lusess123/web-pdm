@@ -1,6 +1,7 @@
 import { model, Model, prop, modelAction, UndoStore, getRoot } from 'mobx-keystone'
 import { RootInstance } from './index'
 import { toCenter } from '../util/graph'
+import { FieldConfig } from './config'
 @model("webpdm/TSys")
 export class TSys extends Model({
     search: prop(''),
@@ -18,7 +19,11 @@ export class TSys extends Model({
 }) {
 
   
+    onIgnoreEdge : (filed: FieldConfig) => boolean
 
+    setOnIgnoreEdge(onIgnoreEdge) {
+        this.onIgnoreEdge = onIgnoreEdge
+    }
 
     @modelAction
     toggleArrangeLayout() {
@@ -59,6 +64,7 @@ export class TSys extends Model({
             item.toFront()
             toCenter(item, graph)
         }
+        root.graph.setZoom(graph.getZoom())
         //toCenter(   , root.graph.G6Graph)
     }
 

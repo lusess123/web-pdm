@@ -17,7 +17,7 @@ export type ModelConfig = {
     label: string,
     fields: FieldConfig[],
     module: string,
-    type: string 
+    type?: string 
 }
 
 export type ModuleConfig = {

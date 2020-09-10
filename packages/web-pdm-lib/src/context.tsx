@@ -18,7 +18,10 @@ export function useMst() {
 // export const rootStore = createStore()
 // export const undoManager = undoMiddleware(rootStore)
 export const createRootStore = (props) => {
-   const rootStore = createStore(props)
+   const onIgnoreEdge:any = props?.sys?.onIgnoreEdge
+   const newProps = onIgnoreEdge ? { ... props, sys: {...props.sys, onIgnoreEdge : undefined }} : props
+   const rootStore = createStore(newProps)
+   if(onIgnoreEdge) rootStore.sys.onIgnoreEdge = onIgnoreEdge
    rootStore.setUndoManager(undoMiddleware(rootStore))
    return rootStore
 }

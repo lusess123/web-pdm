@@ -129,7 +129,7 @@ export const register = () => {
                     case 'header':
                         // s.attr('opacity', !cfg.isKeySharp ? 1 : 0)
                         s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : colors.blue)
-                        s.set('visible', !cfg.isCardSharp)
+                        s.set('visible', !cfg.isCardSharp && !cfg.isKeySharp)
                         // s.attr('opacity', 1)
                         break
 
@@ -201,7 +201,7 @@ export const register = () => {
             const nodeColors = { bg, font, mFront }
 
             group.addShape('rect', {
-                // visible: !cfg.isKeySharp,
+                visible: !cfg.isKeySharp,
                 name: data.key,
                 draggable: true,
                 attrs: {

@@ -13,6 +13,7 @@ export default defineConfig({
     includes: ['docs']
   },
   dynamicImport: {},
+  exportStatic: {},
   // mpa: {},
   antd: {},
   // esbuild: {},
