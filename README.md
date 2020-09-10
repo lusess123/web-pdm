@@ -24,7 +24,7 @@
 
 [基本版Demo](http://zyking.xyz:5002/ "基本版Demo")
 
-[模型](http://zyking.xyz:5012/_demos/type-erd/"模型")
+[模型](http://zyking.xyz:5012/_demos/type-erd/ "模型")
 
 
 
