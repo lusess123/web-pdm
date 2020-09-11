@@ -39,10 +39,12 @@ export default (graph, mst) => {
             // note:由于此应用中有minimap，直接隐藏节点会影响缩略图视图，直接隐藏节点具体内容
             if (!model.selected && (model.x + w < topLeft.x - 200 || model.x - w > bottomRight.x || model.y + h < topLeft.y || model.y - h > bottomRight.y)) {
                 node.getContainer().hide();
+                node.getEdges().forEach(a => a.hide());
             }
             else {
                 // 节点在视窗中，则展示
                 node.getContainer().show();
+                node.getEdges().forEach(a => a.show());
             }
         });
     }, 300)); // graph.on('node:dblclick', (ev) => {

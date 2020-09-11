@@ -1,5 +1,5 @@
 // import { Tooltip } from 'antd'
-import { FileMarkdownOutlined, FileImageOutlined, RollbackOutlined, BgColorsOutlined, UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons';
+import { FileMarkdownOutlined, CloseCircleFilled, DownloadOutlined, RollbackOutlined, BgColorsOutlined, UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import React, { isValidElement, useState, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
@@ -7,6 +7,7 @@ import { changeTwoDecimal_f, CreateComponent } from '../../util';
 import { useMst } from '../../context';
 // import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
 import { SketchPicker } from 'react-color';
+import { throttle } from 'lodash';
 // const components = {
 //   Input, Button, Dropdown, Menu, Select, Tooltip, Tree
 // }
@@ -22,8 +23,8 @@ const IconRenders = {
     'pdm': React.createElement(FileMarkdownOutlined, null),
     'lock': React.createElement(LockOutlined, null),
     'unlock': React.createElement(UnlockOutlined, null),
-    'image': React.createElement(FileImageOutlined, null),
-    'upload': React.createElement(FileImageOutlined, null),
+    'image': React.createElement(DownloadOutlined, null),
+    // 'upload':<FileImageOutlined />,
     'min': React.createElement(ZoomOutOutlined, null),
     'max': React.createElement(ZoomInOutlined, null)
 };
@@ -33,10 +34,10 @@ export default observer(({ graph }) => {
     const undoManager = mst.undoManager;
     const { Tooltip, Popover } = mst.Ui;
     const [colorPabel, setColorPabel] = useState(false);
-    const setColor = useCallback((color) => {
+    const setColor = useCallback(throttle((color) => {
         mst.Ui.setThemeColor(color.hex);
         //  setColorPabel(false)
-    }, [colorPabel]);
+    }, 200), [colorPabel]);
     const zoomNum = graph && changeTwoDecimal_f(parseFloat(((_a = mst.graph) === null || _a === void 0 ? void 0 : _a.zoom) * 100) + '') || 0;
     if (!graph)
         return React.createElement("div", { className: 'console-erd-toolbar' }, "\u6B63\u5728\u521D\u59CB\u5316\u4E2D....");
@@ -50,7 +51,7 @@ export default observer(({ graph }) => {
             React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u5168\u666F', icon: 'container', onClick: mst.graph.container.bind(mst.graph, graph) }),
             React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u4E0B\u8F7D\u56FE\u7247', icon: 'image', onClick: mst.graph.downAsImage.bind(mst.graph, graph) }),
             React.createElement(Popover, { placement: "rightTop", arrowPointAtCenter: true, footer: null, content: React.createElement(SketchPicker, { color: mst.Ui.themeColor, onChange: setColor }), visible: colorPabel },
-                React.createElement(ButtonActon, { Tooltip: Tooltip, title: `点击${colorPabel ? '关闭' : '打开'}颜色面板`, color: mst.Ui.themeColor, icon: React.createElement(BgColorsOutlined, null), onClick: setColorPabel.bind(null, !colorPabel) })))));
+                React.createElement(ButtonActon, { Tooltip: Tooltip, title: `点击${colorPabel ? '关闭' : '打开'}颜色面板`, color: mst.Ui.themeColor, icon: colorPabel ? React.createElement(CloseCircleFilled, null) : React.createElement(BgColorsOutlined, null), onClick: setColorPabel.bind(null, !colorPabel) })))));
 });
 const ButtonActon = CreateComponent({
     render: (props) => {

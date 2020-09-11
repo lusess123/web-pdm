@@ -24,9 +24,9 @@ let TGraph = class TGraph extends Model({
         // const gwidth = graph.get('width')
         // const gheight = graph.get('height')
         // const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
-        const zoom = graph.getZoom();
+        const zoom = this.zoom;
         if (zoom > 0.2) {
-            this.zoom = zoom - 0.2;
+            this.zoom = zoom - 0.1;
         }
         else {
             this.zoom = zoom - 0.02;
@@ -36,9 +36,9 @@ let TGraph = class TGraph extends Model({
         // const gwidth = graph.get('width')
         // const gheight = graph.get('height')
         // const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
-        const zoom = graph.getZoom();
+        const zoom = this.zoom;
         if (zoom > 0.2) {
-            this.zoom = zoom + 0.2;
+            this.zoom = zoom + 0.1;
         }
         else {
             this.zoom = zoom + 0.02;
@@ -53,7 +53,7 @@ let TGraph = class TGraph extends Model({
         if (!_graph)
             return;
         const oldZoom = this.G6Graph.getZoom();
-        const newZoom = 100;
+        //const newZoom = 100
         _graph.isExporting = true;
         _graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
             node.getContainer().show();
@@ -66,13 +66,23 @@ let TGraph = class TGraph extends Model({
         const gheight = _graph.get('height');
         const point = _graph.getCanvasByPoint(gwidth / 2, gheight / 2);
         // graph.moveTo({x: point.x , y : point.y})
-        _graph.zoomTo(newZoom / 100, { x: point.x, y: point.y });
-        _graph.paint();
+        // _graph.zoomTo(0.6, {x: point.x , y : point.y})
+        // _graph.paint()
+        // this.setZoom(0.6)
+        _graph.zoomTo(0.8);
         _graph.downloadFullImage('模型图', undefined, {
             backgroundColor: 'rgb(245, 247, 255)',
         });
         _graph.isExporting = undefined;
         _graph.zoomTo(oldZoom);
+        this.setZoom(oldZoom);
+        _graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
+            node.getContainer().show();
+            _graph.updateItem(node, {
+                isKeySharp: oldZoom < 0.4,
+                isCardSharp: false,
+            });
+        });
     }
     actionEdges(currentModel) {
         this.G6Graph.getEdges().forEach(edge => {
@@ -81,6 +91,7 @@ let TGraph = class TGraph extends Model({
                 edge.setState('active', false);
                 if (edgeData.source === 'model-' + currentModel || edgeData.target === 'model-' + currentModel) {
                     edge.setState('active', true);
+                    edge.toFront();
                 }
             }
         });

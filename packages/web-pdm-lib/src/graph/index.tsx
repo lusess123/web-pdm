@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react'
 import G6, { Graph } from '@antv/g6'
+import { withoutUndo } from 'mobx-keystone'
 import { useMst } from '../context'
 import register from './item'
 import { observer } from 'mobx-react-lite'
@@ -13,8 +14,10 @@ import { RootInstance } from '../type'
 
 
 export default observer(() => {
+  const mst = useMst()
   const { setRef, erdGraph } = useLocal()
   return <>
+  {/* <div>{mst.sys.checkedKeys.length}</div> */}
   <ToolBar graph={erdGraph} />
   <div ref={setRef} className='graph' />
   </>
@@ -31,7 +34,7 @@ const useLocal = () => {
   useEffect(
     () => {
       // alert()
-      const { Nodes , edges } = mst
+      // const { Nodes , edges } = mst
       if (!erdGraphRef.current) {
         //  alert(mst.Nodes.length)
         // alert(mst === window.kkk)
@@ -47,11 +50,11 @@ const useLocal = () => {
       }
       else {
         // alert(mst.Nodes.length)
-        layout(erdGraphRef.current,  Nodes , edges, mst)
-        erdGraphRef.current.fitView(0)
+        layout(erdGraphRef.current,  mst.Nodes , mst.edges, mst)
+        // erdGraphRef.current.fitView(0)
       }
       
-    }, [ mst.sys.checkedKeys, mst])
+    }, [ JSON.stringify(mst.sys.checkedKeys), mst])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
   useEffect(() => {
     const graph = erdGraphRef.current
@@ -123,16 +126,19 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
       cols: 3,
       workerEnabled: true,
       linkDistance: 0,
-      alphaDecay: 0.1,
+      alphaDecay: isLargar ? 0.3 : 0.15,
       preventOverlap: true,
-      // // collideStrength: 0.5,
+      // collideStrength: 0.5,
       nodeSpacing: isLargar ? -100 : -180,
       onLayoutEnd: () => {
         graph.isLayouting = false
         graph.fitView(0)
-        // alert()
-        // alert('end' + graph.getZoom())
-        mst.graph.setZoom(graph.getZoom())
+        withoutUndo(()=>{
+          mst.graph.setZoom(graph.getZoom())
+        })
+        // // alert()
+        // // alert('end' + graph.getZoom())
+        // mst.graph.setZoom(graph.getZoom())
         // checkRef.current = + new Date()
       }
     },
@@ -223,18 +229,18 @@ const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
 
       type: 'force',
       condense: true,
-      cols: 3,
+      // cols: 3,
       workerEnabled: true,
       linkDistance: 0,
       alphaDecay: isLargar ? 0.1 : 0.3,
-      preventOverlap: false,
-      collideStrength: 0.5,
-      nodeSpacing: isLargar ? -100 : -180,
+      // preventOverlap: false,
+      // collideStrength: 0.5,
+      // nodeSpacing: -1000,
       onLayoutEnd: () => {
         graph.isLayouting = false
-        graph.fitView(0)
-        // alert()
-        mst.graph.setZoom(graph.getZoom())
+        // graph.fitView(0)
+        alert()
+        // mst.graph.setZoom(graph.getZoom())
       }
 
     }))

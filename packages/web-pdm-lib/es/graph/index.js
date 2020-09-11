@@ -43,15 +43,15 @@ const useLocal = () => {
         }
     }, [mst.sys.checkedKeys, mst]);
     const setRef = useCallback((ref) => { containerRef.current = ref; }, [containerRef]);
-    // useEffect(() => {
-    //   const graph = erdGraphRef.current
-    //   if(graph) {
-    //     const gwidth = graph.get('width')
-    //     const gheight = graph.get('height')
-    //     const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
-    //     graph.zoomTo(mst.graph.zoom, point)
-    //   }
-    // } , [mst.graph.zoom])
+    useEffect(() => {
+        const graph = erdGraphRef.current;
+        if (graph) {
+            const gwidth = graph.get('width');
+            const gheight = graph.get('height');
+            const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2);
+            graph.zoomTo(mst.graph.zoom, point);
+        }
+    }, [mst.graph.zoom]);
     //  alert('useUpdateItem' + mst.graph.zoom)
     useUpdateItem({
         currentModel: mst.sys.currentModel,
@@ -81,6 +81,7 @@ const render = (container, nodes, edges, mst) => {
     // alert(height)
     const styleConfig = initStyle({ primaryColor: mst.Ui.themeColor }).style;
     const isLargar = nodes.length > 50;
+    // alert(isLargar)
     const graph = new G6.Graph({
         height,
         width: container.offsetWidth - 20,
@@ -106,9 +107,9 @@ const render = (container, nodes, edges, mst) => {
             cols: 3,
             workerEnabled: true,
             linkDistance: 0,
-            alphaDecay: isLargar ? 0.3 : 0.05,
+            alphaDecay: 0.1,
             preventOverlap: true,
-            collideStrength: 0.5,
+            // // collideStrength: 0.5,
             nodeSpacing: isLargar ? -100 : -180,
             onLayoutEnd: () => {
                 graph.isLayouting = false;
@@ -186,6 +187,7 @@ const layout = (graph, nodes, edges, mst) => {
     // })
     // alert(graph.getNodes().length)
     const isLargar = graph.getNodes().length > 50;
+    // alert(isLargar)
     graph.isLayouting = true;
     async(() => graph.updateLayout({
         type: 'force',
@@ -193,10 +195,10 @@ const layout = (graph, nodes, edges, mst) => {
         cols: 3,
         workerEnabled: true,
         linkDistance: 0,
-        alphaDecay: isLargar ? 0.3 : 0.2,
-        preventOverlap: true,
-        collideStrength: isLargar ? 0.05 : 0.2,
-        nodeSpacing: isLargar ? 0 : -180,
+        alphaDecay: isLargar ? 0.1 : 0.3,
+        preventOverlap: false,
+        collideStrength: 0.5,
+        nodeSpacing: isLargar ? -100 : -180,
         onLayoutEnd: () => {
             graph.isLayouting = false;
             graph.fitView(0);
