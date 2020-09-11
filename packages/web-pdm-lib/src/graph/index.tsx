@@ -70,7 +70,8 @@ const useLocal = () => {
     graph : erdGraphRef.current as any,
     showNameOrLabel: mst.sys.showNameOrLabel,
     zoom: mst.graph.zoom,
-    checkNum: checkRef.current
+    checkNum: checkRef.current,
+    themeColor: mst.Ui.themeColor
   })
   return {
     containerRef,

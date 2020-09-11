@@ -47,4 +47,8 @@ export class TUi extends Model({
         this.update = +new Date()
         this.isToogle = !this.isToogle
     }
+    @modelAction
+    setThemeColor(color: string){
+        this.themeColor = color
+    }
 }

@@ -1,12 +1,14 @@
 
 // import { Tooltip } from 'antd'
-import { FileMarkdownOutlined, FileImageOutlined, RollbackOutlined,  UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
+import { FileMarkdownOutlined, FileImageOutlined, RollbackOutlined,BgColorsOutlined,UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
-import React, { isValidElement } from 'react' 
+import React, { isValidElement, useState, useCallback } from 'react' 
 import { observer } from 'mobx-react-lite'
 import { changeTwoDecimal_f , CreateComponent  } from '../../util'
 import { useMst } from '../../context'
-import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree } from '@terminus/nusi'
+import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
+import { SketchPicker } from 'react-color'
+
 const components = {
   Input, Button, Dropdown, Menu, Select, Tooltip, Tree
 }
@@ -36,6 +38,11 @@ export default observer(({ graph } : { graph : any}) => {
   const mst = useMst()
   const undoManager = mst.undoManager
   const { Tooltip }  = mst.Ui
+  const [colorPabel, setColorPabel] = useState(false)
+  const setColor = useCallback((color)=>{
+     mst.Ui.setThemeColor(color.hex)
+    //  setColorPabel(false)
+  },[colorPabel])
 
   const zoomNum = graph && changeTwoDecimal_f(parseFloat(mst.graph?.zoom * 100) + '') || 0
 
@@ -54,8 +61,11 @@ export default observer(({ graph } : { graph : any}) => {
     <ButtonActon Tooltip={Tooltip} title='全景' icon='container' onClick={mst.graph.container.bind(mst.graph, graph)} />
     <ButtonActon Tooltip={Tooltip} title='下载图片' icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
     <ButtonActon Tooltip={Tooltip} title='切换' icon='image' onClick={mst.Ui.toggle.bind(mst.Ui, components)}  />
+    <Popover placement="rightTop" arrowPointAtCenter footer={null} content={<SketchPicker color={mst.Ui.themeColor}   onChange={setColor} />} visible={colorPabel}>
+    <ButtonActon Tooltip={Tooltip} title={`点击${colorPabel? '关闭':'打开'}颜色面板`} color={mst.Ui.themeColor} icon={<BgColorsOutlined/>} onClick={setColorPabel.bind(null, !colorPabel)}  />
+    </Popover>
     </div>
-
+    
     </div>)
 })
 
@@ -65,12 +75,13 @@ type IButtonActon = {
     onClick?: () => void,
     disable?: boolean,
     Tooltip: any
+    color?: string
 }
 
 const ButtonActon  = CreateComponent<IButtonActon>({
     render : (props) => {
       const { Tooltip } = props
      const IconRender =  isValidElement(props.icon) ?  props.icon : IconRenders[props.icon] 
-     return  <Tooltip title={props.title} ><span className={classNames({'enable' : !props.disable, 'command-btn' : true })} onClick={ !props.disable ? props.onClick : undefined } >{IconRender}</span></Tooltip>
+     return  <Tooltip title={props.title} ><span style={{color: props.color}} className={classNames({'enable' : !props.disable, 'command-btn' : true })} onClick={ !props.disable ? props.onClick : undefined } >{IconRender}</span></Tooltip>
     }
 })

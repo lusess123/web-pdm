@@ -44,7 +44,9 @@ export const createData = (root: RootInstance) => {
         // aggregateModelKey: model.aggregateModelKey,
         // belongAggregate: model.belongAggregate,
         nodeSize: ((48 + getLength(m.fields.length) * 48) / 6) * 6 / 6,
+       
       },
+      themeColor: colors.blue,
       size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
     }
   }).filter(a=>a.visible)

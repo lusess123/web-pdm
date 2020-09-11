@@ -53,7 +53,8 @@ export const register = () => {
                 out,
                 isNoModule,
                 showNameOrLabel,
-                config
+                config,
+                themeColor
             } = cfg
             const { colors } = config
             const group = item.getContainer()
@@ -130,7 +131,7 @@ export const register = () => {
                         break
                     case 'header':
                         // s.attr('opacity', !cfg.isKeySharp ? 1 : 0)
-                        s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : colors.blue)
+                        s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : themeColor)
                         s.set('visible', !cfg.isCardSharp && !cfg.isKeySharp)
                         // s.attr('opacity', 1)
                         break
@@ -168,6 +169,10 @@ export const register = () => {
                         if(fieldLable) {
                            s.attr('text', showNameOrLabel ? fieldLable :  s.attr('nameLable'))
                         }
+                        if(!!s.get('themeColor')){
+                            s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : themeColor)
+                        }
+                           
 
                         break
 
@@ -178,6 +183,9 @@ export const register = () => {
                         // selected && setNodeStateAttr('selected', s , cfg)
                     case 'field-line':
                         s.set('visible', !cfg.isKeySharp)
+                        break
+                    case 'themeColor':
+                        s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : themeColor)
                         break
 
                     default: break
@@ -192,13 +200,13 @@ export const register = () => {
         },
 
         render(cfg: IModelNodeShapeCfg, group : GGroup){
-            const { config, data, selected, showNameOrLabel } = cfg
+            const { config, data, selected, showNameOrLabel, themeColor } = cfg
 
             // const bg = data.aggregateRoot || 1 ? colors.blue : colors.head
             // const font = data.aggregateRoot || 1 ? colors.white : colors.blue
             // const mFront = data.aggregateRoot  || 1? colors.white : colors.black
             const { colors } = config
-            const bg =  colors.blue 
+            const bg =  themeColor 
             const font = colors.white
             const mFront = colors.white
             const nodeColors = { bg, font, mFront }
@@ -432,7 +440,7 @@ export const register = () => {
                         stroke: 'rgba(0,0,0,0.60)',
                         lineWidth: 1,
                         lineDash: [5, 5],
-                        opacity: 0.25,
+                        opacity: 0.1,
                     },
                 })
 
@@ -440,6 +448,7 @@ export const register = () => {
                     visible: true,
                     name: field.id,
                     draggable: true,
+                    themeColor: true,
                     attrs: {
                         x: -(config.width / 2) + 10,
                         fieldName: field.id,
@@ -450,7 +459,7 @@ export const register = () => {
                         y: -((config.headerHeight + getLength(data.fields.length) * config.fieldHeight) / 2) + config.headerHeight + config.fieldHeight * index + config.fieldHeight / 2 - 2,
                         id: 'field',
                         r: 2,
-                        fill: colors.blue,
+                        fill:  themeColor,
                         cursor: 'move',
                     },
                 })
@@ -459,6 +468,7 @@ export const register = () => {
                     visible: !cfg.isKeySharp,
                     name: field.id,
                     draggable: true,
+                    themeColor: isForeign,
                     attrs: {
                         x: -config.width / 2 + 20,
                         fieldHover: true,
@@ -476,7 +486,7 @@ export const register = () => {
                         cursor: 'move',
                         id: 'field',
                         textAlign: 'start',
-                        fill: isForeign ? colors.blue : 'rgba(0,0,0,0.60)', // fill: 'rgb(153,153,153)',
+                        fill: isForeign ? themeColor : 'rgba(0,0,0,0.60)', // fill: 'rgb(153,153,153)',
 
                     },
                 })
@@ -486,6 +496,7 @@ export const register = () => {
                     visible: !cfg.isKeySharp,
                     name: field.id,
                     draggable: true,
+                    themeColor: isForeign,
                     attrs: {
                         x: config.width / 2 - 20,
                         fieldHover: !isForeign,
@@ -503,7 +514,7 @@ export const register = () => {
                         click: isForeign ? 'fieldSelect' : undefined,
                         textAlign: 'right',
                         cursor: isForeign ? 'pointer' : 'undefined',
-                        fill: isForeign ? colors.blue : 'rgba(0,0,0,0.30)',
+                        fill: isForeign ? themeColor : 'rgba(0,0,0,0.30)',
                     },
                 })
  
@@ -512,6 +523,7 @@ export const register = () => {
                     visible: true,
                     name: field.id,
                     draggable: true,
+                    themeColor: true,
                     attrs: {
                         x: config.width / 2 - 10,
                         fieldName: field.id,
@@ -523,7 +535,7 @@ export const register = () => {
                         id: 'field',
                         r: 2,
     
-                        fill: colors.blue,
+                        fill: themeColor,
                         cursor: 'move',
                     },
                 })

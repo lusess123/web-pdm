@@ -9,7 +9,7 @@ export type IUseUpdateItem = {
     checkNum : number
 }
 
-export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, checkNum } : IUseUpdateItem) => {
+export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, checkNum, themeColor } : IUseUpdateItem) => {
     // const firstRef = useRef(true)
     useEffect(() => {
       const modelId= 'model-' +currentModel
@@ -45,7 +45,8 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, chec
             isNoModule,
             isKeySharp,
             isCardSharp,
-            showNameOrLabel
+            showNameOrLabel,
+            themeColor
           })
           }
         })
@@ -62,5 +63,5 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, chec
         // graph.paint()
       }
   
-    }, [currentModel, showNameOrLabel,  zoom >= 0.4])
+    }, [currentModel, showNameOrLabel,  zoom >= 0.4, themeColor])
   }
