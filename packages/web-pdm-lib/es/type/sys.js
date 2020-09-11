@@ -74,6 +74,7 @@ let TSys = class TSys extends Model({
     }
     onInit() {
         // alert('sys onInit')
+        // alert(this.tabOrTree)
         this.toggleShowNameOrLabel = this.toggleShowNameOrLabel.bind(this);
     }
 };

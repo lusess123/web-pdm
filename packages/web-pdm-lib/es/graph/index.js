@@ -79,6 +79,7 @@ const render = (container, nodes, edges, mst) => {
     // alert(height)
     // alert(height)
     const styleConfig = initStyle({ primaryColor: 'blue' }).style;
+    const isLargar = nodes.length > 50;
     const graph = new G6.Graph({
         height,
         width: container.offsetWidth - 20,
@@ -104,10 +105,10 @@ const render = (container, nodes, edges, mst) => {
             cols: 3,
             workerEnabled: true,
             linkDistance: 0,
-            alphaDecay: 0.2,
+            alphaDecay: 0.05,
             preventOverlap: true,
             collideStrength: 0.5,
-            nodeSpacing: -180,
+            nodeSpacing: isLargar ? -100 : -180,
             onLayoutEnd: () => {
                 graph.isLayouting = false;
                 graph.fitView(0);
@@ -183,6 +184,7 @@ const layout = (graph, nodes, edges, mst) => {
     //   }
     // })
     // alert(graph.getNodes().length)
+    const isLargar = graph.getNodes().length > 50;
     graph.isLayouting = true;
     async(() => graph.updateLayout({
         type: 'force',
@@ -190,10 +192,10 @@ const layout = (graph, nodes, edges, mst) => {
         cols: 3,
         workerEnabled: true,
         linkDistance: 0,
-        alphaDecay: 0.2,
+        // alphaDecay: 0.2 ,
         preventOverlap: true,
         collideStrength: 0.5,
-        nodeSpacing: -180,
+        nodeSpacing: isLargar ? 0 : -180,
         onLayoutEnd: () => {
             graph.isLayouting = false;
             graph.fitView(0);

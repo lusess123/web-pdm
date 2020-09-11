@@ -12,6 +12,7 @@ import { renderModelTitle } from '../util/label'
 // import StateStack from '../state-stack'
 // import { undoManager } from '../context'
 import { SysConfig, ModelConfig, ModuleConfig } from './config'
+import { TUi } from './ui'
 
 
 
@@ -34,7 +35,8 @@ export class RootInstance extends Model({
       Models: MapProp<TModel>(),
       Modules: MapProp<TModule>(),
       Fields: MapProp<TField>(),
-      graph: prop<TGraph>(()=> new TGraph({}))
+      graph: prop<TGraph>(()=> new TGraph({})),
+      Ui: prop<TUi>(()=> new TUi({}))
 
 }) {
 
@@ -182,7 +184,9 @@ export class RootInstance extends Model({
 }
 
 
-export const createStore = (props = { sys : {} , graph: {}}) => {
+export const createStore = (props = { sys : {} , graph: {}, components : {} }) => {
+      const ui = new TUi({})
+      ui.registComponents(props.components)
       return new RootInstance({
             $modelId: 'webpdm',
             sys: new TSys({
@@ -193,7 +197,8 @@ export const createStore = (props = { sys : {} , graph: {}}) => {
             }),
             graph : new TGraph({
                   ...props.graph
-            })
+            }),
+            Ui: ui
       })
 }
 

@@ -1,11 +1,15 @@
 
-import { Modal, Popover, Select, Tooltip, Badge } from 'antd'
+// import { Tooltip } from 'antd'
 import { FileMarkdownOutlined, FileImageOutlined, RollbackOutlined,  UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import React, { isValidElement } from 'react' 
-import { observer, useObserver, Observer, useLocalStore } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { changeTwoDecimal_f , CreateComponent  } from '../../util'
 import { useMst } from '../../context'
+import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree } from '@terminus/nusi'
+const components = {
+  Input, Button, Dropdown, Menu, Select, Tooltip, Tree
+}
 // import StateStack from '../../state-stack'
 // import { undoManager } from '../../context'
 
@@ -31,6 +35,7 @@ export default observer(({ graph } : { graph : any}) => {
  
   const mst = useMst()
   const undoManager = mst.undoManager
+  const { Tooltip }  = mst.Ui
 
   const zoomNum = graph && changeTwoDecimal_f(parseFloat(mst.graph?.zoom * 100) + '') || 0
 
@@ -39,15 +44,16 @@ export default observer(({ graph } : { graph : any}) => {
   return (
   <div className='console-erd-toolbar'>
     <div className='right'>
-    <ButtonActon title='撤销' disable={!undoManager.canUndo}  icon={<RollbackOutlined />} onClick={mst.undo.bind(mst)} />
-    <ButtonActon title='重做' disable={!undoManager.canRedo} icon={<RollbackOutlined style={{transform: 'scaleX(-1)'}} />} onClick={mst.redo.bind(mst)} />
-    <ButtonActon title='放大' disable={zoomNum >=100 } icon='max' onClick={mst.graph.maxZoom.bind(mst.graph, graph)} />
+    <ButtonActon Tooltip={Tooltip} title='撤销' disable={!undoManager.canUndo}  icon={<RollbackOutlined />} onClick={mst.undo.bind(mst)} />
+    <ButtonActon Tooltip={Tooltip} title='重做' disable={!undoManager.canRedo} icon={<RollbackOutlined style={{transform: 'scaleX(-1)'}} />} onClick={mst.redo.bind(mst)} />
+    <ButtonActon Tooltip={Tooltip} title='放大' disable={zoomNum >=100 } icon='max' onClick={mst.graph.maxZoom.bind(mst.graph, graph)} />
     <span className='zoomNum noselect'>
       {graph && `${(zoomNum) >= 100 ? 100 :(zoomNum) }%` }
     </span>
-    <ButtonActon title='缩小' disable={zoomNum < 5 } icon='min' onClick={mst.graph.minZoom.bind(mst.graph, graph)} />
-    <ButtonActon title='全景' icon='container' onClick={mst.graph.container.bind(mst.graph, graph)} />
-    <ButtonActon title='下载图片' icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
+    <ButtonActon Tooltip={Tooltip} title='缩小' disable={zoomNum < 5 } icon='min' onClick={mst.graph.minZoom.bind(mst.graph, graph)} />
+    <ButtonActon Tooltip={Tooltip} title='全景' icon='container' onClick={mst.graph.container.bind(mst.graph, graph)} />
+    <ButtonActon Tooltip={Tooltip} title='下载图片' icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
+    <ButtonActon Tooltip={Tooltip} title='切换' icon='image' onClick={mst.Ui.toggle.bind(mst.Ui, components)}  />
     </div>
 
     </div>)
@@ -57,11 +63,13 @@ type IButtonActon = {
     title: string,
     icon: string | React.ReactNode,
     onClick?: () => void,
-    disable?: boolean
+    disable?: boolean,
+    Tooltip: any
 }
 
 const ButtonActon  = CreateComponent<IButtonActon>({
     render : (props) => {
+      const { Tooltip } = props
      const IconRender =  isValidElement(props.icon) ?  props.icon : IconRenders[props.icon] 
      return  <Tooltip title={props.title} ><span className={classNames({'enable' : !props.disable, 'command-btn' : true })} onClick={ !props.disable ? props.onClick : undefined } >{IconRender}</span></Tooltip>
     }

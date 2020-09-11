@@ -6,12 +6,14 @@ import { TField } from './field';
 import { TSys } from './sys';
 import { TGraph } from './graph';
 import { SysConfig, ModelConfig, ModuleConfig } from './config';
+import { TUi } from './ui';
 declare const RootInstance_base: import("mobx-keystone")._Model<unknown, {
     sys: import("mobx-keystone").MaybeOptionalModelProp<TSys, TSys>;
     Models: import("mobx-keystone").OptionalModelProp<import("mobx-keystone").ObjectMap<TModel>, import("mobx-keystone").ObjectMap<TModel>>;
     Modules: import("mobx-keystone").OptionalModelProp<import("mobx-keystone").ObjectMap<TModule>, import("mobx-keystone").ObjectMap<TModule>>;
     Fields: import("mobx-keystone").OptionalModelProp<import("mobx-keystone").ObjectMap<TField>, import("mobx-keystone").ObjectMap<TField>>;
     graph: import("mobx-keystone").OptionalModelProp<TGraph, TGraph>;
+    Ui: import("mobx-keystone").OptionalModelProp<TUi, TUi>;
 }>;
 export declare class RootInstance extends RootInstance_base {
     undoManager: UndoManager;
@@ -120,5 +122,6 @@ export declare class RootInstance extends RootInstance_base {
 export declare const createStore: (props?: {
     sys: {};
     graph: {};
+    components: {};
 }) => RootInstance;
 export {};

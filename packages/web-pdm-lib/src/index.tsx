@@ -1,10 +1,10 @@
-import React, { useEffect, useState, SFC } from 'react'
+import React, { useEffect, useState, FunctionComponent } from 'react'
 import { applySnapshot, onSnapshot, withoutUndo } from 'mobx-keystone'
 import { useMst  } from './context'
 import { observer } from 'mobx-react-lite'
 import { Provider, createRootStore  } from './context'
 import MSTPage from './components'
-import { ModelConfig , ModuleConfig, FieldConfig } from './type/config'
+import { ModelConfig , ModuleConfig, FieldConfig, IComponentConfig } from './type/config'
 export * from './type/config'
 // import './style.scss'
 
@@ -15,10 +15,11 @@ export interface IWebPdmProps {
   className?: string, 
   style?: any, 
   height?: string | number,
-  onIgnoreEdge?: (field: FieldConfig) => boolean
+  onIgnoreEdge?: (field: FieldConfig) => boolean,
+  components: IComponentConfig
 }
 
-export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className, style, height, onIgnoreEdge }) => {
+export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
     const data = useMst()
     useEffect(() => {
       onSnapshot(data, snapshot => {
@@ -34,6 +35,7 @@ export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className
         {
           applySnapshot(data,sdata)
           data.sys.setOnIgnoreEdge(onIgnoreEdge)
+          data.Ui.registComponents(components)
         }
           
           )
@@ -45,17 +47,18 @@ export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className
     return <MSTPage className={className} style={style} />
   })
 
-const WebPDM :SFC<IWebPdmProps>  = (props) => {
+const WebPDM :FunctionComponent<IWebPdmProps>  = (props) => {
     const [rootStore] = useState(() => {
       return createRootStore({
         sys : {
           height: props.height,
           onIgnoreEdge: props.onIgnoreEdge
-        }
+        },
+        components : props.components
       })
     })
     return <Provider value={rootStore}>
-     <Page {...props} />
+     {rootStore && <Page {...props} />}
     </Provider>
 }
 

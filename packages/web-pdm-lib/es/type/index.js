@@ -14,6 +14,7 @@ import { TSys } from './sys';
 import { TGraph } from './graph';
 import { createData, createLinks } from '../graph/data';
 import { renderModelTitle } from '../util/label';
+import { TUi } from './ui';
 function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
@@ -29,7 +30,8 @@ let RootInstance = class RootInstance extends Model({
     Models: MapProp(),
     Modules: MapProp(),
     Fields: MapProp(),
-    graph: prop(() => new TGraph({}))
+    graph: prop(() => new TGraph({})),
+    Ui: prop(() => new TUi({}))
 }) {
     constructor() {
         super(...arguments);
@@ -184,10 +186,13 @@ RootInstance = __decorate([
     model("webpdm/RootStore")
 ], RootInstance);
 export { RootInstance };
-export const createStore = (props = { sys: {}, graph: {} }) => {
+export const createStore = (props = { sys: {}, graph: {}, components: {} }) => {
+    const ui = new TUi({});
+    ui.registComponents(props.components);
     return new RootInstance({
         $modelId: 'webpdm',
         sys: new TSys(Object.assign({ isArrangeLayout: false, layouting: true, search: '' }, props.sys)),
-        graph: new TGraph(Object.assign({}, props.graph))
+        graph: new TGraph(Object.assign({}, props.graph)),
+        Ui: ui
     });
 };

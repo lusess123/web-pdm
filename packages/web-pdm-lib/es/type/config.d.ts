@@ -1,3 +1,4 @@
+/// <reference types="react" />
 export declare type MetaTypeConfig = {
     relationModel: string;
     type: 'Relation';
@@ -27,4 +28,13 @@ export declare type SysConfig = {
     showNameOrLabel: boolean;
     tabOrTree: boolean;
     height: number;
+};
+export declare type IComponentConfig = {
+    Tree?: React.ComponentType;
+    Input?: React.ComponentType;
+    Button?: React.ComponentType;
+    Dropdown?: React.ComponentType;
+    Menu?: React.ComponentType;
+    Select?: React.ComponentType;
+    Tooltip?: React.ComponentType;
 };

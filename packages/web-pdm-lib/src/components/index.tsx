@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import classnames from 'classnames'
 import { CreateComponent } from '../util'
 import ModelNavi from './model-navi'
@@ -17,6 +17,7 @@ export default CreateComponent<IPagePros>({
     displayName: 'page',
     render(props) {
         const mst = useMst()
+        
         // alert( mst.sys.height)
         debugger
         return <div className={classnames('console-g6-page',props.className )} style={{height: mst.sys.height}} >

@@ -7,6 +7,12 @@ import CodePdm from '../../../../docs/type-erd'
 import { toModels, toModules } from '../g6-test/trantor/datamap'
 const models = toModels()
 const modules = toModules()
+import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree } from '@terminus/nusi'
+import './style.less'
+const components = {
+  // Input, Button, Dropdown, Menu, Select, Tooltip, Tree
+}
+
 // alert(models.length)
 //        //if() return fPre
 
@@ -22,8 +28,6 @@ const onIgnoreEdge = (field ) => {
    return field?.typeMeta?.relationModel === 'base_User' && (confirmEnding(field.name, 'createdBy') || confirmEnding(field.name,'updatedBy')  ) 
 }
 ReactDom.render(
-  <div>
-  {/* <CodePdm /> */}
-  <WebPdm models={models} modules={modules} erdkey={'demo'} onIgnoreEdge={onIgnoreEdge} /></div>, 
+  <WebPdm components={components} models={models} modules={modules} erdkey={'demo'} onIgnoreEdge={onIgnoreEdge} />, 
   document.getElementById('app')||document.getElementById('root')
 )

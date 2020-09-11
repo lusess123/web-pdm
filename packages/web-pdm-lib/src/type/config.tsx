@@ -34,3 +34,13 @@ export type SysConfig = {
     tabOrTree: boolean,
     height: number
 }
+
+export type IComponentConfig = {
+    Tree? : React.ComponentType,
+    Input?: React.ComponentType,
+    Button?:React.ComponentType, 
+    Dropdown?:React.ComponentType, 
+    Menu?:React.ComponentType,
+    Select?:React.ComponentType,
+    Tooltip?: React.ComponentType
+  }

@@ -85,14 +85,14 @@ const useLocal = () => {
 //   bundleThreshold: 0.6,
 //   K: 100,
 // });
-const render = (container: any, nodes: any, edges: any, mst) => {
+const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
   const documentHeight = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)
   const height = mst.sys.height === '100%' ? ( documentHeight - 45) : (mst.sys.height - 45)
   // const height = mst.sys.height
   // alert(height)
   // alert(height)
-  const styleConfig = initStyle({primaryColor: 'blue'}).style
-
+  const styleConfig = initStyle({primaryColor: mst.Ui.themeColor}).style
+  const isLargar = nodes.length > 50 
   const graph = new G6.Graph({
     height,
     width: container.offsetWidth - 20,
@@ -121,10 +121,10 @@ const render = (container: any, nodes: any, edges: any, mst) => {
       cols: 3,
       workerEnabled: true,
       linkDistance: 0 ,
-      alphaDecay: 0.2 ,
+      alphaDecay: 0.05 ,
       preventOverlap: true,
       collideStrength: 0.5,
-      nodeSpacing: -180,
+      nodeSpacing: isLargar ? -100 : -180,
       onLayoutEnd: () => {
         graph.isLayouting = false
         graph.fitView(0)
@@ -214,7 +214,7 @@ const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
   // })
 
   // alert(graph.getNodes().length)
-
+    const isLargar = graph.getNodes().length > 50 
     graph.isLayouting = true
     async(() => graph.updateLayout({
 
@@ -225,8 +225,8 @@ const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
       linkDistance: 0 ,
       alphaDecay: 0.2 ,
       preventOverlap: true,
-      collideStrength: 0.5,
-      nodeSpacing: -180,
+      collideStrength: isLargar ? 0.05 : 0.2,
+      nodeSpacing: isLargar ? 0 : -180,
       onLayoutEnd: () => {
         graph.isLayouting = false
         graph.fitView(0)

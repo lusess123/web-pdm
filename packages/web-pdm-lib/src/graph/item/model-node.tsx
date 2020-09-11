@@ -5,12 +5,12 @@ import { getBottomAnch, getLeftAnch, getTopAnch, getRightAnch, getLength, getSpl
 
 export const register = () => {
 
-    const colors = {
-        blue : '#495D9E',
-        white: '#FFFFFF',
-        head: 'rgba(7,10,26,0.06)',
-        black: 'black',
-    }
+    // const colors = {
+    //     blue : '#495D9E',
+    //     white: '#FFFFFF',
+    //     head: 'rgba(7,10,26,0.06)',
+    //     black: 'black',
+    // }
 
     G6.registerNode('console-model-Node', {
         getAnchorPoints(cfg: IModelNodeShapeCfg) {
@@ -52,8 +52,10 @@ export const register = () => {
                 isCardSharp,
                 out,
                 isNoModule,
-                showNameOrLabel
+                showNameOrLabel,
+                config
             } = cfg
+            const { colors } = config
             const group = item.getContainer()
             const children = group.get('children')
             children.forEach((s) => {
@@ -63,7 +65,7 @@ export const register = () => {
 
                 // setNodeStateAttr('default', s, cfg)
                 // isNoModule && setNodeStateAttr('isNoModule', s , cfg)
-                s.attr('opacity', isNoModule ? 0.3 : 1)
+                // s.attr('opacity', isNoModule ? 0.3 : 1)
 
                 switch (id) {
                     case 'keySharp':
@@ -174,7 +176,8 @@ export const register = () => {
                         // s.attr('opacity', !cfg.isKeySharp ? 1 : 0)
                         s.set('visible', !cfg.isKeySharp) // active && setNodeStateAttr('active', s , cfg)
                         // selected && setNodeStateAttr('selected', s , cfg)
-
+                    case 'field-line':
+                        s.set('visible', !cfg.isKeySharp)
                         break
 
                     default: break
@@ -194,7 +197,7 @@ export const register = () => {
             // const bg = data.aggregateRoot || 1 ? colors.blue : colors.head
             // const font = data.aggregateRoot || 1 ? colors.white : colors.blue
             // const mFront = data.aggregateRoot  || 1? colors.white : colors.black
-
+            const { colors } = config
             const bg =  colors.blue 
             const font = colors.white
             const mFront = colors.white
@@ -413,20 +416,23 @@ export const register = () => {
                 })
 
                 group.addShape('path', {
+                    visible: !cfg.isKeySharp,
                     draggable: true,
                     name: field.id,
+                    
                     attrs: {
                         draggable: true,
                         fieldName: field.id,
+                        id: 'field-line',
                         name: field.id,
                         path: [
                             ['M', - config.width / 2 + 20, y + 2],
                             ['L', config.width / 2 - 40, y + 2],
                         ],
-                        stroke: colors.head,
+                        stroke: 'rgba(0,0,0,0.60)',
                         lineWidth: 1,
                         lineDash: [5, 5],
-                        opacity: 0.1,
+                        opacity: 0.25,
                     },
                 })
 
@@ -487,8 +493,8 @@ export const register = () => {
                         // click: 'fieldEdit',
                         y: -((config.headerHeight + getLength(data.fields.length) * config.fieldHeight) / 2) + config.headerHeight + config.fieldHeight * index + config.fieldHeight / 2,
                         text: isForeign ? relationModelText : `${field.type || ''}`,
-                        fieldLable: isForeign ? (field.type && Relation[field.type] ? `${field?.relationModel?.name }(${Relation[field.type] || ''})` : field?.relationModel?.name) : `[${field.type || ''}]`,
-                        nameLable:  isForeign ? (field.type && Relation[field.type] ? `${field?.relationModel?.label}(${Relation[field.type] || ''})` : field?.relationModel?.label) : `[${field.type || ''}]`,
+                        fieldLable: isForeign ? (field.type && Relation[field.type] ? `${field?.relationModel?.name }(${Relation[field.type] || ''})` : field?.relationModel?.name) : `${field.type || ''}`,
+                        nameLable:  isForeign ? (field.type && Relation[field.type] ? `${field?.relationModel?.label}(${Relation[field.type] || ''})` : field?.relationModel?.label) : `${field.type || ''}`,
                         id: 'field',
                         textBaseline: 'middle',
                         fieldName: field.id,

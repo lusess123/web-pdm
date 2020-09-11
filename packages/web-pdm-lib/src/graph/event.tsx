@@ -190,7 +190,7 @@ export default (graph:Graph, mst : RootInstance) => {
       let targetNode = edge.get('targetNode')
       const targetModel = targetNode.getModel()
       const edgeModel = edge.getModel()
-      if(targetModel.visible || sourceNode.getModel().visible && graph.getZoom() >= 0.3 ) {
+      if((targetModel.visible || sourceNode.getModel().visible) && graph.getZoom() >= 0.3 ) {
       if(!edgeModel.self && !edgeModel.isSys) {
         const isTo = sourceNode.getModel().x < targetNode.getModel().x
         const i = edgeModel.fieldIndex

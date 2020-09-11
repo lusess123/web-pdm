@@ -21,6 +21,7 @@ export interface IModelNodeShapeCfg extends ModelConfig  {
                 edge: any;
             };
         };
+        colors : any
     }
     data: {
         label: string;
@@ -42,7 +43,8 @@ export interface IModelNodeShapeCfg extends ModelConfig  {
     hide?: boolean
     inactive?: boolean
     isCardSharp?: boolean
-    showNameOrLabel? : boolean
+    showNameOrLabel? : boolean,
+    
 }
 export interface IField {
     id: string

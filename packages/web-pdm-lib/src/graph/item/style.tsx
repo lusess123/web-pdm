@@ -1,22 +1,9 @@
 
 export  const initStyle = ({primaryColor}) => {
   const colors = {
-   // blue : '#495D9E',
-
-   // get blue() {
-   //   const res = (window.SYS_backEndConfig && window.SYS_backEndConfig.STYLE_PRIMARY_COLOR)  || '#495D9E'
-   //   if (_styleConfigLazy) {
-   //   _styleConfigLazy.selected.node.stroke = res
-   //   _styleConfigLazy.default.edge.stroke = res
-   //  }
-   //   return res
-   // // #0083EE
-   // },
-   // blue : window.SYS_backEndConfig && window.SYS_backEndConfig.PRESET_CSS_URL  ? '#0083EE' : '#495D9E',
-   // #0083EE
    blue: primaryColor,
    white: '#FFFFFF',
-   head: 'rgba(7,10,26,0.06)',
+   head: 'red',
    black: 'black',
  }
 
@@ -57,24 +44,9 @@ export  const initStyle = ({primaryColor}) => {
        stroke: 'rgba(11,108,149)',
      },
    },
-   inactive: {
-     edge: {
-       stroke: 'red',
-     }
-   },
    selected: {
      node: {
        stroke: 'rgba(11,108,149)',
-     },
-   },
-   active: {
-     edge: {
-       stroke: 'red',
-     }
-   },
-   noSelected: {
-     node: {
-       stroke: 'red',
      },
    },
    isNoModule : {

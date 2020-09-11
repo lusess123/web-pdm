@@ -1,19 +1,18 @@
 
-import { Input, Button, Dropdown, Menu,Select } from 'antd'
 import { EllipsisOutlined } from '@ant-design/icons';
 // import { debounce } from 'lodash'
 
-import { Tree } from '../../tree'
+// import { Tree } from '../../tree'
 import { TModel } from '../../type/model'
 import { RootInstance } from '../../type'
 // import _ from 'lodash'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Scroll from 'react-custom-scrollbars'
 import { CreateComponent, intlLiteral } from '../../util'
 import { useMst } from '../../context'
 import './style.scss'
 
-const { TreeNode, OptionBuilder } = Tree
+
 
 
 type IModelNaviProps = {
@@ -21,7 +20,7 @@ type IModelNaviProps = {
   model?: []
 }
 
- const getTreeNodeTitle = (model: TModel, root : RootInstance ) => {
+ const getTreeNodeTitle = (model: TModel, root : RootInstance, OptionBuilder: any ) => {
      return <OptionBuilder data={{
       title: root.renderModelTitle(model) ,
      
@@ -45,12 +44,15 @@ export default CreateComponent<IModelNaviProps>(
     render(_) {
      
       const mst = useMst()
+      useEffect(()=>{ }, [mst.Ui.update])
+      const { Input, Button, Dropdown, Menu,Select, Tree }  = mst.Ui
+      const { TreeNode, OptionBuilder } = Tree
       const { onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
       return <div className='console-models-tree' style={{height: mst.sys.height}}>
         <div className='header'>
           <div className='console-erd-search'>
             <Input allowClear value={mst.sys.search}  size="small" onChange={setSearch} addonAfter={
-                Sys.tabOrTree && <Select defaultValue={Sys.currentModule} value={Sys.currentModule}  className="select-after" onChange={changeModuleValue}>
+                Sys.tabOrTree && <Select size="small" defaultValue={Sys.currentModule} value={Sys.currentModule}  className="select-after" onChange={changeModuleValue}>
                 {
                   [
                     <Select.Option value={''}>所有</Select.Option>,
@@ -63,14 +65,14 @@ export default CreateComponent<IModelNaviProps>(
             } />
           </div>
           <div className='console-erd-search btns'>
-            {mst.sys.tabOrTree && <Button size="small" type="link" onClick={checkAllFun} >选择所有</Button>}
-            {mst.sys.tabOrTree && <Button size="small" type="link" onClick={checkAllCancleFun}>清除所有</Button>}
+            {mst.sys.tabOrTree && <Button size="small" type="text" onClick={checkAllFun} >选择所有</Button>}
+            {mst.sys.tabOrTree && <Button size="small" type="text" onClick={checkAllCancleFun}>清除所有</Button>}
             {/* {!mst.sys.tabOrTree && <Button size="small" type="link" onClick={toggleTabOrTree}>{mst.sys.tabOrTree?'分类':'树形'}模式</Button>} */}
-            <Button size="small" type="link" onClick={toggleShowNameOrLabel}>显示{!mst.sys.showNameOrLabel?'名称':'标签'}</Button>
+            <Button size="small" type="text" onClick={toggleShowNameOrLabel}>显示{!mst.sys.showNameOrLabel?'名称':'标签'}</Button>
             {<Dropdown  className='right' overlay={<Menu>
             <Menu.Item key="1" onClick={toggleTabOrTree}>{Sys.tabOrTree?'分类':'树形'}模式</Menu.Item>
              </Menu>}>
-             <Button size="small" type="link" icon={<EllipsisOutlined/>} />
+             <span><EllipsisOutlined/></span>
             </Dropdown>}
           </div>
         </div>
@@ -82,7 +84,7 @@ export default CreateComponent<IModelNaviProps>(
                   return (
                     <TreeNode title={mst.sys.showNameOrLabel ? m.name : m.label} key={m.id}>
                        {[...m.models.values()].filter(model => model.filterModel() ).map(model => {
-                         return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst)} />
+                         return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst, OptionBuilder)} />
                        })}
                     </TreeNode>
                   )
@@ -90,7 +92,7 @@ export default CreateComponent<IModelNaviProps>(
               }
               {  
                 mst.sys.tabOrTree && [...mst.Models.values()].filter(model=> ((!mst.sys.currentModule || model.moduleId === mst.sys.currentModule) && model.filterModel())).map(model => {
-                  return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst)} />
+                  return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst, OptionBuilder)} />
                 })
               }
             </Tree>

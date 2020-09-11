@@ -1,3 +1,4 @@
+import mst from '@antv/g6/lib/algorithm/mst'
 import { getSnapshot } from 'mobx-keystone'
 import { RootInstance } from '../type'
 // import { mapToArrary } from '../util'
@@ -7,10 +8,10 @@ const getLength = (length: number) => {
   return length >= 20 ? length : 20
 }
 
-const { style } = initStyle({ primaryColor: 'blue' })
+
 
 export const createData = (root: RootInstance) => {
-
+  const { style, colors } = initStyle({ primaryColor: root.Ui.themeColor })
   const res = [...root.Models.values()].map(m => {
     return {
       id: 'model-' + m.id,
@@ -24,7 +25,8 @@ export const createData = (root: RootInstance) => {
         headerHeight: 48,
         fieldHeight: 32,
         labelSize: 14,
-        styleConfig: style
+        styleConfig: style,
+        colors
       },
       data: {
         moduleKey: m.moduleId,
@@ -74,6 +76,7 @@ const Relation = {
 }
 
 export const createLinks = (root: RootInstance) => {
+  const { style } = initStyle({ primaryColor: root.Ui.themeColor })
   const links = [...root.Models.values()].reduce((pre, model) => {
 
     if(!root.sys.checkedKeys.find(a=>a === model.id)) return pre

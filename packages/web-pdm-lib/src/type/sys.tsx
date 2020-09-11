@@ -1,4 +1,4 @@
-import { model, Model, prop, modelAction, UndoStore, getRoot } from 'mobx-keystone'
+import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone'
 import { RootInstance } from './index'
 import { toCenter } from '../util/graph'
 import { FieldConfig } from './config'
@@ -90,6 +90,7 @@ export class TSys extends Model({
 
     onInit() {
         // alert('sys onInit')
+        // alert(this.tabOrTree)
         this.toggleShowNameOrLabel = this.toggleShowNameOrLabel.bind(this)
     }
 

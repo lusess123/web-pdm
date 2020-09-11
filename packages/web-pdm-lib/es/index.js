@@ -32,7 +32,8 @@ const WebPDM = (props) => {
             sys: {
                 height: props.height,
                 onIgnoreEdge: props.onIgnoreEdge
-            }
+            },
+            components: props.components
         });
     });
     return React.createElement(Provider, { value: rootStore },
