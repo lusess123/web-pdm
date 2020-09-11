@@ -121,8 +121,8 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
       condense: true,
       cols: 3,
       workerEnabled: true,
-      linkDistance: 0 ,
-      alphaDecay: isLargar ? 0.3 : 0.05 ,
+      linkDistance: 0,
+      alphaDecay: isLargar ? 0.05 : 0.3,
       preventOverlap: true,
       collideStrength: 0.5,
       nodeSpacing: isLargar ? -100 : -180,
@@ -223,11 +223,11 @@ const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
       condense: true,
       cols: 3,
       workerEnabled: true,
-      linkDistance: 0 ,
-      alphaDecay: isLargar ? 0.3 : 0.2,
+      linkDistance: 0,
+      alphaDecay: isLargar ? 0.05 : 0.3,
       preventOverlap: true,
-      collideStrength: isLargar ? 0.05 : 0.2,
-      nodeSpacing: isLargar ? 0 : -180,
+      collideStrength: 0.5,
+      nodeSpacing: isLargar ? -100 : -180,
       onLayoutEnd: () => {
         graph.isLayouting = false
         graph.fitView(0)

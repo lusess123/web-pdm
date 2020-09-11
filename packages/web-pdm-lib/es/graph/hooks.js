@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, checkNum, themeColor }) => {
+export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, themeColor }) => {
     // const firstRef = useRef(true)
     useEffect(() => {
         const modelId = 'model-' + currentModel;

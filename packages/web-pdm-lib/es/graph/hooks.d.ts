@@ -5,5 +5,6 @@ export declare type IUseUpdateItem = {
     showNameOrLabel: boolean;
     zoom: number;
     checkNum: number;
+    themeColor: string;
 };
-export declare const useUpdateItem: ({ currentModel, graph, showNameOrLabel, zoom, checkNum, themeColor }: IUseUpdateItem) => void;
+export declare const useUpdateItem: ({ currentModel, graph, showNameOrLabel, zoom, themeColor }: IUseUpdateItem) => void;
