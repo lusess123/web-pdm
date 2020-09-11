@@ -6,12 +6,12 @@ import React, { isValidElement, useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import { changeTwoDecimal_f , CreateComponent  } from '../../util'
 import { useMst } from '../../context'
-import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
+// import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
 import { SketchPicker } from 'react-color'
 
-const components = {
-  Input, Button, Dropdown, Menu, Select, Tooltip, Tree
-}
+// const components = {
+//   Input, Button, Dropdown, Menu, Select, Tooltip, Tree
+// }
 // import StateStack from '../../state-stack'
 // import { undoManager } from '../../context'
 
@@ -37,7 +37,7 @@ export default observer(({ graph } : { graph : any}) => {
  
   const mst = useMst()
   const undoManager = mst.undoManager
-  const { Tooltip }  = mst.Ui
+  const { Tooltip, Popover }  = mst.Ui
   const [colorPabel, setColorPabel] = useState(false)
   const setColor = useCallback((color)=>{
      mst.Ui.setThemeColor(color.hex)
@@ -60,7 +60,7 @@ export default observer(({ graph } : { graph : any}) => {
     <ButtonActon Tooltip={Tooltip} title='缩小' disable={zoomNum < 5 } icon='min' onClick={mst.graph.minZoom.bind(mst.graph, graph)} />
     <ButtonActon Tooltip={Tooltip} title='全景' icon='container' onClick={mst.graph.container.bind(mst.graph, graph)} />
     <ButtonActon Tooltip={Tooltip} title='下载图片' icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
-    <ButtonActon Tooltip={Tooltip} title='切换' icon='image' onClick={mst.Ui.toggle.bind(mst.Ui, components)}  />
+    {/* <ButtonActon Tooltip={Tooltip} title='切换' icon='image' onClick={mst.Ui.toggle.bind(mst.Ui, components)}  /> */}
     <Popover placement="rightTop" arrowPointAtCenter footer={null} content={<SketchPicker color={mst.Ui.themeColor}   onChange={setColor} />} visible={colorPabel}>
     <ButtonActon Tooltip={Tooltip} title={`点击${colorPabel? '关闭':'打开'}颜色面板`} color={mst.Ui.themeColor} icon={<BgColorsOutlined/>} onClick={setColorPabel.bind(null, !colorPabel)}  />
     </Popover>

@@ -58,7 +58,8 @@ const useLocal = () => {
         graph: erdGraphRef.current,
         showNameOrLabel: mst.sys.showNameOrLabel,
         zoom: mst.graph.zoom,
-        checkNum: checkRef.current
+        checkNum: checkRef.current,
+        themeColor: mst.Ui.themeColor
     });
     return {
         containerRef,
@@ -78,7 +79,7 @@ const render = (container, nodes, edges, mst) => {
     // const height = mst.sys.height
     // alert(height)
     // alert(height)
-    const styleConfig = initStyle({ primaryColor: 'blue' }).style;
+    const styleConfig = initStyle({ primaryColor: mst.Ui.themeColor }).style;
     const isLargar = nodes.length > 50;
     const graph = new G6.Graph({
         height,
@@ -192,9 +193,9 @@ const layout = (graph, nodes, edges, mst) => {
         cols: 3,
         workerEnabled: true,
         linkDistance: 0,
-        // alphaDecay: 0.2 ,
+        alphaDecay: 0.2,
         preventOverlap: true,
-        collideStrength: 0.5,
+        collideStrength: isLargar ? 0.05 : 0.2,
         nodeSpacing: isLargar ? 0 : -180,
         onLayoutEnd: () => {
             graph.isLayouting = false;

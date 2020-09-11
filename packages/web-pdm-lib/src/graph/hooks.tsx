@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { Graph } from '@antv/g6'
 
 export type IUseUpdateItem = {
@@ -6,10 +6,11 @@ export type IUseUpdateItem = {
     graph : Graph, 
     showNameOrLabel : boolean
     zoom : number,
-    checkNum : number
+    checkNum : number,
+    themeColor: string
 }
 
-export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, checkNum, themeColor } : IUseUpdateItem) => {
+export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, themeColor } : IUseUpdateItem) => {
     // const firstRef = useRef(true)
     useEffect(() => {
       const modelId= 'model-' +currentModel

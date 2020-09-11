@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FunctionComponent } from 'react';
 import { ModelConfig, ModuleConfig, FieldConfig, IComponentConfig } from './type/config';
 export * from './type/config';
 export interface IWebPdmProps {
@@ -12,5 +12,5 @@ export interface IWebPdmProps {
     components: IComponentConfig;
 }
 export declare const Page: React.FunctionComponent<IWebPdmProps>;
-declare const WebPDM: SFC<IWebPdmProps>;
+declare const WebPDM: FunctionComponent<IWebPdmProps>;
 export default WebPDM;

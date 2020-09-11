@@ -4,8 +4,8 @@ import { initStyle } from './item/style';
 const getLength = (length) => {
     return length >= 20 ? length : 20;
 };
-const { style } = initStyle({ primaryColor: 'blue' });
 export const createData = (root) => {
+    const { style, colors } = initStyle({ primaryColor: root.Ui.themeColor });
     const res = [...root.Models.values()].map(m => {
         return {
             id: 'model-' + m.id,
@@ -19,7 +19,8 @@ export const createData = (root) => {
                 headerHeight: 48,
                 fieldHeight: 32,
                 labelSize: 14,
-                styleConfig: style
+                styleConfig: style,
+                colors
             },
             data: {
                 moduleKey: m.moduleId,
@@ -33,6 +34,7 @@ export const createData = (root) => {
                 // belongAggregate: model.belongAggregate,
                 nodeSize: ((48 + getLength(m.fields.length) * 48) / 6) * 6 / 6,
             },
+            themeColor: colors.blue,
             size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
         };
     }).filter(a => a.visible);
@@ -60,6 +62,7 @@ const Relation = {
     lookup: '查找'
 };
 export const createLinks = (root) => {
+    const { style } = initStyle({ primaryColor: root.Ui.themeColor });
     const links = [...root.Models.values()].reduce((pre, model) => {
         if (!root.sys.checkedKeys.find(a => a === model.id))
             return pre;

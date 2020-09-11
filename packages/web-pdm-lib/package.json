@@ -1,6 +1,6 @@
 {
   "name": "web-pdm",
-  "version": "0.2.3-dev.6",
+  "version": "0.2.3-dev.8",
   "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -58,6 +58,7 @@
     "react-dnd-html5-backend": "^9.3.4",
     "react-dom": "^16.9.0",
     "react-scrollbars-custom": "^4.0.21",
+    "reactcss": "^1.2.3",
     "with-dnd-context": "^1.0.4",
     "xml2js": "^0.4.23"
   }

@@ -1,6 +1,6 @@
 import { model, Model, modelAction, prop } from 'mobx-keystone'
 import { IComponentConfig } from './config'
-import { Input, Button, Dropdown, Menu, Select, Tooltip } from 'antd'
+import { Input, Button, Dropdown, Menu, Select, Tooltip, Popover } from 'antd'
 import { Tree } from '../tree'
 // import { RootInstance } from '../type'
 
@@ -19,6 +19,7 @@ export class TUi extends Model({
     Menu?: React.ComponentType
     Select?: React.ComponentType
     Tooltip?: React.ComponentType
+    Popover? : React.ComponentType
 
     isToogle: boolean = false
 
@@ -37,6 +38,7 @@ export class TUi extends Model({
         if (!this.Menu || !components) this.Menu = Menu
         if (!this.Select || !components) this.Select = Select
         if (!this.Tooltip || !components) this.Tooltip = Tooltip
+        if(!this.Popover || !components) this.Popover = Popover
 
 
     }

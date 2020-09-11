@@ -42,22 +42,7 @@ export declare const initStyle: ({ primaryColor }: {
                 stroke: string;
             };
         };
-        inactive: {
-            edge: {
-                stroke: string;
-            };
-        };
         selected: {
-            node: {
-                stroke: string;
-            };
-        };
-        active: {
-            edge: {
-                stroke: string;
-            };
-        };
-        noSelected: {
             node: {
                 stroke: string;
             };

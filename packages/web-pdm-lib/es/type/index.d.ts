@@ -66,22 +66,7 @@ export declare class RootInstance extends RootInstance_base {
                         stroke: string;
                     };
                 };
-                inactive: {
-                    edge: {
-                        stroke: string;
-                    };
-                };
                 selected: {
-                    node: {
-                        stroke: string;
-                    };
-                };
-                active: {
-                    edge: {
-                        stroke: string;
-                    };
-                };
-                noSelected: {
                     node: {
                         stroke: string;
                     };
@@ -91,6 +76,12 @@ export declare class RootInstance extends RootInstance_base {
                         opacity: number;
                     };
                 };
+            };
+            colors: {
+                blue: any;
+                white: string;
+                head: string;
+                black: string;
             };
         };
         data: {
@@ -102,6 +93,7 @@ export declare class RootInstance extends RootInstance_base {
             tag: string;
             nodeSize: number;
         };
+        themeColor: any;
         size: number;
     }[];
     get edges(): any;

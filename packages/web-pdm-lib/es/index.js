@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Provider, createRootStore } from './context';
 import MSTPage from './components';
 export * from './type/config';
-export const Page = observer(({ models, modules, erdkey, className, style, height, onIgnoreEdge }) => {
+export const Page = observer(({ models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
     const data = useMst();
     useEffect(() => {
         onSnapshot(data, snapshot => {
@@ -21,6 +21,7 @@ export const Page = observer(({ models, modules, erdkey, className, style, heigh
             withoutUndo(() => {
                 applySnapshot(data, sdata);
                 data.sys.setOnIgnoreEdge(onIgnoreEdge);
+                data.Ui.registComponents(components);
             });
         }
     }, []);
@@ -36,7 +37,6 @@ const WebPDM = (props) => {
             components: props.components
         });
     });
-    return React.createElement(Provider, { value: rootStore },
-        React.createElement(Page, Object.assign({}, props)));
+    return React.createElement(Provider, { value: rootStore }, rootStore && React.createElement(Page, Object.assign({}, props)));
 };
 export default WebPDM;

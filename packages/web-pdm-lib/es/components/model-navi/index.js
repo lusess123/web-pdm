@@ -1,15 +1,11 @@
-import { Input, Button, Dropdown, Menu, Select } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
-// import { debounce } from 'lodash'
-import { Tree } from '../../tree';
 // import _ from 'lodash'
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Scroll from 'react-custom-scrollbars';
 import { CreateComponent, intlLiteral } from '../../util';
 import { useMst } from '../../context';
 import './style.scss';
-const { TreeNode, OptionBuilder } = Tree;
-const getTreeNodeTitle = (model, root) => {
+const getTreeNodeTitle = (model, root, OptionBuilder) => {
     return React.createElement(OptionBuilder, { data: {
             title: root.renderModelTitle(model),
             options: [{
@@ -29,37 +25,41 @@ const getTreeNodeTitle = (model, root) => {
 export default CreateComponent({
     render(_) {
         const mst = useMst();
+        useEffect(() => { }, [mst.Ui.update]);
+        const { Input, Button, Dropdown, Menu, Select, Tree } = mst.Ui;
+        const { TreeNode, OptionBuilder } = Tree;
         const { onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal();
         return React.createElement("div", { className: 'console-models-tree', style: { height: mst.sys.height } },
             React.createElement("div", { className: 'header' },
                 React.createElement("div", { className: 'console-erd-search' },
-                    React.createElement(Input, { allowClear: true, value: mst.sys.search, size: "small", onChange: setSearch, addonAfter: Sys.tabOrTree && React.createElement(Select, { defaultValue: Sys.currentModule, value: Sys.currentModule, className: "select-after", onChange: changeModuleValue }, [
+                    React.createElement(Input, { allowClear: true, value: mst.sys.search, size: "small", onChange: setSearch, addonAfter: Sys.tabOrTree && React.createElement(Select, { size: "small", defaultValue: Sys.currentModule, value: Sys.currentModule, className: "select-after", onChange: changeModuleValue }, [
                             React.createElement(Select.Option, { value: '' }, "\u6240\u6709"),
                             ...([...mst.Modules.values()].map((module) => {
                                 return React.createElement(Select.Option, { value: module.id, key: module.id }, module.label);
                             }))
                         ]) })),
                 React.createElement("div", { className: 'console-erd-search btns' },
-                    mst.sys.tabOrTree && React.createElement(Button, { size: "small", type: "link", onClick: checkAllFun }, "\u9009\u62E9\u6240\u6709"),
-                    mst.sys.tabOrTree && React.createElement(Button, { size: "small", type: "link", onClick: checkAllCancleFun }, "\u6E05\u9664\u6240\u6709"),
-                    React.createElement(Button, { size: "small", type: "link", onClick: toggleShowNameOrLabel },
+                    mst.sys.tabOrTree && React.createElement(Button, { size: "small", type: "text", onClick: checkAllFun }, "\u9009\u62E9\u6240\u6709"),
+                    mst.sys.tabOrTree && React.createElement(Button, { size: "small", type: "text", onClick: checkAllCancleFun }, "\u6E05\u9664\u6240\u6709"),
+                    React.createElement(Button, { size: "small", type: "text", onClick: toggleShowNameOrLabel },
                         "\u663E\u793A",
                         !mst.sys.showNameOrLabel ? '名称' : '标签'),
                     React.createElement(Dropdown, { className: 'right', overlay: React.createElement(Menu, null,
                             React.createElement(Menu.Item, { key: "1", onClick: toggleTabOrTree },
                                 Sys.tabOrTree ? '分类' : '树形',
                                 "\u6A21\u5F0F")) },
-                        React.createElement(Button, { size: "small", type: "link", icon: React.createElement(EllipsisOutlined, null) })))),
+                        React.createElement("span", null,
+                            React.createElement(EllipsisOutlined, null))))),
             React.createElement("div", { className: 'navitree-warp' },
                 React.createElement(Scroll, { autoHide: true, autoHeight: true, autoHideTimeout: 1000, autoHideDuration: 200, autoHeightMin: '100%', autoHeightMax: '100%' },
                     React.createElement(Tree, { className: 'console-models-tree-tree', onSelect: mst.sys.setCurrentModel.bind(mst.sys), selectedKeys: [mst.sys.currentModel], checkedKeys: [...mst.sys.checkedKeys], onCheck: mst.setCheckedKeys.bind(mst), checkable: true, onExpand: onExpand, multiple: true, expandedKeys: [...mst.sys.expandedKeys] },
                         !mst.sys.tabOrTree && mst.moduleList.map(m => {
                             return (React.createElement(TreeNode, { title: mst.sys.showNameOrLabel ? m.name : m.label, key: m.id }, [...m.models.values()].filter(model => model.filterModel()).map(model => {
-                                return React.createElement(TreeNode, { key: model.id, title: getTreeNodeTitle(model, mst) });
+                                return React.createElement(TreeNode, { key: model.id, title: getTreeNodeTitle(model, mst, OptionBuilder) });
                             })));
                         }),
                         mst.sys.tabOrTree && [...mst.Models.values()].filter(model => ((!mst.sys.currentModule || model.moduleId === mst.sys.currentModule) && model.filterModel())).map(model => {
-                            return React.createElement(TreeNode, { key: model.id, title: getTreeNodeTitle(model, mst) });
+                            return React.createElement(TreeNode, { key: model.id, title: getTreeNodeTitle(model, mst, OptionBuilder) });
                         })))));
     },
     displayName: 'navi'

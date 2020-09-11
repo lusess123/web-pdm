@@ -46,22 +46,7 @@ export declare const createData: (root: RootInstance) => {
                     stroke: string;
                 };
             };
-            inactive: {
-                edge: {
-                    stroke: string;
-                };
-            };
             selected: {
-                node: {
-                    stroke: string;
-                };
-            };
-            active: {
-                edge: {
-                    stroke: string;
-                };
-            };
-            noSelected: {
                 node: {
                     stroke: string;
                 };
@@ -71,6 +56,12 @@ export declare const createData: (root: RootInstance) => {
                     opacity: number;
                 };
             };
+        };
+        colors: {
+            blue: any;
+            white: string;
+            head: string;
+            black: string;
         };
     };
     data: {
@@ -82,6 +73,7 @@ export declare const createData: (root: RootInstance) => {
         tag: string;
         nodeSize: number;
     };
+    themeColor: any;
     size: number;
 }[];
 export declare const createLinks: (root: RootInstance) => any[];
