@@ -7,10 +7,10 @@ import CodePdm from '../../../../docs/type-erd'
 import { toModels, toModules } from '../g6-test/trantor/datamap'
 const models = toModels()
 const modules = toModules()
-import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree } from '@terminus/nusi'
+import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
 import './style.less'
 const components = {
-  // Input, Button, Dropdown, Menu, Select, Tooltip, Tree
+  Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover
 }
 
 // alert(models.length)

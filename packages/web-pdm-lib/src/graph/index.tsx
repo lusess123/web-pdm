@@ -53,17 +53,17 @@ const useLocal = () => {
       
     }, [ mst.sys.checkedKeys, mst])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
-  // useEffect(() => {
-  //   const graph = erdGraphRef.current
-  //   if(graph) {
-  //     const gwidth = graph.get('width')
-  //     const gheight = graph.get('height')
-  //     const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
+  useEffect(() => {
+    const graph = erdGraphRef.current
+    if(graph) {
+      const gwidth = graph.get('width')
+      const gheight = graph.get('height')
+      const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
 
-  //     graph.zoomTo(mst.graph.zoom, point)
-  //   }
+      graph.zoomTo(mst.graph.zoom, point)
+    }
 
-  // } , [mst.graph.zoom])
+  } , [mst.graph.zoom])
 //  alert('useUpdateItem' + mst.graph.zoom)
   useUpdateItem({
     currentModel : mst.sys.currentModel,
@@ -94,6 +94,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
   // alert(height)
   const styleConfig = initStyle({primaryColor: mst.Ui.themeColor}).style
   const isLargar = nodes.length > 50 
+  // alert(isLargar)
   const graph = new G6.Graph({
     height,
     width: container.offsetWidth - 20,
@@ -122,9 +123,9 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
       cols: 3,
       workerEnabled: true,
       linkDistance: 0,
-      alphaDecay: isLargar ? 0.05 : 0.3,
+      alphaDecay: 0.1,
       preventOverlap: true,
-      collideStrength: 0.5,
+      // // collideStrength: 0.5,
       nodeSpacing: isLargar ? -100 : -180,
       onLayoutEnd: () => {
         graph.isLayouting = false
@@ -216,6 +217,7 @@ const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
 
   // alert(graph.getNodes().length)
     const isLargar = graph.getNodes().length > 50 
+    // alert(isLargar)
     graph.isLayouting = true
     async(() => graph.updateLayout({
 
@@ -224,8 +226,8 @@ const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
       cols: 3,
       workerEnabled: true,
       linkDistance: 0,
-      alphaDecay: isLargar ? 0.05 : 0.3,
-      preventOverlap: true,
+      alphaDecay: isLargar ? 0.1 : 0.3,
+      preventOverlap: false,
       collideStrength: 0.5,
       nodeSpacing: isLargar ? -100 : -180,
       onLayoutEnd: () => {

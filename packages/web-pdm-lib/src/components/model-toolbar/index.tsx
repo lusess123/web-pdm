@@ -1,6 +1,6 @@
 
 // import { Tooltip } from 'antd'
-import { FileMarkdownOutlined, FileImageOutlined, RollbackOutlined,BgColorsOutlined,UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
+import { FileMarkdownOutlined, CloseCircleFilled , DownloadOutlined, RollbackOutlined,BgColorsOutlined,UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import React, { isValidElement, useState, useCallback } from 'react' 
 import { observer } from 'mobx-react-lite'
@@ -8,6 +8,7 @@ import { changeTwoDecimal_f , CreateComponent  } from '../../util'
 import { useMst } from '../../context'
 // import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
 import { SketchPicker } from 'react-color'
+import { throttle } from 'lodash'
 
 // const components = {
 //   Input, Button, Dropdown, Menu, Select, Tooltip, Tree
@@ -25,8 +26,8 @@ const IconRenders = {
   'pdm' : <FileMarkdownOutlined />,
   'lock': <LockOutlined />,
   'unlock': <UnlockOutlined />,
-  'image':<FileImageOutlined />,
-  'upload':<FileImageOutlined />,
+  'image':<DownloadOutlined />,
+  // 'upload':<FileImageOutlined />,
   'min': <ZoomOutOutlined />,
   'max': <ZoomInOutlined />
 
@@ -39,10 +40,10 @@ export default observer(({ graph } : { graph : any}) => {
   const undoManager = mst.undoManager
   const { Tooltip, Popover }  = mst.Ui
   const [colorPabel, setColorPabel] = useState(false)
-  const setColor = useCallback((color)=>{
+  const setColor = useCallback(throttle((color)=>{
      mst.Ui.setThemeColor(color.hex)
     //  setColorPabel(false)
-  },[colorPabel])
+  },200),[colorPabel])
 
   const zoomNum = graph && changeTwoDecimal_f(parseFloat(mst.graph?.zoom * 100) + '') || 0
 
@@ -62,7 +63,7 @@ export default observer(({ graph } : { graph : any}) => {
     <ButtonActon Tooltip={Tooltip} title='下载图片' icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
     {/* <ButtonActon Tooltip={Tooltip} title='切换' icon='image' onClick={mst.Ui.toggle.bind(mst.Ui, components)}  /> */}
     <Popover placement="rightTop" arrowPointAtCenter footer={null} content={<SketchPicker color={mst.Ui.themeColor}   onChange={setColor} />} visible={colorPabel}>
-    <ButtonActon Tooltip={Tooltip} title={`点击${colorPabel? '关闭':'打开'}颜色面板`} color={mst.Ui.themeColor} icon={<BgColorsOutlined/>} onClick={setColorPabel.bind(null, !colorPabel)}  />
+    <ButtonActon Tooltip={Tooltip} title={`点击${colorPabel? '关闭':'打开'}颜色面板`} color={mst.Ui.themeColor} icon={ colorPabel ? <CloseCircleFilled /> : <BgColorsOutlined/>} onClick={setColorPabel.bind(null, !colorPabel)}  />
     </Popover>
     </div>
     

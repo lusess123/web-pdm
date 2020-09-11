@@ -49,9 +49,12 @@ export default (graph:Graph, mst : RootInstance) => {
 
       if (!model.selected && (model.x + w < topLeft.x - 200 || model.x - w > bottomRight.x || model.y + h < topLeft.y || model.y - h > bottomRight.y)) {
         node.getContainer().hide()
+        node.getEdges().forEach(a=>a.hide())
       } else {
         // 节点在视窗中，则展示
         node.getContainer().show()
+        node.getEdges().forEach(a=>a.show())
+        
       }
     })
  
