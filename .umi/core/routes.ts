@@ -17,7 +17,7 @@ export function getRoutes() {
   {
     "path": "/",
     "component": (props) => require('react').createElement(require('../../node_modules/@umijs/preset-dumi/lib/themes/default/layout.js').default, {
-      ...{"menus":{"*":{"*":[{"path":"/","title":"web-pdm - 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","meta":{"order":10}}],"/config":[{"path":"/config","title":"props","meta":{"order":1}}],"/demo":[{"path":"/demo","title":"例子","meta":{"order":1}}],"/guide":[{"title":"介绍","children":[{"path":"/guide","title":"介绍"},{"path":"/guide/getting-started","title":"快速上手"}]},{"title":"模型定义","children":[{"path":"/guide/model","title":"Model"},{"path":"/guide/relation","title":"Relation"}]},{"title":"工具栏","children":[{"path":"/guide/toolbar","title":"基本操作"}]},{"title":"其他","children":[{"path":"/guide/migration","title":"从 0.0.X 迁移"},{"path":"/guide/faq","title":"FAQ"},{"path":"/guide/next","title":"踩坑和实践分享"},{"path":"/guide/ddd","title":"前端领域模型驱动开发"}]}]}},"locales":[],"navs":{"*":[{"path":"/guide","title":"指南","order":1},{"order":2,"title":"配置项","path":"/config"},{"order":3,"title":"例子","path":"/demo"},{"title":"GitHub","path":"https://github.com/lusess123/web-pdm"},{"title":"更新日志","path":"https://github.com/lusess123/web-pdm/releases"}]},"title":"web-pdm","logo":"http://zyking.xyz/logo.png","desc":"一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","mode":"site"},
+      ...{"menus":{"*":{"*":[{"path":"/","title":"web-pdm - 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","meta":{"order":10}}],"/config":[{"path":"/config","title":"props","meta":{"order":1}}],"/demo":[{"path":"/demo","title":"例子","meta":{"order":1}}],"/guide":[{"title":"介绍","children":[{"path":"/guide","title":"介绍"},{"path":"/guide/getting-started","title":"快速上手"}]},{"title":"模型定义","children":[{"path":"/guide/model","title":"Model"},{"path":"/guide/relation","title":"Relation"}]},{"title":"工具栏","children":[{"path":"/guide/toolbar","title":"基本操作"}]},{"title":"其他","children":[{"path":"/guide/migration","title":"从 0.0.X 迁移"},{"path":"/guide/faq","title":"FAQ"},{"path":"/guide/next","title":"踩坑和实践分享"},{"path":"/guide/ddd","title":"模型驱动前端开发"}]}]}},"locales":[],"navs":{"*":[{"path":"/guide","title":"指南","order":1},{"order":2,"title":"配置项","path":"/config"},{"order":3,"title":"例子","path":"/demo"},{"title":"GitHub","path":"https://github.com/lusess123/web-pdm"},{"title":"更新日志","path":"https://github.com/lusess123/web-pdm/releases"}]},"title":"web-pdm","logo":"http://zyking.xyz/logo.png","desc":"一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner","mode":"site"},
       ...props,
     }),
     "routes": [
@@ -27,7 +27,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "docs/index.md",
-          "updatedTime": 1599642389000,
+          "updatedTime": 1599740572000,
           "title": "web-pdm - 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
           "order": 10,
           "hero": {
@@ -67,7 +67,7 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "docs/config/index.md",
-          "updatedTime": 1599730740000,
+          "updatedTime": 1599740572000,
           "order": 1,
           "nav": {
             "order": 2,
@@ -136,16 +136,16 @@ export function getRoutes() {
         "exact": true,
         "meta": {
           "filePath": "docs/guide/ddd.md",
-          "updatedTime": 1599642389000,
+          "updatedTime": 1599811621000,
           "legacy": "/ddd",
           "slugs": [
             {
               "depth": 1,
-              "value": "前端领域模型驱动开发",
-              "heading": "前端领域模型驱动开发"
+              "value": "模型驱动前端开发",
+              "heading": "模型驱动前端开发"
             }
           ],
-          "title": "前端领域模型驱动开发",
+          "title": "模型驱动前端开发",
           "nav": {
             "path": "/guide",
             "title": "指南"
@@ -154,7 +154,7 @@ export function getRoutes() {
             "title": "其他"
           }
         },
-        "title": "前端领域模型驱动开发"
+        "title": "模型驱动前端开发"
       },
       {
         "path": "/guide/faq",
