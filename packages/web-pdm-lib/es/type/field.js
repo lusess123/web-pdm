@@ -42,6 +42,7 @@ let TField = class TField extends Model({
         if (this.typeMeta && this.typeMeta.relationModel) {
             const root = getRoot(this);
             const model = root.findModelByName(this.typeMeta.relationModel);
+            // console.log(model)
             // typeof model
             return model;
         }

@@ -36,7 +36,7 @@ export const createData = (root) => {
             size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
         };
     }).filter(a => a.visible);
-    console.log(res);
+    // console.log(res)
     if (res.length > 0)
         return res.concat([createSysNode()]);
     return res;

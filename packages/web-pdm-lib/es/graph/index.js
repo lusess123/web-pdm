@@ -96,18 +96,18 @@ const render = (container, nodes, edges, mst) => {
                 size: 3,
             }
         },
-        minZoom: 0.001,
+        minZoom: 0.01,
         maxZoom: 1.1,
         layout: {
             type: 'force',
-            // condense: true,
-            // cols: 3,
+            condense: true,
+            cols: 3,
             workerEnabled: true,
-            // linkDistance: 0 ,
+            linkDistance: 0,
             alphaDecay: 0.2,
             preventOverlap: true,
             collideStrength: 0.5,
-            nodeSpacing: -100,
+            nodeSpacing: -180,
             onLayoutEnd: () => {
                 graph.isLayouting = false;
                 graph.fitView(0);

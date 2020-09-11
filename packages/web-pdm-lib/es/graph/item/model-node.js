@@ -335,7 +335,7 @@ export const register = () => {
                 //     relationModel,
                 //     // isForeign,
                 // } = field
-                var _a, _b, _c, _d, _e;
+                var _a, _b, _c, _d, _e, _f, _g;
                 const isForeign = field.typeMeta;
                 const relationModel = (_a = field === null || field === void 0 ? void 0 : field.typeMeta) === null || _a === void 0 ? void 0 : _a.relationModel;
                 const y = -((config.headerHeight + getLength(data.fields.length) * config.fieldHeight) / 2) + config.headerHeight + config.fieldHeight * index + config.fieldHeight / 2 - 2;
@@ -419,6 +419,8 @@ export const register = () => {
                         fill: isForeign ? colors.blue : 'rgba(0,0,0,0.60)',
                     },
                 });
+                const relationModelText = (showNameOrLabel ? (_b = field === null || field === void 0 ? void 0 : field.relationModel) === null || _b === void 0 ? void 0 : _b.name : (_c = field === null || field === void 0 ? void 0 : field.relationModel) === null || _c === void 0 ? void 0 : _c.label);
+                // console.log(relationModelText)
                 group.addShape('text', {
                     visible: !cfg.isKeySharp,
                     name: field.id,
@@ -428,9 +430,9 @@ export const register = () => {
                         fieldHover: !isForeign,
                         // click: 'fieldEdit',
                         y: -((config.headerHeight + getLength(data.fields.length) * config.fieldHeight) / 2) + config.headerHeight + config.fieldHeight * index + config.fieldHeight / 2,
-                        text: isForeign ? (field.type && Relation[field.type] ? `${relationModel}(${Relation[field.type] || ''})` : (showNameOrLabel ? (_b = field === null || field === void 0 ? void 0 : field.relationModel) === null || _b === void 0 ? void 0 : _b.name : (_c = field === null || field === void 0 ? void 0 : field.relationModel) === null || _c === void 0 ? void 0 : _c.label)) : `[${field.type || ''}]`,
-                        fieldLable: isForeign ? (field.type && Relation[field.type] ? `${relationModel}(${Relation[field.type] || ''})` : (_d = field === null || field === void 0 ? void 0 : field.relationModel) === null || _d === void 0 ? void 0 : _d.name) : `[${field.type || ''}]`,
-                        nameLable: isForeign ? (field.type && Relation[field.type] ? `${relationModel}(${Relation[field.type] || ''})` : (_e = field === null || field === void 0 ? void 0 : field.relationModel) === null || _e === void 0 ? void 0 : _e.label) : `[${field.type || ''}]`,
+                        text: isForeign ? relationModelText : `${field.type || ''}`,
+                        fieldLable: isForeign ? (field.type && Relation[field.type] ? `${(_d = field === null || field === void 0 ? void 0 : field.relationModel) === null || _d === void 0 ? void 0 : _d.name}(${Relation[field.type] || ''})` : (_e = field === null || field === void 0 ? void 0 : field.relationModel) === null || _e === void 0 ? void 0 : _e.name) : `[${field.type || ''}]`,
+                        nameLable: isForeign ? (field.type && Relation[field.type] ? `${(_f = field === null || field === void 0 ? void 0 : field.relationModel) === null || _f === void 0 ? void 0 : _f.label}(${Relation[field.type] || ''})` : (_g = field === null || field === void 0 ? void 0 : field.relationModel) === null || _g === void 0 ? void 0 : _g.label) : `[${field.type || ''}]`,
                         id: 'field',
                         textBaseline: 'middle',
                         fieldName: field.id,

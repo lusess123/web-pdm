@@ -54,36 +54,7 @@ export default (graph:Graph, mst : RootInstance) => {
         node.getContainer().show()
       }
     })
-    const edges = graph.getEdges()
-    edges.forEach((edge: any) => {
-      let sourceNode = edge.get('sourceNode')
-      let targetNode = edge.get('targetNode')
-      const targetModel = targetNode.getModel()
-      const edgeModel = edge.getModel()
-      if (!edgeModel.self && !edgeModel.isSys) {
-        const isTo = sourceNode.getModel().x < targetNode.getModel().x
-        const i = edgeModel.fieldIndex
-        const l = edgeModel.fieldsLength
-
-        // const isTo = targetModel.x > sourceNode.getModel().x
-        const sourceAnchor = (!isTo ? i + 2 : 2 + i + l)
-        // if (targetModel.targetAnchor !== targetAnchor)
-        //   // edge.set('targetAnchor', targetAnchor)
-          graph.updateItem(edge, { sourceAnchor })
-      }
-
-      if (!targetModel.visible || !sourceNode.getModel().visible) {
-        edge.hide()
-        // return
-      }
-      if (isExporting) return
-
-      if (!sourceNode.getContainer().get('visible') && !targetNode.getContainer().get('visible')) {
-        edge.hide()
-      } else {
-        edge.show()
-      }
-    })
+ 
   }, 300)) // graph.on('node:dblclick', (ev) => {
   // })
 
@@ -209,65 +180,42 @@ export default (graph:Graph, mst : RootInstance) => {
     graph.setAutoPaint(autoPaint)
   })
   
-  graph.on('node:dragend1', (ev) => {
+  graph.on('node:dragend', (ev) => {
     // const shape = ev.target
     const node = ev.item
     const edges = node.getEdges()
-    const x = ev.x
-    // alert(edges.length)
-    edges.forEach((edge) => {
-      const sourceNode = edge.getSource()
-      const targetNode = edge.getTarget()
-
-      if(!targetNode.getModel().isSys) {
-
-      if (node === sourceNode) {
-        const edgeModel = edge.getModel()
-        // if(edgeModel.isSys) return 
-        const isTo = x < targetNode.getModel().x
+    // const edges = graph.getEdges()
+    edges.forEach((edge: any) => {
+      let sourceNode = edge.get('sourceNode')
+      let targetNode = edge.get('targetNode')
+      const targetModel = targetNode.getModel()
+      const edgeModel = edge.getModel()
+      if(targetModel.visible || sourceNode.getModel().visible && graph.getZoom() >= 0.3 ) {
+      if(!edgeModel.self && !edgeModel.isSys) {
+        const isTo = sourceNode.getModel().x < targetNode.getModel().x
         const i = edgeModel.fieldIndex
         const l = edgeModel.fieldsLength
 
-        
-
-        if (sourceNode === targetNode) {
-          // graph.updateItem(edge, {
-          //   targetAnchor: !isTo ? i + 2 : 2 + i + l,
-          //   // targetAnchor: edge.targetAnchor,
-          // })
-        } else {
-          //alert(x + '  ' + targetNode.getModel().x+ ' == ' +(isTo ? i + 2 : 2 + i + l) )
-          
-          graph.updateItem(edge, {
-            sourceAnchor: !isTo ? i + 2 : 2 + i + l,
-            // targetAnchor: isTo ? 0 : 1,
-          })
-
-        }
-
-      } else {
-        const edgeModel = edge.getModel()
-        // if(edgeModel.isSys) return 
-        const isTo = sourceNode.getModel().x < x
-        const i = edgeModel.fieldIndex
-        const l = edgeModel.fieldsLength
-
-        if (sourceNode === targetNode) {
-          graph.updateItem(edge, {
-            sourceAnchor: !isTo ? i + 2 : 2 + i + l,
-            targetAnchor: undefined,
-          })
-        } else {
-          graph.updateItem(edge, {
-            sourceAnchor: !isTo ? i + 2 : 2 + i + l,
-            // targetAnchor: isTo ? 0 : 1,
-          })
-        }
+        // const isTo = targetModel.x > sourceNode.getModel().x
+        const sourceAnchor = (!isTo ? i + 2 : 2 + i + l)
+        // if (targetModel.targetAnchor !== targetAnchor)
+        //   // edge.set('targetAnchor', targetAnchor)
+          graph.updateItem(edge, { sourceAnchor })
       }
+     }
 
-    }
-    }) // ----获取所有的边
-    graph.paint() 
+      if (!targetModel.visible || !sourceNode.getModel().visible) {
+        edge.hide()
+        // return
+      }
+      // if (isExporting) return
+
+      if (!sourceNode.getContainer().get('visible') && !targetNode.getContainer().get('visible')) {
+        edge.hide()
+      } else {
+        edge.show()
+      }
+    })
   })
 
 }
