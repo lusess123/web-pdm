@@ -10,8 +10,8 @@ import { Tree } from '../tree';
 // import { RootInstance } from '../type'
 let TUi = class TUi extends Model({
     update: prop(+new Date()),
-    themeColor: prop('green'),
-    selectedColor: prop('green')
+    themeColor: prop('black'),
+    selectedColor: prop('rgba(11,108,149)')
 }) {
     constructor() {
         super(...arguments);

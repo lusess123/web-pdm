@@ -8,8 +8,8 @@ import { Tree } from '../tree'
 export class TUi extends Model({
 
     update: prop(+new Date()),
-    themeColor: prop('green'),
-    selectedColor: prop('black')
+    themeColor: prop('black'),
+    selectedColor: prop('rgba(11,108,149)')
 
 }) {
     Tree?: React.ComponentType
