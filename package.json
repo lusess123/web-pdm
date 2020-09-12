@@ -15,7 +15,8 @@
     "publish-server": "cd ./docker && sh upload.sh",
     "ln-webpdm": " rm -rf ./node_modules/web-pdm/es &&  ln -s -f `pwd`/packages/web-pdm-lib/src  ./node_modules/web-pdm/es",
     "deploy": "npm update web-pdm && npm i xtend && npm i wrappy &&  npm run deploy:now",
-    "deploy:now": "npm run docs:build && npm run publish-server && npm run build-remote"
+    "deploy:now": "npm run docs:build && npm run publish-server && npm run build-remote",
+    "webpdm-deploy": "cd packages/web-pdm-lib && npm run publish-npm && cd ../../ && npm run deploy"
   },
   "author": "北名",
   "license": "ISC",
@@ -24,7 +25,7 @@
     "@umijs/plugin-sass": "^1.1.1",
     "dumi": "^1.0.34",
     "typescript": "^4.0.2",
-    "web-pdm": "^0.2.3-dev.12",
+    "web-pdm": "^0.2.3-dev.14",
     "wrappy": "^1.0.2",
     "xtend": "^4.0.2",
     "yargs-parser": "^19.0.4"

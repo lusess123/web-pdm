@@ -68,8 +68,8 @@ let TSys = class TSys extends Model({
             if (item)
                 item.toFront();
             toCenter(item, graph);
+            root.graph.setZoom(graph.getZoom());
         }
-        root.graph.setZoom(graph.getZoom());
         //toCenter(   , root.graph.G6Graph)
     }
     onInit() {

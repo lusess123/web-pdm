@@ -9,7 +9,7 @@ export class TUi extends Model({
 
     update: prop(+new Date()),
     themeColor: prop('green'),
-    selectedColor: prop('green')
+    selectedColor: prop('black')
 
 }) {
     Tree?: React.ComponentType

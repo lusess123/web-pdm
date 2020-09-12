@@ -2,7 +2,7 @@ export const initStyle = ({ primaryColor }) => {
     const colors = {
         blue: primaryColor,
         white: '#FFFFFF',
-        head: 'red',
+        head: primaryColor,
         black: 'black',
     };
     const style = {
@@ -10,14 +10,14 @@ export const initStyle = ({ primaryColor }) => {
         default: {
             node: {
                 fill: '#FFFFFF',
-                shadowColor: 'rgba(0,0,0,0.1)',
-                shadowBlur: 15,
-                shadowOffsetX: 8,
-                shadowOffsetY: 8,
+                shadowColor: 'rgba(0,0,0,0.2)',
+                shadowBlur: 10,
+                shadowOffsetX: 0.5,
+                shadowOffsetY: 0.5,
                 radius: 10,
                 // stroke: undefined,
                 lineWidth: 4,
-                opacity: 0.8,
+                opacity: 0.9,
                 stroke: 'white',
             },
             edge: {
@@ -44,6 +44,7 @@ export const initStyle = ({ primaryColor }) => {
         selected: {
             node: {
                 stroke: 'rgba(11,108,149)',
+                shadowColor: 'rgba(11,108,149)',
             },
         },
         isNoModule: {

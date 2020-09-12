@@ -70,7 +70,7 @@ export const register = () => {
                             if (!s.attr('old_fill')) {
                                 s.attr('old_fill', s.attr('fill'));
                             }
-                            s.attr('fill', cfg.data.aggregateRoot ? colors.blue : colors.head);
+                            // s.attr('fill', cfg.data.aggregateRoot ? colors.blue : colors.head)
                         }
                         else {
                             // if (s.attr('old_height')) {
@@ -111,12 +111,13 @@ export const register = () => {
                         // s.attr('opacity', inactive && !into && !out && !active ? 0.2 : 1)
                         // s.set('visible', cfg.isKeySharp && !cfg.isCardSharp)
                         const _showNameOrLabel = s.get('showNameOrLabel');
+                        s.attr('fill', themeColor);
                         if (_showNameOrLabel && showNameOrLabel) {
-                            s.set('visible', cfg.isKeySharp && !cfg.isCardSharp);
+                            s.set('visible', cfg.isKeySharp && !isCardSharp);
                         }
                         else {
                             if (!_showNameOrLabel && !showNameOrLabel)
-                                s.set('visible', cfg.isKeySharp && !cfg.isCardSharp);
+                                s.set('visible', cfg.isKeySharp && !isCardSharp);
                             else {
                                 s.set('visible', false);
                             }
@@ -296,7 +297,7 @@ export const register = () => {
             const nameLength = nameList.length;
             nameList.forEach((nameText, index) => {
                 group.addShape('text', {
-                    visible: cfg.isKeySharp && !showNameOrLabel,
+                    visible: cfg.isKeySharp && !showNameOrLabel && !cfg.isCardSharp,
                     name: nameText,
                     showNameOrLabel: false,
                     draggable: true,
@@ -311,7 +312,7 @@ export const register = () => {
                         textBaseline: 'middle',
                         textAlign: 'center',
                         // radius: [2, 4],
-                        fill: 'black',
+                        fill: themeColor,
                     },
                 });
             });
@@ -321,7 +322,7 @@ export const register = () => {
             const nameLength1 = nameList.length;
             nameList1.forEach((nameText, index) => {
                 group.addShape('text', {
-                    visible: cfg.isKeySharp && showNameOrLabel,
+                    visible: cfg.isKeySharp && showNameOrLabel && !cfg.isCardSharp,
                     showNameOrLabel: true,
                     name: nameText,
                     draggable: true,
@@ -336,7 +337,7 @@ export const register = () => {
                         textBaseline: 'middle',
                         textAlign: 'center',
                         // radius: [2, 4],
-                        fill: 'black',
+                        fill: themeColor,
                     },
                 });
             });

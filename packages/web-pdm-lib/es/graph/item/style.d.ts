@@ -4,7 +4,7 @@ export declare const initStyle: ({ primaryColor }: {
     colors: {
         blue: any;
         white: string;
-        head: string;
+        head: any;
         black: string;
     };
     style: {
@@ -45,6 +45,7 @@ export declare const initStyle: ({ primaryColor }: {
         selected: {
             node: {
                 stroke: string;
+                shadowColor: string;
             };
         };
         isNoModule: {

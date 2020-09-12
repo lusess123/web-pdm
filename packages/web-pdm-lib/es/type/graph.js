@@ -85,6 +85,8 @@ let TGraph = class TGraph extends Model({
         });
     }
     actionEdges(currentModel) {
+        if (!this.G6Graph)
+            return;
         this.G6Graph.getEdges().forEach(edge => {
             const edgeData = edge.getModel();
             if (edgeData.target !== 'model-SYS-CENTER-POINT') {

@@ -49,6 +49,7 @@ export declare const createData: (root: RootInstance) => {
             selected: {
                 node: {
                     stroke: string;
+                    shadowColor: string;
                 };
             };
             isNoModule: {
@@ -60,7 +61,7 @@ export declare const createData: (root: RootInstance) => {
         colors: {
             blue: any;
             white: string;
-            head: string;
+            head: any;
             black: string;
         };
     };

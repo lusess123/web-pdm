@@ -143,6 +143,7 @@ export const register = () => {
                         // s.set('visible', cfg.isKeySharp && !cfg.isCardSharp)
 
                         const _showNameOrLabel = s.get('showNameOrLabel') 
+                        s.attr('fill', themeColor)
                         if(_showNameOrLabel && showNameOrLabel) {
                           s.set('visible', cfg.isKeySharp && !isCardSharp)
                         } else {
@@ -359,7 +360,7 @@ export const register = () => {
                 textBaseline: 'middle',
                 textAlign: 'center',
                   // radius: [2, 4],
-                fill: 'black',
+                fill: themeColor,
                 },
               })
             }) 
@@ -385,7 +386,7 @@ export const register = () => {
                 textBaseline: 'middle',
                 textAlign: 'center',
                   // radius: [2, 4],
-                fill: 'black',
+                fill: themeColor,
                 },
               })
             })

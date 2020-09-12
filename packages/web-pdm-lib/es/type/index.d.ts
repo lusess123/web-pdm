@@ -69,6 +69,7 @@ export declare class RootInstance extends RootInstance_base {
                 selected: {
                     node: {
                         stroke: string;
+                        shadowColor: string;
                     };
                 };
                 isNoModule: {
@@ -80,7 +81,7 @@ export declare class RootInstance extends RootInstance_base {
             colors: {
                 blue: any;
                 white: string;
-                head: string;
+                head: any;
                 black: string;
             };
         };

@@ -13,9 +13,9 @@ export  const initStyle = ({primaryColor}) => {
      node: {
        fill: '#FFFFFF',
        shadowColor: 'rgba(0,0,0,0.2)',
-       shadowBlur: 15,
-       shadowOffsetX: 1,
-       shadowOffsetY: 1,
+       shadowBlur: 10,
+       shadowOffsetX: 0.5,
+       shadowOffsetY: 0.5,
        radius: 10,
        // stroke: undefined,
        lineWidth: 4 ,
