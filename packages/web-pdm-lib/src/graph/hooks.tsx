@@ -20,7 +20,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
       //       return 
       //     }
       //  }
-      isCardSharp      //  alert(zoom)
+      // isCardSharp      //  alert(zoom)
       // if (graph && !firstRef.current) {
         if (graph) {
         const gnodes = graph.getNodes()
