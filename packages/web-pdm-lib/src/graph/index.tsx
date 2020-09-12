@@ -222,28 +222,28 @@ const layout = (graph : Graph, nodes: any, edges, mst : RootInstance) => {
   // })
 
   // alert(graph.getNodes().length)
-    const isLargar = graph.getNodes().length > 50 
-    // alert(isLargar)
-    graph.isLayouting = true
-    async(() => graph.updateLayout({
+    // const isLargar = graph.getNodes().length > 50 
+    // // alert(isLargar)
+    // graph.isLayouting = true
+    // async(() => graph.updateLayout({
 
-      type: 'force',
-      condense: true,
-      // cols: 3,
-      workerEnabled: true,
-      linkDistance: 0,
-      alphaDecay: isLargar ? 0.1 : 0.3,
-      // preventOverlap: false,
-      // collideStrength: 0.5,
-      // nodeSpacing: -1000,
-      onLayoutEnd: () => {
-        graph.isLayouting = false
-        // graph.fitView(0)
-        alert()
-        // mst.graph.setZoom(graph.getZoom())
-      }
+    //   type: 'force',
+    //   condense: true,
+    //   // cols: 3,
+    //   workerEnabled: true,
+    //   linkDistance: 0,
+    //   alphaDecay: isLargar ? 0.1 : 0.3,
+    //   // preventOverlap: false,
+    //   // collideStrength: 0.5,
+    //   // nodeSpacing: -1000,
+    //   onLayoutEnd: () => {
+    //     graph.isLayouting = false
+    //     // graph.fitView(0)
+    //     alert()
+    //     // mst.graph.setZoom(graph.getZoom())
+    //   }
 
-    }))
+    // }))
    
     // graph.fitView(0)
 

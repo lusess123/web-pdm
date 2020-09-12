@@ -90,6 +90,7 @@ export class TGraph extends Model({
      }
 
      actionEdges(currentModel:string) {
+         if(!this.G6Graph) return 
         this.G6Graph.getEdges().forEach(edge => {
             const edgeData = edge.getModel()
             if(edgeData.target !== 'model-SYS-CENTER-POINT') {

@@ -20,7 +20,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
       //       return 
       //     }
       //  }
-      //  alert()
+      isCardSharp      //  alert(zoom)
       // if (graph && !firstRef.current) {
         if (graph) {
         const gnodes = graph.getNodes()
@@ -36,9 +36,9 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
           const data = nodeModel ? nodeModel.data : undefined
           const isNoModule = (modelId || '').indexOf('module-') >= 0 && ((data && data.moduleKey) !== modelId)
           const isKeySharp = zoom <= 0.4
-          // const isCardSharp = zoomNum <= 0.05 * 2
+          const isCardSharp = zoom <= 0.1
           // const isKeySharp = false
-          const isCardSharp = false
+          // const isCardSharp = false
           // alert(isKeySharp)
           graph.updateItem(node, {
             selected: nodeId === modelId,
@@ -64,5 +64,5 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
         // graph.paint()
       }
   
-    }, [currentModel, showNameOrLabel,  zoom >= 0.4, themeColor])
+    }, [currentModel, showNameOrLabel,  zoom >= 0.4, zoom >= 0.1, zoom !==0 , themeColor])
   }
