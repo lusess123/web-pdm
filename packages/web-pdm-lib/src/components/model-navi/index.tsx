@@ -45,8 +45,8 @@ export default CreateComponent<IModelNaviProps>(
      
       const mst = useMst()
       useEffect(()=>{ }, [mst.Ui.update])
-      const { Input, Button, Dropdown, Menu,Select, Tree }  = mst.Ui
-      const { TreeNode, OptionBuilder } = Tree
+      const { Input, Button, Dropdown, Menu,Select, Tree }  = mst.Ui as any
+      const { TreeNode, OptionBuilder } = Tree as any
       const { onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
       return <div className='console-models-tree' style={{height: mst.sys.height}}>
         <div className='header'>

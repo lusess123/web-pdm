@@ -38,7 +38,7 @@ export default observer(({ graph } : { graph : any}) => {
  
   const mst = useMst()
   const undoManager = mst.undoManager
-  const { Tooltip, Popover }  = mst.Ui
+  const { Tooltip, Popover }  = mst.Ui as any
   const [colorPabel, setColorPabel] = useState(false)
   const setColor = useCallback(throttle((color)=>{
      mst.Ui.setThemeColor(color.hex)

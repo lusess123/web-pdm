@@ -18,7 +18,7 @@ export default (graph:Graph, mst : RootInstance) => {
     mst.graph.setZoom(graph.getZoom())
 
     // whZoom()
-  },100))
+  },200))
    
   graph.on('beforepaint', throttle(() => {
     // alert()

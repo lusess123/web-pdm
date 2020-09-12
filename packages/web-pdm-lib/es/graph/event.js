@@ -11,7 +11,7 @@ export default (graph, mst) => {
         // setZoom(graph.getZoom())
         mst.graph.setZoom(graph.getZoom());
         // whZoom()
-    }, 100));
+    }, 200));
     graph.on('beforepaint', throttle(() => {
         // alert()
         if (graph.isLayouting)

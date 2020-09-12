@@ -1,16 +1,3 @@
-import React, { FunctionComponent } from 'react';
-import { ModelConfig, ModuleConfig, FieldConfig, IComponentConfig } from './type/config';
-export * from './type/config';
-export interface IWebPdmProps {
-    models: ModelConfig[];
-    modules: ModuleConfig[];
-    erdkey: string;
-    className?: string;
-    style?: any;
-    height?: string | number;
-    onIgnoreEdge?: (field: FieldConfig) => boolean;
-    components: IComponentConfig;
-}
-export declare const Page: React.FunctionComponent<IWebPdmProps>;
-declare const WebPDM: FunctionComponent<IWebPdmProps>;
-export default WebPDM;
+export * from "./out";
+export default WebPdm;
+import WebPdm from "./out";

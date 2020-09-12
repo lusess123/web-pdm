@@ -27,8 +27,7 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules":false,
-    "preserveSymlinks":true,
-    "outDir": "./es",
+    "preserveSymlinks":true
   },
   "include": [
     "src/**/*"
