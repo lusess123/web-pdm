@@ -43,17 +43,23 @@
 
 ### anhance
 
+* Adjustment force layout algorithm([db0f380](https://github.com/lusess123/web-pdm/commit/db0f380ed833d8f13637021955a39598fb0bb538))
 * Adjustment force layout algorithm([ee82189](https://github.com/lusess123/web-pdm/commit/ee82189128eb72092636375b41140f92fcddcada))
 
 
 ### bugfix
 
+* code error([9d8dfc3](https://github.com/lusess123/web-pdm/commit/9d8dfc3806c5deb12560fcdf072698c003e0aef0))
 * code error([e2ef53e](https://github.com/lusess123/web-pdm/commit/e2ef53e11271698540837a3b633eb6260c4ee440))
 * docker nginx feedback([3e9eb54](https://github.com/lusess123/web-pdm/commit/3e9eb54e73c2b2f757e20402367602be29beab6b))
 * edge position fixed and zoom init fixed([0293566](https://github.com/lusess123/web-pdm/commit/02935665c2964ec8f45b9cae8b7fe76a4b778150))
+* fixed zoom bug([90c04d9](https://github.com/lusess123/web-pdm/commit/90c04d9d0b4d933d0e05c47b926b6598e21ad7d8))
 * fixed zoom bug([6574d53](https://github.com/lusess123/web-pdm/commit/6574d53d4d7190e2f1c42d8a931de78ff7ff266e))
+* main to .js in src([54a71ea](https://github.com/lusess123/web-pdm/commit/54a71ead5a026b41e2ae0f1aeedce9dbd0b9d26d))
 * main to .js in src([d470ecd](https://github.com/lusess123/web-pdm/commit/d470ecdaf8091f6dcfb484f58eaecf35fad63d85))
+* seatch debuounce([f850505](https://github.com/lusess123/web-pdm/commit/f8505054349b0a335bca0d5a49a82aaa4bb28eb4))
 * seatch debuounce([f2f6697](https://github.com/lusess123/web-pdm/commit/f2f6697e088ab37527f13b6e2d56d733b5faa716))
+* zoom in redo([de42089](https://github.com/lusess123/web-pdm/commit/de4208978d0ae8b4c6db554a8fb72512accaf63f))
 * zoom in redo([73e314f](https://github.com/lusess123/web-pdm/commit/73e314f24d883d116fb33171a084fc56fcb41c49))
 
 
@@ -64,8 +70,16 @@
 
 ### docs
 
+* add changelog([91e89f0](https://github.com/lusess123/web-pdm/commit/91e89f0340ce53b2471388c2d7888ad05f707ead))
 * add changelog([7a6496c](https://github.com/lusess123/web-pdm/commit/7a6496c6a30e48e3815cf1988e2513e44ed3401b))
 * add onIgnoreEdge props([4b4ec2f](https://github.com/lusess123/web-pdm/commit/4b4ec2fae95960907e4ba65a92fd5c93a5edde4b))
+* update changelog([1d0abf9](https://github.com/lusess123/web-pdm/commit/1d0abf96a6d643b03facdcc2abb3a7a2b73d6c8a))
+* update changelog([1f8afdd](https://github.com/lusess123/web-pdm/commit/1f8afdd3ebb2a3a8d3d6f6f4775919527038852b))
+* update changelog([1b53bd3](https://github.com/lusess123/web-pdm/commit/1b53bd34e934e88b19bcbf458973deca305a83e6))
+* update changelog([6046be8](https://github.com/lusess123/web-pdm/commit/6046be84bea09bd1f715f95a5a569c547ed74156))
+* update changelog([5b39e6c](https://github.com/lusess123/web-pdm/commit/5b39e6cccd4e2ae6bed0ee9576240bbf4c0d1662))
+* update changelog([8d4c4b8](https://github.com/lusess123/web-pdm/commit/8d4c4b85bf13940ce5e9ef48ac0dbfc3828f6cc5))
+* update changelog([1a8e69e](https://github.com/lusess123/web-pdm/commit/1a8e69ebbe9106407e1b40046d43a8c8cb74b84d))
 * update changelog([2ca8d38](https://github.com/lusess123/web-pdm/commit/2ca8d3896897657fb4b948c1e524848cb3219e07))
 * update changelog([21650d1](https://github.com/lusess123/web-pdm/commit/21650d1229a444b119910482327d9077be2a62a8))
 * update changelog([cc4f21d](https://github.com/lusess123/web-pdm/commit/cc4f21d9d9df59c8474679396ffa8d0a7be48e18))
@@ -78,17 +92,22 @@
 ### enhance
 
 * edge anchor set([e33331d](https://github.com/lusess123/web-pdm/commit/e33331d2016f1984088b546d74a389da91011e7b))
+* set default theme color([2a7fbab](https://github.com/lusess123/web-pdm/commit/2a7fbab0fb04506a2c803d19af04cb9431e47a7c))
 * set default theme color([754e4b7](https://github.com/lusess123/web-pdm/commit/754e4b73d0a9f4ead54938d662356f8a426c1889))
 
 
 ### feat
 
 * add onIgnoreEdge props([4381081](https://github.com/lusess123/web-pdm/commit/4381081e664aaaf8efbbbb30aaf423e10c45d53c))
+* add tooltip render([179168f](https://github.com/lusess123/web-pdm/commit/179168fc836329b46914e6d845094aee0c6cedbb))
 * add tooltip render([870b7a9](https://github.com/lusess123/web-pdm/commit/870b7a946d70b308d1e90c1c6cac16f2783b8983))
+* change bg color in toolbar([432e735](https://github.com/lusess123/web-pdm/commit/432e735b428f91edacbffee4c762c03b85f1e902))
 * change bg color in toolbar([57276e3](https://github.com/lusess123/web-pdm/commit/57276e317c6d808747c111f777a0dbc05cae7dc4))
 * color picker and add button in toolbar([eb89c3d](https://github.com/lusess123/web-pdm/commit/eb89c3d0ac3f19fb328bee98e5133eef761e6567))
 * header core([82bd319](https://github.com/lusess123/web-pdm/commit/82bd319779713476ce5f750c9f7da2acba749429))
+* support dagre laoyout([eb986ac](https://github.com/lusess123/web-pdm/commit/eb986ac9fc04880c9e2acb6addb1dd1f1f0e8153))
 * support dagre laoyout([b83a633](https://github.com/lusess123/web-pdm/commit/b83a6330e72854b120a523f9bb45f0c4824b9c39))
+* suppot isCardSharp([a3693b9](https://github.com/lusess123/web-pdm/commit/a3693b92d2a03042d69d1f1b968356040887ec9c))
 * suppot isCardSharp([0902a92](https://github.com/lusess123/web-pdm/commit/0902a9289d72043a29f8f03299ca39433723df7f))
 
 
