@@ -95,6 +95,7 @@ export declare class RootInstance extends RootInstance_base {
             nodeSize: number;
         };
         themeColor: any;
+        darkness: boolean;
         size: number;
     }[];
     get edges(): any;

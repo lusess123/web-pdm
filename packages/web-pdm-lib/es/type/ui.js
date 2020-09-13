@@ -11,7 +11,8 @@ import { Tree } from '../tree';
 let TUi = class TUi extends Model({
     update: prop(+new Date()),
     themeColor: prop('black'),
-    selectedColor: prop('rgba(11,108,149)')
+    selectedColor: prop('rgba(11,108,149)'),
+    darkness: prop(true)
 }) {
     constructor() {
         super(...arguments);
@@ -49,6 +50,9 @@ let TUi = class TUi extends Model({
     setThemeColor(color) {
         this.themeColor = color;
     }
+    setDarkness(darkness) {
+        this.darkness = darkness;
+    }
 };
 __decorate([
     modelAction
@@ -56,6 +60,9 @@ __decorate([
 __decorate([
     modelAction
 ], TUi.prototype, "setThemeColor", null);
+__decorate([
+    modelAction
+], TUi.prototype, "setDarkness", null);
 TUi = __decorate([
     model("webpdm/TUi")
 ], TUi);

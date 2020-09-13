@@ -75,6 +75,7 @@ export declare const createData: (root: RootInstance) => {
         nodeSize: number;
     };
     themeColor: any;
+    darkness: boolean;
     size: number;
 }[];
 export declare const createLinks: (root: RootInstance) => any[];

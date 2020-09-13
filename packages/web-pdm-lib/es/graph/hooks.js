@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, themeColor }) => {
+export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, themeColor, darkness }) => {
     // const firstRef = useRef(true)
     useEffect(() => {
         const modelId = 'model-' + currentModel;
@@ -37,7 +37,8 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
                         isKeySharp,
                         isCardSharp,
                         showNameOrLabel,
-                        themeColor
+                        themeColor,
+                        darkness
                     });
                 }
             });
@@ -51,5 +52,5 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
             //  }
             // graph.paint()
         }
-    }, [currentModel, showNameOrLabel, zoom >= 0.4, zoom >= 0.1, zoom !== 0, themeColor]);
+    }, [currentModel, showNameOrLabel, zoom >= 0.4, zoom >= 0.1, zoom !== 0, themeColor, darkness]);
 };

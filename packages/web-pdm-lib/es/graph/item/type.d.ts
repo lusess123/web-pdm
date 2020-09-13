@@ -43,6 +43,7 @@ export interface IModelNodeShapeCfg extends ModelConfig {
     isCardSharp?: boolean;
     showNameOrLabel?: boolean;
     themeColor?: string;
+    darkness?: boolean;
 }
 export interface IField {
     id: string;

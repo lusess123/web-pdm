@@ -1,5 +1,5 @@
 // import { Tooltip } from 'antd'
-import { FileMarkdownOutlined, CloseCircleFilled, DownloadOutlined, RollbackOutlined, BgColorsOutlined, UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons';
+import { FileMarkdownOutlined, CloseCircleFilled, SnippetsFilled, SnippetsOutlined, DownloadOutlined, RollbackOutlined, BgColorsOutlined, UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import React, { isValidElement, useState, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
@@ -13,6 +13,8 @@ import { throttle } from 'lodash';
 // }
 // import StateStack from '../../state-stack'
 // import { undoManager } from '../../context'
+//<SnippetsOutlined />
+//<SnippetsFilled />
 const IconRenders = {
     'container': React.createElement(BorderOutlined, null),
     'arrow-up': React.createElement(ArrowUpOutlined, null),
@@ -50,6 +52,7 @@ export default observer(({ graph }) => {
             React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u7F29\u5C0F', disable: zoomNum < 5, icon: 'min', onClick: mst.graph.minZoom.bind(mst.graph, graph) }),
             React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u5168\u666F', icon: 'container', onClick: mst.graph.container.bind(mst.graph, graph) }),
             React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u4E0B\u8F7D\u56FE\u7247', icon: 'image', onClick: mst.graph.downAsImage.bind(mst.graph, graph) }),
+            React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u5207\u6362\u5E95\u8272', icon: mst.Ui.darkness ? React.createElement(SnippetsFilled, null) : React.createElement(SnippetsOutlined, null), color: mst.Ui.darkness ? mst.Ui.themeColor : undefined, onClick: mst.Ui.setDarkness.bind(mst.Ui, !mst.Ui.darkness) }),
             React.createElement(Popover, { placement: "rightTop", arrowPointAtCenter: true, footer: null, content: React.createElement(SketchPicker, { color: mst.Ui.themeColor, onChange: setColor }), visible: colorPabel },
                 React.createElement(ButtonActon, { Tooltip: Tooltip, title: `点击${colorPabel ? '关闭' : '打开'}颜色面板`, color: mst.Ui.themeColor, icon: colorPabel ? React.createElement(CloseCircleFilled, null) : React.createElement(BgColorsOutlined, null), onClick: setColorPabel.bind(null, !colorPabel) })))));
 });

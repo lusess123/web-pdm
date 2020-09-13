@@ -61,7 +61,8 @@ const useLocal = () => {
         showNameOrLabel: mst.sys.showNameOrLabel,
         zoom: mst.graph.zoom,
         checkNum: checkRef.current,
-        themeColor: mst.Ui.themeColor
+        themeColor: mst.Ui.themeColor,
+        darkness: mst.Ui.darkness
     });
     return {
         containerRef,

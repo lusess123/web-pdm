@@ -35,6 +35,7 @@ export const createData = (root) => {
                 nodeSize: ((48 + getLength(m.fields.length) * 48) / 6) * 6 / 6,
             },
             themeColor: colors.blue,
+            darkness: root.Ui.darkness,
             size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
         };
     }).filter(a => a.visible);
