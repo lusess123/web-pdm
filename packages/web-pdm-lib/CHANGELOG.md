@@ -1,5 +1,45 @@
-## [0.2.4](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.4) (2020-09-13)
+## <small>0.2.4 (2020-09-13)</small>
 
+* 0.2.3-dev.25 ([86403fb](https://github.com/lusess123/web-pdm/commit/86403fb))
+* 0.2.4 ([6a2ee24](https://github.com/lusess123/web-pdm/commit/6a2ee24))
+* doc udate ([0f0dcd6](https://github.com/lusess123/web-pdm/commit/0f0dcd6))
+* doc 建设 ([aa7e2a0](https://github.com/lusess123/web-pdm/commit/aa7e2a0))
+* public ([db921b3](https://github.com/lusess123/web-pdm/commit/db921b3))
+* public 0.2.3 ([51e0aed](https://github.com/lusess123/web-pdm/commit/51e0aed))
+* public docker ([b38d943](https://github.com/lusess123/web-pdm/commit/b38d943))
+* publish docker ([ad75d68](https://github.com/lusess123/web-pdm/commit/ad75d68))
+* update ([ff8e3fa](https://github.com/lusess123/web-pdm/commit/ff8e3fa))
+* update build ([249dbf6](https://github.com/lusess123/web-pdm/commit/249dbf6))
+* update doc ([8195b28](https://github.com/lusess123/web-pdm/commit/8195b28))
+* update doc ([be14d1c](https://github.com/lusess123/web-pdm/commit/be14d1c))
+* update readme ([fe4cd2b](https://github.com/lusess123/web-pdm/commit/fe4cd2b))
+* docs: add changelog ([7a6496c](https://github.com/lusess123/web-pdm/commit/7a6496c))
+* docs: add onIgnoreEdge props ([4b4ec2f](https://github.com/lusess123/web-pdm/commit/4b4ec2f))
+* docs: update changelog ([2ca8d38](https://github.com/lusess123/web-pdm/commit/2ca8d38))
+* docs: update changelog ([21650d1](https://github.com/lusess123/web-pdm/commit/21650d1))
+* docs: update changelog ([cc4f21d](https://github.com/lusess123/web-pdm/commit/cc4f21d))
+* docs: update changelog ([b8baf20](https://github.com/lusess123/web-pdm/commit/b8baf20))
+* docs: update changelog ([8506b10](https://github.com/lusess123/web-pdm/commit/8506b10))
+* docs: update changelog ([9e0c336](https://github.com/lusess123/web-pdm/commit/9e0c336))
+* docs: update changelog ([15b2dbf](https://github.com/lusess123/web-pdm/commit/15b2dbf))
+* feat: add onIgnoreEdge props ([4381081](https://github.com/lusess123/web-pdm/commit/4381081))
+* feat: add tooltip render ([870b7a9](https://github.com/lusess123/web-pdm/commit/870b7a9))
+* feat: change bg color in toolbar ([57276e3](https://github.com/lusess123/web-pdm/commit/57276e3))
+* feat: color picker and add button in toolbar ([eb89c3d](https://github.com/lusess123/web-pdm/commit/eb89c3d))
+* feat: header core ([82bd319](https://github.com/lusess123/web-pdm/commit/82bd319))
+* feat: support dagre laoyout ([b83a633](https://github.com/lusess123/web-pdm/commit/b83a633))
+* feat: suppot isCardSharp ([0902a92](https://github.com/lusess123/web-pdm/commit/0902a92))
+* bugfix: code error ([e2ef53e](https://github.com/lusess123/web-pdm/commit/e2ef53e))
+* bugfix: docker nginx feedback ([3e9eb54](https://github.com/lusess123/web-pdm/commit/3e9eb54))
+* bugfix: edge position fixed and zoom init fixed ([0293566](https://github.com/lusess123/web-pdm/commit/0293566))
+* bugfix: fixed zoom bug ([6574d53](https://github.com/lusess123/web-pdm/commit/6574d53))
+* bugfix: main to .js in src ([d470ecd](https://github.com/lusess123/web-pdm/commit/d470ecd))
+* bugfix: seatch debuounce ([f2f6697](https://github.com/lusess123/web-pdm/commit/f2f6697))
+* bugfix: zoom in redo ([73e314f](https://github.com/lusess123/web-pdm/commit/73e314f))
+* enhance: edge anchor set ([e33331d](https://github.com/lusess123/web-pdm/commit/e33331d))
+* enhance: set default theme color ([754e4b7](https://github.com/lusess123/web-pdm/commit/754e4b7))
+* anhance: Adjustment force layout algorithm ([ee82189](https://github.com/lusess123/web-pdm/commit/ee82189))
+* chore: set gzip ([e88a837](https://github.com/lusess123/web-pdm/commit/e88a837))
 
 ### anhance
 
@@ -52,6 +92,7 @@
 * suppot isCardSharp([0902a92](https://github.com/lusess123/web-pdm/commit/0902a9289d72043a29f8f03299ca39433723df7f))
 
 
+## <small>0.2.2 (2020-09-09)</small>
 
 
 ## [0.2.2](https://github.com/lusess123/web-pdm/compare/a0d2bce1181828246084fea516dc8c0706d56c4a...0.2.2) (2020-09-09)
