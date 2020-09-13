@@ -1,16 +1,17 @@
 
 import { EllipsisOutlined } from '@ant-design/icons';
-// import { debounce } from 'lodash'
+import { debounce } from 'lodash'
 
 // import { Tree } from '../../tree'
 import { TModel } from '../../type/model'
 import { RootInstance } from '../../type'
 // import _ from 'lodash'
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Scroll from 'react-custom-scrollbars'
 import { CreateComponent, intlLiteral } from '../../util'
 import { useMst } from '../../context'
 import './style.scss'
+import mst from '@antv/g6/lib/algorithm/mst';
 
 
 
@@ -47,11 +48,11 @@ export default CreateComponent<IModelNaviProps>(
       useEffect(()=>{ }, [mst.Ui.update])
       const { Input, Button, Dropdown, Menu,Select, Tree }  = mst.Ui as any
       const { TreeNode, OptionBuilder } = Tree as any
-      const { onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
+      const { search ,onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
       return <div className='console-models-tree' style={{height: mst.sys.height}}>
         <div className='header'>
           <div className='console-erd-search'>
-            <Input allowClear value={mst.sys.search}  size="small" onChange={setSearch} addonAfter={
+            <Input allowClear value={search} size="small" onChange={(e) => setSearch(e.target.value)} addonAfter={
                 Sys.tabOrTree && <Select size="small" defaultValue={Sys.currentModule} value={Sys.currentModule}  className="select-after" onChange={changeModuleValue}>
                 {
                   [
@@ -78,7 +79,7 @@ export default CreateComponent<IModelNaviProps>(
         </div>
         <div className='navitree-warp'>
           <Scroll autoHide autoHeight autoHideTimeout={1000} autoHideDuration={200} autoHeightMin={'100%'} autoHeightMax={'100%'} >
-           <Tree className='console-models-tree-tree' onSelect={mst.sys.setCurrentModel.bind(mst.sys)} selectedKeys={[mst.sys.currentModel]} checkedKeys={[...mst.sys.checkedKeys]} onCheck={mst.setCheckedKeys.bind(mst)}  checkable onExpand={onExpand}  multiple  expandedKeys={[...mst.sys.expandedKeys]} >
+           <Tree showIcon={false} className='console-models-tree-tree' onSelect={mst.sys.setCurrentModel.bind(mst.sys)} selectedKeys={[mst.sys.currentModel]} checkedKeys={[...mst.sys.checkedKeys]} onCheck={mst.setCheckedKeys.bind(mst)}  checkable onExpand={onExpand}  multiple  expandedKeys={[...mst.sys.expandedKeys]} >
               {
                 !mst.sys.tabOrTree && mst.moduleList.map(m => {
                   return (
@@ -108,9 +109,22 @@ export default CreateComponent<IModelNaviProps>(
 
 const useLocal = () => {
   const mst = useMst()
-  // const setSearch = useCallback( debounce(mst.sys.setSearch, 300), []);
-  const setSearch = mst.sys.setSearch;
+  const [text, setText] = useState(mst.sys.search)
+  const [texting, setTexting]= useState(false)
+  useEffect(()=>{ if(!texting) debounce(()=>setText(mst.sys.search), 1000)() }, [mst.sys.search])
+
+  const setSearch = useCallback( (val) => { 
+    setTexting(true)
+    setText(val)
+    debounce(
+      ()=> { 
+        mst.sys.setSearch(val);
+        setTexting(false)
+      }, 500)() 
+  }, [mst.sys.setSearch, setText]);
+  // const setSearch = mst.sys.setSearch;
   return {
+    search: text ,
     get modules() { 
         return mst.moduleList
       },
@@ -133,9 +147,7 @@ const useLocal = () => {
        return mst.sys
     },
     changeModuleValue: mst.sys.changeModuleValue.bind(mst.sys),
-    setSearch :  useCallback( (e) =>  {
-          setSearch(e.target.value )
-       } , []) 
+    setSearch 
 
   }
 }

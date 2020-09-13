@@ -82,6 +82,7 @@ export class TSys extends Model({
     }
     @modelAction
     setSearch = (search: string) => {
+        // alert(search)
         this.search = search
     }
     @modelAction
