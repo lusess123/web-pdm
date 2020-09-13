@@ -1,4 +1,4 @@
-## [0.2.3-dev.21](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.3-dev.21) (2020-09-13)
+## [0.2.3-dev.22](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.3-dev.22) (2020-09-13)
 
 
 ### Features
@@ -7,6 +7,7 @@
 * change bg color in toolbar ([57276e3](https://github.com/lusess123/web-pdm/commit/57276e317c6d808747c111f777a0dbc05cae7dc4))
 * color picker and add button in toolbar ([eb89c3d](https://github.com/lusess123/web-pdm/commit/eb89c3d0ac3f19fb328bee98e5133eef761e6567))
 * header core ([82bd319](https://github.com/lusess123/web-pdm/commit/82bd319779713476ce5f750c9f7da2acba749429))
+* support dagre laoyout ([b83a633](https://github.com/lusess123/web-pdm/commit/b83a6330e72854b120a523f9bb45f0c4824b9c39))
 * suppot isCardSharp ([0902a92](https://github.com/lusess123/web-pdm/commit/0902a9289d72043a29f8f03299ca39433723df7f))
 
 
