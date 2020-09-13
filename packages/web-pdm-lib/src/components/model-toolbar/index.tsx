@@ -53,8 +53,8 @@ export default observer(({ graph } : { graph : any}) => {
   return (
   <div className='console-erd-toolbar'>
     <div className='right'>
-    <ButtonActon Tooltip={Tooltip} title='撤销' color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} disable={!undoManager.canUndo}  icon={<RollbackOutlined />} onClick={mst.undo.bind(mst)} />
-    <ButtonActon Tooltip={Tooltip} title='重做' color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} disable={!undoManager.canRedo} icon={<RollbackOutlined style={{transform: 'scaleX(-1)'}} />} onClick={mst.redo.bind(mst)} />
+    <ButtonActon Tooltip={Tooltip} title='撤销' color={mst.Ui.darkness && undoManager.canUndo? mst.Ui.themeColor : undefined} disable={!undoManager.canUndo}  icon={<RollbackOutlined />} onClick={mst.undo.bind(mst)} />
+    <ButtonActon Tooltip={Tooltip} title='重做' color={mst.Ui.darkness && undoManager.canRedo? mst.Ui.themeColor : undefined} disable={!undoManager.canRedo} icon={<RollbackOutlined style={{transform: 'scaleX(-1)'}} />} onClick={mst.redo.bind(mst)} />
     <ButtonActon Tooltip={Tooltip} title='放大' color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} disable={zoomNum >=100 } icon='max' onClick={mst.graph.maxZoom.bind(mst.graph, graph)} />
     <span className='zoomNum noselect'>
       {graph && `${(zoomNum) >= 100 ? 100 :(zoomNum) }%` }
