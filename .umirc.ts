@@ -42,7 +42,7 @@ export default defineConfig({
   navs: [
     null,
     { title: 'GitHub', path: 'https://github.com/lusess123/web-pdm' },
-    { title: '更新日志', path: 'https://github.com/lusess123/web-pdm/releases' },
+    { title: '更新日志', path: 'https://github.com/lusess123/web-pdm/blob/master/packages/web-pdm-lib/CHANGELOG.md' },
   ],
   chainWebpack(memo){
     memo.plugin('CompressionPlugin').use(new CompressionPlugin({
