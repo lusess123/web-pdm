@@ -1,6 +1,6 @@
 
 // import { Tooltip } from 'antd'
-import { FileMarkdownOutlined, CloseCircleFilled , DownloadOutlined, RollbackOutlined,BgColorsOutlined,UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
+import { FileMarkdownOutlined, CloseCircleFilled , SnippetsFilled, SnippetsOutlined, DownloadOutlined, RollbackOutlined,BgColorsOutlined,UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import React, { isValidElement, useState, useCallback } from 'react' 
 import { observer } from 'mobx-react-lite'
@@ -15,7 +15,8 @@ import { throttle } from 'lodash'
 // }
 // import StateStack from '../../state-stack'
 // import { undoManager } from '../../context'
-
+//<SnippetsOutlined />
+//<SnippetsFilled />
 const IconRenders = {
   'container' : <BorderOutlined />,
   'arrow-up': <ArrowUpOutlined />,
@@ -61,6 +62,7 @@ export default observer(({ graph } : { graph : any}) => {
     <ButtonActon Tooltip={Tooltip} title='缩小' disable={zoomNum < 5 } icon='min' onClick={mst.graph.minZoom.bind(mst.graph, graph)} />
     <ButtonActon Tooltip={Tooltip} title='全景' icon='container' onClick={mst.graph.container.bind(mst.graph, graph)} />
     <ButtonActon Tooltip={Tooltip} title='下载图片' icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
+    <ButtonActon Tooltip={Tooltip} title='切换底色' icon={mst.Ui.darkness ?<SnippetsFilled /> : <SnippetsOutlined />} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} onClick={mst.Ui.setDarkness.bind(mst.Ui, !mst.Ui.darkness)}  />
     {/* <ButtonActon Tooltip={Tooltip} title='切换' icon='image' onClick={mst.Ui.toggle.bind(mst.Ui, components)}  /> */}
     <Popover placement="rightTop" arrowPointAtCenter footer={null} content={<SketchPicker color={mst.Ui.themeColor}   onChange={setColor} />} visible={colorPabel}>
     <ButtonActon Tooltip={Tooltip} title={`点击${colorPabel? '关闭':'打开'}颜色面板`} color={mst.Ui.themeColor} icon={ colorPabel ? <CloseCircleFilled /> : <BgColorsOutlined/>} onClick={setColorPabel.bind(null, !colorPabel)}  />

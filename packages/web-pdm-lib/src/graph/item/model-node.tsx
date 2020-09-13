@@ -3,6 +3,7 @@ import GGroup from '@antv/g-canvas/lib/group';
 import { IModelNodeShapeCfg, Relation } from './type'
 import { getBottomAnch, getLeftAnch, getTopAnch, getRightAnch, getLength, getSplitStrings, setNodeStateAttr } from './util'
 
+
 export const register = () => {
 
     // const colors = {
@@ -43,6 +44,7 @@ export const register = () => {
         },
 
         update(cfg: IModelNodeShapeCfg, item ) {
+            const whiteBg = 'rgba(7,10,26,0.06)'
             const {
                 isKeySharp,
                 active,
@@ -54,11 +56,16 @@ export const register = () => {
                 isNoModule,
                 showNameOrLabel,
                 config,
-                themeColor
+                themeColor,
+                darkness
             } = cfg
             const { colors } = config
             const group = item.getContainer()
             const children = group.get('children')
+            const bg =  darkness ? themeColor : whiteBg
+            const font = darkness ? colors.white : themeColor 
+            const mFront = darkness ? colors.white : themeColor 
+
             children.forEach((s) => {
                 const id = s.attr('id')
 
@@ -127,11 +134,15 @@ export const register = () => {
                             s.attr('text', showNameOrLabel ? fieldLable1 :  s.attr('nameLable'))
                         }
                         s.set('visible', !cfg.isKeySharp && !cfg.isCardSharp)
+                        s.attr('fill', selected && !darkness ? cfg.config.styleConfig.selected.node.stroke : font)
+
                         // s.attr('opacity', 1)
                         break
                     case 'header':
                         // s.attr('opacity', !cfg.isKeySharp ? 1 : 0)
-                        s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : themeColor)
+                        // s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : themeColor)
+                       // s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : 'rgba(7,10,26,0.06)')
+                        s.attr('fill', selected && darkness ? cfg.config.styleConfig.selected.node.stroke : bg)
                         s.set('visible', !cfg.isCardSharp && !cfg.isKeySharp)
                         // s.attr('opacity', 1)
                         break
@@ -201,15 +212,15 @@ export const register = () => {
         },
 
         render(cfg: IModelNodeShapeCfg, group : GGroup){
-            const { config, data, selected, showNameOrLabel, themeColor } = cfg
-
+            const { config, data, selected, showNameOrLabel, themeColor, darkness } = cfg
+            const whiteBg = 'rgba(7,10,26,0.06)'
             // const bg = data.aggregateRoot || 1 ? colors.blue : colors.head
             // const font = data.aggregateRoot || 1 ? colors.white : colors.blue
             // const mFront = data.aggregateRoot  || 1? colors.white : colors.black
             const { colors } = config
-            const bg =  themeColor 
-            const font = colors.white
-            const mFront = colors.white
+            const bg =  darkness ? themeColor : whiteBg
+            const font = darkness ? colors.white : themeColor 
+            const mFront = darkness ? colors.white : themeColor 
             const nodeColors = { bg, font, mFront }
 
             group.addShape('rect', {

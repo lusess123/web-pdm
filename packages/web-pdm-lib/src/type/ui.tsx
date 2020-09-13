@@ -9,7 +9,8 @@ export class TUi extends Model({
 
     update: prop(+new Date()),
     themeColor: prop('black'),
-    selectedColor: prop('rgba(11,108,149)')
+    selectedColor: prop('rgba(11,108,149)'),
+    darkness: prop(false)
 
 }) {
     Tree?: React.ComponentType
@@ -52,5 +53,9 @@ export class TUi extends Model({
     @modelAction
     setThemeColor(color: string){
         this.themeColor = color
+    }
+    @modelAction
+    setDarkness(darkness: boolean) {
+        this.darkness = darkness
     }
 }

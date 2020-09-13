@@ -47,6 +47,7 @@ export const createData = (root: RootInstance) => {
        
       },
       themeColor: colors.blue,
+      darkness: root.Ui.darkness,
       size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
     }
   }).filter(a=>a.visible)

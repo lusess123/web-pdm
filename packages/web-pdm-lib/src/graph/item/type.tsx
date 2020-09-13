@@ -44,7 +44,8 @@ export interface IModelNodeShapeCfg extends ModelConfig  {
     inactive?: boolean
     isCardSharp?: boolean
     showNameOrLabel? : boolean,
-    themeColor?:string
+    themeColor?:string,
+    darkness? :boolean
     
 }
 export interface IField {
