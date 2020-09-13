@@ -1,9 +1,10 @@
-## [0.2.3-dev.19](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.3-dev.19) (2020-09-12)
+## [0.2.3-dev.20](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.3-dev.20) (2020-09-13)
 
 
 ### Features
 
 * add onIgnoreEdge props ([4381081](https://github.com/lusess123/web-pdm/commit/4381081e664aaaf8efbbbb30aaf423e10c45d53c))
+* change bg color in toolbar ([57276e3](https://github.com/lusess123/web-pdm/commit/57276e317c6d808747c111f777a0dbc05cae7dc4))
 * color picker and add button in toolbar ([eb89c3d](https://github.com/lusess123/web-pdm/commit/eb89c3d0ac3f19fb328bee98e5133eef761e6567))
 * header core ([82bd319](https://github.com/lusess123/web-pdm/commit/82bd319779713476ce5f750c9f7da2acba749429))
 * suppot isCardSharp ([0902a92](https://github.com/lusess123/web-pdm/commit/0902a9289d72043a29f8f03299ca39433723df7f))
