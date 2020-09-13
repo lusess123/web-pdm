@@ -106,7 +106,7 @@ export const createLinks = (root) => {
                         // // targetAnchor: sourceAnchor,
                         targetAnchor: model.id === relationModel.id ? (sourceAnchor - 1) : undefined,
                         fieldIndex: i,
-                        // tooltip: `<div>从 <span class='text'>${relationModel?.label}</span> 到 <span class='text'>${model?.label}</span> ${Relation[field.type]||field.type} 关系</div>`
+                        tooltip: `<div>从 <span class='text'>${relationModel === null || relationModel === void 0 ? void 0 : relationModel.label}</span> 到 <span class='text'>${model === null || model === void 0 ? void 0 : model.label}</span> ${Relation[field.type] || field.type} 关系</div>`,
                         fieldsLength: l,
                         style: style.default.edge,
                         type: 'console-line',

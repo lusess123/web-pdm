@@ -45,8 +45,8 @@ export default observer(({ graph }) => {
         return React.createElement("div", { className: 'console-erd-toolbar' }, "\u6B63\u5728\u521D\u59CB\u5316\u4E2D....");
     return (React.createElement("div", { className: 'console-erd-toolbar' },
         React.createElement("div", { className: 'right' },
-            React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u64A4\u9500', color: mst.Ui.darkness ? mst.Ui.themeColor : undefined, disable: !undoManager.canUndo, icon: React.createElement(RollbackOutlined, null), onClick: mst.undo.bind(mst) }),
-            React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u91CD\u505A', color: mst.Ui.darkness ? mst.Ui.themeColor : undefined, disable: !undoManager.canRedo, icon: React.createElement(RollbackOutlined, { style: { transform: 'scaleX(-1)' } }), onClick: mst.redo.bind(mst) }),
+            React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u64A4\u9500', color: mst.Ui.darkness && undoManager.canUndo ? mst.Ui.themeColor : undefined, disable: !undoManager.canUndo, icon: React.createElement(RollbackOutlined, null), onClick: mst.undo.bind(mst) }),
+            React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u91CD\u505A', color: mst.Ui.darkness && undoManager.canRedo ? mst.Ui.themeColor : undefined, disable: !undoManager.canRedo, icon: React.createElement(RollbackOutlined, { style: { transform: 'scaleX(-1)' } }), onClick: mst.redo.bind(mst) }),
             React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u653E\u5927', color: mst.Ui.darkness ? mst.Ui.themeColor : undefined, disable: zoomNum >= 100, icon: 'max', onClick: mst.graph.maxZoom.bind(mst.graph, graph) }),
             React.createElement("span", { className: 'zoomNum noselect' }, graph && `${(zoomNum) >= 100 ? 100 : (zoomNum)}%`),
             React.createElement(ButtonActon, { Tooltip: Tooltip, title: '\u7F29\u5C0F', color: mst.Ui.darkness ? mst.Ui.themeColor : undefined, disable: zoomNum < 5, icon: 'min', onClick: mst.graph.minZoom.bind(mst.graph, graph) }),
