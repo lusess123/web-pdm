@@ -11,7 +11,7 @@ import Scroll from 'react-custom-scrollbars'
 import { CreateComponent, intlLiteral } from '../../util'
 import { useMst } from '../../context'
 import './style.scss'
-import mst from '@antv/g6/lib/algorithm/mst';
+// import mst from '@antv/g6/lib/algorithm/mst';
 
 
 

@@ -10,6 +10,7 @@ import GraphEvent from './event'
 import { initStyle } from './item/style'
 import { useUpdateItem } from './hooks'
 import { RootInstance } from '../type'
+import { debounce } from 'lodash'
 // import mst from 'test/mst'
 
 
@@ -57,6 +58,7 @@ const useLocal = () => {
     }, [ JSON.stringify(mst.sys.checkedKeys), mst])
   const setRef = useCallback((ref) => { containerRef.current = ref }, [containerRef])
   useEffect(() => {
+    // debounce(()=> {
     const graph = erdGraphRef.current
     if(graph) {
       const gwidth = graph.get('width')
@@ -65,8 +67,51 @@ const useLocal = () => {
 
       graph.zoomTo(mst.graph.zoom, point)
     }
+    // }
+  //  }, 100)()
 
   } , [mst.graph.zoom])
+
+  useEffect(() => {
+    // debounce(()=> {
+    const graph = erdGraphRef.current
+    if(graph) {
+      graph.clear()
+      graph.data({nodes: mst.Nodes , edges: mst.edges})
+      graph.render()
+      const isLargar = graph.getNodes().length > 50 
+      graph.updateLayout({
+        type: mst.sys.dagreLayout ? 'dagre' : 'force' ,
+        // type: mst.sys.dagreLayout ? 'dagre' : 'force',
+        condense: true,
+        cols: 3,
+        workerEnabled: true,
+        linkDistance: 0,
+        alphaDecay: isLargar ? 0.3 : 0.15,
+        preventOverlap: true,
+        // collideStrength: 0.5,
+        nodeSpacing: isLargar ? -100 : -180,
+        onLayoutEnd: () => {
+          // alert()
+          graph.isLayouting = false
+          graph.fitView(0)
+          withoutUndo(()=>{
+            mst.graph.setZoom(graph.getZoom())
+          })
+        }
+      })
+      if( mst.sys.dagreLayout) {
+         async(()=> {
+           graph.fitView(0)
+         })
+      }
+    }
+    // }
+  //  }, 100)()
+
+  } , [mst.sys.dagreLayout])
+
+
 //  alert('useUpdateItem' + mst.graph.zoom)
   useUpdateItem({
     currentModel : mst.sys.currentModel,
@@ -122,7 +167,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
     minZoom: 0.01,
     maxZoom: 1.1,
     layout : {
-      type: 'force',
+      type: mst.sys.dagreLayout ? 'dagre' : 'force',
       condense: true,
       cols: 3,
       workerEnabled: true,
@@ -137,10 +182,6 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         withoutUndo(()=>{
           mst.graph.setZoom(graph.getZoom())
         })
-        // // alert()
-        // // alert('end' + graph.getZoom())
-        // mst.graph.setZoom(graph.getZoom())
-        // checkRef.current = + new Date()
       }
     },
 
@@ -190,6 +231,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
   graph.data({ nodes, edges })
   graph.isLayouting = true
   graph.render()
+  graph.fitView(0)
   // layout(graph, nodes)
   return graph
 }

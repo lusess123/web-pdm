@@ -14,7 +14,8 @@ export class TSys extends Model({
     showNameOrLabel: prop(false),
     tabOrTree: prop(false),
     snapshot: prop(true),
-    height: prop<number|undefined|string>('100%')
+    height: prop<number|undefined|string>('100%'),
+    dagreLayout: prop(false),
     // undoData: prop<UndoStore>(() => new UndoStore({})),
 }) {
 
@@ -94,6 +95,10 @@ export class TSys extends Model({
         // alert('sys onInit')
         // alert(this.tabOrTree)
         this.toggleShowNameOrLabel = this.toggleShowNameOrLabel.bind(this)
+    }
+    @modelAction
+    setDagreLayout(dagreLayout:boolean) {
+        this.dagreLayout = dagreLayout
     }
 
 }
