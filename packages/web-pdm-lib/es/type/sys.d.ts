@@ -11,6 +11,7 @@ declare const TSys_base: import("mobx-keystone")._Model<unknown, {
     tabOrTree: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
     snapshot: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
     height: import("mobx-keystone").OptionalModelProp<string | number, string | number>;
+    dagreLayout: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
 }>;
 export declare class TSys extends TSys_base {
     onIgnoreEdge: (filed: FieldConfig) => boolean;
@@ -24,5 +25,6 @@ export declare class TSys extends TSys_base {
     setSearch: (search: string) => void;
     toggleShowNameOrLabel: () => void;
     onInit(): void;
+    setDagreLayout(dagreLayout: boolean): void;
 }
 export {};

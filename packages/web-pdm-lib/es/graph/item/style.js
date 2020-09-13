@@ -18,7 +18,7 @@ export const initStyle = ({ primaryColor }) => {
                 // stroke: undefined,
                 lineWidth: 4,
                 opacity: 0.9,
-                stroke: 'white',
+                stroke: 'rgba(0,0,0,0.01)',
             },
             edge: {
                 lineWidth: 2,

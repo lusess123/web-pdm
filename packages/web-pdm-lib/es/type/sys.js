@@ -17,8 +17,8 @@ let TSys = class TSys extends Model({
     showNameOrLabel: prop(false),
     tabOrTree: prop(false),
     snapshot: prop(true),
-    height: prop('100%')
-    // undoData: prop<UndoStore>(() => new UndoStore({})),
+    height: prop('100%'),
+    dagreLayout: prop(false),
 }) {
     constructor() {
         super(...arguments);
@@ -32,6 +32,7 @@ let TSys = class TSys extends Model({
             this.currentModule = module;
         };
         this.setSearch = (search) => {
+            // alert(search)
             this.search = search;
         };
         this.toggleShowNameOrLabel = () => {
@@ -77,6 +78,9 @@ let TSys = class TSys extends Model({
         // alert(this.tabOrTree)
         this.toggleShowNameOrLabel = this.toggleShowNameOrLabel.bind(this);
     }
+    setDagreLayout(dagreLayout) {
+        this.dagreLayout = dagreLayout;
+    }
 };
 __decorate([
     modelAction
@@ -102,6 +106,9 @@ __decorate([
 __decorate([
     modelAction
 ], TSys.prototype, "toggleShowNameOrLabel", void 0);
+__decorate([
+    modelAction
+], TSys.prototype, "setDagreLayout", null);
 TSys = __decorate([
     model("webpdm/TSys")
 ], TSys);
