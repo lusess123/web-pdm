@@ -69,8 +69,8 @@ export type ModuleConfig = {
 ## height
 
 - 说明： 容器的高度
-- 类型： number | string
-
+- 类型： number | string ｜ undefined
+- 默认值： undefined
 
 
 
@@ -78,7 +78,25 @@ export type ModuleConfig = {
 
 - 说明： 容器的样式设置
 - 类型： html style  对象
+- 默认值： undefined
+
+## themeColor
+
+- 说明： 皮肤主颜色
+- 类型： string 
+- 默认值： black
+
+## darkness
+
+- 说明： 是否暗色背景
+- 类型： boolean 
+- 默认值：false
+
 
 ## onIgnoreEdge
 - 说明： 是否忽略连接线的创建
 - 类型： (field: FieldConfig) => boolean
+
+## onModelDetail
+- 说明： 点击模型“查看”按钮事件
+- 类型： (model: ModelConfig) => void
