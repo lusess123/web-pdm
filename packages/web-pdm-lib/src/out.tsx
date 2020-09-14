@@ -16,10 +16,13 @@ export interface IWebPdmProps {
   style?: any, 
   height?: string | number,
   onIgnoreEdge?: (field: FieldConfig) => boolean,
-  components: IComponentConfig
+  components: IComponentConfig,
+  onModelDetail?: (model: ModelConfig) => void,
+  themeColor?: string,
+  darkness?: boolean
 }
 
-export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
+export const Page = observer<IWebPdmProps>(({ onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
     const data = useMst()
     useEffect(() => {
       onSnapshot(data, snapshot => {
@@ -35,6 +38,7 @@ export const Page = observer<IWebPdmProps>(({ models, modules, erdkey, className
         {
           applySnapshot(data,sdata)
           data.sys.setOnIgnoreEdge(onIgnoreEdge)
+          data.sys.setOnModelDetail(onModelDetail)
           data.Ui.registComponents(components)
         }
           
@@ -52,7 +56,12 @@ const WebPDM :FunctionComponent<IWebPdmProps>  = (props) => {
       return createRootStore({
         sys : {
           height: props.height,
-          onIgnoreEdge: props.onIgnoreEdge
+          onIgnoreEdge: props.onIgnoreEdge,
+          onModelDetail: props.onModelDetail
+        },
+        Ui : {
+          themeColor: props.themeColor,
+          darkness: props.darkness
         },
         components : props.components
       })

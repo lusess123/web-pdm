@@ -17,7 +17,12 @@ export type ModelConfig = {
     label: string,
     fields: FieldConfig[],
     module: string,
-    type?: string 
+    type?: string ,
+
+    aggregateRoot?: boolean;
+    aggregateModelKey: string;
+    belongAggregate: string;
+    
 }
 
 export type ModuleConfig = {

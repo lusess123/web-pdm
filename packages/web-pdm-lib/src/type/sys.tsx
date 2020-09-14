@@ -1,7 +1,7 @@
 import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone'
 import { RootInstance } from './index'
 import { toCenter } from '../util/graph'
-import { FieldConfig } from './config'
+import { FieldConfig, ModelConfig } from './config'
 @model("webpdm/TSys")
 export class TSys extends Model({
     search: prop(''),
@@ -21,9 +21,14 @@ export class TSys extends Model({
 
   
     onIgnoreEdge : (filed: FieldConfig) => boolean
+    onModelDetail : (model: ModelConfig) => void
 
     setOnIgnoreEdge(onIgnoreEdge) {
         this.onIgnoreEdge = onIgnoreEdge
+    }
+
+    setOnModelDetail(onModelDetail) {
+        this.onModelDetail = onModelDetail
     }
 
     @modelAction

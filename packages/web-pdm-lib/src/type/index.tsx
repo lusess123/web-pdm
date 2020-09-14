@@ -73,32 +73,32 @@ export class RootInstance extends Model({
             return renderModelTitle(model.label, this.sys.search, this.sys.showNameOrLabel, model.name)
       }
 
-      @modelAction
-      init({ modelData, moduleData, height }: { modelData: any, moduleData: any, height: any }) {
+      // @modelAction
+      // init({ modelData, moduleData, height }: { modelData: any, moduleData: any, height: any }) {
 
-            let moduleHas: Record<string, string> = {}
-            moduleData.forEach((module: any) => {
-                  const key = NewGuid().toString()
-                  this.Modules.set(key, new TModule({ id: key, label: module.name, name: module.key }))
-                  moduleHas[module.key] = key
-                  this.sys.expandedKeys.push(key)
+      //       let moduleHas: Record<string, string> = {}
+      //       moduleData.forEach((module: any) => {
+      //             const key = NewGuid().toString()
+      //             this.Modules.set(key, new TModule({ id: key, label: module.name, name: module.key }))
+      //             moduleHas[module.key] = key
+      //             this.sys.expandedKeys.push(key)
 
-            })
-            let modelsKeys: string[] = []
-            modelData.forEach((model: any) => {
-                  const key = NewGuid().toString()
-                  this.Models.set(key, new TModel({ id: key, label: model.name, name: model.key, moduleId: moduleHas[model.moduleKey] || '' }))
-                  model.fields.forEach((field: any) => {
-                        const _key = NewGuid().toString()
-                        this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.name, name: field.key, type: field.type || 'string', modelId: key }))
-                  })
-                  modelsKeys.push(key)
+      //       })
+      //       let modelsKeys: string[] = []
+      //       modelData.forEach((model: any) => {
+      //             const key = NewGuid().toString()
+      //             this.Models.set(key, new TModel({ id: key, aggregateModelKey: m.aggregateModelKey, label: model.name, name: model.key, moduleId: moduleHas[model.moduleKey] || '' }))
+      //             model.fields.forEach((field: any) => {
+      //                   const _key = NewGuid().toString()
+      //                   this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.name, name: field.key, type: field.type || 'string', modelId: key }))
+      //             })
+      //             modelsKeys.push(key)
 
-            })
-            this.sys.checkedKeys = modelsKeys
-            this.sys.height = height
-            // alert( this.sys.height)
-      }
+      //       })
+      //       this.sys.checkedKeys = modelsKeys
+      //       this.sys.height = height
+      //       // alert( this.sys.height)
+      // }
       
       @modelAction
       initData( models : ModelConfig[] , modules: ModuleConfig[], sys?: SysConfig) {
@@ -115,7 +115,15 @@ export class RootInstance extends Model({
             let modelsKeys: string[] = []
             models.forEach((model) => {
                   const key = NewGuid().toString()
-                  this.Models.set(key, new TModel({ id: key, label: model.label, name: model.name, moduleId: moduleHas[model.module] || '' }))
+                  this.Models.set(key, new TModel({ 
+                        id: key, 
+                        belongAggregate: model.belongAggregate, 
+                        aggregateModelKey: model.aggregateModelKey, 
+                        aggregateRoot: model.aggregateRoot,  
+                        label: model.label, 
+                        name: model.name, 
+                        moduleId: moduleHas[model.module] || '' 
+                  }))
                   model.fields.forEach((field) => {
                         const _key = NewGuid().toString()
                         this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.label, name: field.name, type: field.type || 'string', modelId: key }))
@@ -184,8 +192,8 @@ export class RootInstance extends Model({
 }
 
 
-export const createStore = (props = { sys : {} , graph: {}, components : {} }) => {
-      const ui = new TUi({})
+export const createStore = (props = { sys : {} , graph: {}, components : {}, Ui:{} }) => {
+      const ui = new TUi(props.Ui)
       ui.registComponents(props.components)
       return new RootInstance({
             $modelId: 'webpdm',
@@ -195,10 +203,11 @@ export const createStore = (props = { sys : {} , graph: {}, components : {} }) =
                   search: '',
                   ...props.sys
             }),
+            Ui: ui,
             graph : new TGraph({
                   ...props.graph
             }),
-            Ui: ui
+            // Ui: new TUi(Ui)
       })
 }
 
