@@ -107,8 +107,11 @@ export default (graph:Graph, mst : RootInstance) => {
       //      click: target.attr('click'),
       // }))
       if(target.attr('click') === 'modelEdit') {
-        const id :string = ev.item.getModel().id
-        const modelId = id.replace('model-', '')
+        // const id :string = ev.item.getModel().id
+        // const modelId = id.replace('model-', '')
+        if(mst.sys.onModelDetail) {
+             mst.sys.onModelDetail(ev.item.getModel().data)
+        }
         
       }
       if(target.attr('arg')?.relationModel?.id) {

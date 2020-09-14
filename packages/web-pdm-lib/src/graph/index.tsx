@@ -10,7 +10,7 @@ import GraphEvent from './event'
 import { initStyle } from './item/style'
 import { useUpdateItem } from './hooks'
 import { RootInstance } from '../type'
-import { debounce } from 'lodash'
+// import { debounce } from 'lodash'
 // import mst from 'test/mst'
 
 
@@ -82,7 +82,7 @@ const useLocal = () => {
       }
       // alert()
       graph.clear()
-      graph.data({nodes: mst.Nodes , edges: mst.edges})
+      graph.data({ nodes: mst.Nodes , edges: mst.edges })
       graph.render()
       const isLargar = graph.getNodes().length > 50 
       graph.updateLayout({

@@ -32,6 +32,17 @@ const onIgnoreEdge = (field ) => {
    return field?.typeMeta?.relationModel === 'base_User' && (confirmEnding(field.name, 'createdBy') || confirmEnding(field.name,'updatedBy')  ) 
 }
 ReactDom.render(
-  <WebPdm themeColor='green' darkness={false} components={components} models={models} modules={modules} erdkey={'demo'} onModelDetail={(a) => alert(JSON.stringify(a))} onIgnoreEdge={onIgnoreEdge} />, 
+  <WebPdm 
+  themeColor='green' 
+  darkness={false} 
+  components={components} 
+  models={models} 
+  modules={modules} 
+  erdkey={'demo'} 
+  onModelDetail={(a) => {
+   alert(`打开模型${a.label}(${a.name}) 的查看链接`)
+  }
+  } 
+  onIgnoreEdge={onIgnoreEdge} />, 
   document.getElementById('app')||document.getElementById('root')
 )
