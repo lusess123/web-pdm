@@ -24,6 +24,19 @@
     display: flex;
     flex-direction: column;
   }
+  .g6-tooltip {
+    padding: 10px 6px;
+    // color: black;
+    background-color: white;
+    box-shadow: 10px 10px 5px #888888;
+    // background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgb(11,108,149);
+    opacity: 1;
+    border-radius: 4px;
+    .text {
+      color: rgb(11,108,149);
+    }
+  }
 }
 
 .g6-minimap {
@@ -54,6 +67,11 @@
   //  border: 1px solid rgba(0,0,0,.1);
   //  border-radius: 3px;
    border: 1px solid rgba(0, 0, 0, 0.1);
+   .text {
+    border: 1px solid rgba(0,0,0,.1);
+    opacity: 1;
+    
+   }
 
   //  background-image: linear-gradient(#DEE0E4 1px, transparent 0), linear-gradient(90deg, #DEE0E4 1px, transparent 0), linear-gradient(rgba(222, 224, 228, 0.6) 1px, transparent 0), linear-gradient(90deg, rgba(222, 224, 228, 0.6) 1px, transparent 0);
   //  background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
