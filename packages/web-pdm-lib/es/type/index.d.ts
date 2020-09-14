@@ -92,6 +92,9 @@ export declare class RootInstance extends RootInstance_base {
             key: string;
             name: string;
             tag: string;
+            aggregateRoot: boolean;
+            aggregateModelKey: string;
+            belongAggregate: string;
             nodeSize: number;
         };
         themeColor: any;
@@ -101,11 +104,6 @@ export declare class RootInstance extends RootInstance_base {
     get edges(): any;
     findModelByName(name: string): TModel;
     renderModelTitle(model: TModel): string | JSX.Element;
-    init({ modelData, moduleData, height }: {
-        modelData: any;
-        moduleData: any;
-        height: any;
-    }): void;
     initData(models: ModelConfig[], modules: ModuleConfig[], sys?: SysConfig): void;
     undo(): void;
     redo(): void;
@@ -117,5 +115,6 @@ export declare const createStore: (props?: {
     sys: {};
     graph: {};
     components: {};
+    Ui: {};
 }) => RootInstance;
 export {};

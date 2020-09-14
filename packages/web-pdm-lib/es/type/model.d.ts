@@ -6,6 +6,9 @@ declare const TModel_base: import("mobx-keystone")._Model<unknown, {
     name: import("mobx-keystone").MaybeOptionalModelProp<string, string>;
     label: import("mobx-keystone").OptionalModelProp<string, string>;
     moduleId: import("mobx-keystone").OptionalModelProp<string, string>;
+    aggregateRoot: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
+    aggregateModelKey: import("mobx-keystone").MaybeOptionalModelProp<string, string>;
+    belongAggregate: import("mobx-keystone").MaybeOptionalModelProp<string, string>;
 }>;
 export declare class TModel extends TModel_base {
     get fields(): any[];

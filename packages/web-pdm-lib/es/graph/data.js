@@ -1,3 +1,4 @@
+// import mst from '@antv/g6/lib/algorithm/mst'
 import { getSnapshot } from 'mobx-keystone';
 // import { mapToArrary } from '../util'
 import { initStyle } from './item/style';
@@ -29,9 +30,9 @@ export const createData = (root) => {
                 key: m.id,
                 name: m.name,
                 tag: 'aggregate',
-                // aggregateRoot:  model.aggregateRoot,
-                // aggregateModelKey: model.aggregateModelKey,
-                // belongAggregate: model.belongAggregate,
+                aggregateRoot: m.aggregateRoot,
+                aggregateModelKey: m.aggregateModelKey,
+                belongAggregate: m.belongAggregate,
                 nodeSize: ((48 + getLength(m.fields.length) * 48) / 6) * 6 / 6,
             },
             themeColor: colors.blue,

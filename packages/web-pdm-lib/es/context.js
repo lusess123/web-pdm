@@ -15,7 +15,7 @@ export function useMst() {
 export const createRootStore = (props) => {
     var _a;
     const onIgnoreEdge = (_a = props === null || props === void 0 ? void 0 : props.sys) === null || _a === void 0 ? void 0 : _a.onIgnoreEdge;
-    const newProps = onIgnoreEdge ? Object.assign(Object.assign({}, props), { sys: Object.assign(Object.assign({}, props.sys), { onIgnoreEdge: undefined }) }) : props;
+    const newProps = Object.assign(Object.assign({}, props), { sys: Object.assign(Object.assign({}, props.sys), { onIgnoreEdge: undefined, onModelDetail: props.onModelDetail }) });
     const rootStore = createStore(newProps);
     if (onIgnoreEdge)
         rootStore.sys.onIgnoreEdge = onIgnoreEdge;

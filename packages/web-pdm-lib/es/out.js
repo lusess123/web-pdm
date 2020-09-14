@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Provider, createRootStore } from './context';
 import MSTPage from './components';
 export * from './type/config';
-export const Page = observer(({ models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
+export const Page = observer(({ onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
     const data = useMst();
     useEffect(() => {
         onSnapshot(data, snapshot => {
@@ -21,6 +21,7 @@ export const Page = observer(({ models, modules, erdkey, className, style, heigh
             withoutUndo(() => {
                 applySnapshot(data, sdata);
                 data.sys.setOnIgnoreEdge(onIgnoreEdge);
+                data.sys.setOnModelDetail(onModelDetail);
                 data.Ui.registComponents(components);
             });
         }
@@ -32,7 +33,12 @@ const WebPDM = (props) => {
         return createRootStore({
             sys: {
                 height: props.height,
-                onIgnoreEdge: props.onIgnoreEdge
+                onIgnoreEdge: props.onIgnoreEdge,
+                onModelDetail: props.onModelDetail
+            },
+            Ui: {
+                themeColor: props.themeColor,
+                darkness: props.darkness
             },
             components: props.components
         });

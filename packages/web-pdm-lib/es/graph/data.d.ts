@@ -72,6 +72,9 @@ export declare const createData: (root: RootInstance) => {
         key: string;
         name: string;
         tag: string;
+        aggregateRoot: boolean;
+        aggregateModelKey: string;
+        belongAggregate: string;
         nodeSize: number;
     };
     themeColor: any;

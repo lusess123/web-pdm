@@ -10,6 +10,9 @@ export interface IWebPdmProps {
     height?: string | number;
     onIgnoreEdge?: (field: FieldConfig) => boolean;
     components: IComponentConfig;
+    onModelDetail?: (model: ModelConfig) => void;
+    themeColor?: string;
+    darkness?: boolean;
 }
 export declare const Page: React.FunctionComponent<IWebPdmProps>;
 declare const WebPDM: FunctionComponent<IWebPdmProps>;

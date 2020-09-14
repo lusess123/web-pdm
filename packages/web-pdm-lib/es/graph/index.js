@@ -9,9 +9,10 @@ import './model.scss';
 import GraphEvent from './event';
 import { initStyle } from './item/style';
 import { useUpdateItem } from './hooks';
+// import { debounce } from 'lodash'
 // import mst from 'test/mst'
 export default observer(() => {
-    const mst = useMst();
+    // const mst = useMst()
     const { setRef, erdGraph } = useLocal();
     return React.createElement(React.Fragment, null,
         React.createElement(ToolBar, { graph: erdGraph }),
@@ -57,42 +58,56 @@ const useLocal = () => {
         // }
         //  }, 100)()
     }, [mst.graph.zoom]);
+    const reloadRef = useRef(false);
     useEffect(() => {
         // debounce(()=> {
         const graph = erdGraphRef.current;
         if (graph) {
+            if (!reloadRef.current) {
+                reloadRef.current = true;
+                return;
+            }
+            // alert()
             graph.clear();
             graph.data({ nodes: mst.Nodes, edges: mst.edges });
             graph.render();
             const isLargar = graph.getNodes().length > 50;
             graph.updateLayout({
                 type: mst.sys.dagreLayout ? 'dagre' : 'force',
-                // type: mst.sys.dagreLayout ? 'dagre' : 'force',
                 condense: true,
                 cols: 3,
                 workerEnabled: true,
                 linkDistance: 0,
-                alphaDecay: isLargar ? 0.3 : 0.15,
+                // alphaDecay: isLargar ? 0.3 : 0.15,
                 preventOverlap: true,
                 // collideStrength: 0.5,
+                //   type: 'dagre',
+                //   // controlPoints: true,
+                //   // nodeSize: [40, 20],
+                // nodesep: 1,
+                // ranksep: 1,
+                // align: 'DL',
+                // nodesep: 100, // 节点水平间距(px)
+                // ranksep: 200, // 每一层节点之间间距
                 nodeSpacing: isLargar ? -100 : -180,
                 onLayoutEnd: () => {
-                    // alert()
-                    graph.isLayouting = false;
-                    graph.fitView(0);
-                    withoutUndo(() => {
-                        mst.graph.setZoom(graph.getZoom());
-                    });
+                    async(() => {
+                        // alert()
+                        graph.isLayouting = false;
+                        graph.fitView(0);
+                        withoutUndo(() => {
+                            mst.graph.setZoom(graph.getZoom());
+                        });
+                    }, 1000);
                 }
             });
             if (mst.sys.dagreLayout) {
                 async(() => {
+                    //  alert()
                     graph.fitView(0);
-                });
+                }, 1000);
             }
         }
-        // }
-        //  }, 100)()
     }, [mst.sys.dagreLayout]);
     //  alert('useUpdateItem' + mst.graph.zoom)
     useUpdateItem({
@@ -150,7 +165,7 @@ const render = (container, nodes, edges, mst) => {
             cols: 3,
             workerEnabled: true,
             linkDistance: 0,
-            alphaDecay: isLargar ? 0.3 : 0.15,
+            alphaDecay: isLargar ? 0.3 : undefined,
             preventOverlap: true,
             // collideStrength: 0.5,
             nodeSpacing: isLargar ? -100 : -180,
@@ -202,6 +217,15 @@ const render = (container, nodes, edges, mst) => {
     graph.isLayouting = true;
     graph.render();
     graph.fitView(0);
+    if (mst.sys.dagreLayout) {
+        async(() => {
+            // alert()
+            graph.fitView(0);
+            withoutUndo(() => {
+                mst.graph.setZoom(graph.getZoom());
+            });
+        });
+    }
     // layout(graph, nodes)
     return graph;
 };
@@ -252,6 +276,6 @@ const layout = (graph, nodes, edges, mst) => {
     // graph.fitView(0)
     return graph;
 };
-const async = (fun) => {
-    setTimeout(fun, 500);
+const async = (fun, time = 500) => {
+    setTimeout(fun, time);
 };

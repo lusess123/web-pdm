@@ -42,6 +42,9 @@ let TSys = class TSys extends Model({
     setOnIgnoreEdge(onIgnoreEdge) {
         this.onIgnoreEdge = onIgnoreEdge;
     }
+    setOnModelDetail(onModelDetail) {
+        this.onModelDetail = onModelDetail;
+    }
     toggleArrangeLayout() {
         this.isArrangeLayout = !this.isArrangeLayout;
     }

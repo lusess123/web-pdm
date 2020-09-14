@@ -15,6 +15,9 @@ export declare type ModelConfig = {
     fields: FieldConfig[];
     module: string;
     type?: string;
+    aggregateRoot?: boolean;
+    aggregateModelKey: string;
+    belongAggregate: string;
 };
 export declare type ModuleConfig = {
     name: string;

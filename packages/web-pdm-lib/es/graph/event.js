@@ -86,6 +86,13 @@ export default (graph, mst) => {
             //      arg: target.attr('arg'),
             //      click: target.attr('click'),
             // }))
+            if (target.attr('click') === 'modelEdit') {
+                // const id :string = ev.item.getModel().id
+                // const modelId = id.replace('model-', '')
+                if (mst.sys.onModelDetail) {
+                    mst.sys.onModelDetail(ev.item.getModel().data);
+                }
+            }
             if ((_b = (_a = target.attr('arg')) === null || _a === void 0 ? void 0 : _a.relationModel) === null || _b === void 0 ? void 0 : _b.id) {
                 mst.sys.centerCurrentModel([(_d = (_c = target.attr('arg')) === null || _c === void 0 ? void 0 : _c.relationModel) === null || _d === void 0 ? void 0 : _d.id]);
             }

@@ -66,28 +66,29 @@ let RootInstance = class RootInstance extends Model({
     renderModelTitle(model) {
         return renderModelTitle(model.label, this.sys.search, this.sys.showNameOrLabel, model.name);
     }
-    init({ modelData, moduleData, height }) {
-        let moduleHas = {};
-        moduleData.forEach((module) => {
-            const key = NewGuid().toString();
-            this.Modules.set(key, new TModule({ id: key, label: module.name, name: module.key }));
-            moduleHas[module.key] = key;
-            this.sys.expandedKeys.push(key);
-        });
-        let modelsKeys = [];
-        modelData.forEach((model) => {
-            const key = NewGuid().toString();
-            this.Models.set(key, new TModel({ id: key, label: model.name, name: model.key, moduleId: moduleHas[model.moduleKey] || '' }));
-            model.fields.forEach((field) => {
-                const _key = NewGuid().toString();
-                this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new MetaType(field.typeMeta) : undefined), label: field.name, name: field.key, type: field.type || 'string', modelId: key }));
-            });
-            modelsKeys.push(key);
-        });
-        this.sys.checkedKeys = modelsKeys;
-        this.sys.height = height;
-        // alert( this.sys.height)
-    }
+    // @modelAction
+    // init({ modelData, moduleData, height }: { modelData: any, moduleData: any, height: any }) {
+    //       let moduleHas: Record<string, string> = {}
+    //       moduleData.forEach((module: any) => {
+    //             const key = NewGuid().toString()
+    //             this.Modules.set(key, new TModule({ id: key, label: module.name, name: module.key }))
+    //             moduleHas[module.key] = key
+    //             this.sys.expandedKeys.push(key)
+    //       })
+    //       let modelsKeys: string[] = []
+    //       modelData.forEach((model: any) => {
+    //             const key = NewGuid().toString()
+    //             this.Models.set(key, new TModel({ id: key, aggregateModelKey: m.aggregateModelKey, label: model.name, name: model.key, moduleId: moduleHas[model.moduleKey] || '' }))
+    //             model.fields.forEach((field: any) => {
+    //                   const _key = NewGuid().toString()
+    //                   this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.name, name: field.key, type: field.type || 'string', modelId: key }))
+    //             })
+    //             modelsKeys.push(key)
+    //       })
+    //       this.sys.checkedKeys = modelsKeys
+    //       this.sys.height = height
+    //       // alert( this.sys.height)
+    // }
     initData(models, modules, sys) {
         let moduleHas = {};
         modules.forEach((module) => {
@@ -99,7 +100,15 @@ let RootInstance = class RootInstance extends Model({
         let modelsKeys = [];
         models.forEach((model) => {
             const key = NewGuid().toString();
-            this.Models.set(key, new TModel({ id: key, label: model.label, name: model.name, moduleId: moduleHas[model.module] || '' }));
+            this.Models.set(key, new TModel({
+                id: key,
+                belongAggregate: model.belongAggregate,
+                aggregateModelKey: model.aggregateModelKey,
+                aggregateRoot: model.aggregateRoot,
+                label: model.label,
+                name: model.name,
+                moduleId: moduleHas[model.module] || ''
+            }));
             model.fields.forEach((field) => {
                 const _key = NewGuid().toString();
                 this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new MetaType(field.typeMeta) : undefined), label: field.label, name: field.name, type: field.type || 'string', modelId: key }));
@@ -163,9 +172,6 @@ __decorate([
 ], RootInstance.prototype, "renderModelTitle", null);
 __decorate([
     modelAction
-], RootInstance.prototype, "init", null);
-__decorate([
-    modelAction
 ], RootInstance.prototype, "initData", null);
 __decorate([
     modelAction
@@ -186,13 +192,13 @@ RootInstance = __decorate([
     model("webpdm/RootStore")
 ], RootInstance);
 export { RootInstance };
-export const createStore = (props = { sys: {}, graph: {}, components: {} }) => {
-    const ui = new TUi({});
+export const createStore = (props = { sys: {}, graph: {}, components: {}, Ui: {} }) => {
+    const ui = new TUi(props.Ui);
     ui.registComponents(props.components);
     return new RootInstance({
         $modelId: 'webpdm',
         sys: new TSys(Object.assign({ isArrangeLayout: false, layouting: true, search: '' }, props.sys)),
+        Ui: ui,
         graph: new TGraph(Object.assign({}, props.graph)),
-        Ui: ui
     });
 };

@@ -12,6 +12,9 @@ let TModel = class TModel extends Model({
     name: prop(),
     label: prop(''),
     moduleId: prop(''),
+    aggregateRoot: prop(false),
+    aggregateModelKey: prop(),
+    belongAggregate: prop(),
 }) {
     get fields() {
         const root = getRoot(this);
