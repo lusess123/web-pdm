@@ -66,9 +66,5 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
         // graph.paint()
       }
   
-<<<<<<< HEAD
     }, [currentModel, showNameOrLabel,  zoom >= 0.4, zoom >= 0.1, zoom !==0 , themeColor, darkness])
-=======
-    }, [currentModel, showNameOrLabel,  zoom >= 0.4, zoom >= 0.1, zoom !==0 , themeColor])
->>>>>>> 0902a92... feat: suppot isCardSharp
   }

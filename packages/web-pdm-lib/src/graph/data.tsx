@@ -1,4 +1,4 @@
-import mst from '@antv/g6/lib/algorithm/mst'
+// import mst from '@antv/g6/lib/algorithm/mst'
 import { getSnapshot } from 'mobx-keystone'
 import { RootInstance } from '../type'
 // import { mapToArrary } from '../util'
