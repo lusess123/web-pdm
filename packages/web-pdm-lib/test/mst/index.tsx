@@ -5,8 +5,12 @@ import ModuleTest from '../g6-test/mock/module-test'
 import WebPdm from '../../src'
 import CodePdm from '../../../../docs/type-erd'
 import { toModels, toModules } from '../g6-test/trantor/datamap'
-const models = toModels()
-const modules = toModules()
+import TestModel from '../g6-test/trantor/mock/models-data.json'
+import TestModule from '../g6-test/trantor/mock/modules-data.json'
+import Models from '../g6-test/trantor/model'
+import Modules from '../g6-test/trantor/module'
+const models = toModels(TestModel.res.map(a=>a.model))
+const modules = toModules(TestModule.res)
 import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
 import './style.less'
 const components = {
@@ -28,6 +32,6 @@ const onIgnoreEdge = (field ) => {
    return field?.typeMeta?.relationModel === 'base_User' && (confirmEnding(field.name, 'createdBy') || confirmEnding(field.name,'updatedBy')  ) 
 }
 ReactDom.render(
-  <WebPdm components={components} models={models} modules={modules} erdkey={'demo'} onIgnoreEdge={onIgnoreEdge} />, 
+  <WebPdm themeColor='green' darkness={false} components={components} models={models} modules={modules} erdkey={'demo'} onModelDetail={(a) => alert(JSON.stringify(a))} onIgnoreEdge={onIgnoreEdge} />, 
   document.getElementById('app')||document.getElementById('root')
 )

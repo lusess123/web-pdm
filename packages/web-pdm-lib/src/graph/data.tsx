@@ -40,9 +40,9 @@ export const createData = (root: RootInstance) => {
         key: m.id,
         name: m.name,
         tag: 'aggregate',
-        // aggregateRoot:  model.aggregateRoot,
-        // aggregateModelKey: model.aggregateModelKey,
-        // belongAggregate: model.belongAggregate,
+        aggregateRoot:  m.aggregateRoot,
+        aggregateModelKey: m.aggregateModelKey,
+        belongAggregate: m.belongAggregate,
         nodeSize: ((48 + getLength(m.fields.length) * 48) / 6) * 6 / 6,
        
       },

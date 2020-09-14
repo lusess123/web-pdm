@@ -62,7 +62,7 @@ export default observer(({ graph } : { graph : any}) => {
     <ButtonActon Tooltip={Tooltip} title='缩小' color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} disable={zoomNum < 5 } icon='min' onClick={mst.graph.minZoom.bind(mst.graph, graph)} />
     <ButtonActon Tooltip={Tooltip} title='全景' color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} icon='container' onClick={mst.graph.container.bind(mst.graph, graph)} />
     <ButtonActon Tooltip={Tooltip} title='下载图片' color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
-    <ButtonActon Tooltip={Tooltip} title={mst.sys.dagreLayout ? '切换层次布局' : '切换关联布局'} icon={mst.sys.dagreLayout ?<PartitionOutlined /> : <UngroupOutlined />} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} onClick={mst.sys.setDagreLayout.bind(mst.sys, !mst.sys.dagreLayout)}  />
+    <ButtonActon Tooltip={Tooltip} title={!mst.sys.dagreLayout ? '切换层次布局' : '切换关联布局'} icon={!mst.sys.dagreLayout ?<PartitionOutlined /> : <UngroupOutlined />} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} onClick={mst.sys.setDagreLayout.bind(mst.sys, !mst.sys.dagreLayout)}  />
     <ButtonActon Tooltip={Tooltip} title='切换底色' icon={mst.Ui.darkness ?<SnippetsFilled /> : <SnippetsOutlined />} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} onClick={mst.Ui.setDarkness.bind(mst.Ui, !mst.Ui.darkness)}  />
     {/* <ButtonActon Tooltip={Tooltip} title='切换' icon='image' onClick={mst.Ui.toggle.bind(mst.Ui, components)}  /> */}
     <Popover placement="rightTop" arrowPointAtCenter footer={null} content={<SketchPicker color={mst.Ui.themeColor}   onChange={setColor} />} visible={colorPabel}>

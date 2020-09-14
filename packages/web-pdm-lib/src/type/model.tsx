@@ -4,6 +4,9 @@ import { RootInstance } from '../type'
 import { renderModelTitle } from '../util/label'
 import { computed } from 'mobx'
 
+// aggregateRoot: boolean;
+// aggregateModelKey: string;
+// belongAggregate: string;
 
 export type InModel = SnapshotOutOf<TModel>
 
@@ -14,6 +17,9 @@ export class TModel extends Model({
     name: prop<string>(),
     label: prop(''),
     moduleId: prop(''),
+    aggregateRoot: prop(false),
+    aggregateModelKey: prop<string>(),
+    belongAggregate:  prop<string>(),
 
 }) {
     @computed
