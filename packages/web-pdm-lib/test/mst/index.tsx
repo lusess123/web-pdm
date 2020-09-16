@@ -5,23 +5,31 @@ import ModuleTest from '../g6-test/mock/module-test'
 import WebPdm from '../../src'
 import CodePdm from '../../../../docs/type-erd'
 import { toModels, toModules } from '../g6-test/trantor/datamap'
-import TestModel from '../g6-test/trantor/mock/models-data.json'
-import TestModule from '../g6-test/trantor/mock/modules-data.json'
-import Models from '../g6-test/trantor/model'
-import Modules from '../g6-test/trantor/module'
-const models = toModels(TestModel.res.map(a=>a.model))
-const modules = toModules(TestModule.res)
+// import TestModel from '../g6-test/trantor/mock/models-data.json'
+// import TestModule from '../g6-test/trantor/mock/modules-data.json'
+import TestModel from '../g6-test/trantor/gw/model.json'
+import TestModule from '../g6-test/trantor/gw/module.json'
+// import Models from '../g6-test/trantor/model'
+// import Modules from '../g6-test/trantor/module'
+// console.log(TestModel)
+// console.log(TestModule)
+
 import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
 import './style.less'
 const components = {
   Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover
 }
 
+const models = toModels(TestModel.res.map( a=> a.model )).filter((a,i)=> i < 10000)
+const modules = toModules(TestModule.res)
+
+console.log(models, modules)
+
 // alert(models.length)
 //        //if() return fPre
+// alert(models.length)
 
 function confirmEnding(str, target) {
-  // 请把你的代码写在这里
   if(str.substr(str.length-target.length,target.length)==target)
     return true;
   else 

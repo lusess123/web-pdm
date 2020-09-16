@@ -11,6 +11,8 @@ const getLength = (length: number) => {
 
 
 export const createData = (root: RootInstance) => {
+  //alert('createData')
+  const t0 = +new Date()
   const { style, colors } = initStyle({ primaryColor: root.Ui.themeColor })
   const res = [...root.Models.values()].map(m => {
     return {
@@ -33,8 +35,10 @@ export const createData = (root: RootInstance) => {
         label: m.label,
         fields: m.fields.map( a => (
           { 
-            ...getSnapshot(a) , 
-            relationModel: getSnapshot(a.relationModel)
+            // ...getSnapshot(a) , 
+            // relationModel: getSnapshot(a.relationModel)
+            ...a , 
+            relationModel: a.relationModel
           
           }) ),
         key: m.id,
@@ -51,8 +55,11 @@ export const createData = (root: RootInstance) => {
       size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
     }
   }).filter(a=>a.visible)
+  //const t1 = +new Date()
   // console.log(res)
+  //alert(res.length +  '   ' + (t1 - t0))
   if (res.length > 0) return res.concat([createSysNode() as any])
+  
   return res
 }
 

@@ -39,7 +39,9 @@ const useLocal = () => {
       if (!erdGraphRef.current) {
         //  alert(mst.Nodes.length)
         // alert(mst === window.kkk)
+         //alert('erdGraphRef.current = render')
          erdGraphRef.current = render(containerRef.current, mst.Nodes, mst.edges, mst)
+         //alert('erdGraphRef.current')
         //  alert(mst.graph.$modelId)
         async(() => {
           
@@ -50,7 +52,7 @@ const useLocal = () => {
         //  window.kkk1 = mst
       }
       else {
-        // alert(mst.Nodes.length)
+        //alert('  layout(erdGraphRef.current,  mst.Nodes ' + mst.Nodes.length)
         layout(erdGraphRef.current,  mst.Nodes , mst.edges, mst)
         // erdGraphRef.current.fitView(0)
       }
@@ -91,7 +93,7 @@ const useLocal = () => {
         cols: 3,
         workerEnabled: true,
         linkDistance: 0,
-        // alphaDecay: isLargar ? 0.3 : 0.15,
+        alphaDecay: isLargar ? 0.3 : 0.15,
         preventOverlap: true,
         // collideStrength: 0.5,
           //   type: 'dagre',

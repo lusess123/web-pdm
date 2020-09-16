@@ -28,7 +28,7 @@ export const Page = observer<IWebPdmProps>(({ onModelDetail, models, modules, er
       onSnapshot(data, snapshot => {
            sessionStorage.setItem('web-pdm' + erdkey, JSON.stringify(snapshot))
       })
-      const localdata = sessionStorage.getItem('web-pdm'+ erdkey)
+      const localdata = sessionStorage.getItem('web-pdm1'+ erdkey)
       if(!localdata) {
         withoutUndo(() => data.initData(models, modules))
       } else {

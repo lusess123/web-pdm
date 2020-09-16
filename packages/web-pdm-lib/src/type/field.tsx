@@ -27,14 +27,31 @@ export class MetaType extends Model({
 
 @model("webpdm/TField")
 export class TField extends Model({
-    id: prop<string>(),
-    name: prop<string>(),
-    label: prop<string>(),
-    type: prop<string>(),
-    typeMeta: prop<MetaType | undefined>(),
-    modelId: prop<string>('')
+    // id: prop<string>(),
+    // name: prop<string>(),
+    // label: prop<string>(),
+    // type: prop<string>(),
+    // typeMeta: prop<MetaType | undefined>(),
+    // modelId: prop<string>('')
 
 }) {
+
+    id: string
+    name: string
+    label: string
+    type: string
+    typeMeta: MetaType
+    modelId: string
+
+    init(obj) {
+       this.id = obj.id
+       this.name = obj.name 
+       this.label = obj.label
+       this.type = obj.type 
+       this.typeMeta = obj.typeMeta
+       this.modelId = obj.modelId 
+       return this
+    }
     
     @computed
     get relationModel() {

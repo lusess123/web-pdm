@@ -22,7 +22,7 @@ export class TModel extends Model({
     belongAggregate:  prop<string>(),
 
 }) {
-    @computed
+    // @computed
     get fields(): any[] {
         const root: RootInstance = getRoot(this)
         const fields = [...root.Fields.values()]

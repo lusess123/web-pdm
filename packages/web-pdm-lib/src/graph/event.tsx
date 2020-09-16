@@ -22,7 +22,13 @@ export default (graph:Graph, mst : RootInstance) => {
    
   graph.on('beforepaint', throttle(() => {
     // alert()
-    if(graph.isLayouting) return
+    if(graph.isLayouting) {
+        //  graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
+        //   node.getContainer().hide()
+        //   // node.getEdges().forEach(a=>a.hide())
+        //  })
+        return 
+    }
     const isExporting = graph['isExporting']
     const gWidth = graph.get('width')
     const gHeight = graph.get('height')

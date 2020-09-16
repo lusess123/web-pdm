@@ -1,5 +1,5 @@
 
-import { model, Model, prop, modelAction, objectMap, UndoManager } from 'mobx-keystone'
+import { model, Model, prop, modelAction, objectMap, UndoManager ,getSnapshot } from 'mobx-keystone'
 import { computed } from 'mobx'
 import { without, union } from 'lodash'
 import { TModel } from './model'
@@ -15,12 +15,13 @@ import { SysConfig, ModelConfig, ModuleConfig } from './config'
 import { TUi } from './ui'
 
 
-
+let globaIndex = 0
 function S4() {
       return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 function NewGuid() {
-      return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+       return S4()
+      //return globaIndex ++ 
 }
 
 function MapProp<T>() {
@@ -34,13 +35,14 @@ export class RootInstance extends Model({
       sys: prop<TSys>(),
       Models: MapProp<TModel>(),
       Modules: MapProp<TModule>(),
-      Fields: MapProp<TField>(),
+      // Fields: MapProp<TField>(),
       graph: prop<TGraph>(()=> new TGraph({})),
       Ui: prop<TUi>(()=> new TUi({}))
 
 }) {
 
       undoManager : UndoManager
+      Fields : Map<string, any> = new Map()
 
       setUndoManager(undoManager: UndoManager) {
          this.undoManager = undoManager
@@ -102,7 +104,7 @@ export class RootInstance extends Model({
       
       @modelAction
       initData( models : ModelConfig[] , modules: ModuleConfig[], sys?: SysConfig) {
-
+            const t0 = +new Date()
             let moduleHas: Record<string, string> = {}
             modules.forEach((module) => {
                   const key = NewGuid().toString()
@@ -110,9 +112,10 @@ export class RootInstance extends Model({
                   moduleHas[module.name] = key
                   this.sys.expandedKeys.push(key)
             })
-
+            const t1 = +new Date()
 
             let modelsKeys: string[] = []
+            let modelHas: Record<string, string> = {}
             models.forEach((model) => {
                   const key = NewGuid().toString()
                   this.Models.set(key, new TModel({ 
@@ -124,18 +127,41 @@ export class RootInstance extends Model({
                         name: model.name, 
                         moduleId: moduleHas[model.module] || '' 
                   }))
-                  model.fields.forEach((field) => {
-                        const _key = NewGuid().toString()
-                        this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.label, name: field.name, type: field.type || 'string', modelId: key }))
-                  })
+                  modelHas[model.name] = key
                   modelsKeys.push(key)
+            })
+
+            models.forEach(model => {
+                  model.fields.forEach((field) => {
+                        // if( i > 3) return
+                        const _key = NewGuid().toString()
+                        const relationModel = field?.typeMeta?.relationModel
+                        const tmodel = relationModel ? this.Models.get(modelHas[relationModel]) : undefined
+                        // const { label , name , id } = tmodel || 
+                        this.Fields.set(_key, { 
+                              id: _key, 
+                              label: field.label, 
+                              name: field.name, 
+                              type: field.type || 'string', 
+                              modelId: modelHas[model.name],
+                              typeMeta: field.typeMeta,
+                              relationModel:  tmodel && getSnapshot(tmodel)
+                        })
+                        if(tmodel) console.log(tmodel.name)
+                        // this.Fields.set(_key, new TField({}).init({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.label, name: field.name, type: field.type || 'string', modelId: key }))
+                  })
+                  // modelsKeys.push(key)
 
             })
+
+            const t2 = +new Date()
             this.sys.checkedKeys = modelsKeys
 
             if(sys?.height) {
                   this.sys.height = sys.height
             }
+            const t = +new Date()
+            // alert('initData  :' +  (t1 - t0) + '   ' + (t2 -t1) + '   ' +  (t - t2) )
       }
 
 
