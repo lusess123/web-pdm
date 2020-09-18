@@ -1,17 +1,20 @@
-## [0.2.5-1](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-1) (2020-09-14)
+## [0.2.5-2](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-2) (2020-09-18)
 
 
 ### Features
 
+* add arrange node style ([fc617dc](https://github.com/lusess123/web-pdm/commit/fc617dc511f8f57c0156e52676a4f48c0c5c48eb))
 * add onIgnoreEdge props ([4381081](https://github.com/lusess123/web-pdm/commit/4381081e664aaaf8efbbbb30aaf423e10c45d53c))
 * add themacolor and darkness props ([fa4806d](https://github.com/lusess123/web-pdm/commit/fa4806d2895dc3cbf6142614f926ef2b2d5eee44))
 * add tooltip render ([ccb710a](https://github.com/lusess123/web-pdm/commit/ccb710a4d3c4cedea3ce7d99dde662757da646fc))
+* arrang root show ([ba96e7c](https://github.com/lusess123/web-pdm/commit/ba96e7c582052f3acdc8922a18b17e0a598fa84f))
 * change bg color in toolbar ([2cc7aa9](https://github.com/lusess123/web-pdm/commit/2cc7aa95e2150d3597b8c8330697b2a6147750fb))
 * color picker and add button in toolbar ([eb89c3d](https://github.com/lusess123/web-pdm/commit/eb89c3d0ac3f19fb328bee98e5133eef761e6567))
 * header core ([82bd319](https://github.com/lusess123/web-pdm/commit/82bd319779713476ce5f750c9f7da2acba749429))
 * support dagre laoyout ([d7ec062](https://github.com/lusess123/web-pdm/commit/d7ec06217e17807f924089e5bcc2f1a69e93c7f4))
 * suppot isCardSharp ([978658b](https://github.com/lusess123/web-pdm/commit/978658b39fd9c12a7283ef09a203b6496e72a293))
 * suppot isCardSharp ([0d7ee52](https://github.com/lusess123/web-pdm/commit/0d7ee529a2c018fe87a64c6163bf84b216782b4d))
+* unwatch fields ([266d029](https://github.com/lusess123/web-pdm/commit/266d029cac925b01ce35631ee348d5ab999f4cfc))
 
 
 
