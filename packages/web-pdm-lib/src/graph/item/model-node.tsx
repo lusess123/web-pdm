@@ -121,7 +121,7 @@ export const register = () => {
                             }
                         }
 
-                        if(cfg.data.aggregateModelKey) {
+                        if(cfg.data.aggregateModelKey || cfg.data.aggregateRoot) {
                             // stroke: 'rgba(11,108,149)',
                             // shadowColor: 'rgba(11,108,149)',
                             s.attr('stroke', themeColor)

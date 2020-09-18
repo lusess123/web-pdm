@@ -112,7 +112,8 @@ export default (graph:Graph, mst : RootInstance) => {
       //      arg: target.attr('arg'),
       //      click: target.attr('click'),
       // }))
-      if(target.attr('click') === 'modelEdit') {
+      const click = target.attr('click')
+      if( click === 'modelEdit') {
         // const id :string = ev.item.getModel().id
         // const modelId = id.replace('model-', '')
         if(mst.sys.onModelDetail) {
@@ -120,6 +121,12 @@ export default (graph:Graph, mst : RootInstance) => {
         }
         
       }
+
+      if(click === 'arrangeShow') {
+        mst.arrangeShow(target.attr('arg'))
+      }
+
+
       if(target.attr('arg')?.relationModel?.id) {
         mst.sys.centerCurrentModel([target.attr('arg')?.relationModel?.id])
       }

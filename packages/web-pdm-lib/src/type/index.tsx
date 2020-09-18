@@ -15,7 +15,23 @@ import { SysConfig, ModelConfig, ModuleConfig } from './config'
 import { TUi } from './ui'
 
 
-let globaIndex = 0
+const getLayerRootModel = (models, rootKey, roots = []) => {
+      const rootModel = models.find((a) => a.name === rootKey)
+      const rootsRes = rootModel ? [...roots, rootKey] : roots
+      const isRoot = (rootModel.aggregateModelKey && rootModel.aggregateModelKey !== rootKey)
+      const rootsResList = isRoot ? getLayerRootModel(models, rootModel.aggregateModelKey, rootsRes) : rootsRes
+      return rootsResList
+     }
+    
+export const arrangeShow = (ss, {model}) => {
+      // alert(model)
+      const roots = getLayerRootModel(ss.models, model, [])
+      // alert(JSON.stringify(roots))
+      const list = ss.models.filter((a) => (a.key === model ||  roots.indexOf(a.aggregateModelKey) >= 0)).map((a) => 'model-' + a.key)
+      return {...ss , checkedKeys: list, currentModel: model, isArrangeLayout: true}
+    
+}
+
 function S4() {
       return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
@@ -67,6 +83,17 @@ export class RootInstance extends Model({
       @computed
       get edges(): any {
             return createLinks(this)
+      }
+      @modelAction
+      arrangeShow(rootKey : string) {
+            // alert(rootKey)]
+            const models = [...this.Models.values()]
+            const roots = getLayerRootModel(models, rootKey, [])
+            //alert(JSON.stringify(roots))
+            const list = models.filter(a=> a.name === rootKey || roots.indexOf(a.aggregateModelKey) >= 0).map(a=> a.id)
+            // alert(JSON.stringify(list))
+            this.sys.setCheckedKeys(list)
+            //const list = ss.models.filter((a) => (a.key === model ||  roots.indexOf(a.aggregateModelKey) >= 0)).map((a) => 'model-' + a.key)
       }
 
       @modelAction
