@@ -27,8 +27,9 @@ export const Page = observer<IWebPdmProps>(({ onModelDetail, models, modules, er
     useEffect(() => {
       onSnapshot(data, snapshot => {
            sessionStorage.setItem('web-pdm' + erdkey, JSON.stringify(snapshot))
+           sessionStorage.setItem('web-pdm-fields' + erdkey, JSON.stringify(Array.from(data.Fields.entries())))
       })
-      const localdata = sessionStorage.getItem('web-pdm1'+ erdkey)
+      const localdata = sessionStorage.getItem('web-pdm'+ erdkey)
       if(!localdata) {
         withoutUndo(() => data.initData(models, modules))
       } else {
@@ -36,10 +37,16 @@ export const Page = observer<IWebPdmProps>(({ onModelDetail, models, modules, er
         sdata.sys.height = height
         withoutUndo(() => 
         {
+          const localFieldsdata = sessionStorage.getItem('web-pdm-fields'+ erdkey)
+          if(localFieldsdata) {
+            data.setFields(new Map(JSON.parse(localFieldsdata)))
+          }
           applySnapshot(data,sdata)
           data.sys.setOnIgnoreEdge(onIgnoreEdge)
           data.sys.setOnModelDetail(onModelDetail)
           data.Ui.registComponents(components)
+         
+         
         }
           
           )

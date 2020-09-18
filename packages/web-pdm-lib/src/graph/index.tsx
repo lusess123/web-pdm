@@ -93,7 +93,7 @@ const useLocal = () => {
         cols: 3,
         workerEnabled: true,
         linkDistance: 0,
-        alphaDecay: isLargar ? 0.3 : 0.15,
+        // alphaDecay: isLargar ? 0.3 : 0.15,
         preventOverlap: true,
         // collideStrength: 0.5,
           //   type: 'dagre',
@@ -115,6 +115,8 @@ const useLocal = () => {
             withoutUndo(()=>{
               mst.graph.setZoom(graph.getZoom())
             })
+
+            // alert('onLayoutEnd')
           }, 1000)
         
         }
@@ -200,6 +202,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         withoutUndo(()=>{
           mst.graph.setZoom(graph.getZoom())
         })
+       
       }
     },
 

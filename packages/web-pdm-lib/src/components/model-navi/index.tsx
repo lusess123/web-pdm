@@ -6,7 +6,7 @@ import { debounce } from 'lodash'
 import { TModel } from '../../type/model'
 import { RootInstance } from '../../type'
 // import _ from 'lodash'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import Scroll from 'react-custom-scrollbars'
 import { CreateComponent, intlLiteral } from '../../util'
 import { useMst } from '../../context'
@@ -43,11 +43,25 @@ type IModelNaviProps = {
 export default CreateComponent<IModelNaviProps>(
   {
     render(_) {
-     
       const mst = useMst()
-      useEffect(()=>{ }, [mst.Ui.update])
       const { Input, Button, Dropdown, Menu,Select, Tree }  = mst.Ui as any
       const { TreeNode, OptionBuilder } = Tree as any
+      const treeNodes = useMemo(() => !mst.sys.tabOrTree ? mst.moduleList.map(m => {
+          return (
+            <TreeNode title={mst.sys.showNameOrLabel ? m.name : m.label} key={m.id}>
+               {[...m.models.values()].filter(model => model.filterModel() ).map(model => {
+                 return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst, OptionBuilder)} />
+               })}
+            </TreeNode>
+          )
+        }) :  
+        [...mst.Models.values()].filter(model=> ((!mst.sys.currentModule || model.moduleId === mst.sys.currentModule) && model.filterModel())).map(model => {
+          return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst, OptionBuilder)} />
+        }) ,[mst.sys.tabOrTree, mst.moduleList, mst.sys.showNameOrLabel, mst.sys.currentModule])
+      
+    
+      useEffect(()=>{ }, [mst.Ui.update])
+      
       const { search ,onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal()
       return <div className='console-models-tree' style={{height: mst.sys.height}}>
         <div className='header'>
@@ -80,22 +94,7 @@ export default CreateComponent<IModelNaviProps>(
         <div className='navitree-warp'>
           <Scroll autoHide autoHeight autoHideTimeout={1000} autoHideDuration={200} autoHeightMin={'100%'} autoHeightMax={'100%'} >
            <Tree showIcon={false} className='console-models-tree-tree' onSelect={mst.sys.setCurrentModel.bind(mst.sys)} selectedKeys={[mst.sys.currentModel]} checkedKeys={[...mst.sys.checkedKeys]} onCheck={mst.setCheckedKeys.bind(mst)}  checkable onExpand={onExpand}  multiple  expandedKeys={[...mst.sys.expandedKeys]} >
-              {
-                !mst.sys.tabOrTree && mst.moduleList.map(m => {
-                  return (
-                    <TreeNode title={mst.sys.showNameOrLabel ? m.name : m.label} key={m.id}>
-                       {[...m.models.values()].filter(model => model.filterModel() ).map(model => {
-                         return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst, OptionBuilder)} />
-                       })}
-                    </TreeNode>
-                  )
-                })
-              }
-              {  
-                mst.sys.tabOrTree && [...mst.Models.values()].filter(model=> ((!mst.sys.currentModule || model.moduleId === mst.sys.currentModule) && model.filterModel())).map(model => {
-                  return  <TreeNode key={model.id} title={getTreeNodeTitle(model, mst, OptionBuilder)} />
-                })
-              }
+             {treeNodes}
             </Tree>
           
           </Scroll>

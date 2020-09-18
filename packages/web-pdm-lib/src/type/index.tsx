@@ -48,6 +48,10 @@ export class RootInstance extends Model({
          this.undoManager = undoManager
       }
 
+      setFields(fields:Map<string, any> ) {
+          this.Fields = fields
+      }
+
       @computed
       get moduleList() {
             return [...this.Modules.values()]
@@ -56,7 +60,7 @@ export class RootInstance extends Model({
       @computed
       get Nodes() {
             const data = createData(this)
-            // alert(data.length)
+            //alert(data.length)
             return data
       }
 

@@ -62,9 +62,10 @@ export const register = () => {
             const { colors } = config
             const group = item.getContainer()
             const children = group.get('children')
-            const bg =  darkness ? themeColor : whiteBg
+            const bg =  darkness  ? themeColor : whiteBg
             const font = darkness ? colors.white : themeColor 
             const mFront = darkness ? colors.white : themeColor 
+            //const bgArrange = cfg.data.aggregateModelKey  && bg ? whiteBg : themeColor 
 
             children.forEach((s) => {
                 const id = s.attr('id')
@@ -86,7 +87,7 @@ export const register = () => {
 
                         inactive && setNodeStateAttr('inactive', s, cfg)
                         active && setNodeStateAttr('active', s, cfg)
-                        selected && setNodeStateAttr('selected', s, cfg)
+                        
                         into && setNodeStateAttr('into', s, cfg)
                         out && setNodeStateAttr('out', s, cfg)
                         // const pointWidth = 200
@@ -104,6 +105,7 @@ export const register = () => {
                             if (!s.attr('old_fill')) {
                                 s.attr('old_fill', s.attr('fill'))
                             }
+                      
                             // s.attr('fill', cfg.data.aggregateRoot ? colors.blue : colors.head)
 
                         } else {
@@ -118,6 +120,16 @@ export const register = () => {
                                 s.attr('fill', s.attr('old_fill'))
                             }
                         }
+
+                        if(cfg.data.aggregateModelKey) {
+                            // stroke: 'rgba(11,108,149)',
+                            // shadowColor: 'rgba(11,108,149)',
+                            s.attr('stroke', themeColor)
+                            s.attr('shadowColor', themeColor)
+                        }
+
+                        selected && setNodeStateAttr('selected', s, cfg)
+                        
                         break
 
                     case 'headerlabel1.1':
@@ -218,7 +230,8 @@ export const register = () => {
             // const font = data.aggregateRoot || 1 ? colors.white : colors.blue
             // const mFront = data.aggregateRoot  || 1? colors.white : colors.black
             const { colors } = config
-            const bg =  darkness ? themeColor : whiteBg
+            const bg =  darkness  ? themeColor : whiteBg
+            //const bgArrange = cfg.data.aggregateModelKey  && bg ? whiteBg : themeColor 
             const font = darkness ? colors.white : themeColor 
             const mFront = darkness ? colors.white : themeColor 
             const nodeColors = { bg, font, mFront }
@@ -244,7 +257,7 @@ export const register = () => {
                     // shadowOffsetX: 1,
                     // shadowOffsetY: 2,
                     // radius: [2, 4],
-                    fill:  selected ? config.styleConfig.selected.node.stroke : nodeColors.bg,
+                    fill:  selected ? config.styleConfig.selected.node.stroke : bg,
                 },
             })
 

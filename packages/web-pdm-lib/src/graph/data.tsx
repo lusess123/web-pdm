@@ -14,7 +14,7 @@ export const createData = (root: RootInstance) => {
   //alert('createData')
   const t0 = +new Date()
   const { style, colors } = initStyle({ primaryColor: root.Ui.themeColor })
-  const res = [...root.Models.values()].map(m => {
+  const res = [...root.Models.values()].filter(a=> !root.sys.dagreLayout || (root.sys.dagreLayout &&  a.aggregateModelKey)).map(m => {
     return {
       id: 'model-' + m.id,
       type: 'console-model-Node',

@@ -43,6 +43,7 @@ export class TSys extends Model({
 
     @modelAction
     setCurrentModel(keys: string[]){
+        const n0 = +new Date()
         const newKey = keys.length > 1 ? keys[1] : keys[0]
         const root : RootInstance = getRoot(this)
         //root.graph.G6Graph
@@ -53,7 +54,9 @@ export class TSys extends Model({
             item.toFront()
         }
         this.currentModel = newKey
-        root.graph.actionEdges(newKey)
+        const n1 = +new Date()
+        // alert(n1 - n0)
+        //root.graph.actionEdges(newKey)
 
     }
 
