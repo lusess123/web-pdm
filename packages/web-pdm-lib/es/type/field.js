@@ -31,13 +31,22 @@ MetaType = __decorate([
 ], MetaType);
 export { MetaType };
 let TField = class TField extends Model({
-    id: prop(),
-    name: prop(),
-    label: prop(),
-    type: prop(),
-    typeMeta: prop(),
-    modelId: prop('')
+// id: prop<string>(),
+// name: prop<string>(),
+// label: prop<string>(),
+// type: prop<string>(),
+// typeMeta: prop<MetaType | undefined>(),
+// modelId: prop<string>('')
 }) {
+    init(obj) {
+        this.id = obj.id;
+        this.name = obj.name;
+        this.label = obj.label;
+        this.type = obj.type;
+        this.typeMeta = obj.typeMeta;
+        this.modelId = obj.modelId;
+        return this;
+    }
     get relationModel() {
         if (this.typeMeta && this.typeMeta.relationModel) {
             const root = getRoot(this);

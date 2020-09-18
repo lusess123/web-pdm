@@ -41,6 +41,7 @@ export const register = () => {
             const bg = darkness ? themeColor : whiteBg;
             const font = darkness ? colors.white : themeColor;
             const mFront = darkness ? colors.white : themeColor;
+            //const bgArrange = cfg.data.aggregateModelKey  && bg ? whiteBg : themeColor 
             children.forEach((s) => {
                 const id = s.attr('id');
                 // this.allRender(cfg, s)
@@ -57,7 +58,6 @@ export const register = () => {
                         // isNoModule && setNodeStateAttr('isNoModule', s , cfg)
                         inactive && setNodeStateAttr('inactive', s, cfg);
                         active && setNodeStateAttr('active', s, cfg);
-                        selected && setNodeStateAttr('selected', s, cfg);
                         into && setNodeStateAttr('into', s, cfg);
                         out && setNodeStateAttr('out', s, cfg);
                         // const pointWidth = 200
@@ -87,6 +87,13 @@ export const register = () => {
                                 s.attr('fill', s.attr('old_fill'));
                             }
                         }
+                        if (cfg.data.aggregateModelKey || cfg.data.aggregateRoot) {
+                            // stroke: 'rgba(11,108,149)',
+                            // shadowColor: 'rgba(11,108,149)',
+                            s.attr('stroke', themeColor);
+                            s.attr('shadowColor', themeColor);
+                        }
+                        selected && setNodeStateAttr('selected', s, cfg);
                         break;
                     case 'headerlabel1.1':
                     case 'headerlabel1.2':
@@ -175,6 +182,7 @@ export const register = () => {
             // const mFront = data.aggregateRoot  || 1? colors.white : colors.black
             const { colors } = config;
             const bg = darkness ? themeColor : whiteBg;
+            //const bgArrange = cfg.data.aggregateModelKey  && bg ? whiteBg : themeColor 
             const font = darkness ? colors.white : themeColor;
             const mFront = darkness ? colors.white : themeColor;
             const nodeColors = { bg, font, mFront };
@@ -199,7 +207,7 @@ export const register = () => {
                     // shadowOffsetX: 1,
                     // shadowOffsetY: 2,
                     // radius: [2, 4],
-                    fill: selected ? config.styleConfig.selected.node.stroke : nodeColors.bg,
+                    fill: selected ? config.styleConfig.selected.node.stroke : bg,
                 },
             });
             group.addShape('text', {

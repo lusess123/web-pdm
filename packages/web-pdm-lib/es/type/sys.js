@@ -25,6 +25,9 @@ let TSys = class TSys extends Model({
         this.setExpandedKeys = (keys) => {
             this.expandedKeys = keys;
         };
+        this.setCheckedKeys = (keys) => {
+            this.checkedKeys = keys;
+        };
         this.toggleTabOrTree = () => {
             this.tabOrTree = !this.tabOrTree;
         };
@@ -49,6 +52,7 @@ let TSys = class TSys extends Model({
         this.isArrangeLayout = !this.isArrangeLayout;
     }
     setCurrentModel(keys) {
+        const n0 = +new Date();
         const newKey = keys.length > 1 ? keys[1] : keys[0];
         const root = getRoot(this);
         //root.graph.G6Graph
@@ -59,7 +63,9 @@ let TSys = class TSys extends Model({
                 item.toFront();
         }
         this.currentModel = newKey;
-        root.graph.actionEdges(newKey);
+        const n1 = +new Date();
+        // alert(n1 - n0)
+        //root.graph.actionEdges(newKey)
     }
     centerCurrentModel(keys) {
         const newKey = keys.length > 1 ? keys[1] : keys[0];
@@ -91,6 +97,9 @@ __decorate([
 __decorate([
     modelAction
 ], TSys.prototype, "setExpandedKeys", void 0);
+__decorate([
+    modelAction
+], TSys.prototype, "setCheckedKeys", void 0);
 __decorate([
     modelAction
 ], TSys.prototype, "setCurrentModel", null);

@@ -6,7 +6,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone';
 import { renderModelTitle } from '../util/label';
-import { computed } from 'mobx';
 let TModel = class TModel extends Model({
     id: prop(),
     name: prop(),
@@ -16,6 +15,7 @@ let TModel = class TModel extends Model({
     aggregateModelKey: prop(),
     belongAggregate: prop(),
 }) {
+    // @computed
     get fields() {
         const root = getRoot(this);
         const fields = [...root.Fields.values()];
@@ -31,9 +31,6 @@ let TModel = class TModel extends Model({
         return !search || (root.sys.showNameOrLabel ? this.name.indexOf(search) >= 0 : this.label.indexOf(search) >= 0);
     }
 };
-__decorate([
-    computed
-], TModel.prototype, "fields", null);
 __decorate([
     modelAction
 ], TModel.prototype, "renderModelTitle", null);

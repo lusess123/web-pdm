@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { isEqual } from 'lodash';
 export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, themeColor, darkness }) => {
     // const firstRef = useRef(true)
     useEffect(() => {
@@ -19,18 +20,29 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
             // const zoomNum = graph.getZoom()
             // alert(zoomNum)
             // alert(JSON.stringify(nodes))
+            const t0 = +new Date();
+            const isKeySharp = zoom <= 0.4;
+            const isCardSharp = zoom <= 0.1;
             gnodes.forEach((node) => {
                 if (!node.isSys) {
                     const nodeModel = node.getModel();
                     const nodeId = nodeModel.id;
                     const data = nodeModel ? nodeModel.data : undefined;
                     const isNoModule = (modelId || '').indexOf('module-') >= 0 && ((data && data.moduleKey) !== modelId);
-                    const isKeySharp = zoom <= 0.4;
-                    const isCardSharp = zoom <= 0.1;
                     // const isKeySharp = false
                     // const isCardSharp = false
                     // alert(isKeySharp)
-                    graph.updateItem(node, {
+                    const cur = {
+                        selected: nodeModel.selected,
+                        noSelected: nodeModel.noSelected,
+                        isNoModule: nodeModel.isNoModule,
+                        isKeySharp: nodeModel.isKeySharp,
+                        isCardSharp: nodeModel.isCardSharp,
+                        showNameOrLabel: nodeModel.showNameOrLabel,
+                        themeColor: nodeModel.themeColor,
+                        darkness: nodeModel.darkness
+                    };
+                    const f = {
                         selected: nodeId === modelId,
                         noSelected: nodeId !== modelId,
                         isNoModule,
@@ -39,9 +51,18 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
                         showNameOrLabel,
                         themeColor,
                         darkness
-                    });
+                    };
+                    //const ggg = JSON.stringify(cur) !== JSON.stringify(f)
+                    const ggg = !isEqual(cur, f);
+                    if (ggg) {
+                        //if(!eq(cur, f)) 
+                        graph.updateItem(node, f);
+                        //  console.log(ggg)
+                    }
                 }
             });
+            const t1 = +new Date();
+            //  alert(t1 - t0)
             //  const edges = graph.getEdges()
             //  if(edges.length && currentModel){
             //     edges.forEach(edge => {

@@ -20,6 +20,7 @@ export declare class TSys extends TSys_base {
     setOnModelDetail(onModelDetail: any): void;
     toggleArrangeLayout(): void;
     setExpandedKeys: (keys: string[]) => void;
+    setCheckedKeys: (keys: string[]) => void;
     setCurrentModel(keys: string[]): void;
     centerCurrentModel(keys: string[]): void;
     toggleTabOrTree: () => void;

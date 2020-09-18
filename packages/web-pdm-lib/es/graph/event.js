@@ -14,8 +14,13 @@ export default (graph, mst) => {
     }, 200));
     graph.on('beforepaint', throttle(() => {
         // alert()
-        if (graph.isLayouting)
+        if (graph.isLayouting) {
+            //  graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
+            //   node.getContainer().hide()
+            //   // node.getEdges().forEach(a=>a.hide())
+            //  })
             return;
+        }
         const isExporting = graph['isExporting'];
         const gWidth = graph.get('width');
         const gHeight = graph.get('height');
@@ -86,12 +91,16 @@ export default (graph, mst) => {
             //      arg: target.attr('arg'),
             //      click: target.attr('click'),
             // }))
-            if (target.attr('click') === 'modelEdit') {
+            const click = target.attr('click');
+            if (click === 'modelEdit') {
                 // const id :string = ev.item.getModel().id
                 // const modelId = id.replace('model-', '')
                 if (mst.sys.onModelDetail) {
                     mst.sys.onModelDetail(ev.item.getModel().data);
                 }
+            }
+            if (click === 'arrangeShow') {
+                mst.arrangeShow(target.attr('arg'));
             }
             if ((_b = (_a = target.attr('arg')) === null || _a === void 0 ? void 0 : _a.relationModel) === null || _b === void 0 ? void 0 : _b.id) {
                 mst.sys.centerCurrentModel([(_d = (_c = target.attr('arg')) === null || _c === void 0 ? void 0 : _c.relationModel) === null || _d === void 0 ? void 0 : _d.id]);

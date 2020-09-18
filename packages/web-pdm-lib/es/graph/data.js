@@ -1,13 +1,13 @@
-// import mst from '@antv/g6/lib/algorithm/mst'
-import { getSnapshot } from 'mobx-keystone';
 // import { mapToArrary } from '../util'
 import { initStyle } from './item/style';
 const getLength = (length) => {
     return length >= 20 ? length : 20;
 };
 export const createData = (root) => {
+    //alert('createData')
+    const t0 = +new Date();
     const { style, colors } = initStyle({ primaryColor: root.Ui.themeColor });
-    const res = [...root.Models.values()].map(m => {
+    const res = [...root.Models.values()].filter(a => !root.sys.dagreLayout || (root.sys.dagreLayout && a.aggregateModelKey)).map(m => {
         return {
             id: 'model-' + m.id,
             type: 'console-model-Node',
@@ -26,7 +26,7 @@ export const createData = (root) => {
             data: {
                 moduleKey: m.moduleId,
                 label: m.label,
-                fields: m.fields.map(a => (Object.assign(Object.assign({}, getSnapshot(a)), { relationModel: getSnapshot(a.relationModel) }))),
+                fields: m.fields.map(a => (Object.assign(Object.assign({}, a), { relationModel: a.relationModel }))),
                 key: m.id,
                 name: m.name,
                 tag: 'aggregate',
@@ -40,7 +40,9 @@ export const createData = (root) => {
             size: ((48 + getLength(m.fields.length) * 48) / 6) * 6,
         };
     }).filter(a => a.visible);
+    //const t1 = +new Date()
     // console.log(res)
+    //alert(res.length +  '   ' + (t1 - t0))
     if (res.length > 0)
         return res.concat([createSysNode()]);
     return res;

@@ -4,22 +4,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { model, Model, prop, modelAction, objectMap } from 'mobx-keystone';
+import { model, Model, prop, modelAction, objectMap, getSnapshot } from 'mobx-keystone';
 import { computed } from 'mobx';
 import { without, union } from 'lodash';
 import { TModel } from './model';
 import { TModule } from './module';
-import { TField, MetaType } from './field';
 import { TSys } from './sys';
 import { TGraph } from './graph';
 import { createData, createLinks } from '../graph/data';
 import { renderModelTitle } from '../util/label';
 import { TUi } from './ui';
+const getLayerRootModel = (models, rootKey, roots = []) => {
+    const rootModel = models.find((a) => a.name === rootKey);
+    const rootsRes = rootModel ? [...roots, rootKey] : roots;
+    const isRoot = (rootModel.aggregateModelKey && rootModel.aggregateModelKey !== rootKey);
+    const rootsResList = isRoot ? getLayerRootModel(models, rootModel.aggregateModelKey, rootsRes) : rootsRes;
+    return rootsResList;
+};
+export const arrangeShow = (ss, { model }) => {
+    // alert(model)
+    const roots = getLayerRootModel(ss.models, model, []);
+    // alert(JSON.stringify(roots))
+    const list = ss.models.filter((a) => (a.key === model || roots.indexOf(a.aggregateModelKey) >= 0)).map((a) => 'model-' + a.key);
+    return Object.assign(Object.assign({}, ss), { checkedKeys: list, currentModel: model, isArrangeLayout: true });
+};
 function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 function NewGuid() {
-    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+    return S4();
+    //return globaIndex ++ 
 }
 function MapProp() {
     return prop(() => objectMap());
@@ -29,12 +43,13 @@ let RootInstance = class RootInstance extends Model({
     sys: prop(),
     Models: MapProp(),
     Modules: MapProp(),
-    Fields: MapProp(),
+    // Fields: MapProp<TField>(),
     graph: prop(() => new TGraph({})),
     Ui: prop(() => new TUi({}))
 }) {
     constructor() {
         super(...arguments);
+        this.Fields = new Map();
         this.setCheckedKeys = (keys) => {
             if (!this.sys.tabOrTree) {
                 this.sys.checkedKeys = keys;
@@ -49,16 +64,29 @@ let RootInstance = class RootInstance extends Model({
     setUndoManager(undoManager) {
         this.undoManager = undoManager;
     }
+    setFields(fields) {
+        this.Fields = fields;
+    }
     get moduleList() {
         return [...this.Modules.values()];
     }
     get Nodes() {
         const data = createData(this);
-        // alert(data.length)
+        //alert(data.length)
         return data;
     }
     get edges() {
         return createLinks(this);
+    }
+    arrangeShow(rootKey) {
+        // alert(rootKey)]
+        const models = [...this.Models.values()];
+        const roots = getLayerRootModel(models, rootKey, []);
+        //alert(JSON.stringify(roots))
+        const list = models.filter(a => a.name === rootKey || roots.indexOf(a.aggregateModelKey) >= 0).map(a => a.id);
+        // alert(JSON.stringify(list))
+        this.sys.setCheckedKeys(list);
+        //const list = ss.models.filter((a) => (a.key === model ||  roots.indexOf(a.aggregateModelKey) >= 0)).map((a) => 'model-' + a.key)
     }
     findModelByName(name) {
         return [...this.Models.values()].find(a => a.name === name);
@@ -90,6 +118,7 @@ let RootInstance = class RootInstance extends Model({
     //       // alert( this.sys.height)
     // }
     initData(models, modules, sys) {
+        const t0 = +new Date();
         let moduleHas = {};
         modules.forEach((module) => {
             const key = NewGuid().toString();
@@ -97,7 +126,9 @@ let RootInstance = class RootInstance extends Model({
             moduleHas[module.name] = key;
             this.sys.expandedKeys.push(key);
         });
+        const t1 = +new Date();
         let modelsKeys = [];
+        let modelHas = {};
         models.forEach((model) => {
             const key = NewGuid().toString();
             this.Models.set(key, new TModel({
@@ -109,16 +140,39 @@ let RootInstance = class RootInstance extends Model({
                 name: model.name,
                 moduleId: moduleHas[model.module] || ''
             }));
-            model.fields.forEach((field) => {
-                const _key = NewGuid().toString();
-                this.Fields.set(_key, new TField({ id: _key, typeMeta: (field.typeMeta ? new MetaType(field.typeMeta) : undefined), label: field.label, name: field.name, type: field.type || 'string', modelId: key }));
-            });
+            modelHas[model.name] = key;
             modelsKeys.push(key);
         });
+        models.forEach(model => {
+            model.fields.forEach((field) => {
+                var _a;
+                // if( i > 3) return
+                const _key = NewGuid().toString();
+                const relationModel = (_a = field === null || field === void 0 ? void 0 : field.typeMeta) === null || _a === void 0 ? void 0 : _a.relationModel;
+                const tmodel = relationModel ? this.Models.get(modelHas[relationModel]) : undefined;
+                // const { label , name , id } = tmodel || 
+                this.Fields.set(_key, {
+                    id: _key,
+                    label: field.label,
+                    name: field.name,
+                    type: field.type || 'string',
+                    modelId: modelHas[model.name],
+                    typeMeta: field.typeMeta,
+                    relationModel: tmodel && getSnapshot(tmodel)
+                });
+                if (tmodel)
+                    console.log(tmodel.name);
+                // this.Fields.set(_key, new TField({}).init({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.label, name: field.name, type: field.type || 'string', modelId: key }))
+            });
+            // modelsKeys.push(key)
+        });
+        const t2 = +new Date();
         this.sys.checkedKeys = modelsKeys;
         if (sys === null || sys === void 0 ? void 0 : sys.height) {
             this.sys.height = sys.height;
         }
+        const t = +new Date();
+        // alert('initData  :' +  (t1 - t0) + '   ' + (t2 -t1) + '   ' +  (t - t2) )
     }
     undo() {
         //     const current = StateStack.DataList.length - 1
@@ -164,6 +218,9 @@ __decorate([
 __decorate([
     computed
 ], RootInstance.prototype, "edges", null);
+__decorate([
+    modelAction
+], RootInstance.prototype, "arrangeShow", null);
 __decorate([
     modelAction
 ], RootInstance.prototype, "findModelByName", null);
