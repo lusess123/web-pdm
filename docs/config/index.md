@@ -101,10 +101,10 @@ export type ModuleConfig = {
 - 说明： 点击模型“查看”按钮事件
 - 类型： (model: ModelConfig) => void
 
-##  onReload
+## onReload
 - 说明： 刷新数据按钮接口
 - 类型： () => TData
--默认值： undefine
+- 默认值： undefine
 
 ```
  export type TData = {
