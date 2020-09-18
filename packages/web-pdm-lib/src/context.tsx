@@ -21,6 +21,8 @@ export const createRootStore = (props) => {
    const onIgnoreEdge:any = props?.sys?.onIgnoreEdge
    const newProps = { ... props ,sys: {...props.sys, onIgnoreEdge : undefined , onModelDetail: props.onModelDetail  }} 
    const rootStore = createStore(newProps)
+   rootStore.setOnReload(props.onReload)
+   rootStore.onIntl = props.onIntl
    //alert('createRootStore')
    if(onIgnoreEdge) rootStore.sys.onIgnoreEdge = onIgnoreEdge
    rootStore.setUndoManager(undoMiddleware(rootStore))

@@ -8,7 +8,7 @@ import { RootInstance } from '../../type'
 // import _ from 'lodash'
 import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import Scroll from 'react-custom-scrollbars'
-import { CreateComponent, intlLiteral } from '../../util'
+import { CreateComponent } from '../../util'
 import { useMst } from '../../context'
 import './style.scss'
 // import mst from '@antv/g6/lib/algorithm/mst';
@@ -26,11 +26,13 @@ type IModelNaviProps = {
       title: root.renderModelTitle(model) ,
      
       options: [{
-        title: <span> {intlLiteral('定位模型')}</span>,
+        title: <span> {root.intl('定位模型')}</span>,
+        key: 1,
         click: (e) =>  {  root.sys.centerCurrentModel([model.id]) ;    e.stopPropagation(); } ,
       },
       {
-        title: <span> {intlLiteral('查看')}</span>
+        key: 2,
+        title: <span> {root.intl('查看')}</span>
       },
       // {
       //   title: <span> {intlLiteral('移除')}</span>
@@ -44,6 +46,7 @@ export default CreateComponent<IModelNaviProps>(
   {
     render(_) {
       const mst = useMst()
+      const intl = mst.intl
       const { Input, Button, Dropdown, Menu,Select, Tree }  = mst.Ui as any
       const { TreeNode, OptionBuilder } = Tree as any
       const treeNodes = useMemo(() => !mst.sys.tabOrTree ? mst.moduleList.map(m => {
@@ -70,7 +73,7 @@ export default CreateComponent<IModelNaviProps>(
                 Sys.tabOrTree && <Select size="small" defaultValue={Sys.currentModule} value={Sys.currentModule}  className="select-after" onChange={changeModuleValue}>
                 {
                   [
-                    <Select.Option value={''}>所有</Select.Option>,
+                    <Select.Option value={''}>{intl('所有')}</Select.Option>,
                     ...([...mst.Modules.values()].map((module) => {
                     return  <Select.Option value={module.id} key={module.id}>{module.label}</Select.Option>
                     }))
@@ -80,12 +83,12 @@ export default CreateComponent<IModelNaviProps>(
             } />
           </div>
           <div className='console-erd-search btns'>
-            {mst.sys.tabOrTree && <Button size="small" type="text" onClick={checkAllFun} >选择所有</Button>}
-            {mst.sys.tabOrTree && <Button size="small" type="text" onClick={checkAllCancleFun}>清除所有</Button>}
+            {mst.sys.tabOrTree && <Button size="small" type="text" onClick={checkAllFun} >{intl('选择所有')}</Button>}
+            {mst.sys.tabOrTree && <Button size="small" type="text" onClick={checkAllCancleFun}>{intl('清除所有')}</Button>}
             {/* {!mst.sys.tabOrTree && <Button size="small" type="link" onClick={toggleTabOrTree}>{mst.sys.tabOrTree?'分类':'树形'}模式</Button>} */}
-            <Button size="small" type="text" onClick={toggleShowNameOrLabel}>显示{!mst.sys.showNameOrLabel?'名称':'标签'}</Button>
+            <Button size="small" type="text" onClick={toggleShowNameOrLabel}>{intl('显示')}{!mst.sys.showNameOrLabel?intl('名称'):intl('标签')}</Button>
             {<Dropdown  className='right' overlay={<Menu>
-            <Menu.Item key="1" onClick={toggleTabOrTree}>{Sys.tabOrTree?'分类':'树形'}模式</Menu.Item>
+            <Menu.Item key="1" onClick={toggleTabOrTree}>{Sys.tabOrTree?intl('分类'):intl('树形')} {intl('模式')}</Menu.Item>
              </Menu>}>
              <span><EllipsisOutlined/></span>
             </Dropdown>}

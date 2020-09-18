@@ -39,6 +39,14 @@ function confirmEnding(str, target) {
 const onIgnoreEdge = (field ) => {
    return field?.typeMeta?.relationModel === 'base_User' && (confirmEnding(field.name, 'createdBy') || confirmEnding(field.name,'updatedBy')  ) 
 }
+const onReload = () => {
+  return {
+    models, modules
+  }
+}
+const onIntl = (a) => {
+  return ''
+}
 ReactDom.render(
   <WebPdm 
   themeColor='green' 
@@ -46,7 +54,10 @@ ReactDom.render(
   components={components} 
   models={models} 
   modules={modules} 
-  erdkey={'demo'} 
+  erdkey={'demo'}
+  onIntl={onIntl}
+  intl="EN"
+  onReload={onReload}
   onModelDetail={(a) => {
    alert(`打开模型${a.label}(${a.name}) 的查看链接`)
   }

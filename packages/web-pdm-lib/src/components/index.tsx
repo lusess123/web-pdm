@@ -19,7 +19,7 @@ export default CreateComponent<IPagePros>({
         const mst = useMst()
         
         // alert( mst.sys.height)
-        debugger
+        // debugger
         return <div className={classnames('console-g6-page',props.className )} style={{height: mst.sys.height}} >
             <div className='console-erd-fps' />
             <div className='g6-modelnavi'>

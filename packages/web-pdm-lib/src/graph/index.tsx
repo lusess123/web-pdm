@@ -93,7 +93,7 @@ const useLocal = () => {
         cols: 3,
         workerEnabled: true,
         linkDistance: 0,
-        // alphaDecay: isLargar ? 0.3 : 0.15,
+        alphaDecay: isLargar ? 0.3 : 0.15,
         preventOverlap: true,
         // collideStrength: 0.5,
           //   type: 'dagre',

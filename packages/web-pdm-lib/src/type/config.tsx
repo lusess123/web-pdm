@@ -49,3 +49,8 @@ export type IComponentConfig = {
     Select?:React.ComponentType,
     Tooltip?: React.ComponentType
   }
+
+  export type TData = {
+    models : ModelConfig[],
+    modules :ModuleConfig[]
+}

@@ -100,3 +100,27 @@ export type ModuleConfig = {
 ## onModelDetail
 - 说明： 点击模型“查看”按钮事件
 - 类型： (model: ModelConfig) => void
+
+##  onReload
+- 说明： 刷新数据按钮接口
+- 类型： () => TData
+-默认值： undefine
+
+```
+ export type TData = {
+    models : ModelConfig[],
+    modules :ModuleConfig[]
+}
+```
+
+## intl
+
+- 说明： 内置国际化配置
+- 类型： 'EN'|'CH' 
+- 默认值：'CH'
+
+## onIntl
+
+- 说明：  外置的国际化传入接口
+- 类型： (text: string) => string
+- 默认值：undefine

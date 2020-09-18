@@ -4,7 +4,7 @@ import { useMst  } from './context'
 import { observer } from 'mobx-react-lite'
 import { Provider, createRootStore  } from './context'
 import MSTPage from './components'
-import { ModelConfig , ModuleConfig, FieldConfig, IComponentConfig } from './type/config'
+import { ModelConfig , ModuleConfig, FieldConfig, IComponentConfig, TData } from './type/config'
 export * from './type/config'
 // import './style.scss'
 
@@ -19,10 +19,13 @@ export interface IWebPdmProps {
   components: IComponentConfig,
   onModelDetail?: (model: ModelConfig) => void,
   themeColor?: string,
-  darkness?: boolean
+  darkness?: boolean,
+  onReload? : () => TData,
+  intl?: 'CH' | 'EN',
+  onIntl?: (string) => string
 }
 
-export const Page = observer<IWebPdmProps>(({ onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
+export const Page = observer<IWebPdmProps>(({ onIntl, onReload, onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
     const data = useMst()
     useEffect(() => {
       onSnapshot(data, snapshot => {
@@ -45,7 +48,9 @@ export const Page = observer<IWebPdmProps>(({ onModelDetail, models, modules, er
           data.sys.setOnIgnoreEdge(onIgnoreEdge)
           data.sys.setOnModelDetail(onModelDetail)
           data.Ui.registComponents(components)
-         
+          data.setOnReload(onReload!)
+          data.onIntl = onIntl!
+          
          
         }
           
@@ -64,13 +69,16 @@ const WebPDM :FunctionComponent<IWebPdmProps>  = (props) => {
         sys : {
           height: props.height,
           onIgnoreEdge: props.onIgnoreEdge,
-          onModelDetail: props.onModelDetail
+          onModelDetail: props.onModelDetail,
+          intl : props.intl
         },
         Ui : {
           themeColor: props.themeColor,
           darkness: props.darkness
         },
-        components : props.components
+        components : props.components,
+        onReload: props.onReload,
+        onIntl: props.onIntl
       })
     })
     return <Provider value={rootStore}>
