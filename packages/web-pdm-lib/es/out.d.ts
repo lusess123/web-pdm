@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { ModelConfig, ModuleConfig, FieldConfig, IComponentConfig } from './type/config';
+import { ModelConfig, ModuleConfig, FieldConfig, IComponentConfig, TData } from './type/config';
 export * from './type/config';
 export interface IWebPdmProps {
     models: ModelConfig[];
@@ -13,6 +13,9 @@ export interface IWebPdmProps {
     onModelDetail?: (model: ModelConfig) => void;
     themeColor?: string;
     darkness?: boolean;
+    onReload?: () => TData;
+    intl?: 'CH' | 'EN';
+    onIntl?: (string: any) => string;
 }
 export declare const Page: React.FunctionComponent<IWebPdmProps>;
 declare const WebPDM: FunctionComponent<IWebPdmProps>;

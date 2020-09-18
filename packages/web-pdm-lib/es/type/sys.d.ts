@@ -12,6 +12,7 @@ declare const TSys_base: import("mobx-keystone")._Model<unknown, {
     snapshot: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
     height: import("mobx-keystone").OptionalModelProp<string | number, string | number>;
     dagreLayout: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
+    intl: import("mobx-keystone").OptionalModelProp<string, string>;
 }>;
 export declare class TSys extends TSys_base {
     onIgnoreEdge: (filed: FieldConfig) => boolean;

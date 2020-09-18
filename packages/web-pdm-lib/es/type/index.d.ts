@@ -9,6 +9,10 @@ import { TUi } from './ui';
 export declare const arrangeShow: (ss: any, { model }: {
     model: any;
 }) => any;
+export declare type TData = {
+    models: ModelConfig[];
+    modules: ModuleConfig[];
+};
 declare const RootInstance_base: import("mobx-keystone")._Model<unknown, {
     sys: import("mobx-keystone").MaybeOptionalModelProp<TSys, TSys>;
     Models: import("mobx-keystone").OptionalModelProp<import("mobx-keystone").ObjectMap<TModel>, import("mobx-keystone").ObjectMap<TModel>>;
@@ -19,6 +23,10 @@ declare const RootInstance_base: import("mobx-keystone")._Model<unknown, {
 export declare class RootInstance extends RootInstance_base {
     undoManager: UndoManager;
     Fields: Map<string, any>;
+    onReload: () => TData;
+    onIntl: (text: string) => string;
+    setOnReload(onReload: () => TData): void;
+    intl(text: string): any;
     setUndoManager(undoManager: UndoManager): void;
     setFields(fields: Map<string, any>): void;
     get moduleList(): TModule[];
@@ -109,11 +117,13 @@ export declare class RootInstance extends RootInstance_base {
     findModelByName(name: string): TModel;
     renderModelTitle(model: TModel): string | JSX.Element;
     initData(models: ModelConfig[], modules: ModuleConfig[], sys?: SysConfig): void;
+    reload(): void;
     undo(): void;
     redo(): void;
     checkAllFun(): void;
     checkAllCancleFun(): void;
     setCheckedKeys: (keys: string[]) => void;
+    onInit(): void;
 }
 export declare const createStore: (props?: {
     sys: {};

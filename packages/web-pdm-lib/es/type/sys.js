@@ -19,6 +19,8 @@ let TSys = class TSys extends Model({
     snapshot: prop(true),
     height: prop('100%'),
     dagreLayout: prop(false),
+    intl: prop('CH')
+    // undoData: prop<UndoStore>(() => new UndoStore({})),
 }) {
     constructor() {
         super(...arguments);

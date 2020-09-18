@@ -9,11 +9,13 @@ import { computed } from 'mobx';
 import { without, union } from 'lodash';
 import { TModel } from './model';
 import { TModule } from './module';
+// import { TField ,MetaType  } from './field'
 import { TSys } from './sys';
 import { TGraph } from './graph';
 import { createData, createLinks } from '../graph/data';
 import { renderModelTitle } from '../util/label';
 import { TUi } from './ui';
+import IntlMap from '../intl';
 const getLayerRootModel = (models, rootKey, roots = []) => {
     const rootModel = models.find((a) => a.name === rootKey);
     const rootsRes = rootModel ? [...roots, rootKey] : roots;
@@ -60,6 +62,21 @@ let RootInstance = class RootInstance extends Model({
                 this.sys.checkedKeys = union(without(this.sys.checkedKeys, ...withoutKeys), keys);
             }
         };
+    }
+    setOnReload(onReload) {
+        this.onReload = onReload;
+    }
+    intl(text) {
+        const newText = this.onIntl && this.onIntl(text);
+        if (newText) {
+            return newText;
+        }
+        const intlmap = IntlMap[this.sys.intl];
+        if (intlmap)
+            return intlmap[text] || text;
+        else
+            return text;
+        //    return text
     }
     setUndoManager(undoManager) {
         this.undoManager = undoManager;
@@ -167,12 +184,26 @@ let RootInstance = class RootInstance extends Model({
             // modelsKeys.push(key)
         });
         const t2 = +new Date();
-        this.sys.checkedKeys = modelsKeys;
+        this.sys.setCheckedKeys(modelsKeys);
         if (sys === null || sys === void 0 ? void 0 : sys.height) {
             this.sys.height = sys.height;
         }
         const t = +new Date();
         // alert('initData  :' +  (t1 - t0) + '   ' + (t2 -t1) + '   ' +  (t - t2) )
+    }
+    reload() {
+        // alert('刷新')
+        if (this.onReload) {
+            const data = this.onReload();
+            if (data) {
+                this.Models.clear();
+                this.Modules.clear();
+                this.Fields.clear();
+                this.initData(data.models, data.modules);
+                // this.sys.checkedKeys = data.models.map(a=>a.)
+                // this.sys.currentModel = ''
+            }
+        }
     }
     undo() {
         //     const current = StateStack.DataList.length - 1
@@ -208,6 +239,11 @@ let RootInstance = class RootInstance extends Model({
         const modelIds = (_b = (_a = this.Modules.get(currentModule)) === null || _a === void 0 ? void 0 : _a.models) === null || _b === void 0 ? void 0 : _b.map(a => a.id);
         this.sys.checkedKeys = [...without([...this.sys.checkedKeys], ...(modelIds || []))];
     }
+    onInit() {
+        // alert('sys onInit')
+        // alert(this.tabOrTree)
+        this.intl = this.intl.bind(this);
+    }
 };
 __decorate([
     computed
@@ -230,6 +266,9 @@ __decorate([
 __decorate([
     modelAction
 ], RootInstance.prototype, "initData", null);
+__decorate([
+    modelAction
+], RootInstance.prototype, "reload", null);
 __decorate([
     modelAction
 ], RootInstance.prototype, "undo", null);

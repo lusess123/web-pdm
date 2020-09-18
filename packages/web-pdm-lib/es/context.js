@@ -17,6 +17,8 @@ export const createRootStore = (props) => {
     const onIgnoreEdge = (_a = props === null || props === void 0 ? void 0 : props.sys) === null || _a === void 0 ? void 0 : _a.onIgnoreEdge;
     const newProps = Object.assign(Object.assign({}, props), { sys: Object.assign(Object.assign({}, props.sys), { onIgnoreEdge: undefined, onModelDetail: props.onModelDetail }) });
     const rootStore = createStore(newProps);
+    rootStore.setOnReload(props.onReload);
+    rootStore.onIntl = props.onIntl;
     //alert('createRootStore')
     if (onIgnoreEdge)
         rootStore.sys.onIgnoreEdge = onIgnoreEdge;

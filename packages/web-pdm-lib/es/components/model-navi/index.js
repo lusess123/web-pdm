@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 // import _ from 'lodash'
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import Scroll from 'react-custom-scrollbars';
-import { CreateComponent, intlLiteral } from '../../util';
+import { CreateComponent } from '../../util';
 import { useMst } from '../../context';
 import './style.scss';
 const getTreeNodeTitle = (model, root, OptionBuilder) => {
@@ -12,13 +12,15 @@ const getTreeNodeTitle = (model, root, OptionBuilder) => {
             options: [{
                     title: React.createElement("span", null,
                         " ",
-                        intlLiteral('定位模型')),
+                        root.intl('定位模型')),
+                    key: 1,
                     click: (e) => { root.sys.centerCurrentModel([model.id]); e.stopPropagation(); },
                 },
                 {
+                    key: 2,
                     title: React.createElement("span", null,
                         " ",
-                        intlLiteral('查看'))
+                        root.intl('查看'))
                 },
             ],
         } });
@@ -26,6 +28,7 @@ const getTreeNodeTitle = (model, root, OptionBuilder) => {
 export default CreateComponent({
     render(_) {
         const mst = useMst();
+        const intl = mst.intl;
         const { Input, Button, Dropdown, Menu, Select, Tree } = mst.Ui;
         const { TreeNode, OptionBuilder } = Tree;
         const treeNodes = useMemo(() => !mst.sys.tabOrTree ? mst.moduleList.map(m => {
@@ -42,21 +45,22 @@ export default CreateComponent({
             React.createElement("div", { className: 'header' },
                 React.createElement("div", { className: 'console-erd-search' },
                     React.createElement(Input, { allowClear: true, value: search, size: "small", onChange: (e) => setSearch(e.target.value), addonAfter: Sys.tabOrTree && React.createElement(Select, { size: "small", defaultValue: Sys.currentModule, value: Sys.currentModule, className: "select-after", onChange: changeModuleValue }, [
-                            React.createElement(Select.Option, { value: '' }, "\u6240\u6709"),
+                            React.createElement(Select.Option, { value: '' }, intl('所有')),
                             ...([...mst.Modules.values()].map((module) => {
                                 return React.createElement(Select.Option, { value: module.id, key: module.id }, module.label);
                             }))
                         ]) })),
                 React.createElement("div", { className: 'console-erd-search btns' },
-                    mst.sys.tabOrTree && React.createElement(Button, { size: "small", type: "text", onClick: checkAllFun }, "\u9009\u62E9\u6240\u6709"),
-                    mst.sys.tabOrTree && React.createElement(Button, { size: "small", type: "text", onClick: checkAllCancleFun }, "\u6E05\u9664\u6240\u6709"),
+                    mst.sys.tabOrTree && React.createElement(Button, { size: "small", type: "text", onClick: checkAllFun }, intl('选择所有')),
+                    mst.sys.tabOrTree && React.createElement(Button, { size: "small", type: "text", onClick: checkAllCancleFun }, intl('清除所有')),
                     React.createElement(Button, { size: "small", type: "text", onClick: toggleShowNameOrLabel },
-                        "\u663E\u793A",
-                        !mst.sys.showNameOrLabel ? '名称' : '标签'),
+                        intl('显示'),
+                        !mst.sys.showNameOrLabel ? intl('名称') : intl('标签')),
                     React.createElement(Dropdown, { className: 'right', overlay: React.createElement(Menu, null,
                             React.createElement(Menu.Item, { key: "1", onClick: toggleTabOrTree },
-                                Sys.tabOrTree ? '分类' : '树形',
-                                "\u6A21\u5F0F")) },
+                                Sys.tabOrTree ? intl('分类') : intl('树形'),
+                                " ",
+                                intl('模式'))) },
                         React.createElement("span", null,
                             React.createElement(EllipsisOutlined, null))))),
             React.createElement("div", { className: 'navitree-warp' },

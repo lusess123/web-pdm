@@ -9,7 +9,7 @@ export default CreateComponent({
     render(props) {
         const mst = useMst();
         // alert( mst.sys.height)
-        debugger;
+        // debugger
         return React.createElement("div", { className: classnames('console-g6-page', props.className), style: { height: mst.sys.height } },
             React.createElement("div", { className: 'console-erd-fps' }),
             React.createElement("div", { className: 'g6-modelnavi' },

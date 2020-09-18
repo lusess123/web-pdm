@@ -41,3 +41,7 @@ export declare type IComponentConfig = {
     Select?: React.ComponentType;
     Tooltip?: React.ComponentType;
 };
+export declare type TData = {
+    models: ModelConfig[];
+    modules: ModuleConfig[];
+};
