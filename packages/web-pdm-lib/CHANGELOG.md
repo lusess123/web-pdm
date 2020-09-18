@@ -1,9 +1,10 @@
-## [0.2.5-2](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-2) (2020-09-18)
+## [0.2.5-3](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-3) (2020-09-18)
 
 
 ### Features
 
 * add arrange node style ([fc617dc](https://github.com/lusess123/web-pdm/commit/fc617dc511f8f57c0156e52676a4f48c0c5c48eb))
+* add intl and docs reload ([2a99850](https://github.com/lusess123/web-pdm/commit/2a9985027ad6ad14ba574b237667fda1d45ae033))
 * add onIgnoreEdge props ([4381081](https://github.com/lusess123/web-pdm/commit/4381081e664aaaf8efbbbb30aaf423e10c45d53c))
 * add themacolor and darkness props ([fa4806d](https://github.com/lusess123/web-pdm/commit/fa4806d2895dc3cbf6142614f926ef2b2d5eee44))
 * add tooltip render ([ccb710a](https://github.com/lusess123/web-pdm/commit/ccb710a4d3c4cedea3ce7d99dde662757da646fc))
