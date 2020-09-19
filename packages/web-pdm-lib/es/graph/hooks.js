@@ -32,7 +32,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
                     // const isKeySharp = false
                     // const isCardSharp = false
                     // alert(isKeySharp)
-                    const cur = {
+                    const currStates = {
                         selected: nodeModel.selected,
                         noSelected: nodeModel.noSelected,
                         isNoModule: nodeModel.isNoModule,
@@ -42,7 +42,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
                         themeColor: nodeModel.themeColor,
                         darkness: nodeModel.darkness
                     };
-                    const f = {
+                    const nextStates = {
                         selected: nodeId === modelId,
                         noSelected: nodeId !== modelId,
                         isNoModule,
@@ -53,10 +53,10 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
                         darkness
                     };
                     //const ggg = JSON.stringify(cur) !== JSON.stringify(f)
-                    const ggg = !isEqual(cur, f);
-                    if (ggg) {
+                    const change = !isEqual(currStates, nextStates);
+                    if (change) {
                         //if(!eq(cur, f)) 
-                        graph.updateItem(node, f);
+                        graph.updateItem(node, nextStates);
                         //  console.log(ggg)
                     }
                 }

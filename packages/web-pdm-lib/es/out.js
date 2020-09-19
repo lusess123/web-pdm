@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Provider, createRootStore } from './context';
 import MSTPage from './components';
 export * from './type/config';
-export const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
+const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
     const data = useMst();
     useEffect(() => {
         onSnapshot(data, snapshot => {
