@@ -1,4 +1,4 @@
-## [0.2.5-6](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-6) (2020-09-19)
+## [0.2.5-7](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-7) (2020-09-19)
 
 
 ### Features
