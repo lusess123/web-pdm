@@ -9,13 +9,14 @@
   ],
   "scripts": {
     "start": "dumi dev",
+    "typedoc": "typedoc",
     "docs:build": "dumi build  &&  rm -rf  docker/public && cp -rf ./docs-dist  docker/public",
     "publish-docker": "cd ./docker && sh build.sh",
     "build-remote": "ssh root@$SERVER_IP \" cd /root/webpdmdoc-docker; sh build.sh  \" ",
     "publish-server": "cd ./docker && sh upload.sh",
     "ln-webpdm": " rm -rf ./node_modules/web-pdm/es &&  ln -s -f `pwd`/packages/web-pdm-lib/src  ./node_modules/web-pdm/es",
     "deploy": "npm update web-pdm && npm i xtend && npm i wrappy &&  npm run deploy:now",
-    "deploy:now": "npm run docs:build && npm run publish-server && npm run build-remote",
+    "deploy:now": "npm run docs:build && npm run typedoc && npm run publish-server && npm run build-remote",
     "webpdm-deploy": "cd packages/web-pdm-lib && npm run publish-npm && cd ../../ && npm run deploy"
   },
   "author": "北名",
@@ -34,6 +35,7 @@
     "@umijs/plugin-antd": "^0.8.0",
     "@umijs/plugin-esbuild": "^1.0.1",
     "compression-webpack-plugin": "^5.0.2",
+    "typedoc": "^0.19.1",
     "webpack": "^4.44.1"
   }
 }

@@ -25,7 +25,7 @@ export interface IWebPdmProps {
   onIntl?: (string) => string
 }
 
-export const Page = observer<IWebPdmProps>(({ onIntl, onReload, onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
+ const Page = observer<IWebPdmProps>(({ onIntl, onReload, onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
     const data = useMst()
     useEffect(() => {
       onSnapshot(data, snapshot => {

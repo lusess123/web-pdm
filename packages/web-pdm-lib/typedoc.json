@@ -1,0 +1,11 @@
+{
+    "inputFiles": ["./src/out.tsx", "./src/type/config.tsx"],
+    "mode": "file",
+    "out": "doc",
+    "ignoreCompilerErrors": true,
+    "excludeExternals": true,
+    "excludeNotExported": true,
+    "readme": "none",
+    "disableSources":  true,
+    "theme": "minimal"
+}

@@ -1,0 +1,11 @@
+{
+    "inputFiles": ["./packages/web-pdm-lib/src/out.tsx", "./packages/web-pdm-lib/src/type/config.tsx"],
+    "mode": "file",
+    "out": "docs-dist/typedoc",
+    "ignoreCompilerErrors": true,
+    "excludeExternals": true,
+    "excludeNotExported": true,
+    "readme": "none",
+    "disableSources":  true,
+    "theme": "minimal"
+}
