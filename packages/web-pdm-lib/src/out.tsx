@@ -8,8 +8,28 @@ import { ModelConfig , ModuleConfig, FieldConfig, IComponentConfig, TData } from
 export * from './type/config'
 // import './style.scss'
 
+/**
+ *组件的props接口
+ *
+ * @export
+ * @interface IWebPdmProps
+ */
 export interface IWebPdmProps {
+  
+  /**
+   *传入的模型数据
+   *
+   * @type {ModelConfig[]}
+   * @memberof IWebPdmProps
+   */
   models : ModelConfig[], 
+
+  /**
+   *传入的模块数据
+   *
+   * @type {ModuleConfig[]}
+   * @memberof IWebPdmProps
+   */
   modules : ModuleConfig[], 
   erdkey : string, 
   className?: string, 
@@ -62,7 +82,12 @@ export interface IWebPdmProps {
     }, [])
     return <MSTPage className={className} style={style} />
   })
-
+/**
+ *组件定义
+ *
+ * @param {*} props 属性接口
+ * @return {*} 
+ */
 const WebPDM :FunctionComponent<IWebPdmProps>  = (props) => {
     const [rootStore] = useState(() => {
       return createRootStore({
