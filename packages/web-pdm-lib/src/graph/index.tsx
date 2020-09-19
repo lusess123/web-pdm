@@ -30,6 +30,7 @@ const useLocal = () => {
 
   const containerRef = useRef(null)
   const erdGraphRef = useRef<Graph>(null)
+  const miniMapRef = useRef<any>(null)
   useEffect(() => { register() }, [])
   const checkRef = useRef(+new Date())
   useEffect(
@@ -40,7 +41,9 @@ const useLocal = () => {
         //  alert(mst.Nodes.length)
         // alert(mst === window.kkk)
          //alert('erdGraphRef.current = render')
-         erdGraphRef.current = render(containerRef.current, mst.Nodes, mst.edges, mst)
+         const Obj = render(containerRef.current, mst.Nodes, mst.edges, mst)
+         erdGraphRef.current = Obj.graph
+         miniMapRef.current = Obj.miniMap
          //alert('erdGraphRef.current')
         //  alert(mst.graph.$modelId)
         async(() => {
@@ -142,6 +145,27 @@ const useLocal = () => {
     themeColor: mst.Ui.themeColor,
     darkness: mst.Ui.darkness
   })
+
+  useEffect(()=>{
+    if(erdGraphRef.current && miniMapRef.current) {
+      // alert()
+    if(!mst.sys.disableMiniMap) {
+      erdGraphRef.current?.removePlugin(miniMapRef.current)
+    } else {
+      const miniMap =  new G6.Minimap({
+        type: 'delegate',
+        viewportClassName: 'g6-minimap-viewport-erd',
+        delegateStyle: {
+          fill: 'rgba(0,0,0,0.10)',
+        },
+      })
+      miniMapRef.current = miniMap
+      erdGraphRef.current?.addPlugin(miniMap)
+    }
+  }
+
+  }, [mst.sys.disableMiniMap])
+
   return {
     containerRef,
     setRef,
@@ -164,6 +188,13 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
   const styleConfig = initStyle({primaryColor: mst.Ui.themeColor}).style
   const isLargar = nodes.length > 50 
   // alert(isLargar)
+  const miniMap =   new G6.Minimap({
+    type: 'delegate',
+    viewportClassName: 'g6-minimap-viewport-erd',
+    delegateStyle: {
+      fill: 'rgba(0,0,0,0.10)',
+    },
+  })
   const graph = new G6.Graph({
     height,
     width: container.offsetWidth - 20,
@@ -236,17 +267,13 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
     },
     plugins: [
       // toolbar,
-      new G6.Minimap({
-        type: 'delegate',
-        viewportClassName: 'g6-minimap-viewport-erd',
-        delegateStyle: {
-          fill: 'rgba(0,0,0,0.10)',
-        },
-      })
+      ...[mst.sys.disableMiniMap? [] : [miniMap]]
+    
     ]
   })
   // alert(mst === window.kkk)
   GraphEvent(graph, mst)
+  // miniMap.init
   // const x = nodes[0].x
   // edgeBundling.bundling({ nodes, edges });
   graph.data({ nodes, edges })
@@ -263,7 +290,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
     })
  }
   // layout(graph, nodes)
-  return graph
+  return  { graph ,  miniMap }
 }
 
 

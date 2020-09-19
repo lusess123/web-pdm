@@ -1,6 +1,6 @@
 
 // import { Tooltip } from 'antd'
-import { FileMarkdownOutlined, ReloadOutlined, CloseCircleFilled , SnippetsFilled, SnippetsOutlined, DownloadOutlined, PartitionOutlined, UngroupOutlined, RollbackOutlined,BgColorsOutlined,UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
+import { FileMarkdownOutlined, ReloadOutlined, CloseCircleFilled ,PictureOutlined,PictureFilled, SnippetsFilled, SnippetsOutlined, DownloadOutlined, PartitionOutlined, UngroupOutlined, RollbackOutlined,BgColorsOutlined,UnlockOutlined, LockOutlined, ZoomOutOutlined, ZoomInOutlined, BorderOutlined, ArrowUpOutlined, ArrowDownOutlined, ArrowLeftOutlined, ArrowRightOutlined, RetweetOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
 import React, { isValidElement, useState, useCallback } from 'react' 
 import { observer } from 'mobx-react-lite'
@@ -31,7 +31,9 @@ const IconRenders = {
   // 'upload':<FileImageOutlined />,
   'min': <ZoomOutOutlined />,
   'max': <ZoomInOutlined />,
-  'reload': <ReloadOutlined />
+  'reload': <ReloadOutlined />,
+  'miniMap': <PictureFilled />,
+  'miniMapNo': <PictureOutlined />
 
 }
 
@@ -63,6 +65,7 @@ export default observer(({ graph } : { graph : any}) => {
     </span>
     <ButtonActon key={4} Tooltip={Tooltip} title={intl('缩小')} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} disable={zoomNum < 5 } icon='min' onClick={mst.graph.minZoom.bind(mst.graph, graph)} />
     <ButtonActon key={5} Tooltip={Tooltip} title={intl('全景')} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} icon='container' onClick={mst.graph.container.bind(mst.graph, graph)} />
+    <ButtonActon key={6} Tooltip={Tooltip} title={intl(mst.sys.disableMiniMap? '显示小地图':'屏蔽小地图')} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} icon={mst.sys.disableMiniMap ? 'miniMap' : 'miniMapNo'} onClick={mst.sys.setDisableMiniMap.bind(mst.sys,!mst.sys.disableMiniMap)}  />
     <ButtonActon key={6} Tooltip={Tooltip} title={intl('刷新数据')} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} icon='reload' onClick={mst.reload.bind(mst)}  />
     <ButtonActon key={7} Tooltip={Tooltip} title={intl('下载图片')} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} icon='image' onClick={mst.graph.downAsImage.bind(mst.graph, graph)}  />
     <ButtonActon key={8} Tooltip={Tooltip} title={!mst.sys.dagreLayout ? intl('切换层次布局') : intl('切换关联布局')} icon={!mst.sys.dagreLayout ?<PartitionOutlined /> : <UngroupOutlined />} color={mst.Ui.darkness ? mst.Ui.themeColor : undefined} onClick={mst.sys.setDagreLayout.bind(mst.sys, !mst.sys.dagreLayout)}  />
