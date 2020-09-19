@@ -42,7 +42,7 @@ export default defineConfig({
   navs: [
     null,
     //http://localhost:8001
-    { title: 'API', path: '/typedoc' },
+    { title: 'API', path: '/typedoc/' },
     { title: 'GitHub', path: 'https://github.com/lusess123/web-pdm' },
     { title: '更新日志', path: 'https://github.com/lusess123/web-pdm/blob/master/packages/web-pdm-lib/CHANGELOG.md' },
   ],
