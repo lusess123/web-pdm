@@ -35,6 +35,12 @@ const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdke
     }, []);
     return React.createElement(MSTPage, { className: className, style: style });
 });
+/**
+ *组件定义
+ *
+ * @param {*} props 属性接口
+ * @return {*}
+ */
 const WebPDM = (props) => {
     const [rootStore] = useState(() => {
         return createRootStore({
