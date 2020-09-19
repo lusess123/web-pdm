@@ -1,4 +1,4 @@
-## [0.2.5-4](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-4) (2020-09-18)
+## [0.2.5-5](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-5) (2020-09-19)
 
 
 ### Features
@@ -8,6 +8,7 @@
 * add onIgnoreEdge props ([4381081](https://github.com/lusess123/web-pdm/commit/4381081e664aaaf8efbbbb30aaf423e10c45d53c))
 * add themacolor and darkness props ([fa4806d](https://github.com/lusess123/web-pdm/commit/fa4806d2895dc3cbf6142614f926ef2b2d5eee44))
 * add tooltip render ([ccb710a](https://github.com/lusess123/web-pdm/commit/ccb710a4d3c4cedea3ce7d99dde662757da646fc))
+* add typedoc ([cc7439a](https://github.com/lusess123/web-pdm/commit/cc7439aa56e697448d41f12bc7fb08b10338afd9))
 * arrang root show ([ba96e7c](https://github.com/lusess123/web-pdm/commit/ba96e7c582052f3acdc8922a18b17e0a598fa84f))
 * change bg color in toolbar ([2cc7aa9](https://github.com/lusess123/web-pdm/commit/2cc7aa95e2150d3597b8c8330697b2a6147750fb))
 * color picker and add button in toolbar ([eb89c3d](https://github.com/lusess123/web-pdm/commit/eb89c3d0ac3f19fb328bee98e5133eef761e6567))
