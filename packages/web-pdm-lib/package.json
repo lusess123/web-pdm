@@ -61,6 +61,7 @@
     "react-dnd": "^9.3.4",
     "react-dnd-html5-backend": "^9.3.4",
     "react-dom": "^16.9.0",
+    "react-element-to-jsx-string": "^14.3.1",
     "react-scrollbars-custom": "^4.0.21",
     "reactcss": "^1.2.3",
     "with-dnd-context": "^1.0.4",

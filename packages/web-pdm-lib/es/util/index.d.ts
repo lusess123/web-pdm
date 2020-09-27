@@ -22,4 +22,4 @@ export declare const json: (obj: any, replacer?: any, space?: any) => string;
 export declare const renderJson: (value: any, replacer?: any, space?: any) => JSX.Element;
 export declare function mapToArrary<T>(mapObj: Map<string, T>): T[];
 export declare const intlLiteral: (text: string) => string;
-export declare const changeTwoDecimal_f: (x: any) => string | 0 | 100;
+export declare const changeTwoDecimal_f: (x: any) => any;

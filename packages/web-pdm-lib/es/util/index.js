@@ -1,5 +1,6 @@
 import React, { isValidElement } from 'react';
 import { observer } from 'mobx-react-lite';
+import reactString from 'react-element-to-jsx-string';
 export const defineComponent = ({ setup, displayName }) => { setup.displayName = displayName; return setup; };
 export const ObComponent = ({ setup, displayName }) => {
     // const useSetUp = setup

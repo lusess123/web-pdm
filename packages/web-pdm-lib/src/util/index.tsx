@@ -1,5 +1,6 @@
-import React, { SFC, createContext, useContext, isValidElement } from 'react'
-import { observer, useObserver, Observer, useLocalStore } from 'mobx-react-lite'
+import React, { SFC, isValidElement } from 'react'
+import { observer } from 'mobx-react-lite'
+import reactString from 'react-element-to-jsx-string'
 
 export interface IComponentOptions<T> {
      setup : SFC<T>,
@@ -57,7 +58,7 @@ export const json = (obj, replacer?, space?) => {
     return (key :any , value: any) => {
       if (typeof value === 'object' && value !== null) {
           if(isValidElement(value)) {
-              // return reactString(value)
+              return reactString(value)
           }
         const index = cache.indexOf(value);
   
