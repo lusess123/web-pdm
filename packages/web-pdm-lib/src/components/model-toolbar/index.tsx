@@ -50,7 +50,7 @@ export default observer(({ graph } : { graph : any}) => {
     //  setColorPabel(false)
   },200),[colorPabel])
 
-  const zoomNum = graph && changeTwoDecimal_f(parseFloat(mst.graph?.zoom * 100) + '') || 0
+  const zoomNum = graph && changeTwoDecimal_f(parseFloat(mst.graph?.zoom * 100 + '') + '') || 0
 
   if(!graph) return  <div className='console-erd-toolbar' >{intl('正在初始化中')}....</div>
 
@@ -91,7 +91,7 @@ type IButtonActon = {
 const ButtonActon  = CreateComponent<IButtonActon>({
     render : (props) => {
       const { Tooltip } = props
-     const IconRender =  isValidElement(props.icon) ?  props.icon : IconRenders[props.icon] 
+     const IconRender =  isValidElement(props.icon) ?  props.icon : IconRenders[props.icon as string] 
      return  <Tooltip title={props.title} ><span style={{color: props.color}} className={classNames({'enable' : !props.disable, 'command-btn' : true })} onClick={ !props.disable ? props.onClick : undefined } >{IconRender}</span></Tooltip>
     }
 })

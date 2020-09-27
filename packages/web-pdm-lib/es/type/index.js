@@ -146,6 +146,7 @@ let RootInstance = class RootInstance extends Model({
         const t1 = +new Date();
         let modelsKeys = [];
         let modelHas = {};
+        alert(models.length);
         models.forEach((model) => {
             const key = NewGuid().toString();
             this.Models.set(key, new TModel({

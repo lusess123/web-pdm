@@ -1,4 +1,4 @@
-import { model, Model, prop, modelAction, getRoot, SnapshotInOf, gett } from 'mobx-keystone'
+import { model, Model, prop,  getRoot, SnapshotInOf } from 'mobx-keystone'
 import { computed } from 'mobx'
 import { RootInstance } from '../type'
 
@@ -75,7 +75,7 @@ export class TField extends Model({
 
 }
 
-export type TField = 
+// export type TField = 
 
 
 

@@ -51,7 +51,8 @@ export interface IField {
     name: string;
     type: string;
     isForeign?: boolean;
-    relationModel?: string;
+    relationModel?: any;
+    typeMeta?: any;
 }
 export declare const Relation: {
     ToOne: string;

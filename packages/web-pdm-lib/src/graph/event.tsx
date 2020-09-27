@@ -2,6 +2,10 @@ import { debounce, throttle } from 'lodash'
 import { Graph } from '@antv/g6'
 import { RootInstance } from '../type'
 
+// declare interface Graph {
+//   isLayouting : boolean
+// }
+
 
 
 export default (graph:Graph, mst : RootInstance) => {
@@ -22,7 +26,7 @@ export default (graph:Graph, mst : RootInstance) => {
    
   graph.on('beforepaint', throttle(() => {
     // alert()
-    if(graph.isLayouting) {
+    if(graph['isLayouting']) {
         //  graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
         //   node.getContainer().hide()
         //   // node.getEdges().forEach(a=>a.hide())
@@ -36,8 +40,8 @@ export default (graph:Graph, mst : RootInstance) => {
     const topLeft = graph.getPointByCanvas(0, 0) // 获取视窗右下角对应画布坐标点
 
     const bottomRight = graph.getPointByCanvas(gWidth, gHeight)
-    graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
-      const model = node.getModel()
+    graph.getNodes().filter((a) => !a['isSys']).forEach((node) => {
+      const model: any = node.getModel()
       if(model.isSys) return
       if (!model.visible) {
         // node.getContainer().hide()
@@ -45,10 +49,9 @@ export default (graph:Graph, mst : RootInstance) => {
         // return
       }
       if (isExporting) return
-      const {
-        config,
-        data: _data,
-      } = model
+ 
+      const _data : any = model['data']
+      const config : any = model['config']
       const h = (config.headerHeight + _data.fields.length * config.fieldHeight + 4) / 2
       const w = config.width / 2 // 如果节点不在视窗中，隐藏该节点，则不绘制
       // note:由于此应用中有minimap，直接隐藏节点会影响缩略图视图，直接隐藏节点具体内容

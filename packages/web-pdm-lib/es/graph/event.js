@@ -1,4 +1,7 @@
 import { debounce, throttle } from 'lodash';
+// declare interface Graph {
+//   isLayouting : boolean
+// }
 export default (graph, mst) => {
     // alert(mst === window.kkk)
     // alert(mst.graph.G6Graph)
@@ -14,7 +17,7 @@ export default (graph, mst) => {
     }, 200));
     graph.on('beforepaint', throttle(() => {
         // alert()
-        if (graph.isLayouting) {
+        if (graph['isLayouting']) {
             //  graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
             //   node.getContainer().hide()
             //   // node.getEdges().forEach(a=>a.hide())
@@ -27,7 +30,7 @@ export default (graph, mst) => {
         // 获取视窗左上角对应画布的坐标点
         const topLeft = graph.getPointByCanvas(0, 0); // 获取视窗右下角对应画布坐标点
         const bottomRight = graph.getPointByCanvas(gWidth, gHeight);
-        graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
+        graph.getNodes().filter((a) => !a['isSys']).forEach((node) => {
             const model = node.getModel();
             if (model.isSys)
                 return;
@@ -38,7 +41,8 @@ export default (graph, mst) => {
             }
             if (isExporting)
                 return;
-            const { config, data: _data, } = model;
+            const _data = model['data'];
+            const config = model['config'];
             const h = (config.headerHeight + _data.fields.length * config.fieldHeight + 4) / 2;
             const w = config.width / 2; // 如果节点不在视窗中，隐藏该节点，则不绘制
             // note:由于此应用中有minimap，直接隐藏节点会影响缩略图视图，直接隐藏节点具体内容

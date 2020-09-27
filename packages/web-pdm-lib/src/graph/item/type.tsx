@@ -54,7 +54,8 @@ export interface IField {
     name: string
     type: string
     isForeign?: boolean
-    relationModel?: string
+    relationModel?: any,
+    typeMeta?: any
 }
 
 export const Relation = {

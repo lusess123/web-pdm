@@ -112,7 +112,7 @@ const useLocal = () => {
         onLayoutEnd: () => {
           async(()=>{
             // alert()
-            graph.isLayouting = false
+            graph['isLayouting'] = false
             graph.fitView(0)
             
             withoutUndo(()=>{
@@ -181,7 +181,7 @@ const useLocal = () => {
 // });
 const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
   const documentHeight = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)
-  const height = mst.sys.height === '100%' ? ( documentHeight - 45) : (mst.sys.height - 45)
+  const height = mst.sys.height === '100%' ? ( documentHeight - 45) : (mst.sys.height as number - 45)
   // const height = mst.sys.height
   // alert(height)
   // alert(height)
@@ -228,7 +228,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
       // collideStrength: 0.5,
       nodeSpacing: isLargar ? -100 : -180,
       onLayoutEnd: () => {
-        graph.isLayouting = false
+        graph['isLayouting'] = false
         graph.fitView(0)
         withoutUndo(()=>{
           mst.graph.setZoom(graph.getZoom())
@@ -254,7 +254,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         {
           type: 'edge-tooltip',
           formatText: (model) => {
-            return model.tooltip;
+            return model.tooltip as string;
           },
           offset: 10
         },
@@ -277,7 +277,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
   // const x = nodes[0].x
   // edgeBundling.bundling({ nodes, edges });
   graph.data({ nodes, edges })
-  graph.isLayouting = true
+  graph['isLayouting'] = true
   graph.render()
   graph.fitView(0)
   if( mst.sys.dagreLayout) {

@@ -172,6 +172,7 @@ export class RootInstance extends Model({
 
             let modelsKeys: string[] = []
             let modelHas: Record<string, string> = {}
+            alert(models.length)
             models.forEach((model) => {
                   const key = NewGuid().toString()
                   this.Models.set(key, new TModel({ 

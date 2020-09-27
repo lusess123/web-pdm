@@ -23,6 +23,7 @@ const useLocal = () => {
     // window.kkk = mst
     const containerRef = useRef(null);
     const erdGraphRef = useRef(null);
+    const miniMapRef = useRef(null);
     useEffect(() => { register(); }, []);
     const checkRef = useRef(+new Date());
     useEffect(() => {
@@ -32,7 +33,9 @@ const useLocal = () => {
             //  alert(mst.Nodes.length)
             // alert(mst === window.kkk)
             //alert('erdGraphRef.current = render')
-            erdGraphRef.current = render(containerRef.current, mst.Nodes, mst.edges, mst);
+            const Obj = render(containerRef.current, mst.Nodes, mst.edges, mst);
+            erdGraphRef.current = Obj.graph;
+            miniMapRef.current = Obj.miniMap;
             //alert('erdGraphRef.current')
             //  alert(mst.graph.$modelId)
             async(() => {
@@ -95,7 +98,7 @@ const useLocal = () => {
                 onLayoutEnd: () => {
                     async(() => {
                         // alert()
-                        graph.isLayouting = false;
+                        graph['isLayouting'] = false;
                         graph.fitView(0);
                         withoutUndo(() => {
                             mst.graph.setZoom(graph.getZoom());
@@ -122,6 +125,26 @@ const useLocal = () => {
         themeColor: mst.Ui.themeColor,
         darkness: mst.Ui.darkness
     });
+    useEffect(() => {
+        var _a, _b;
+        if (erdGraphRef.current && miniMapRef.current) {
+            // alert()
+            if (!mst.sys.disableMiniMap) {
+                (_a = erdGraphRef.current) === null || _a === void 0 ? void 0 : _a.removePlugin(miniMapRef.current);
+            }
+            else {
+                const miniMap = new G6.Minimap({
+                    type: 'delegate',
+                    viewportClassName: 'g6-minimap-viewport-erd',
+                    delegateStyle: {
+                        fill: 'rgba(0,0,0,0.10)',
+                    },
+                });
+                miniMapRef.current = miniMap;
+                (_b = erdGraphRef.current) === null || _b === void 0 ? void 0 : _b.addPlugin(miniMap);
+            }
+        }
+    }, [mst.sys.disableMiniMap]);
     return {
         containerRef,
         setRef,
@@ -143,6 +166,13 @@ const render = (container, nodes, edges, mst) => {
     const styleConfig = initStyle({ primaryColor: mst.Ui.themeColor }).style;
     const isLargar = nodes.length > 50;
     // alert(isLargar)
+    const miniMap = new G6.Minimap({
+        type: 'delegate',
+        viewportClassName: 'g6-minimap-viewport-erd',
+        delegateStyle: {
+            fill: 'rgba(0,0,0,0.10)',
+        },
+    });
     const graph = new G6.Graph({
         height,
         width: container.offsetWidth - 20,
@@ -173,7 +203,7 @@ const render = (container, nodes, edges, mst) => {
             // collideStrength: 0.5,
             nodeSpacing: isLargar ? -100 : -180,
             onLayoutEnd: () => {
-                graph.isLayouting = false;
+                graph['isLayouting'] = false;
                 graph.fitView(0);
                 withoutUndo(() => {
                     mst.graph.setZoom(graph.getZoom());
@@ -203,21 +233,16 @@ const render = (container, nodes, edges, mst) => {
         },
         plugins: [
             // toolbar,
-            new G6.Minimap({
-                type: 'delegate',
-                viewportClassName: 'g6-minimap-viewport-erd',
-                delegateStyle: {
-                    fill: 'rgba(0,0,0,0.10)',
-                },
-            })
+            ...[mst.sys.disableMiniMap ? [] : [miniMap]]
         ]
     });
     // alert(mst === window.kkk)
     GraphEvent(graph, mst);
+    // miniMap.init
     // const x = nodes[0].x
     // edgeBundling.bundling({ nodes, edges });
     graph.data({ nodes, edges });
-    graph.isLayouting = true;
+    graph['isLayouting'] = true;
     graph.render();
     graph.fitView(0);
     if (mst.sys.dagreLayout) {
@@ -230,7 +255,7 @@ const render = (container, nodes, edges, mst) => {
         });
     }
     // layout(graph, nodes)
-    return graph;
+    return { graph, miniMap };
 };
 const layout = (graph, nodes, edges, mst) => {
     // graph.clear()

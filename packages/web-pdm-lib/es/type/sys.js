@@ -19,7 +19,8 @@ let TSys = class TSys extends Model({
     snapshot: prop(true),
     height: prop('100%'),
     dagreLayout: prop(false),
-    intl: prop('CH')
+    intl: prop('CH'),
+    disableMiniMap: prop(false)
     // undoData: prop<UndoStore>(() => new UndoStore({})),
 }) {
     constructor() {
@@ -52,6 +53,9 @@ let TSys = class TSys extends Model({
     }
     toggleArrangeLayout() {
         this.isArrangeLayout = !this.isArrangeLayout;
+    }
+    setDisableMiniMap(disableMiniMap) {
+        this.disableMiniMap = disableMiniMap;
     }
     setCurrentModel(keys) {
         const n0 = +new Date();
@@ -102,6 +106,9 @@ __decorate([
 __decorate([
     modelAction
 ], TSys.prototype, "setCheckedKeys", void 0);
+__decorate([
+    modelAction
+], TSys.prototype, "setDisableMiniMap", null);
 __decorate([
     modelAction
 ], TSys.prototype, "setCurrentModel", null);

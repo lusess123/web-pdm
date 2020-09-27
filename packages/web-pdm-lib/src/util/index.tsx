@@ -57,7 +57,7 @@ export const json = (obj, replacer?, space?) => {
     return (key :any , value: any) => {
       if (typeof value === 'object' && value !== null) {
           if(isValidElement(value)) {
-              return reactString(value)
+              // return reactString(value)
           }
         const index = cache.indexOf(value);
   
@@ -99,7 +99,7 @@ export const json = (obj, replacer?, space?) => {
     　　　　return 0
     　　}
       f_x = Math.round(x * 100) / 100
-    　　let s_x = f_x.toString()
+    　　let s_x : any = f_x.toString()
     　　let pos_decimal = s_x.indexOf('.')
     　　if (pos_decimal < 0) {
     　　　　pos_decimal = s_x.length

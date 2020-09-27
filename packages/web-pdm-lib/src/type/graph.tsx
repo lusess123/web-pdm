@@ -52,13 +52,13 @@ export class TGraph extends Model({
     
      @modelAction
      downAsImage() {
-        const _graph = this.G6Graph
+        const _graph : any = this.G6Graph
         if(!_graph) return 
         const oldZoom = this.G6Graph.getZoom()
         //const newZoom = 100
         
         _graph.isExporting = true
-        _graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
+        _graph.getNodes().filter((a : any) => !a.isSys).forEach((node) => {
           node.getContainer().show()
              _graph.updateItem(node, {
                 isKeySharp: false,

@@ -34,7 +34,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
         const t0 = +new Date()
         const isKeySharp = zoom <= 0.4
         const isCardSharp = zoom <= 0.1
-        gnodes.forEach((node) => {
+        gnodes.forEach((node: any) => {
           if (!node.isSys){
           const nodeModel = node.getModel()
           const nodeId = nodeModel.id
