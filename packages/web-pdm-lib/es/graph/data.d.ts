@@ -29,11 +29,15 @@ export declare const createData: (root: RootInstance) => {
                     lineWidth: number;
                     size: number;
                     lineAppendWidth: number;
+                    endArrow: {
+                        path: string;
+                    };
                     startArrow: {
                         path: string;
-                        d: number;
                         fill: string;
                         shadowColor: string;
+                        opacity: number;
+                        d: number;
                     };
                     opacity: number;
                     radius: number;

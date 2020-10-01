@@ -25,11 +25,15 @@ export declare const initStyle: ({ primaryColor }: {
                 lineWidth: number;
                 size: number;
                 lineAppendWidth: number;
+                endArrow: {
+                    path: string;
+                };
                 startArrow: {
                     path: string;
-                    d: number;
                     fill: string;
                     shadowColor: string;
+                    opacity: number;
+                    d: number;
                 };
                 opacity: number;
                 radius: number;

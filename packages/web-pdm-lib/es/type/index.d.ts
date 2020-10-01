@@ -60,11 +60,15 @@ export declare class RootInstance extends RootInstance_base {
                         lineWidth: number;
                         size: number;
                         lineAppendWidth: number;
+                        endArrow: {
+                            path: string;
+                        };
                         startArrow: {
                             path: string;
-                            d: number;
                             fill: string;
                             shadowColor: string;
+                            opacity: number;
+                            d: number;
                         };
                         opacity: number;
                         radius: number;
