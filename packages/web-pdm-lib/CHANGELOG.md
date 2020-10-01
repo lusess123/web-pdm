@@ -1,4 +1,4 @@
-## [0.2.5-13](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-13) (2020-09-27)
+## [0.2.5-14](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-14) (2020-10-01)
 
 
 ### Features
@@ -18,6 +18,7 @@
 * suppot isCardSharp ([978658b](https://github.com/lusess123/web-pdm/commit/978658b39fd9c12a7283ef09a203b6496e72a293))
 * suppot isCardSharp ([0d7ee52](https://github.com/lusess123/web-pdm/commit/0d7ee529a2c018fe87a64c6163bf84b216782b4d))
 * unwatch fields ([266d029](https://github.com/lusess123/web-pdm/commit/266d029cac925b01ce35631ee348d5ab999f4cfc))
+* 优化边的样式 ([cc283da](https://github.com/lusess123/web-pdm/commit/cc283da5e325fde14063569ad6f1f94d7d4e7ddd))
 
 
 
