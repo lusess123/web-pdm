@@ -28,12 +28,13 @@ export  const initStyle = ({primaryColor}) => {
        lineAppendWidth: 4,
        endArrow: {
         path: G6.Arrow.triangleRect(10, 10, 10, 2, 4),
+        // fill: primaryColor,
        },
        startArrow: {
         path:  G6.Arrow.circle(5,5), // 使用内置箭头路径函数，参数为箭头的 宽度、长度、偏移量（默认为 0，与 d 对应）
-                 fill: 'rgba(11,108,149)',
-         shadowColor: 'rgba(0,0,0,0.1)',
-         opacity: 1,
+                //  fill: primaryColor,
+        //  shadowColor: primaryColor,
+        //  opacity: 1,
         d: 10
        },
       //  startArrow: {
@@ -43,7 +44,7 @@ export  const initStyle = ({primaryColor}) => {
       //    shadowColor: 'rgba(0,0,0,0.1)',
       //   //  opacity: 1,
       //  },
-       opacity: 0.2,
+      //  opacity: 0.2,
        radius: 5,
        labelCfg: {
          autoRotate: true,   // 使文本随边旋转
@@ -51,7 +52,7 @@ export  const initStyle = ({primaryColor}) => {
            fontSize: 34,
          },
        },
-       stroke: 'rgba(11,108,149)',
+       stroke: primaryColor,
      },
    },
    selected: {

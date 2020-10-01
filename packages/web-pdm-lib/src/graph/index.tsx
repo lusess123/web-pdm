@@ -113,6 +113,8 @@ const useLocal = () => {
           async(()=>{
             // alert()
             graph['isLayouting'] = false
+            // graph['isLayouting'] = false
+            alert('endlayout')
             graph.fitView(0)
             
             withoutUndo(()=>{
@@ -229,7 +231,9 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
       nodeSpacing: isLargar ? -100 : -180,
       onLayoutEnd: () => {
         graph['isLayouting'] = false
+        graph['endLayout'] = true
         graph.fitView(0)
+        graph['endLayout'] = false
         withoutUndo(()=>{
           mst.graph.setZoom(graph.getZoom())
         })
