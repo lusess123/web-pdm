@@ -1,4 +1,4 @@
-
+import G6 from '@antv/g6'
 export  const initStyle = ({primaryColor}) => {
   const colors = {
    blue: primaryColor,
@@ -26,13 +26,23 @@ export  const initStyle = ({primaryColor}) => {
        lineWidth: 2,
        size: 2,
        lineAppendWidth: 4,
-       startArrow: {
-         path: 'M 24,0 L -24,-12 L 8,0 L -24,12 Z',
-         d: 2,
-         fill: 'rgba(11,108,149)',
-         shadowColor: 'rgba(0,0,0,0.1)',
-        //  opacity: 1,
+       endArrow: {
+        path: G6.Arrow.triangleRect(10, 10, 10, 2, 4),
        },
+       startArrow: {
+        path:  G6.Arrow.circle(5,5), // 使用内置箭头路径函数，参数为箭头的 宽度、长度、偏移量（默认为 0，与 d 对应）
+                 fill: 'rgba(11,108,149)',
+         shadowColor: 'rgba(0,0,0,0.1)',
+         opacity: 1,
+        d: 10
+       },
+      //  startArrow: {
+      //   //  path: 'M 24,0 L -24,-12 L 8,0 L -24,12 Z',
+      //   //  d: 2,
+      //    fill: 'rgba(11,108,149)',
+      //    shadowColor: 'rgba(0,0,0,0.1)',
+      //   //  opacity: 1,
+      //  },
        opacity: 0.2,
        radius: 5,
        labelCfg: {
