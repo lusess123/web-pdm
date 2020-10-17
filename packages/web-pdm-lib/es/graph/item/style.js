@@ -30,9 +30,9 @@ export const initStyle = ({ primaryColor }) => {
                 },
                 startArrow: {
                     path: G6.Arrow.circle(5, 5),
-                    fill: 'rgba(11,108,149)',
-                    shadowColor: 'rgba(0,0,0,0.1)',
-                    opacity: 1,
+                    //  fill: primaryColor,
+                    //  shadowColor: primaryColor,
+                    //  opacity: 1,
                     d: 10
                 },
                 //  startArrow: {
@@ -42,7 +42,7 @@ export const initStyle = ({ primaryColor }) => {
                 //    shadowColor: 'rgba(0,0,0,0.1)',
                 //   //  opacity: 1,
                 //  },
-                opacity: 0.2,
+                //  opacity: 0.2,
                 radius: 5,
                 labelCfg: {
                     autoRotate: true,
@@ -50,7 +50,7 @@ export const initStyle = ({ primaryColor }) => {
                         fontSize: 34,
                     },
                 },
-                stroke: 'rgba(11,108,149)',
+                stroke: primaryColor,
             },
         },
         selected: {

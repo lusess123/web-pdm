@@ -56,6 +56,39 @@ export default (graph, mst) => {
                 node.getEdges().forEach(a => a.show());
             }
         });
+        const endLayout = graph['endLayout'];
+        if (endLayout || 1) {
+            // alert('endLayout')
+            graph.getEdges().forEach((edge) => {
+                let sourceNode = edge.get('sourceNode');
+                let targetNode = edge.get('targetNode');
+                const targetModel = targetNode.getModel();
+                const edgeModel = edge.getModel();
+                if ((targetModel.visible || sourceNode.getModel().visible) && graph.getZoom() >= 0.3) {
+                    if (!edgeModel.self && !edgeModel.isSys) {
+                        const isTo = sourceNode.getModel().x < targetNode.getModel().x;
+                        const i = edgeModel.fieldIndex;
+                        const l = edgeModel.fieldsLength;
+                        // const isTo = targetModel.x > sourceNode.getModel().x
+                        const sourceAnchor = (!isTo ? i + 2 : 2 + i + l);
+                        // if (targetModel.targetAnchor !== targetAnchor)
+                        //   // edge.set('targetAnchor', targetAnchor)
+                        graph.updateItem(edge, { sourceAnchor });
+                    }
+                }
+                if (!targetModel.visible || !sourceNode.getModel().visible) {
+                    edge.hide();
+                    // return
+                }
+                // if (isExporting) return
+                if (!sourceNode.getContainer().get('visible') && !targetNode.getContainer().get('visible')) {
+                    edge.hide();
+                }
+                else {
+                    edge.show();
+                }
+            });
+        }
     }, 300)); // graph.on('node:dblclick', (ev) => {
     // })
     //return graph

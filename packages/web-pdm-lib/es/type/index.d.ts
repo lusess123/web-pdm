@@ -65,12 +65,8 @@ export declare class RootInstance extends RootInstance_base {
                         };
                         startArrow: {
                             path: string;
-                            fill: string;
-                            shadowColor: string;
-                            opacity: number;
                             d: number;
                         };
-                        opacity: number;
                         radius: number;
                         labelCfg: {
                             autoRotate: boolean;
@@ -78,7 +74,7 @@ export declare class RootInstance extends RootInstance_base {
                                 fontSize: number;
                             };
                         };
-                        stroke: string;
+                        stroke: any;
                     };
                 };
                 selected: {

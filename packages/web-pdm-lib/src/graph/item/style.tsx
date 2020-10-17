@@ -31,11 +31,11 @@ export  const initStyle = ({primaryColor}) => {
         // fill: primaryColor,
        },
        startArrow: {
-        path:  G6.Arrow.circle(5,5), // 使用内置箭头路径函数，参数为箭头的 宽度、长度、偏移量（默认为 0，与 d 对应）
+        path:  G6.Arrow.circle(3,3), // 使用内置箭头路径函数，参数为箭头的 宽度、长度、偏移量（默认为 0，与 d 对应）
                 //  fill: primaryColor,
         //  shadowColor: primaryColor,
         //  opacity: 1,
-        d: 10
+        d: 6
        },
       //  startArrow: {
       //   //  path: 'M 24,0 L -24,-12 L 8,0 L -24,12 Z',

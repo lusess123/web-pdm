@@ -34,12 +34,8 @@ export declare const createData: (root: RootInstance) => {
                     };
                     startArrow: {
                         path: string;
-                        fill: string;
-                        shadowColor: string;
-                        opacity: number;
                         d: number;
                     };
-                    opacity: number;
                     radius: number;
                     labelCfg: {
                         autoRotate: boolean;
@@ -47,7 +43,7 @@ export declare const createData: (root: RootInstance) => {
                             fontSize: number;
                         };
                     };
-                    stroke: string;
+                    stroke: any;
                 };
             };
             selected: {
