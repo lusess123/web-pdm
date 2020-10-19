@@ -1,23 +1,19 @@
 ---
 order: 1
 nav:
-  order: 2
-  title: 配置项
+    order: 2
+    title: 配置项
 toc: menu
 ---
 
-
-
 # props
-
 
  <code src="../type-erd.tsx"  inline />
 
+## models
 
-## models 
-
-- 说明： 模型和字段的初始化配置
-- 类型： ModelConfig[]
+-   说明： 模型和字段的初始化配置
+-   类型： ModelConfig[]
 
 ```
 
@@ -26,7 +22,7 @@ export type ModelConfig = {
     label: string,
     fields: FieldConfig[],
     module: string,
-    type: string 
+    type: string
 }
 
 export type FieldConfig = {
@@ -49,13 +45,10 @@ export type MetaTypeConfig = {
 
 ```
 
-
 ## modules
 
-- 说明： 模块的初始化配置
-- 类型： ModuleConfig[]
-
-
+-   说明： 模块的初始化配置
+-   类型： ModuleConfig[]
 
 ```
 export type ModuleConfig = {
@@ -65,46 +58,45 @@ export type ModuleConfig = {
 
 ```
 
-
 ## height
 
-- 说明： 容器的高度
-- 类型： number | string ｜ undefined
-- 默认值： undefined
-
-
+-   说明： 容器的高度
+-   类型： number | string ｜ undefined
+-   默认值： undefined
 
 ## style
 
-- 说明： 容器的样式设置
-- 类型： html style  对象
-- 默认值： undefined
+-   说明： 容器的样式设置
+-   类型： html style   对象
+-   默认值： undefined
 
 ## themeColor
 
-- 说明： 皮肤主颜色
-- 类型： string 
-- 默认值： black
+-   说明： 皮肤主颜色
+-   类型： string
+-   默认值： black
 
 ## darkness
 
-- 说明： 是否暗色背景
-- 类型： boolean 
-- 默认值：false
-
+-   说明： 是否暗色背景
+-   类型： boolean
+-   默认值：false
 
 ## onIgnoreEdge
-- 说明： 是否忽略连接线的创建
-- 类型： (field: FieldConfig) => boolean
+
+-   说明： 是否忽略连接线的创建
+-   类型： (field: FieldConfig) => boolean
 
 ## onModelDetail
-- 说明： 点击模型“查看”按钮事件
-- 类型： (model: ModelConfig) => void
+
+-   说明： 点击模型“查看”按钮事件
+-   类型： (model: ModelConfig) => void
 
 ## onReload
-- 说明： 刷新数据按钮接口
-- 类型： () => TData
-- 默认值： undefine
+
+-   说明： 刷新数据按钮接口
+-   类型： () => TData
+-   默认值： undefine
 
 ```
  export type TData = {
@@ -115,12 +107,12 @@ export type ModuleConfig = {
 
 ## intl
 
-- 说明： 内置国际化配置
-- 类型： 'EN'|'CH' 
-- 默认值：'CH'
+-   说明： 内置国际化配置
+-   类型： 'EN'|'CH'
+-   默认值：'CH'
 
 ## onIntl
 
-- 说明：  外置的国际化传入接口
-- 类型： (text: string) => string
-- 默认值：undefine
+-   说明： 外置的国际化传入接口
+-   类型： (text: string) => string
+-   默认值：undefine

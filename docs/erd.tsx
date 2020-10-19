@@ -6,9 +6,16 @@ import ModuleTest from '../test/g6-test/mock/module-test'
 import './style.less'
 import 'antd/dist/antd.css'
 
-export default  () => {
-    return <WebPdm models={ModelTest} modules={ModuleTest} erdkey='codedemo' height="850" className="console-g6-page-dumi" />
+export default () => {
+    return (
+        <WebPdm
+            models={ModelTest}
+            modules={ModuleTest}
+            erdkey='codedemo'
+            height='850'
+            className='console-g6-page-dumi'
+        />
+    )
 }
 
 //ReactDom.render(<Page />, document.getElementById('app'))
-

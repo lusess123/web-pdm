@@ -4,14 +4,12 @@ import { Input, Button, Dropdown, Menu, Select, Tooltip, Popover } from 'antd'
 import { Tree } from '../tree'
 // import { RootInstance } from '../type'
 
-@model("webpdm/TUi")
+@model('webpdm/TUi')
 export class TUi extends Model({
-
     update: prop(+new Date()),
     themeColor: prop('black'),
     selectedColor: prop('rgba(11,108,149)'),
     darkness: prop(true)
-
 }) {
     Tree?: React.ComponentType
     Input?: React.ComponentType
@@ -20,17 +18,16 @@ export class TUi extends Model({
     Menu?: React.ComponentType
     Select?: React.ComponentType
     Tooltip?: React.ComponentType
-    Popover? : React.ComponentType
+    Popover?: React.ComponentType
 
     isToogle: boolean = false
 
-    registComponents(components?: IComponentConfig) {
+    registComponents (components?: IComponentConfig) {
         if (components) {
-
-            Object.keys(components).forEach((k) => {
+            Object.keys(components).forEach(k => {
                 this[k] = components[k]
             })
-        } 
+        }
 
         if (!this.Tree || !components) this.Tree = Tree
         if (!this.Input || !components) this.Input = Input
@@ -39,23 +36,21 @@ export class TUi extends Model({
         if (!this.Menu || !components) this.Menu = Menu
         if (!this.Select || !components) this.Select = Select
         if (!this.Tooltip || !components) this.Tooltip = Tooltip
-        if(!this.Popover || !components) this.Popover = Popover
-
-
+        if (!this.Popover || !components) this.Popover = Popover
     }
     @modelAction
-    toggle(components: IComponentConfig) {
-        this.registComponents(this.isToogle ? undefined : components )
+    toggle (components: IComponentConfig) {
+        this.registComponents(this.isToogle ? undefined : components)
         // const root: RootInstance = getRoot(this)
         this.update = +new Date()
         this.isToogle = !this.isToogle
     }
     @modelAction
-    setThemeColor(color: string){
+    setThemeColor (color: string) {
         this.themeColor = color
     }
     @modelAction
-    setDarkness(darkness: boolean) {
+    setDarkness (darkness: boolean) {
         this.darkness = darkness
     }
 }

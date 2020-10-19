@@ -1,31 +1,30 @@
-import { model, Model, prop,  getRoot, SnapshotInOf } from 'mobx-keystone'
+import { model, Model, prop, getRoot, SnapshotInOf } from 'mobx-keystone'
 import { computed } from 'mobx'
 import { RootInstance } from '../type'
 
 export type Field = SnapshotInOf<TField>
-@model("webpdm/MetaType")
+@model('webpdm/MetaType')
 export class MetaType extends Model({
     relationModel: prop<string>(),
     type: prop('Relation')
 }) {
-
-    @computed get relationModelData()  {
+    @computed get relationModelData () {
         const root: RootInstance = getRoot(this)
-        const model = [...root.Models.values()].find(a=>a.name === this.relationModel)
-        if(model) {
+        const model = [...root.Models.values()].find(
+            a => a.name === this.relationModel
+        )
+        if (model) {
             return {
-                name : model.name,
-                label : model.label,
-                id : model.id
+                name: model.name,
+                label: model.label,
+                id: model.id
             }
         }
         return null
     }
-
 }
 
-
-@model("webpdm/TField")
+@model('webpdm/TField')
 export class TField extends Model({
     // id: prop<string>(),
     // name: prop<string>(),
@@ -33,9 +32,7 @@ export class TField extends Model({
     // type: prop<string>(),
     // typeMeta: prop<MetaType | undefined>(),
     // modelId: prop<string>('')
-
 }) {
-
     id: string
     name: string
     label: string
@@ -43,39 +40,33 @@ export class TField extends Model({
     typeMeta: MetaType
     modelId: string
 
-    init(obj) {
-       this.id = obj.id
-       this.name = obj.name 
-       this.label = obj.label
-       this.type = obj.type 
-       this.typeMeta = obj.typeMeta
-       this.modelId = obj.modelId 
-       return this
+    init (obj) {
+        this.id = obj.id
+        this.name = obj.name
+        this.label = obj.label
+        this.type = obj.type
+        this.typeMeta = obj.typeMeta
+        this.modelId = obj.modelId
+        return this
     }
-    
+
     @computed
-    get relationModel() {
+    get relationModel () {
         if (this.typeMeta && this.typeMeta.relationModel) {
             const root: RootInstance = getRoot(this)
             const model = root.findModelByName(this.typeMeta.relationModel)
             // console.log(model)
             // typeof model
             return model
-
         }
         return null
-
     }
-   
+
     @computed
-    get model() {
-        const root: RootInstance = getRoot(this);
+    get model () {
+        const root: RootInstance = getRoot(this)
         return [...root.Models.values()].find(a => a.id === this.modelId)
     }
-
 }
 
-// export type TField = 
-
-
-
+// export type TField =

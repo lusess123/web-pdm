@@ -22,7 +22,6 @@
   "author": "北名",
   "license": "ISC",
   "dependencies": {
-    "@terminus/nusi": "^3.7.52",
     "@umijs/plugin-sass": "^1.1.1",
     "dumi": "^1.0.34",
     "mobx": "^5.15.6",
@@ -33,6 +32,7 @@
     "yargs-parser": "^19.0.4"
   },
   "devDependencies": {
+    "@umijs/fabric": "^2.3.0",
     "@umijs/plugin-antd": "^0.8.0",
     "@umijs/plugin-esbuild": "^1.0.1",
     "compression-webpack-plugin": "^5.0.2",

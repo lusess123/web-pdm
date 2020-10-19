@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^5.0.2",
-    "@terminus/nusi": "^3.7.52",
     "@types/lodash": "^4.14.161",
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.8.4",
@@ -53,6 +52,7 @@
     "@iarna/rtf-to-html": "^1.1.0",
     "antd": "^4.6.3",
     "classnames": "^2.2.6",
+    "mobx": "^6.0.1",
     "mobx-keystone": "^0.46.0",
     "mobx-react-lite": "^2.0.7",
     "react": "^16.8.6",

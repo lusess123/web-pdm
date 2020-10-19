@@ -14,7 +14,7 @@ export const setNodeStateAttr = (state, s, cfg) => {
 // }
 // }
 
-export const isEng = (str) => {
+export const isEng = str => {
     for (let i = 0; i < str.length; i++) {
         const charCode = str.charCodeAt(i)
         if (charCode < 0 || charCode > 128) {
@@ -22,7 +22,6 @@ export const isEng = (str) => {
         }
     }
     return true
-
 }
 
 export const getSplitStrings = (str: string) => {
@@ -48,7 +47,8 @@ export const getLen = (str: string) => {
 
     for (let i = 0; i < len; i++) {
         charCode = str.charCodeAt(i)
-        if (charCode >= 0 && charCode <= 128) realLength += 1; else realLength += 2
+        if (charCode >= 0 && charCode <= 128) realLength += 1
+        else realLength += 2
     }
 
     return realLength
@@ -58,7 +58,6 @@ export const getTopAnch = (num, y = 0) => {
     let res = []
     for (let i = 0; i < num; i++) {
         res.push([(i + 1) / num, y])
-
     }
     return res
 }
@@ -66,8 +65,7 @@ export const getTopAnch = (num, y = 0) => {
 export const getBottomAnch = (num, y = 1) => {
     let res = []
     for (let i = 0; i <= num; i++) {
-        res.push([(i) / num, y])
-
+        res.push([i / num, y])
     }
     return res
 }
@@ -76,7 +74,6 @@ export const getLeftAnch = (num, x = 0) => {
     let res = []
     for (let i = 0; i < num; i++) {
         res.push([x, (i + 1) / num])
-
     }
     return res
 }
@@ -84,12 +81,11 @@ export const getLeftAnch = (num, x = 0) => {
 export const getRightAnch = (num, x = 1) => {
     let res = []
     for (let i = 0; i <= num; i++) {
-        res.push([x, (i) / num])
-
+        res.push([x, i / num])
     }
     return res
 }
 
-export const getLength  = (length) => {
+export const getLength = length => {
     return length >= 8 ? length : 8
-   }
+}

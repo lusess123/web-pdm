@@ -4,16 +4,13 @@ import { useState, useCallback } from 'react'
 
 export const useFields = () => {
     const [fields, setFields] = useState()
-    const initFields = useCallback((data)=> {
-         ///
-         setFields(data)
-
+    const initFields = useCallback(data => {
+        ///
+        setFields(data)
     }, [])
 
     return {
         initFields,
         fields
     }
-    
-
 }
