@@ -14,13 +14,31 @@ import TestModule from '../g6-test/trantor/gw/module.json'
 // console.log(TestModel)
 // console.log(TestModule)
 
-import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
+import {
+    Input,
+    Button,
+    Dropdown,
+    Menu,
+    Select,
+    Tooltip,
+    Tree,
+    Popover
+} from '@terminus/nusi'
 import './style.less'
 const components = {
-  Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover
+    Input,
+    Button,
+    Dropdown,
+    Menu,
+    Select,
+    Tooltip,
+    Tree,
+    Popover
 }
 
-const models = toModels(TestModel.res.map( a=> a.model )).filter((a,i)=> i < 10000)
+const models = toModels(TestModel.res.map(a => a.model)).filter(
+    (a, i) => i < 10000
+)
 const modules = toModules(TestModule.res)
 
 console.log(models, modules)
@@ -29,39 +47,43 @@ console.log(models, modules)
 //        //if() return fPre
 // alert(models.length)
 
-function confirmEnding(str, target) {
-  if(str.substr(str.length-target.length,target.length)==target)
-    return true;
-  else 
-    return false;
+function confirmEnding (str, target) {
+    if (str.substr(str.length - target.length, target.length) == target)
+        return true
+    else return false
 }
 
-const onIgnoreEdge = (field ) => {
-   return field?.typeMeta?.relationModel === 'base_User' && (confirmEnding(field.name, 'createdBy') || confirmEnding(field.name,'updatedBy')  ) 
+const onIgnoreEdge = field => {
+    return (
+        field?.typeMeta?.relationModel === 'base_User' &&
+        (confirmEnding(field.name, 'createdBy') ||
+            confirmEnding(field.name, 'updatedBy'))
+    )
 }
 const onReload = () => {
-  return {
-    models, modules
-  }
+    return {
+        models,
+        modules
+    }
 }
-const onIntl = (a) => {
-  return ''
+const onIntl = a => {
+    return ''
 }
 ReactDom.render(
-  <WebPdm 
-  themeColor='green' 
-  darkness={false} 
-  components={components} 
-  models={models} 
-  modules={modules} 
-  erdkey={'demo'}
-  onIntl={onIntl}
-  intl="EN"
-  onReload={onReload}
-  onModelDetail={(a) => {
-   alert(`打开模型${a.label}(${a.name}) 的查看链接`)
-  }
-  } 
-  onIgnoreEdge={onIgnoreEdge} />, 
-  document.getElementById('app')||document.getElementById('root')
+    <WebPdm
+        themeColor='green'
+        darkness={false}
+        components={components}
+        models={models}
+        modules={modules}
+        erdkey={'demo'}
+        onIntl={onIntl}
+        intl='EN'
+        onReload={onReload}
+        onModelDetail={a => {
+            alert(`打开模型${a.label}(${a.name}) 的查看链接`)
+        }}
+        onIgnoreEdge={onIgnoreEdge}
+    />,
+    document.getElementById('app') || document.getElementById('root')
 )
