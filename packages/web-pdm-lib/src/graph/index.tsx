@@ -33,7 +33,7 @@ const useLocal = () => {
     const erdGraphRef = useRef<Graph>(null)
     const miniMapRef = useRef<any>(null)
     useEffect(() => {
-        register()
+        register(mst)
     }, [])
     const checkRef = useRef(+new Date())
     useEffect(() => {
