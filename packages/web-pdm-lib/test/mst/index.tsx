@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+// import ModelTest from '../g6-test/mock/model-test'
+// import ModuleTest from '../g6-test/mock/module-test'
 import ModelTest from '../g6-test/with-field-relation/model-test'
 import ModuleTest from '../g6-test/with-field-relation/module-test'
 import WebPdm from '../../src'
