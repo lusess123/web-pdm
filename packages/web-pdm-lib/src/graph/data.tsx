@@ -108,67 +108,135 @@ export const createLinks = (root: RootInstance) => {
         }
 
         const fieldLinks = model.fields.reduce((fPre, field, i) => {
-            const isRelation =
-                field.typeMeta &&
-                field.typeMeta.type === 'Relation' &&
-                field.typeMeta?.relationModel
+            const tempfPre = fPre
             // const { id } = field
-            if (isRelation) {
-                if (root.sys.onIgnoreEdge && root.sys.onIgnoreEdge(field))
-                    return fPre
-                //if(field?.typeMeta?.relationModel === 'base_User' && (confirmEnding(field.name, 'createdBy') || confirmEnding(field.name,'updatedBy')  ) ) return fPre
-                const relationModel = root.findModelByName(
-                    field.typeMeta!.relationModel
-                )
-                if (
-                    !relationModel ||
-                    !root.sys.checkedKeys.find(a => a === relationModel!.id)
-                )
-                    return fPre
+            if (Array.isArray(field.typeMeta)) {
+                const arr = field.typeMeta.forEach((element: any) => {
+                    const isRelation =
+                        element.type === 'Relation' && element?.relationModel
 
-                const isTo = true
-                const l = model.fields.length
-                const sourceAnchor = !isTo ? i + 2 : 2 + i + l
+                    if (isRelation) {
+                        if (
+                            root.sys.onIgnoreEdge &&
+                            root.sys.onIgnoreEdge(field)
+                        )
+                            return fPre
+                        const relationModel = root.findModelByName(
+                            element!.relationModel
+                        )
+                        if (
+                            !relationModel ||
+                            !root.sys.checkedKeys.find(
+                                a => a === relationModel!.id
+                            )
+                        )
+                            return fPre
 
-                return [
-                    ...fPre,
-                    {
-                        key:
-                            'model-' +
-                            model.id +
-                            '~' +
-                            'model-' +
-                            relationModel!.id,
-                        source: 'model-' + model.id,
-                        target: 'model-' + relationModel!.id,
-                        sourceAnchor,
-                        // // targetAnchor: sourceAnchor,
-                        targetAnchor:
-                            model.id === relationModel.id
-                                ? sourceAnchor - 1
-                                : undefined,
-                        fieldIndex: i,
-                        tooltip: `<div>从 <span class='text'>${
-                            relationModel?.label
-                        }</span> 到 <span class='text'>${
-                            model?.label
-                        }</span> ${Relation[field.type] ||
-                            field.type} 关系</div>`,
-                        fieldsLength: l,
-                        style: style.default.edge,
-                        type: 'console-line',
-                        // label: field.type,
-                        labelAutoRotate: true,
-                        loopCfg: {
-                            // position: 'top',
-                            clockwise: true, // dist: 200,
-                            dist: 100
+                        const isTo = true
+                        const l = model.fields.length
+                        const sourceAnchor = !isTo ? i + 2 : 2 + i + l
+                        const targetTable = [...root.Models.values()].find(
+                            pre => pre.id === relationModel!.id
+                        )
+                        let targetTableFieldIndex =
+                            targetTable?.fields.findIndex(
+                                item => item.name === element.field
+                            ) + 2
+                        const relationEdge = {
+                            key:
+                                'model-' +
+                                model.id +
+                                '~' +
+                                'model-' +
+                                relationModel!.id,
+                            source: 'model-' + model.id,
+                            target: 'model-' + relationModel!.id,
+                            sourceAnchor,
+                            targetAnchor: targetTableFieldIndex,
+                            fieldIndex: i,
+                            tooltip: `<div>从 <span class='text'>${
+                                relationModel?.label
+                            }</span> 到 <span class='text'>${model?.label}=> ${
+                                element.field
+                            }</span> ${Relation[field.type] ||
+                                field.type} 关系</div>`,
+                            fieldsLength: l,
+                            style: style.fieldRelation.edge,
+                            type: 'console-line',
+                            // label: field.type,
+                            labelAutoRotate: true,
+                            loopCfg: {
+                                // position: 'top',
+                                clockwise: true, // dist: 200,
+                                dist: 100
+                            }
                         }
-                    }
-                ]
-            } else return fPre
-        }, [])
+                        tempfPre.push(relationEdge)
+                        return tempfPre
+                    } else return tempfPre
+                })
+            } else {
+                const isRelation =
+                    field.typeMeta &&
+                    field.typeMeta.type === 'Relation' &&
+                    field.typeMeta?.relationModel
+                if (isRelation) {
+                    if (root.sys.onIgnoreEdge && root.sys.onIgnoreEdge(field))
+                        return fPre
+                    //if(field?.typeMeta?.relationModel === 'base_User' && (confirmEnding(field.name, 'createdBy') || confirmEnding(field.name,'updatedBy')  ) ) return fPre
+                    const relationModel = root.findModelByName(
+                        field.typeMeta!.relationModel
+                    )
+                    if (
+                        !relationModel ||
+                        !root.sys.checkedKeys.find(a => a === relationModel!.id)
+                    )
+                        return fPre
 
+                    const isTo = true
+                    const l = model.fields.length
+                    const sourceAnchor = !isTo ? i + 2 : 2 + i + l
+
+                    return [
+                        ...fPre,
+                        {
+                            key:
+                                'model-' +
+                                model.id +
+                                '~' +
+                                'model-' +
+                                relationModel!.id,
+                            source: 'model-' + model.id,
+                            target: 'model-' + relationModel!.id,
+                            sourceAnchor,
+                            // // targetAnchor: sourceAnchor,
+                            targetAnchor:
+                                model.id === relationModel.id
+                                    ? sourceAnchor - 1
+                                    : undefined,
+                            fieldIndex: i,
+                            tooltip: `<div>从 <span class='text'>${
+                                relationModel?.label
+                            }</span> 到 <span class='text'>${
+                                model?.label
+                            }</span> ${Relation[field.type] ||
+                                field.type} 关系</div>`,
+                            fieldsLength: l,
+                            style: style.default.edge,
+                            type: 'console-line',
+                            // label: field.type,
+                            labelAutoRotate: true,
+                            loopCfg: {
+                                // position: 'top',
+                                clockwise: true, // dist: 200,
+                                dist: 100
+                            }
+                        }
+                    ]
+                }
+            }
+            return fPre
+        }, [])
         return [...pre, ...fieldLinks, sysLink]
     }, [])
     return links.filter(a => !!a)

@@ -1,7 +1,7 @@
 import { register } from './model-node'
 import lineRegister from './line'
 
-export default () => {
-    register()
+export default (mst) => {
+    register(mst)
     lineRegister()
 }
