@@ -28,9 +28,13 @@ import React, { isValidElement, useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import { changeTwoDecimal_f, CreateComponent } from '../../util'
 import { useMst } from '../../context'
+// import { Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover } from '@terminus/nusi'
 import { SketchPicker } from 'react-color'
 import { throttle } from 'lodash'
 
+// const components = {
+//   Input, Button, Dropdown, Menu, Select, Tooltip, Tree
+// }
 // import StateStack from '../../state-stack'
 // import { undoManager } from '../../context'
 //<SnippetsOutlined />

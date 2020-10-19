@@ -66,16 +66,16 @@ const Page = observer<IWebPdmProps>(
     }) => {
         const data = useMst()
         useEffect(() => {
-            // onSnapshot(data, snapshot => {
-            //     sessionStorage.setItem(
-            //         'web-pdm' + erdkey,
-            //         JSON.stringify(snapshot)
-            //     )
-            //     sessionStorage.setItem(
-            //         'web-pdm-fields' + erdkey,
-            //         JSON.stringify(Array.from(data.Fields.entries()))
-            //     )
-            // })
+            onSnapshot(data, snapshot => {
+                sessionStorage.setItem(
+                    'web-pdm' + erdkey,
+                    JSON.stringify(snapshot)
+                )
+                sessionStorage.setItem(
+                    'web-pdm-fields' + erdkey,
+                    JSON.stringify(Array.from(data.Fields.entries()))
+                )
+            })
             const localdata = sessionStorage.getItem('web-pdm' + erdkey)
             if (!localdata) {
                 withoutUndo(() => data.initData(models, modules))
@@ -98,14 +98,6 @@ const Page = observer<IWebPdmProps>(
                 })
             }
         }, [])
-
-        useEffect(() => {
-            data.Models.clear()
-            data.Modules.clear()
-            data.Fields.clear()
-            withoutUndo(() => data.initData(models, modules))
-        }, [models])
-
         return <MSTPage className={className} style={style} />
     }
 )
