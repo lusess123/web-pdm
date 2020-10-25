@@ -131,7 +131,7 @@ export type ModuleConfig = {
 -   类型： (text: string) => string
 -   默认值：undefine
 
-## components: IComponentConfig
+## components
 
 -   说明： 用于替换antd的默认组件
 -   类型： IComponentConfig
@@ -150,7 +150,7 @@ export type IComponentConfig = {
 
 ```
 
-##  IconRenders?: Record<TIcon, React.ReactNode>
+##  IconRenders
 -   说明： 用于替换工具栏的图标组件
 -   类型： Record<TIcon, React.ReactNode>
 -   默认值：undefine
@@ -174,3 +174,4 @@ reload: 重新载入
 miniMap: 打开小地图
 
 miniMapNo: 关闭小地图
+
