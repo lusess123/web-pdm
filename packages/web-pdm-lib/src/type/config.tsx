@@ -3,10 +3,16 @@ export type MetaTypeConfig = {
     type: 'Relation'
 }
 
+export type FieldMetaTypeConfig = {
+    relationModel: string
+    type: 'Relation'
+    field: string
+}
+
 export type FieldConfig = {
     name: string
     label: string
-    typeMeta?: MetaTypeConfig
+    typeMeta?: MetaTypeConfig | FieldMetaTypeConfig[]
     type: string
 }
 

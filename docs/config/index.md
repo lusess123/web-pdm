@@ -18,24 +18,38 @@ toc: menu
 ```
 
 export type ModelConfig = {
-    name: string,
-    label: string,
-    fields: FieldConfig[],
-    module: string,
-    type: string
-}
+    name: string
+    label: string
+    fields: FieldConfig[]
+    module: string
+    type?: string
 
-export type FieldConfig = {
-    name: string,
-    label: string,
-    typeMeta?: MetaTypeConfig,
-    type: string
+    aggregateRoot?: boolean
+    aggregateModelKey: string
+    belongAggregate: string
 }
 
 export type MetaTypeConfig = {
-    relationModel: string,
+    relationModel: string
     type: 'Relation'
 }
+
+export type FieldMetaTypeConfig = {
+    relationModel: string
+    type: 'Relation'
+    field: string
+}
+
+export type FieldConfig = {
+    name: string
+    label: string
+    typeMeta?: MetaTypeConfig | FieldMetaTypeConfig[]
+    type: string
+}
+
+
+
+
 
 
 

@@ -48,15 +48,15 @@ export const arrangeShow = (ss, { model }) => {
     }
 }
 
-function S4 () {
+function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
 }
-function NewGuid () {
+function NewGuid() {
     return S4()
     //return globaIndex ++
 }
 
-function MapProp<T> () {
+function MapProp<T>() {
     return prop(() => objectMap<T>())
     // return prop_mapObject<(Map<string, T>)>(() => new Map())
 }
@@ -80,11 +80,11 @@ export class RootInstance extends Model({
     onReload: () => TData
     onIntl: (text: string) => string
 
-    setOnReload (onReload: () => TData) {
+    setOnReload(onReload: () => TData) {
         this.onReload = onReload
     }
 
-    intl (text: string) {
+    intl(text: string) {
         const newText = this.onIntl && this.onIntl(text)
         if (newText) {
             return newText
@@ -95,32 +95,32 @@ export class RootInstance extends Model({
         //    return text
     }
 
-    setUndoManager (undoManager: UndoManager) {
+    setUndoManager(undoManager: UndoManager) {
         this.undoManager = undoManager
     }
 
-    setFields (fields: Map<string, any>) {
+    setFields(fields: Map<string, any>) {
         this.Fields = fields
     }
 
     @computed
-    get moduleList () {
+    get moduleList() {
         return [...this.Modules.values()]
     }
 
     @computed
-    get Nodes () {
+    get Nodes() {
         const data = createData(this)
         //alert(data.length)
         return data
     }
 
     @computed
-    get edges (): any {
+    get edges(): any {
         return createLinks(this)
     }
     @modelAction
-    arrangeShow (rootKey: string) {
+    arrangeShow(rootKey: string) {
         // alert(rootKey)]
         const models = [...this.Models.values()]
         const roots = getLayerRootModel(models, rootKey, [])
@@ -138,12 +138,12 @@ export class RootInstance extends Model({
     }
 
     @modelAction
-    findModelByName (name: string) {
+    findModelByName(name: string) {
         return [...this.Models.values()].find(a => a.name === name)
     }
 
     @modelAction
-    renderModelTitle (model: TModel) {
+    renderModelTitle(model: TModel) {
         return renderModelTitle(
             model.label,
             this.sys.search,
@@ -180,7 +180,7 @@ export class RootInstance extends Model({
     // }
 
     @modelAction
-    initData (models: ModelConfig[], modules: ModuleConfig[], sys?: SysConfig) {
+    initData(models: ModelConfig[], modules: ModuleConfig[], sys?: SysConfig) {
         const t0 = +new Date()
         let moduleHas: Record<string, string> = {}
         modules.forEach(module => {
@@ -248,7 +248,7 @@ export class RootInstance extends Model({
         // alert('initData  :' +  (t1 - t0) + '   ' + (t2 -t1) + '   ' +  (t - t2) )
     }
     @modelAction
-    reload () {
+    reload() {
         // alert('刷新')
         if (this.onReload) {
             const data = this.onReload()
@@ -265,7 +265,7 @@ export class RootInstance extends Model({
     }
 
     @modelAction
-    undo () {
+    undo() {
         //     const current = StateStack.DataList.length - 1
         //     const state : any = StateStack.DataList[current - 1]
         //     const state = StateStack.undo()
@@ -279,7 +279,7 @@ export class RootInstance extends Model({
     }
 
     @modelAction
-    redo () {
+    redo() {
         // const state = StateStack.redo()
         // console.log(state)
         // window.lockSnapshot = true
@@ -287,7 +287,7 @@ export class RootInstance extends Model({
         this.undoManager.redo()
     }
     @modelAction
-    checkAllFun () {
+    checkAllFun() {
         const currentModule = this.sys.currentModule
         const modelIds = currentModule
             ? this.Modules.get(currentModule)?.models?.map(a => a.id)
@@ -295,7 +295,7 @@ export class RootInstance extends Model({
         this.sys.checkedKeys = union(this.sys.checkedKeys, modelIds)
     }
     @modelAction
-    checkAllCancleFun () {
+    checkAllCancleFun() {
         const currentModule = this.sys.currentModule
         if (!currentModule) this.sys.checkedKeys = []
         // const models = [...this.Models.values()]
@@ -325,7 +325,7 @@ export class RootInstance extends Model({
         }
     }
 
-    onInit () {
+    onInit() {
         // alert('sys onInit')
         // alert(this.tabOrTree)
         this.intl = this.intl.bind(this)

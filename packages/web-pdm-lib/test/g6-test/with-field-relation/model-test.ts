@@ -7,13 +7,13 @@ export default [
             {
                 name: 'FlowNumber',
                 label: '流水号',
-                typeMeta: [
-                    {
-                        relationModel: 'bd_PayInfo',
-                        field: 'FlowNumber2',
-                        type: 'Relation'
-                    }
-                ]
+                typeMeta:
+                {
+                    relationModel: 'bd_PayInfo',
+                    field: 'FlowNumber2',
+                    type: 'Relation'
+                }
+
             },
             {
                 name: 'AcceptBank',
