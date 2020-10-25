@@ -24,7 +24,7 @@
   "dependencies": {
     "@umijs/plugin-sass": "^1.1.1",
     "dumi": "^1.0.34",
-    "mobx": "^5.15.6",
+    "mobx": "^6.0.1",
     "typescript": "^4.0.2",
     "web-pdm": "^0.2.5-19",
     "wrappy": "^1.0.2",
