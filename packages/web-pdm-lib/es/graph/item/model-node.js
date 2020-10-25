@@ -8,7 +8,7 @@ export const register = mst => {
     //     head: 'rgba(7,10,26,0.06)',
     //     black: 'black',
     // }
-    const models = mst.onReload().models;
+    // const models = mst.onReload().models
     G6.registerNode('console-model-Node', {
         getAnchorPoints(cfg) {
             const { config, data } = cfg;
@@ -416,17 +416,18 @@ export const register = mst => {
                 const isForeign = field.typeMeta;
                 const relationModel = (_a = field === null || field === void 0 ? void 0 : field.typeMeta) === null || _a === void 0 ? void 0 : _a.relationModel;
                 //字段是否存在关系
-                const hasRelation = models.some(item => {
-                    var _a;
-                    const arr = (_a = item.fields) === null || _a === void 0 ? void 0 : _a.map(item => {
-                        const { typeMeta = [] } = item;
-                        if (Array.isArray(typeMeta)) {
-                            const hasRelationTypeMeta = typeMeta.some(item => field.name === item.field);
-                            return hasRelationTypeMeta;
-                        }
-                    });
-                    return arr.includes(true);
-                });
+                // const hasRelation = models.some(item => {
+                //     const arr = item.fields?.map(item => {
+                //         const { typeMeta = [] } = item
+                //         if (Array.isArray(typeMeta)) {
+                //             const hasRelationTypeMeta = typeMeta.some(
+                //                 item => field.name === item.field
+                //             )
+                //             return hasRelationTypeMeta
+                //         }
+                //     })
+                //     return arr.includes(true)
+                // })
                 const y = -((config.headerHeight +
                     getLength(data.fields.length) *
                         config.fieldHeight) /
@@ -480,7 +481,8 @@ export const register = mst => {
                         opacity: 0.1
                     }
                 });
-                const showCircle = isForeign || hasRelation;
+                const showCircle = isForeign;
+                //|| hasRelation
                 showCircle &&
                     group.addShape('circle', {
                         visible: true,
