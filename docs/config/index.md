@@ -159,14 +159,18 @@ export type IComponentConfig = {
 type TIcon = 'container'  | 'retweet' |  'image' | 'min' | 'max' | 'reload' | 'miniMap' | 'miniMapNo'
 
 ```
+container: 全局显示完整图
 
-<table>
-<tr><td>container</td><td>全局显示完整图</td></tr>
-<tr><td>retweet</td><td>重新布局</td></tr>
-<tr><td>image</td><td>下载图片</td></tr>
-<tr><td>min</td><td>缩小</td></tr>
-<tr><td>max</td><td>方大</td></tr>
-<tr><td>reload</td><td>重新载入</td></tr>
-<tr><td>miniMap</td><td>打开小地图</td></tr>
-<tr><td>miniMapNo</td><td>关闭小地图</td></tr>
-<table>
+retweet: 重新布局
+
+image: 下载图片
+
+min: 缩小
+
+max: 方大
+
+reload: 重新载入
+
+miniMap: 打开小地图
+
+miniMapNo: 关闭小地图
