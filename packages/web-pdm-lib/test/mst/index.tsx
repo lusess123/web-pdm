@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import { Button } from 'antd'
 // import ModelTest from '../g6-test/mock/model-test'
 // import ModuleTest from '../g6-test/mock/module-test'
 import ModelTest from '../g6-test/with-field-relation/model-test'
 import ModuleTest from '../g6-test/with-field-relation/module-test'
 import WebPdm from '../../src'
+
 import CodePdm from '../../../../docs/type-erd'
 // import { toModels, toModules } from '../g6-test/trantor/datamap'
 // import TestModel from '../g6-test/trantor/mock/models-data.json'
@@ -49,6 +51,11 @@ ReactDom.render(
         modules={modules}
         erdkey={'demo'}
         onIntl={onIntl}
+        IconRenders={{
+            image: <Button size="small" >下载</Button>,
+            miniMap: <Button size="small" >显示小地图</Button>,
+            miniMapNo: <Button size="small" >屏蔽小地图</Button>,
+        }}
         intl='EN'
         onReload={onReload}
         onModelDetail={a => {

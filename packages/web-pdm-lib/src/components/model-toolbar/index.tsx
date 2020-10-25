@@ -24,7 +24,7 @@ import {
     RetweetOutlined
 } from '@ant-design/icons'
 import classNames from 'classnames'
-import React, { isValidElement, useState, useCallback } from 'react'
+import React, { isValidElement, useState, useCallback, ComponentType } from 'react'
 import { observer } from 'mobx-react-lite'
 import { changeTwoDecimal_f, CreateComponent } from '../../util'
 import { useMst } from '../../context'
@@ -35,7 +35,7 @@ import { throttle } from 'lodash'
 // import { undoManager } from '../../context'
 //<SnippetsOutlined />
 //<SnippetsFilled />
-const IconRenders = {
+export const IconRenders = {
     container: <BorderOutlined />,
     'arrow-up': <ArrowUpOutlined />,
     'arrow-down': <ArrowDownOutlined />,
@@ -59,6 +59,7 @@ export default observer(({ graph }: { graph: any }) => {
     const intl = mst.intl
     const undoManager = mst.undoManager
     const { Tooltip, Popover } = mst.Ui as any
+    const _IconRenders: any = { ...IconRenders, ...mst.Ui.IconRenders }
     const [colorPabel, setColorPabel] = useState(false)
     const setColor = useCallback(
         throttle(color => {
@@ -84,6 +85,7 @@ export default observer(({ graph }: { graph: any }) => {
         <div className='console-erd-toolbar'>
             <div className='right'>
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={1}
                     Tooltip={Tooltip}
                     title={intl('撤销')}
@@ -97,6 +99,7 @@ export default observer(({ graph }: { graph: any }) => {
                     onClick={mst.undo.bind(mst)}
                 />
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={2}
                     Tooltip={Tooltip}
                     title={intl('重做')}
@@ -112,6 +115,7 @@ export default observer(({ graph }: { graph: any }) => {
                     onClick={mst.redo.bind(mst)}
                 />
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={3}
                     Tooltip={Tooltip}
                     title={intl('放大')}
@@ -124,6 +128,7 @@ export default observer(({ graph }: { graph: any }) => {
                     {graph && `${zoomNum >= 100 ? 100 : zoomNum}%`}
                 </span>
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={4}
                     Tooltip={Tooltip}
                     title={intl('缩小')}
@@ -133,6 +138,7 @@ export default observer(({ graph }: { graph: any }) => {
                     onClick={mst.graph.minZoom.bind(mst.graph, graph)}
                 />
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={5}
                     Tooltip={Tooltip}
                     title={intl('全景')}
@@ -141,6 +147,7 @@ export default observer(({ graph }: { graph: any }) => {
                     onClick={mst.graph.container.bind(mst.graph, graph)}
                 />
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={6}
                     Tooltip={Tooltip}
                     title={intl(
@@ -154,6 +161,7 @@ export default observer(({ graph }: { graph: any }) => {
                     )}
                 />
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={6}
                     Tooltip={Tooltip}
                     title={intl('刷新数据')}
@@ -162,6 +170,7 @@ export default observer(({ graph }: { graph: any }) => {
                     onClick={mst.reload.bind(mst)}
                 />
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={7}
                     Tooltip={Tooltip}
                     title={intl('下载图片')}
@@ -170,6 +179,7 @@ export default observer(({ graph }: { graph: any }) => {
                     onClick={mst.graph.downAsImage.bind(mst.graph, graph)}
                 />
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={8}
                     Tooltip={Tooltip}
                     title={
@@ -181,8 +191,8 @@ export default observer(({ graph }: { graph: any }) => {
                         !mst.sys.dagreLayout ? (
                             <PartitionOutlined />
                         ) : (
-                            <UngroupOutlined />
-                        )
+                                <UngroupOutlined />
+                            )
                     }
                     color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
                     onClick={mst.sys.setDagreLayout.bind(
@@ -191,6 +201,7 @@ export default observer(({ graph }: { graph: any }) => {
                     )}
                 />
                 <ButtonActon
+                    IconRenders={_IconRenders}
                     key={9}
                     Tooltip={Tooltip}
                     title={intl('切换底色')}
@@ -198,8 +209,8 @@ export default observer(({ graph }: { graph: any }) => {
                         mst.Ui.darkness ? (
                             <SnippetsFilled />
                         ) : (
-                            <SnippetsOutlined />
-                        )
+                                <SnippetsOutlined />
+                            )
                     }
                     color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
                     onClick={mst.Ui.setDarkness.bind(mst.Ui, !mst.Ui.darkness)}
@@ -218,17 +229,17 @@ export default observer(({ graph }: { graph: any }) => {
                     visible={colorPabel}
                 >
                     <ButtonActon
+                        IconRenders={_IconRenders}
                         Tooltip={Tooltip}
-                        title={`${intl('点击')}${
-                            colorPabel ? intl('关闭') : intl('打开')
-                        } ${intl('颜色面板')}`}
+                        title={`${intl('点击')}${colorPabel ? intl('关闭') : intl('打开')
+                            } ${intl('颜色面板')}`}
                         color={mst.Ui.themeColor}
                         icon={
                             colorPabel ? (
                                 <CloseCircleFilled />
                             ) : (
-                                <BgColorsOutlined />
-                            )
+                                    <BgColorsOutlined />
+                                )
                         }
                         onClick={setColorPabel.bind(null, !colorPabel)}
                     />
@@ -245,14 +256,16 @@ type IButtonActon = {
     disable?: boolean
     Tooltip: any
     color?: string
+    IconRenders: Record<string, React.ReactNode>
 }
 
 const ButtonActon = CreateComponent<IButtonActon>({
     render: props => {
         const { Tooltip } = props
+
         const IconRender = isValidElement(props.icon)
             ? props.icon
-            : IconRenders[props.icon as string]
+            : props.IconRenders[props.icon as string]
         return (
             <Tooltip title={props.title}>
                 <span

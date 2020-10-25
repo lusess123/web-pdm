@@ -130,3 +130,44 @@ export type ModuleConfig = {
 -   说明： 外置的国际化传入接口
 -   类型： (text: string) => string
 -   默认值：undefine
+
+## components: IComponentConfig
+
+-   说明： 用于替换antd的默认组件
+-   类型： IComponentConfig
+-   默认值：undefine
+
+```
+export type IComponentConfig = {
+    Tree?: React.ComponentType
+    Input?: React.ComponentType
+    Button?: React.ComponentType
+    Dropdown?: React.ComponentType
+    Menu?: React.ComponentType
+    Select?: React.ComponentType
+    Tooltip?: React.ComponentType
+}
+
+```
+
+##  IconRenders?: Record<TIcon, React.ReactNode>
+-   说明： 用于替换工具栏的图标组件
+-   类型： Record<TIcon, React.ReactNode>
+-   默认值：undefine
+
+```
+type TIcon = 'container'  | 'retweet' |  'image' | 'min' | 'max' | 'reload' | 'miniMap' | 'miniMapNo'
+
+```
+
+<table>
+<tr><td>container</td><td>全局显示完整图</td></tr>
+<tr><td>retweet</td><td>重新布局</td></tr>
+<tr><td>image</td><td>下载图片</td></tr>
+<tr><td>min</td><td>缩小</td></tr>
+<tr><td>max</td><td>方大</td></tr>
+<tr><td>reload</td><td>重新载入</td></tr>
+<tr><td>miniMap</td><td>打开小地图</td></tr>
+<tr><td>miniMapNo</td><td>关闭小地图</td></tr>
+
+<table>

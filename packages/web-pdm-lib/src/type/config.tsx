@@ -1,19 +1,20 @@
 export type MetaTypeConfig = {
     relationModel: string
-    type: 'Relation'
+    type: string
 }
 
 export type FieldMetaTypeConfig = {
     relationModel: string
-    type: 'Relation'
     field: string
+    type?: string
+
 }
 
 export type FieldConfig = {
     name: string
     label: string
     typeMeta?: MetaTypeConfig | FieldMetaTypeConfig[]
-    type: string
+    type?: string
 }
 
 export type ModelConfig = {
@@ -24,8 +25,8 @@ export type ModelConfig = {
     type?: string
 
     aggregateRoot?: boolean
-    aggregateModelKey: string
-    belongAggregate: string
+    aggregateModelKey?: string
+    belongAggregate?: string
 }
 
 export type ModuleConfig = {

@@ -19,15 +19,18 @@ export class TUi extends Model({
     Select?: React.ComponentType
     Tooltip?: React.ComponentType
     Popover?: React.ComponentType
+    IconRenders?: Record<string, React.ReactNode> = {}
 
     isToogle: boolean = false
 
-    registComponents (components?: IComponentConfig) {
+    registComponents(components?: IComponentConfig, IconRenders?: Record<string, React.ReactNode>) {
         if (components) {
             Object.keys(components).forEach(k => {
                 this[k] = components[k]
             })
         }
+
+        if (IconRenders) this.IconRenders = { ...this.IconRenders, ...IconRenders }
 
         if (!this.Tree || !components) this.Tree = Tree
         if (!this.Input || !components) this.Input = Input
@@ -39,18 +42,18 @@ export class TUi extends Model({
         if (!this.Popover || !components) this.Popover = Popover
     }
     @modelAction
-    toggle (components: IComponentConfig) {
+    toggle(components: IComponentConfig) {
         this.registComponents(this.isToogle ? undefined : components)
         // const root: RootInstance = getRoot(this)
         this.update = +new Date()
         this.isToogle = !this.isToogle
     }
     @modelAction
-    setThemeColor (color: string) {
+    setThemeColor(color: string) {
         this.themeColor = color
     }
     @modelAction
-    setDarkness (darkness: boolean) {
+    setDarkness(darkness: boolean) {
         this.darkness = darkness
     }
 }

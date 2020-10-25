@@ -1,9 +1,10 @@
-import React, { useEffect, useState, FunctionComponent } from 'react'
+import React, { useEffect, useState, FunctionComponent, ComponentType } from 'react'
 import { applySnapshot, onSnapshot, withoutUndo } from 'mobx-keystone'
 import { useMst } from './context'
 import { observer } from 'mobx-react-lite'
 import { Provider, createRootStore } from './context'
 import MSTPage from './components'
+// import { IconRenders } from './components/model-toolbar'
 import {
     ModelConfig,
     ModuleConfig,
@@ -13,6 +14,11 @@ import {
 } from './type/config'
 export * from './type/config'
 // import './style.scss'
+
+// type FF = InstanceType<typeof {aa:}>
+
+type TIcon = 'container' | 'arrow-up' | 'arrow-down' | 'arrow-left' | 'arrow-right' | 'retweet' | 'pdm' | 'lock' | 'unlock' | 'image' | 'min' | 'max' | 'reload' | 'miniMap' | 'miniMapNo'
+
 
 /**
  *组件的props接口
@@ -41,13 +47,14 @@ export interface IWebPdmProps {
     style?: any
     height?: string | number
     onIgnoreEdge?: (field: FieldConfig) => boolean
-    components: IComponentConfig
+    components?: IComponentConfig
     onModelDetail?: (model: ModelConfig) => void
     themeColor?: string
     darkness?: boolean
     onReload?: () => TData
     intl?: 'CH' | 'EN'
     onIntl?: (string) => string
+    IconRenders?: Record<TIcon, React.ReactNode>
 }
 
 const Page = observer<IWebPdmProps>(
@@ -62,7 +69,8 @@ const Page = observer<IWebPdmProps>(
         style,
         height,
         onIgnoreEdge,
-        components
+        components,
+        IconRenders
     }) => {
         const data = useMst()
         useEffect(() => {
@@ -92,7 +100,7 @@ const Page = observer<IWebPdmProps>(
                     applySnapshot(data, sdata)
                     data.sys.setOnIgnoreEdge(onIgnoreEdge)
                     data.sys.setOnModelDetail(onModelDetail)
-                    data.Ui.registComponents(components)
+                    data.Ui.registComponents(components, IconRenders)
                     data.setOnReload(onReload!)
                     data.onIntl = onIntl!
                 })
@@ -130,7 +138,8 @@ const WebPDM: FunctionComponent<IWebPdmProps> = props => {
             },
             components: props.components,
             onReload: props.onReload,
-            onIntl: props.onIntl
+            onIntl: props.onIntl,
+            IconRenders: props.IconRenders
         })
     })
     return (
