@@ -110,4 +110,5 @@ src/.umi/
 .umi/
 docs-dist/
 .umi/core/
+es/
 
