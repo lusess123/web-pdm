@@ -1,8 +1,12 @@
-## [0.2.5-16](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-16) (2020-10-01)
+## [0.2.5-17](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-17) (2020-10-25)
 
 
 ### Features
 
+* **eslint:** change eslint conf ([64cdb4e](https://github.com/lusess123/web-pdm/commit/64cdb4e1599302a1f7d7f7454a64bb1127a2d5e6))
+* **package:** format code style ([59bb3ee](https://github.com/lusess123/web-pdm/commit/59bb3ee449a25bec9daf33dc43483eca6cafc3fd))
+* **web-pdm-lib:** add field relation ([389ffa9](https://github.com/lusess123/web-pdm/commit/389ffa913e1f4a65790b790d88994e7f6c2ed504))
+* **web-pdm-lib:** quit get data from  sessionStorage and data change refresh ([62d86df](https://github.com/lusess123/web-pdm/commit/62d86df0a41a4a6c59933f551b81a276f42bd0cf))
 * add arrange node style ([fc617dc](https://github.com/lusess123/web-pdm/commit/fc617dc511f8f57c0156e52676a4f48c0c5c48eb))
 * add intl and docs reload ([2a99850](https://github.com/lusess123/web-pdm/commit/2a9985027ad6ad14ba574b237667fda1d45ae033))
 * add minimap toggler ([0f452bb](https://github.com/lusess123/web-pdm/commit/0f452bbdc1f5d2c75dd5b154c169b46e15b32c8d))
