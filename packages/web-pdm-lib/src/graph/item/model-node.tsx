@@ -24,7 +24,7 @@ export const register = mst => {
     G6.registerNode(
         'console-model-Node',
         {
-            getAnchorPoints (cfg: IModelNodeShapeCfg) {
+            getAnchorPoints(cfg: IModelNodeShapeCfg) {
                 const { config, data } = cfg
                 const { fields } = data
                 const h =
@@ -58,7 +58,7 @@ export const register = mst => {
                 ]
             },
 
-            update (cfg: IModelNodeShapeCfg, item) {
+            update(cfg: IModelNodeShapeCfg, item) {
                 const whiteBg = 'rgba(7,10,26,0.06)'
                 const {
                     isKeySharp,
@@ -178,7 +178,7 @@ export const register = mst => {
                                 'fill',
                                 selected && !darkness
                                     ? cfg.config.styleConfig.selected.node
-                                          .stroke
+                                        .stroke
                                     : font
                             )
 
@@ -192,7 +192,7 @@ export const register = mst => {
                                 'fill',
                                 selected && darkness
                                     ? cfg.config.styleConfig.selected.node
-                                          .stroke
+                                        .stroke
                                     : bg
                             )
                             s.set(
@@ -253,7 +253,7 @@ export const register = mst => {
                                     'fill',
                                     selected
                                         ? cfg.config.styleConfig.selected.node
-                                              .stroke
+                                            .stroke
                                         : themeColor
                                 )
                             }
@@ -273,7 +273,7 @@ export const register = mst => {
                                 'fill',
                                 selected
                                     ? cfg.config.styleConfig.selected.node
-                                          .stroke
+                                        .stroke
                                     : themeColor
                             )
                             break
@@ -290,7 +290,7 @@ export const register = mst => {
                 }
             },
 
-            render (cfg: IModelNodeShapeCfg, group: GGroup) {
+            render(cfg: IModelNodeShapeCfg, group: GGroup) {
                 const {
                     config,
                     data,
@@ -463,7 +463,7 @@ export const register = mst => {
                 const height =
                     config.headerHeight +
                     (data.fields.length >= 12 ? data.fields.length : 12) *
-                        config.fieldHeight
+                    config.fieldHeight
                 const nameLength = nameList.length
                 nameList.forEach((nameText, index) => {
                     group.addShape('text', {
@@ -497,7 +497,7 @@ export const register = mst => {
                 const height1 =
                     config.headerHeight +
                     (data.fields.length >= 12 ? data.fields.length : 12) *
-                        config.fieldHeight
+                    config.fieldHeight
                 const nameLength1 = nameList.length
                 nameList1.forEach((nameText, index) => {
                     group.addShape('text', {
@@ -553,7 +553,7 @@ export const register = mst => {
                         -(
                             (config.headerHeight +
                                 getLength(data.fields.length) *
-                                    config.fieldHeight) /
+                                config.fieldHeight) /
                             2
                         ) +
                         config.headerHeight +
@@ -576,7 +576,7 @@ export const register = mst => {
                                 -(
                                     (config.headerHeight +
                                         getLength(data.fields.length) *
-                                            config.fieldHeight) /
+                                        config.fieldHeight) /
                                     2
                                 ) +
                                 config.headerHeight +
@@ -630,7 +630,7 @@ export const register = mst => {
                                     -(
                                         (config.headerHeight +
                                             getLength(data.fields.length) *
-                                                config.fieldHeight) /
+                                            config.fieldHeight) /
                                         2
                                     ) +
                                     config.headerHeight +
@@ -659,7 +659,7 @@ export const register = mst => {
                                 -(
                                     (config.headerHeight +
                                         getLength(data.fields.length) *
-                                            config.fieldHeight) /
+                                        config.fieldHeight) /
                                     2
                                 ) +
                                 config.headerHeight +
@@ -696,27 +696,26 @@ export const register = mst => {
                                 -(
                                     (config.headerHeight +
                                         getLength(data.fields.length) *
-                                            config.fieldHeight) /
+                                        config.fieldHeight) /
                                     2
                                 ) +
                                 config.headerHeight +
                                 config.fieldHeight * index +
                                 config.fieldHeight / 2,
-                            text: isForeign
+                            text: isForeign && relationModelText
                                 ? relationModelText
                                 : `${field.type || ''}`,
                             fieldLable: isForeign
                                 ? field.type && Relation[field.type]
                                     ? `${field?.relationModel?.name}(${Relation[
-                                          field.type
-                                      ] || ''})`
+                                    field.type
+                                    ] || ''})`
                                     : field?.relationModel?.name
                                 : `${field.type || ''}`,
                             nameLable: isForeign
                                 ? field.type && Relation[field.type]
-                                    ? `${
-                                          field?.relationModel?.label
-                                      }(${Relation[field.type] || ''})`
+                                    ? `${field?.relationModel?.label
+                                    }(${Relation[field.type] || ''})`
                                     : field?.relationModel?.label
                                 : `${field.type || ''}`,
                             id: 'field',
@@ -748,7 +747,7 @@ export const register = mst => {
                                     -(
                                         (config.headerHeight +
                                             getLength(data.fields.length) *
-                                                config.fieldHeight) /
+                                            config.fieldHeight) /
                                         2
                                     ) +
                                     config.headerHeight +
@@ -779,12 +778,12 @@ export const register = mst => {
                                     -(
                                         (config.headerHeight +
                                             getLength(data.fields.length) *
-                                                config.fieldHeight) /
+                                            config.fieldHeight) /
                                         2
                                     ) +
                                     config.headerHeight +
                                     config.fieldHeight *
-                                        (data.fields.length + i),
+                                    (data.fields.length + i),
                                 // stroke: 'black',
                                 width: config.width - 4,
                                 id: 'field',
@@ -799,7 +798,7 @@ export const register = mst => {
                 }
             },
 
-            draw (cfg: IModelNodeShapeCfg, group) {
+            draw(cfg: IModelNodeShapeCfg, group) {
                 const { config, data, selected } = cfg
                 const height =
                     config.headerHeight +
