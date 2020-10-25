@@ -1,18 +1,18 @@
 /// <reference types="react" />
 export declare type MetaTypeConfig = {
     relationModel: string;
-    type: 'Relation';
+    type: string;
 };
 export declare type FieldMetaTypeConfig = {
     relationModel: string;
-    type: 'Relation';
     field: string;
+    type?: string;
 };
 export declare type FieldConfig = {
     name: string;
     label: string;
     typeMeta?: MetaTypeConfig | FieldMetaTypeConfig[];
-    type: string;
+    type?: string;
 };
 export declare type ModelConfig = {
     name: string;
@@ -21,8 +21,8 @@ export declare type ModelConfig = {
     module: string;
     type?: string;
     aggregateRoot?: boolean;
-    aggregateModelKey: string;
-    belongAggregate: string;
+    aggregateModelKey?: string;
+    belongAggregate?: string;
 };
 export declare type ModuleConfig = {
     name: string;

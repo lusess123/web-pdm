@@ -169,5 +169,4 @@ type TIcon = 'container'  | 'retweet' |  'image' | 'min' | 'max' | 'reload' | 'm
 <tr><td>reload</td><td>重新载入</td></tr>
 <tr><td>miniMap</td><td>打开小地图</td></tr>
 <tr><td>miniMapNo</td><td>关闭小地图</td></tr>
-
 <table>

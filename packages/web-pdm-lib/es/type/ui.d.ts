@@ -15,8 +15,9 @@ export declare class TUi extends TUi_base {
     Select?: React.ComponentType;
     Tooltip?: React.ComponentType;
     Popover?: React.ComponentType;
+    IconRenders?: Record<string, React.ReactNode>;
     isToogle: boolean;
-    registComponents(components?: IComponentConfig): void;
+    registComponents(components?: IComponentConfig, IconRenders?: Record<string, React.ReactNode>): void;
     toggle(components: IComponentConfig): void;
     setThemeColor(color: string): void;
     setDarkness(darkness: boolean): void;

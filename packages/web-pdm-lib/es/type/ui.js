@@ -16,14 +16,17 @@ let TUi = class TUi extends Model({
 }) {
     constructor() {
         super(...arguments);
+        this.IconRenders = {};
         this.isToogle = false;
     }
-    registComponents(components) {
+    registComponents(components, IconRenders) {
         if (components) {
             Object.keys(components).forEach(k => {
                 this[k] = components[k];
             });
         }
+        if (IconRenders)
+            this.IconRenders = Object.assign(Object.assign({}, this.IconRenders), IconRenders);
         if (!this.Tree || !components)
             this.Tree = Tree;
         if (!this.Input || !components)

@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Provider, createRootStore } from './context';
 import MSTPage from './components';
 export * from './type/config';
-const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
+const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components, IconRenders }) => {
     const data = useMst();
     useEffect(() => {
         // onSnapshot(data, snapshot => {
@@ -33,7 +33,7 @@ const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdke
                 applySnapshot(data, sdata);
                 data.sys.setOnIgnoreEdge(onIgnoreEdge);
                 data.sys.setOnModelDetail(onModelDetail);
-                data.Ui.registComponents(components);
+                data.Ui.registComponents(components, IconRenders);
                 data.setOnReload(onReload);
                 data.onIntl = onIntl;
             });
@@ -68,7 +68,8 @@ const WebPDM = props => {
             },
             components: props.components,
             onReload: props.onReload,
-            onIntl: props.onIntl
+            onIntl: props.onIntl,
+            IconRenders: props.IconRenders
         });
     });
     return (React.createElement(Provider, { value: rootStore }, rootStore && React.createElement(Page, Object.assign({}, props))));

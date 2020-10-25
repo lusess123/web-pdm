@@ -1,6 +1,7 @@
-import { FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { ModelConfig, ModuleConfig, FieldConfig, IComponentConfig, TData } from './type/config';
 export * from './type/config';
+declare type TIcon = 'container' | 'arrow-up' | 'arrow-down' | 'arrow-left' | 'arrow-right' | 'retweet' | 'pdm' | 'lock' | 'unlock' | 'image' | 'min' | 'max' | 'reload' | 'miniMap' | 'miniMapNo';
 /**
  *组件的props接口
  *
@@ -27,13 +28,14 @@ export interface IWebPdmProps {
     style?: any;
     height?: string | number;
     onIgnoreEdge?: (field: FieldConfig) => boolean;
-    components: IComponentConfig;
+    components?: IComponentConfig;
     onModelDetail?: (model: ModelConfig) => void;
     themeColor?: string;
     darkness?: boolean;
     onReload?: () => TData;
     intl?: 'CH' | 'EN';
     onIntl?: (string: any) => string;
+    IconRenders?: Record<TIcon, React.ReactNode>;
 }
 /**
  *组件定义

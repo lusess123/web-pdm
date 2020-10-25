@@ -164,5 +164,6 @@ export declare const createStore: (props?: {
     graph: {};
     components: {};
     Ui: {};
+    IconRenders: any;
 }) => RootInstance;
 export {};
