@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { applySnapshot, onSnapshot, withoutUndo } from 'mobx-keystone';
+import { applySnapshot, withoutUndo } from 'mobx-keystone';
 import { useMst } from './context';
 import { observer } from 'mobx-react-lite';
 import { Provider, createRootStore } from './context';
@@ -8,10 +8,16 @@ export * from './type/config';
 const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdkey, className, style, height, onIgnoreEdge, components }) => {
     const data = useMst();
     useEffect(() => {
-        onSnapshot(data, snapshot => {
-            sessionStorage.setItem('web-pdm' + erdkey, JSON.stringify(snapshot));
-            sessionStorage.setItem('web-pdm-fields' + erdkey, JSON.stringify(Array.from(data.Fields.entries())));
-        });
+        // onSnapshot(data, snapshot => {
+        //     sessionStorage.setItem(
+        //         'web-pdm' + erdkey,
+        //         JSON.stringify(snapshot)
+        //     )
+        //     sessionStorage.setItem(
+        //         'web-pdm-fields' + erdkey,
+        //         JSON.stringify(Array.from(data.Fields.entries()))
+        //     )
+        // })
         const localdata = sessionStorage.getItem('web-pdm' + erdkey);
         if (!localdata) {
             withoutUndo(() => data.initData(models, modules));
@@ -33,6 +39,12 @@ const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdke
             });
         }
     }, []);
+    useEffect(() => {
+        data.Models.clear();
+        data.Modules.clear();
+        data.Fields.clear();
+        withoutUndo(() => data.initData(models, modules));
+    }, [models]);
     return React.createElement(MSTPage, { className: className, style: style });
 });
 /**
@@ -41,7 +53,7 @@ const Page = observer(({ onIntl, onReload, onModelDetail, models, modules, erdke
  * @param {*} props 属性接口
  * @return {*}
  */
-const WebPDM = (props) => {
+const WebPDM = props => {
     const [rootStore] = useState(() => {
         return createRootStore({
             sys: {
@@ -59,6 +71,6 @@ const WebPDM = (props) => {
             onIntl: props.onIntl
         });
     });
-    return React.createElement(Provider, { value: rootStore }, rootStore && React.createElement(Page, Object.assign({}, props)));
+    return (React.createElement(Provider, { value: rootStore }, rootStore && React.createElement(Page, Object.assign({}, props))));
 };
 export default WebPDM;

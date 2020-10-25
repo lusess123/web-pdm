@@ -5,7 +5,7 @@ import { debounce, throttle } from 'lodash';
 export default (graph, mst) => {
     // alert(mst === window.kkk)
     // alert(mst.graph.G6Graph)
-    const setZoom = debounce((zoom) => {
+    const setZoom = debounce(zoom => {
         mst.graph.setZoom(zoom);
     }, 100);
     graph.on('wheelzoom', throttle(() => {
@@ -30,7 +30,10 @@ export default (graph, mst) => {
         // 获取视窗左上角对应画布的坐标点
         const topLeft = graph.getPointByCanvas(0, 0); // 获取视窗右下角对应画布坐标点
         const bottomRight = graph.getPointByCanvas(gWidth, gHeight);
-        graph.getNodes().filter((a) => !a['isSys']).forEach((node) => {
+        graph
+            .getNodes()
+            .filter(a => !a['isSys'])
+            .forEach(node => {
             const model = node.getModel();
             if (model.isSys)
                 return;
@@ -43,10 +46,17 @@ export default (graph, mst) => {
                 return;
             const _data = model['data'];
             const config = model['config'];
-            const h = (config.headerHeight + _data.fields.length * config.fieldHeight + 4) / 2;
+            const h = (config.headerHeight +
+                _data.fields.length * config.fieldHeight +
+                4) /
+                2;
             const w = config.width / 2; // 如果节点不在视窗中，隐藏该节点，则不绘制
             // note:由于此应用中有minimap，直接隐藏节点会影响缩略图视图，直接隐藏节点具体内容
-            if (!model.selected && (model.x + w < topLeft.x - 200 || model.x - w > bottomRight.x || model.y + h < topLeft.y || model.y - h > bottomRight.y)) {
+            if (!model.selected &&
+                (model.x + w < topLeft.x - 200 ||
+                    model.x - w > bottomRight.x ||
+                    model.y + h < topLeft.y ||
+                    model.y - h > bottomRight.y)) {
                 node.getContainer().hide();
                 node.getEdges().forEach(a => a.hide());
             }
@@ -64,24 +74,29 @@ export default (graph, mst) => {
                 let targetNode = edge.get('targetNode');
                 const targetModel = targetNode.getModel();
                 const edgeModel = edge.getModel();
-                if ((targetModel.visible || sourceNode.getModel().visible) && graph.getZoom() >= 0.3) {
+                if ((targetModel.visible ||
+                    sourceNode.getModel().visible) &&
+                    graph.getZoom() >= 0.3) {
                     if (!edgeModel.self && !edgeModel.isSys) {
-                        const isTo = sourceNode.getModel().x < targetNode.getModel().x;
+                        const isTo = sourceNode.getModel().x <
+                            targetNode.getModel().x;
                         const i = edgeModel.fieldIndex;
                         const l = edgeModel.fieldsLength;
                         // const isTo = targetModel.x > sourceNode.getModel().x
-                        const sourceAnchor = (!isTo ? i + 2 : 2 + i + l);
+                        const sourceAnchor = !isTo ? i + 2 : 2 + i + l;
                         // if (targetModel.targetAnchor !== targetAnchor)
                         //   // edge.set('targetAnchor', targetAnchor)
                         graph.updateItem(edge, { sourceAnchor });
                     }
                 }
-                if (!targetModel.visible || !sourceNode.getModel().visible) {
+                if (!targetModel.visible ||
+                    !sourceNode.getModel().visible) {
                     edge.hide();
                     // return
                 }
                 // if (isExporting) return
-                if (!sourceNode.getContainer().get('visible') && !targetNode.getContainer().get('visible')) {
+                if (!sourceNode.getContainer().get('visible') &&
+                    !targetNode.getContainer().get('visible')) {
                     edge.hide();
                 }
                 else {
@@ -108,9 +123,9 @@ export default (graph, mst) => {
         const canvasElement = graph.get('canvas').get('el');
         canvasElement.style.cursor = 'grab';
     });
-    graph.on('node:click', (ev) => {
+    graph.on('node:click', ev => {
         var _a, _b, _c, _d;
-        const { target, } = ev;
+        const { target } = ev;
         if (target.attr('click')) {
             // props.toolBarCommand && props.toolBarCommand('click', {
             //   node: ev.item.getModel().id,
@@ -140,7 +155,9 @@ export default (graph, mst) => {
                 mst.arrangeShow(target.attr('arg'));
             }
             if ((_b = (_a = target.attr('arg')) === null || _a === void 0 ? void 0 : _a.relationModel) === null || _b === void 0 ? void 0 : _b.id) {
-                mst.sys.centerCurrentModel([(_d = (_c = target.attr('arg')) === null || _c === void 0 ? void 0 : _c.relationModel) === null || _d === void 0 ? void 0 : _d.id]);
+                mst.sys.centerCurrentModel([
+                    (_d = (_c = target.attr('arg')) === null || _c === void 0 ? void 0 : _c.relationModel) === null || _d === void 0 ? void 0 : _d.id
+                ]);
             }
         }
         else {
@@ -153,11 +170,13 @@ export default (graph, mst) => {
             }
         }
     });
-    graph.on('node:mouseout', (ev) => {
-        const { item, } = ev;
+    graph.on('node:mouseout', ev => {
+        const { item } = ev;
         const autoPaint = graph.get('autoPaint');
         graph.setAutoPaint(false);
-        item.getContainer().findAll((sharp) => sharp.attr('fieldHover')).forEach((sharp) => {
+        item.getContainer()
+            .findAll(sharp => sharp.attr('fieldHover'))
+            .forEach(sharp => {
             if (sharp.attr('fill-old')) {
                 sharp.attr('fill', sharp.attr('fill-old'));
                 sharp.attr('fill-old', undefined);
@@ -170,15 +189,17 @@ export default (graph, mst) => {
         graph.paint();
         graph.setAutoPaint(autoPaint);
     });
-    graph.on('node:mousemove', (ev) => {
-        const { target, item, } = ev; // alert(target.attr('text'))
+    graph.on('node:mousemove', ev => {
+        const { target, item } = ev; // alert(target.attr('text'))
         const autoPaint = graph.get('autoPaint');
         graph.get('canvas').set('localRefresh', false);
         graph.setAutoPaint(false); // if (target.attr('fieldBg')) {
         //   item.setState('fieldHover-' + target.attr('fieldName'), true)
         // }
         const fieldName = target.attr('fieldName');
-        item.getContainer().findAll((sharp) => sharp.attr('fieldHover')).forEach((sharp) => {
+        item.getContainer()
+            .findAll(sharp => sharp.attr('fieldHover'))
+            .forEach(sharp => {
             if (sharp.attr('fill-old')) {
                 sharp.attr('fill', sharp.attr('fill-old'));
                 sharp.attr('fill-old', undefined);
@@ -198,7 +219,7 @@ export default (graph, mst) => {
         graph.paint();
         graph.setAutoPaint(autoPaint);
     });
-    graph.on('node:dragend', (ev) => {
+    graph.on('node:dragend', ev => {
         // const shape = ev.target
         const node = ev.item;
         const edges = node.getEdges();
@@ -208,13 +229,14 @@ export default (graph, mst) => {
             let targetNode = edge.get('targetNode');
             const targetModel = targetNode.getModel();
             const edgeModel = edge.getModel();
-            if ((targetModel.visible || sourceNode.getModel().visible) && graph.getZoom() >= 0.3) {
+            if ((targetModel.visible || sourceNode.getModel().visible) &&
+                graph.getZoom() >= 0.3) {
                 if (!edgeModel.self && !edgeModel.isSys) {
                     const isTo = sourceNode.getModel().x < targetNode.getModel().x;
                     const i = edgeModel.fieldIndex;
                     const l = edgeModel.fieldsLength;
                     // const isTo = targetModel.x > sourceNode.getModel().x
-                    const sourceAnchor = (!isTo ? i + 2 : 2 + i + l);
+                    const sourceAnchor = !isTo ? i + 2 : 2 + i + l;
                     // if (targetModel.targetAnchor !== targetAnchor)
                     //   // edge.set('targetAnchor', targetAnchor)
                     graph.updateItem(edge, { sourceAnchor });
@@ -225,7 +247,8 @@ export default (graph, mst) => {
                 // return
             }
             // if (isExporting) return
-            if (!sourceNode.getContainer().get('visible') && !targetNode.getContainer().get('visible')) {
+            if (!sourceNode.getContainer().get('visible') &&
+                !targetNode.getContainer().get('visible')) {
                 edge.hide();
             }
             else {

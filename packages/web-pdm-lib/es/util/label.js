@@ -10,7 +10,7 @@ export const renderModelTitle = (title, searchValue, showNameOrLabel, originalKe
 const renderLabel = (isSpec, beforeStr, afterStr, searchValue) => {
     const greenStyle = isSpec ? { color: 'green' } : {};
     const searchStyle = {
-        color: '#f50',
+        color: '#f50'
     };
     return (React.createElement("span", null,
         React.createElement("span", { style: greenStyle }, beforeStr),
@@ -23,10 +23,12 @@ const renderTitle = (title, searchValue = '', isSpec = false) => {
     const index = title.indexOf(searchValue);
     const beforeStr = title.substr(0, index);
     const afterStr = title.substr(index + searchValue.length);
-    const titleFilter = index > -1 ? renderLabel(isSpec, beforeStr, afterStr, searchValue) : renderTitleGreen(isSpec, title);
+    const titleFilter = index > -1
+        ? renderLabel(isSpec, beforeStr, afterStr, searchValue)
+        : renderTitleGreen(isSpec, title);
     return titleFilter;
 };
 const renderTitleGreen = (isSpec, title) => {
     const greenStyle = isSpec ? { color: 'green' } : {};
-    return (React.createElement("span", { style: greenStyle }, title));
+    return React.createElement("span", { style: greenStyle }, title);
 };

@@ -57,6 +57,40 @@ export declare const createData: (root: RootInstance) => {
                     opacity: number;
                 };
             };
+            fieldRelation: {
+                node: {
+                    fill: string;
+                    shadowColor: string;
+                    shadowBlur: number;
+                    shadowOffsetX: number;
+                    shadowOffsetY: number;
+                    radius: number;
+                    lineWidth: number;
+                    opacity: number;
+                    stroke: string;
+                };
+                edge: {
+                    lineWidth: number;
+                    size: number;
+                    lineAppendWidth: number;
+                    endArrow: {
+                        path: string;
+                        d: number;
+                    };
+                    startArrow: {
+                        path: string;
+                        d: number;
+                    };
+                    radius: number;
+                    labelCfg: {
+                        autoRotate: boolean;
+                        style: {
+                            fontSize: number;
+                        };
+                    };
+                    stroke: any;
+                };
+            };
         };
         colors: {
             blue: any;

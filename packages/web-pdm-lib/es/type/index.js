@@ -17,17 +17,21 @@ import { renderModelTitle } from '../util/label';
 import { TUi } from './ui';
 import IntlMap from '../intl';
 const getLayerRootModel = (models, rootKey, roots = []) => {
-    const rootModel = models.find((a) => a.name === rootKey);
+    const rootModel = models.find(a => a.name === rootKey);
     const rootsRes = rootModel ? [...roots, rootKey] : roots;
-    const isRoot = (rootModel.aggregateModelKey && rootModel.aggregateModelKey !== rootKey);
-    const rootsResList = isRoot ? getLayerRootModel(models, rootModel.aggregateModelKey, rootsRes) : rootsRes;
+    const isRoot = rootModel.aggregateModelKey && rootModel.aggregateModelKey !== rootKey;
+    const rootsResList = isRoot
+        ? getLayerRootModel(models, rootModel.aggregateModelKey, rootsRes)
+        : rootsRes;
     return rootsResList;
 };
 export const arrangeShow = (ss, { model }) => {
     // alert(model)
     const roots = getLayerRootModel(ss.models, model, []);
     // alert(JSON.stringify(roots))
-    const list = ss.models.filter((a) => (a.key === model || roots.indexOf(a.aggregateModelKey) >= 0)).map((a) => 'model-' + a.key);
+    const list = ss.models
+        .filter(a => a.key === model || roots.indexOf(a.aggregateModelKey) >= 0)
+        .map(a => 'model-' + a.key);
     return Object.assign(Object.assign({}, ss), { checkedKeys: list, currentModel: model, isArrangeLayout: true });
 };
 function S4() {
@@ -35,7 +39,7 @@ function S4() {
 }
 function NewGuid() {
     return S4();
-    //return globaIndex ++ 
+    //return globaIndex ++
 }
 function MapProp() {
     return prop(() => objectMap());
@@ -57,7 +61,10 @@ let RootInstance = class RootInstance extends Model({
                 this.sys.checkedKeys = keys;
             }
             else {
-                const modelKeys = [...this.Models.values()].filter(a => !this.sys.currentModule || a.moduleId === this.sys.currentModule).map(a => a.id);
+                const modelKeys = [...this.Models.values()]
+                    .filter(a => !this.sys.currentModule ||
+                    a.moduleId === this.sys.currentModule)
+                    .map(a => a.id);
                 const withoutKeys = without(modelKeys, ...keys);
                 this.sys.checkedKeys = union(without(this.sys.checkedKeys, ...withoutKeys), keys);
             }
@@ -100,7 +107,10 @@ let RootInstance = class RootInstance extends Model({
         const models = [...this.Models.values()];
         const roots = getLayerRootModel(models, rootKey, []);
         //alert(JSON.stringify(roots))
-        const list = models.filter(a => a.name === rootKey || roots.indexOf(a.aggregateModelKey) >= 0).map(a => a.id);
+        const list = models
+            .filter(a => a.name === rootKey ||
+            roots.indexOf(a.aggregateModelKey) >= 0)
+            .map(a => a.id);
         // alert(JSON.stringify(list))
         this.sys.setCheckedKeys(list);
         //const list = ss.models.filter((a) => (a.key === model ||  roots.indexOf(a.aggregateModelKey) >= 0)).map((a) => 'model-' + a.key)
@@ -137,7 +147,7 @@ let RootInstance = class RootInstance extends Model({
     initData(models, modules, sys) {
         const t0 = +new Date();
         let moduleHas = {};
-        modules.forEach((module) => {
+        modules.forEach(module => {
             const key = NewGuid().toString();
             this.Modules.set(key, new TModule({ id: key, label: module.label, name: module.name }));
             moduleHas[module.name] = key;
@@ -147,7 +157,7 @@ let RootInstance = class RootInstance extends Model({
         let modelsKeys = [];
         let modelHas = {};
         // alert(models.length)
-        models.forEach((model) => {
+        models.forEach(model => {
             const key = NewGuid().toString();
             this.Models.set(key, new TModel({
                 id: key,
@@ -162,13 +172,15 @@ let RootInstance = class RootInstance extends Model({
             modelsKeys.push(key);
         });
         models.forEach(model => {
-            model.fields.forEach((field) => {
+            model.fields.forEach(field => {
                 var _a;
                 // if( i > 3) return
                 const _key = NewGuid().toString();
                 const relationModel = (_a = field === null || field === void 0 ? void 0 : field.typeMeta) === null || _a === void 0 ? void 0 : _a.relationModel;
-                const tmodel = relationModel ? this.Models.get(modelHas[relationModel]) : undefined;
-                // const { label , name , id } = tmodel || 
+                const tmodel = relationModel
+                    ? this.Models.get(modelHas[relationModel])
+                    : undefined;
+                // const { label , name , id } = tmodel ||
                 this.Fields.set(_key, {
                     id: _key,
                     label: field.label,
@@ -228,7 +240,8 @@ let RootInstance = class RootInstance extends Model({
     checkAllFun() {
         var _a, _b;
         const currentModule = this.sys.currentModule;
-        const modelIds = currentModule ? (_b = (_a = this.Modules.get(currentModule)) === null || _a === void 0 ? void 0 : _a.models) === null || _b === void 0 ? void 0 : _b.map(a => a.id) : [...this.Models.values()].map(a => a.id);
+        const modelIds = currentModule
+            ? (_b = (_a = this.Modules.get(currentModule)) === null || _a === void 0 ? void 0 : _a.models) === null || _b === void 0 ? void 0 : _b.map(a => a.id) : [...this.Models.values()].map(a => a.id);
         this.sys.checkedKeys = union(this.sys.checkedKeys, modelIds);
     }
     checkAllCancleFun() {
@@ -238,7 +251,9 @@ let RootInstance = class RootInstance extends Model({
             this.sys.checkedKeys = [];
         // const models = [...this.Models.values()]
         const modelIds = (_b = (_a = this.Modules.get(currentModule)) === null || _a === void 0 ? void 0 : _a.models) === null || _b === void 0 ? void 0 : _b.map(a => a.id);
-        this.sys.checkedKeys = [...without([...this.sys.checkedKeys], ...(modelIds || []))];
+        this.sys.checkedKeys = [
+            ...without([...this.sys.checkedKeys], ...(modelIds || []))
+        ];
     }
     onInit() {
         // alert('sys onInit')
@@ -286,7 +301,7 @@ __decorate([
     modelAction
 ], RootInstance.prototype, "setCheckedKeys", void 0);
 RootInstance = __decorate([
-    model("webpdm/RootStore")
+    model('webpdm/RootStore')
 ], RootInstance);
 export { RootInstance };
 export const createStore = (props = { sys: {}, graph: {}, components: {}, Ui: {} }) => {
@@ -296,6 +311,7 @@ export const createStore = (props = { sys: {}, graph: {}, components: {}, Ui: {}
         $modelId: 'webpdm',
         sys: new TSys(Object.assign({ isArrangeLayout: false, layouting: true, search: '' }, props.sys)),
         Ui: ui,
-        graph: new TGraph(Object.assign({}, props.graph)),
+        graph: new TGraph(Object.assign({}, props.graph))
+        // Ui: new TUi(Ui)
     });
 };

@@ -20,7 +20,7 @@ let TUi = class TUi extends Model({
     }
     registComponents(components) {
         if (components) {
-            Object.keys(components).forEach((k) => {
+            Object.keys(components).forEach(k => {
                 this[k] = components[k];
             });
         }
@@ -64,6 +64,6 @@ __decorate([
     modelAction
 ], TUi.prototype, "setDarkness", null);
 TUi = __decorate([
-    model("webpdm/TUi")
+    model('webpdm/TUi')
 ], TUi);
 export { TUi };

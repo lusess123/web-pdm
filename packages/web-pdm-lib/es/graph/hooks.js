@@ -7,7 +7,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
         // if(graph)  {
         //     if(firstRef.current){
         //       firstRef.current = false
-        //       return 
+        //       return
         //     }
         //  }
         // isCardSharp      //  alert(zoom)
@@ -28,7 +28,8 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
                     const nodeModel = node.getModel();
                     const nodeId = nodeModel.id;
                     const data = nodeModel ? nodeModel.data : undefined;
-                    const isNoModule = (modelId || '').indexOf('module-') >= 0 && ((data && data.moduleKey) !== modelId);
+                    const isNoModule = (modelId || '').indexOf('module-') >= 0 &&
+                        (data && data.moduleKey) !== modelId;
                     // const isKeySharp = false
                     // const isCardSharp = false
                     // alert(isKeySharp)
@@ -55,7 +56,7 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
                     //const ggg = JSON.stringify(cur) !== JSON.stringify(f)
                     const change = !isEqual(currStates, nextStates);
                     if (change) {
-                        //if(!eq(cur, f)) 
+                        //if(!eq(cur, f))
                         graph.updateItem(node, nextStates);
                         //  console.log(ggg)
                     }
@@ -73,5 +74,13 @@ export const useUpdateItem = ({ currentModel, graph, showNameOrLabel, zoom, them
             //  }
             // graph.paint()
         }
-    }, [currentModel, showNameOrLabel, zoom >= 0.4, zoom >= 0.1, zoom !== 0, themeColor, darkness]);
+    }, [
+        currentModel,
+        showNameOrLabel,
+        zoom >= 0.4,
+        zoom >= 0.1,
+        zoom !== 0,
+        themeColor,
+        darkness
+    ]);
 };

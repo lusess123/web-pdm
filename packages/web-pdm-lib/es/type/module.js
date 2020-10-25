@@ -9,7 +9,7 @@ import { computed } from 'mobx';
 let TModule = class TModule extends Model({
     id: prop(),
     name: prop(),
-    label: prop(),
+    label: prop()
 }) {
     get models() {
         const mst = getRoot(this);
@@ -21,6 +21,6 @@ __decorate([
     computed
 ], TModule.prototype, "models", null);
 TModule = __decorate([
-    model("webpdm/TModule")
+    model('webpdm/TModule')
 ], TModule);
 export { TModule };

@@ -131,6 +131,6 @@ __decorate([
     modelAction
 ], TSys.prototype, "setDagreLayout", null);
 TSys = __decorate([
-    model("webpdm/TSys")
+    model('webpdm/TSys')
 ], TSys);
 export { TSys };

@@ -55,11 +55,14 @@ let TGraph = class TGraph extends Model({
         const oldZoom = this.G6Graph.getZoom();
         //const newZoom = 100
         _graph.isExporting = true;
-        _graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
+        _graph
+            .getNodes()
+            .filter((a) => !a.isSys)
+            .forEach(node => {
             node.getContainer().show();
             _graph.updateItem(node, {
                 isKeySharp: false,
-                isCardSharp: false,
+                isCardSharp: false
             });
         });
         const gwidth = _graph.get('width');
@@ -71,16 +74,19 @@ let TGraph = class TGraph extends Model({
         // this.setZoom(0.6)
         _graph.zoomTo(0.8);
         _graph.downloadFullImage('模型图', undefined, {
-            backgroundColor: 'rgb(245, 247, 255)',
+            backgroundColor: 'rgb(245, 247, 255)'
         });
         _graph.isExporting = undefined;
         _graph.zoomTo(oldZoom);
         this.setZoom(oldZoom);
-        _graph.getNodes().filter((a) => !a.isSys).forEach((node) => {
+        _graph
+            .getNodes()
+            .filter(a => !a.isSys)
+            .forEach(node => {
             node.getContainer().show();
             _graph.updateItem(node, {
                 isKeySharp: oldZoom < 0.4,
-                isCardSharp: false,
+                isCardSharp: false
             });
         });
     }
@@ -91,7 +97,8 @@ let TGraph = class TGraph extends Model({
             const edgeData = edge.getModel();
             if (edgeData.target !== 'model-SYS-CENTER-POINT') {
                 edge.setState('active', false);
-                if (edgeData.source === 'model-' + currentModel || edgeData.target === 'model-' + currentModel) {
+                if (edgeData.source === 'model-' + currentModel ||
+                    edgeData.target === 'model-' + currentModel) {
                     edge.setState('active', true);
                     edge.toFront();
                 }
@@ -115,6 +122,6 @@ __decorate([
     modelAction
 ], TGraph.prototype, "downAsImage", null);
 TGraph = __decorate([
-    model("webpdm/TGraph")
+    model('webpdm/TGraph')
 ], TGraph);
 export { TGraph };

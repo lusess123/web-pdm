@@ -1,7 +1,10 @@
 import React, { isValidElement } from 'react';
 import { observer } from 'mobx-react-lite';
 import reactString from 'react-element-to-jsx-string';
-export const defineComponent = ({ setup, displayName }) => { setup.displayName = displayName; return setup; };
+export const defineComponent = ({ setup, displayName }) => {
+    setup.displayName = displayName;
+    return setup;
+};
 export const ObComponent = ({ setup, displayName }) => {
     // const useSetUp = setup
     // const render = () => {
@@ -47,8 +50,8 @@ export const renderJson = (value, replacer, space) => {
     const _replacer = replacer || handleCircular();
     const _json = JSON.stringify(value, _replacer, space);
     const _res = JSON.parse(_json);
-    return React.createElement("pre", null,
-        React.createElement("code", null, json(_res)));
+    return (React.createElement("pre", null,
+        React.createElement("code", null, json(_res))));
 };
 export function mapToArrary(mapObj) {
     return [...mapObj.values()];
@@ -56,7 +59,7 @@ export function mapToArrary(mapObj) {
 export const intlLiteral = (text) => {
     return text;
 };
-export const changeTwoDecimal_f = (x) => {
+export const changeTwoDecimal_f = x => {
     let f_x = parseFloat(x);
     if (isNaN(f_x)) {
         return 0;

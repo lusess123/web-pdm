@@ -19,7 +19,7 @@ export const register = mst => {
     //     head: 'rgba(7,10,26,0.06)',
     //     black: 'black',
     // }
-    const models = mst.onReload().models
+    // const models = mst.onReload().models
 
     G6.registerNode(
         'console-model-Node',
@@ -536,18 +536,18 @@ export const register = mst => {
                     const relationModel = field?.typeMeta?.relationModel
 
                     //字段是否存在关系
-                    const hasRelation = models.some(item => {
-                        const arr = item.fields?.map(item => {
-                            const { typeMeta = [] } = item
-                            if (Array.isArray(typeMeta)) {
-                                const hasRelationTypeMeta = typeMeta.some(
-                                    item => field.name === item.field
-                                )
-                                return hasRelationTypeMeta
-                            }
-                        })
-                        return arr.includes(true)
-                    })
+                    // const hasRelation = models.some(item => {
+                    //     const arr = item.fields?.map(item => {
+                    //         const { typeMeta = [] } = item
+                    //         if (Array.isArray(typeMeta)) {
+                    //             const hasRelationTypeMeta = typeMeta.some(
+                    //                 item => field.name === item.field
+                    //             )
+                    //             return hasRelationTypeMeta
+                    //         }
+                    //     })
+                    //     return arr.includes(true)
+                    // })
 
                     const y =
                         -(
@@ -611,7 +611,8 @@ export const register = mst => {
                         }
                     })
 
-                    const showCircle = isForeign || hasRelation
+                    const showCircle = isForeign
+                    //|| hasRelation
 
                     showCircle &&
                         group.addShape('circle', {

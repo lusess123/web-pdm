@@ -10,11 +10,11 @@ export default CreateComponent({
         const mst = useMst();
         // alert( mst.sys.height)
         // debugger
-        return React.createElement("div", { className: classnames('console-g6-page', props.className), style: { height: mst.sys.height } },
+        return (React.createElement("div", { className: classnames('console-g6-page', props.className), style: { height: mst.sys.height } },
             React.createElement("div", { className: 'console-erd-fps' }),
             React.createElement("div", { className: 'g6-modelnavi' },
                 React.createElement(ModelNavi, null)),
             React.createElement("div", { className: 'g6-graph' },
-                React.createElement(GraphPage, null)));
+                React.createElement(GraphPage, null))));
     }
 });

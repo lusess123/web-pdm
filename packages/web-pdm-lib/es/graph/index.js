@@ -14,9 +14,9 @@ import { useUpdateItem } from './hooks';
 export default observer(() => {
     // const mst = useMst()
     const { setRef, erdGraph } = useLocal();
-    return React.createElement(React.Fragment, null,
+    return (React.createElement(React.Fragment, null,
         React.createElement(ToolBar, { graph: erdGraph }),
-        React.createElement("div", { ref: setRef, className: 'graph' }));
+        React.createElement("div", { ref: setRef, className: 'graph' })));
 });
 const useLocal = () => {
     const mst = useMst();
@@ -24,7 +24,9 @@ const useLocal = () => {
     const containerRef = useRef(null);
     const erdGraphRef = useRef(null);
     const miniMapRef = useRef(null);
-    useEffect(() => { register(); }, []);
+    useEffect(() => {
+        register(mst);
+    }, []);
     const checkRef = useRef(+new Date());
     useEffect(() => {
         // alert()
@@ -50,7 +52,9 @@ const useLocal = () => {
             // erdGraphRef.current.fitView(0)
         }
     }, [JSON.stringify(mst.sys.checkedKeys), mst]);
-    const setRef = useCallback((ref) => { containerRef.current = ref; }, [containerRef]);
+    const setRef = useCallback(ref => {
+        containerRef.current = ref;
+    }, [containerRef]);
     useEffect(() => {
         // debounce(()=> {
         const graph = erdGraphRef.current;
@@ -139,8 +143,8 @@ const useLocal = () => {
                     type: 'delegate',
                     viewportClassName: 'g6-minimap-viewport-erd',
                     delegateStyle: {
-                        fill: 'rgba(0,0,0,0.10)',
-                    },
+                        fill: 'rgba(0,0,0,0.10)'
+                    }
                 });
                 miniMapRef.current = miniMap;
                 (_b = erdGraphRef.current) === null || _b === void 0 ? void 0 : _b.addPlugin(miniMap);
@@ -160,8 +164,12 @@ const useLocal = () => {
 //   K: 100,
 // });
 const render = (container, nodes, edges, mst) => {
-    const documentHeight = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight);
-    const height = mst.sys.height === '100%' ? (documentHeight - 45) : (mst.sys.height - 45);
+    const documentHeight = window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight;
+    const height = mst.sys.height === '100%'
+        ? documentHeight - 45
+        : mst.sys.height - 45;
     // const height = mst.sys.height
     // alert(height)
     // alert(height)
@@ -172,8 +180,8 @@ const render = (container, nodes, edges, mst) => {
         type: 'delegate',
         viewportClassName: 'g6-minimap-viewport-erd',
         delegateStyle: {
-            fill: 'rgba(0,0,0,0.10)',
-        },
+            fill: 'rgba(0,0,0,0.10)'
+        }
     });
     const graph = new G6.Graph({
         height,
@@ -189,7 +197,7 @@ const render = (container, nodes, edges, mst) => {
             default: styleConfig.default.edge,
             active: {
                 opacity: 1,
-                size: 3,
+                size: 3
             }
         },
         minZoom: 0.01,
@@ -216,24 +224,32 @@ const render = (container, nodes, edges, mst) => {
         },
         modes: {
             default: [
-                'drag-canvas', {
+                'drag-canvas',
+                {
                     type: 'zoom-canvas',
                     minZoom: 0.0001,
                     // enableOptimize: true,
                     // optimizeZoom: true,
-                    maxZoom: 2.1,
+                    maxZoom: 2.1
+                    // enableOptimize: true,
                 },
                 {
-                    type: 'drag-node',
+                    type: 'drag-node'
+                    // enableDelegate: true,
                 },
                 {
                     type: 'edge-tooltip',
-                    formatText: (model) => {
+                    formatText: model => {
                         return model.tooltip;
                     },
                     offset: 10
-                },
-            ],
+                }
+                // {
+                //   type: 'activate-relations',
+                //   resetSelected: true,
+                //   trigger: 'click'
+                // },
+            ]
         },
         plugins: [
             // toolbar,
@@ -285,7 +301,7 @@ const layout = (graph, nodes, edges, mst) => {
     //   }
     // })
     // alert(graph.getNodes().length)
-    // const isLargar = graph.getNodes().length > 50 
+    // const isLargar = graph.getNodes().length > 50
     // // alert(isLargar)
     // graph.isLayouting = true
     // async(() => graph.updateLayout({

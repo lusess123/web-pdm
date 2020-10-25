@@ -1,1 +1,1 @@
-export declare const register: () => void;
+export declare const register: (mst: any) => void;

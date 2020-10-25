@@ -13,7 +13,7 @@ let TModel = class TModel extends Model({
     moduleId: prop(''),
     aggregateRoot: prop(false),
     aggregateModelKey: prop(),
-    belongAggregate: prop(),
+    belongAggregate: prop()
 }) {
     // @computed
     get fields() {
@@ -28,7 +28,10 @@ let TModel = class TModel extends Model({
     filterModel() {
         const root = getRoot(this);
         const search = root.sys.search;
-        return !search || (root.sys.showNameOrLabel ? this.name.indexOf(search) >= 0 : this.label.indexOf(search) >= 0);
+        return (!search ||
+            (root.sys.showNameOrLabel
+                ? this.name.indexOf(search) >= 0
+                : this.label.indexOf(search) >= 0));
     }
 };
 __decorate([
@@ -38,6 +41,6 @@ __decorate([
     modelAction
 ], TModel.prototype, "filterModel", null);
 TModel = __decorate([
-    model("webpdm/Model")
+    model('webpdm/Model')
 ], TModel);
 export { TModel };
