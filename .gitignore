@@ -111,4 +111,5 @@ src/.umi/
 docs-dist/
 .umi/core/
 es/
+packages/web-pdm-lib/es/
 
