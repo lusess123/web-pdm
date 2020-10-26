@@ -1,8 +1,9 @@
-## [0.2.5-23](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-23) (2020-10-25)
+## [0.2.5-24](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-24) (2020-10-26)
 
 
 ### Features
 
+*  IconRenders ([bc5340b](https://github.com/lusess123/web-pdm/commit/bc5340bde21528cdf9fb0230909a364beec3ad0e))
 * **eslint:** change eslint conf ([64cdb4e](https://github.com/lusess123/web-pdm/commit/64cdb4e1599302a1f7d7f7454a64bb1127a2d5e6))
 * **package:** format code style ([59bb3ee](https://github.com/lusess123/web-pdm/commit/59bb3ee449a25bec9daf33dc43483eca6cafc3fd))
 * **web-pdm-lib:** add field relation ([389ffa9](https://github.com/lusess123/web-pdm/commit/389ffa913e1f4a65790b790d88994e7f6c2ed504))
