@@ -333,10 +333,10 @@ export class RootInstance extends Model({
 }
 
 export const createStore = (
-    props = { sys: {}, graph: {}, components: {}, Ui: {}, IconRenders: undefined }
+    props = { sys: {}, graph: {}, components: {}, Ui: {}, IconRenders: undefined, disableIcons: [] }
 ) => {
     const ui = new TUi(props.Ui)
-    ui.registComponents(props.components, props.IconRenders)
+    ui.registComponents(props.components, props.IconRenders, props.disableIcons)
     return new RootInstance({
         $modelId: 'webpdm',
         sys: new TSys({

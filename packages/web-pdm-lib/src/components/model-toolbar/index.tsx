@@ -62,6 +62,7 @@ export default observer(({ graph }: { graph: any }) => {
     const undoManager = mst.undoManager
     const { Tooltip, Popover } = mst.Ui as any
     const _IconRenders: any = { ...IconRenders, ...mst.Ui.IconRenders }
+
     const [colorPabel, setColorPabel] = useState(false)
     const setColor = useCallback(
         throttle(color => {
@@ -261,8 +262,11 @@ type IButtonActon = {
 
 const ButtonActon = CreateComponent<IButtonActon>({
     render: props => {
-        const { Tooltip } = props
+        const mst = useMst()
+        // const disableIcons = mst.Ui.disableIcons.reduce((pre, cur) => ({ ...pre, [cur]: true }), {})
 
+        const { Tooltip } = props
+        if (mst.Ui.disableIcons.indexOf(props.icon as any) >= 0) return null
         const IconRender = isValidElement(props.icon)
             ? props.icon
             : props.IconRenders[props.icon as string]

@@ -152,7 +152,7 @@ export type IComponentConfig = {
 
 ##  IconRenders
 -   说明： 用于替换工具栏的图标组件
--   类型： Record<TIconRendersKeys, React.ReactNode>
+-   类型： Record<string, React.ReactNode>
 -   默认值：undefine
 
 ```
@@ -174,4 +174,8 @@ export type IComponentConfig = {
 
 ```
 
+## disableIcons
+-   说明： 用于禁用工具栏的图标,名称同上
+-   类型： string[]
+-   默认值：[]
 

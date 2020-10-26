@@ -53,7 +53,8 @@ export interface IWebPdmProps {
     onReload?: () => TData
     intl?: 'CH' | 'EN'
     onIntl?: (string) => string
-    IconRenders?: Record<TIconRendersKeys, React.ReactNode>
+    IconRenders?: Record<string, React.ReactNode>
+    disableIcons?: string[]
 }
 
 const Page = observer<IWebPdmProps>(
@@ -138,7 +139,8 @@ const WebPDM: FunctionComponent<IWebPdmProps> = props => {
             components: props.components,
             onReload: props.onReload,
             onIntl: props.onIntl,
-            IconRenders: props.IconRenders
+            IconRenders: props.IconRenders,
+            disableIcons: props.disableIcons
         })
     })
     return (

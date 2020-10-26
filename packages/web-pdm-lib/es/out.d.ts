@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
+import { TIconRendersKeys } from './components/model-toolbar';
 import { ModelConfig, ModuleConfig, FieldConfig, IComponentConfig, TData } from './type/config';
 export * from './type/config';
-declare type TIcon = 'container' | 'arrow-up' | 'arrow-down' | 'arrow-left' | 'arrow-right' | 'retweet' | 'pdm' | 'lock' | 'unlock' | 'image' | 'min' | 'max' | 'reload' | 'miniMap' | 'miniMapNo';
 /**
  *组件的props接口
  *
@@ -35,7 +35,7 @@ export interface IWebPdmProps {
     onReload?: () => TData;
     intl?: 'CH' | 'EN';
     onIntl?: (string: any) => string;
-    IconRenders?: Record<TIcon, React.ReactNode>;
+    IconRenders?: Record<TIconRendersKeys, React.ReactNode>;
 }
 /**
  *组件定义

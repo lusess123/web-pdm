@@ -22,8 +22,9 @@ export class TUi extends Model({
     IconRenders?: Record<string, React.ReactNode> = {}
 
     isToogle: boolean = false
+    disableIcons: string[] = []
 
-    registComponents(components?: IComponentConfig, IconRenders?: Record<string, React.ReactNode>) {
+    registComponents(components?: IComponentConfig, IconRenders?: Record<string, React.ReactNode>, disableIcons?: string[]) {
         if (components) {
             Object.keys(components).forEach(k => {
                 this[k] = components[k]
@@ -31,6 +32,7 @@ export class TUi extends Model({
         }
 
         if (IconRenders) this.IconRenders = { ...this.IconRenders, ...IconRenders }
+        if (disableIcons) this.disableIcons = disableIcons
 
         if (!this.Tree || !components) this.Tree = Tree
         if (!this.Input || !components) this.Input = Input

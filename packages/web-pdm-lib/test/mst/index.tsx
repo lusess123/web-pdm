@@ -51,6 +51,7 @@ ReactDom.render(
         modules={modules}
         erdkey={'demo'}
         onIntl={onIntl}
+        disableIcons={['full', 'reload']}
         IconRenders={{
             image: <Button size="small" >下载</Button>,
             miniMap: <Button size="small" >显示小地图</Button>,
