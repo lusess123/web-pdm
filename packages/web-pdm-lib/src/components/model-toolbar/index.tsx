@@ -1,8 +1,8 @@
 // import { Tooltip } from 'antd'
 import {
-    FileMarkdownOutlined,
+    // FileMarkdownOutlined,
     ReloadOutlined,
-    CloseCircleFilled,
+    // CloseCircleFilled,
     PictureOutlined,
     PictureFilled,
     SnippetsFilled,
@@ -12,19 +12,19 @@ import {
     UngroupOutlined,
     RollbackOutlined,
     BgColorsOutlined,
-    UnlockOutlined,
-    LockOutlined,
+    // UnlockOutlined,
+    // LockOutlined,
     ZoomOutOutlined,
     ZoomInOutlined,
     BorderOutlined,
-    ArrowUpOutlined,
-    ArrowDownOutlined,
-    ArrowLeftOutlined,
-    ArrowRightOutlined,
-    RetweetOutlined
+    // ArrowUpOutlined,
+    // ArrowDownOutlined,
+    // ArrowLeftOutlined,
+    // ArrowRightOutlined,
+    // RetweetOutlined
 } from '@ant-design/icons'
 import classNames from 'classnames'
-import React, { isValidElement, useState, useCallback, ComponentType } from 'react'
+import React, { isValidElement, useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
 import { changeTwoDecimal_f, CreateComponent } from '../../util'
 import { useMst } from '../../context'
@@ -34,25 +34,27 @@ import { throttle } from 'lodash'
 // import StateStack from '../../state-stack'
 // import { undoManager } from '../../context'
 //<SnippetsOutlined />
-//<SnippetsFilled />
-export const IconRenders = {
-    container: <BorderOutlined />,
-    'arrow-up': <ArrowUpOutlined />,
-    'arrow-down': <ArrowDownOutlined />,
-    'arrow-left': <ArrowLeftOutlined />,
-    'arrow-right': <ArrowRightOutlined />,
-    retweet: <RetweetOutlined />,
-    pdm: <FileMarkdownOutlined />,
-    lock: <LockOutlined />,
-    unlock: <UnlockOutlined />,
-    image: <DownloadOutlined />,
-    // 'upload':<FileImageOutlined />,
+//<Snip/** @type {*} */
+const IconRenders = {
+
+    undo: <RollbackOutlined />,
+    redo: <RollbackOutlined style={{ transform: 'scaleX(-1)' }} />,
     min: <ZoomOutOutlined />,
     max: <ZoomInOutlined />,
-    reload: <ReloadOutlined />,
+    full: <BorderOutlined />,
     miniMap: <PictureFilled />,
-    miniMapNo: <PictureOutlined />
+    miniMapNo: <PictureOutlined />,
+    dagreLayout: <PartitionOutlined />,
+    relationLayout: <UngroupOutlined />,
+    reload: <ReloadOutlined />,
+    image: <DownloadOutlined />,
+    darkness: <SnippetsFilled />,
+    light: <SnippetsOutlined />,
+    colorClose: <BgColorsOutlined />,
+    colorOpen: <BgColorsOutlined />
 }
+type TIconRenders = typeof IconRenders
+export type TIconRendersKeys = keyof TIconRenders
 
 export default observer(({ graph }: { graph: any }) => {
     const mst = useMst()
@@ -95,7 +97,7 @@ export default observer(({ graph }: { graph: any }) => {
                             : undefined
                     }
                     disable={!undoManager.canUndo}
-                    icon={<RollbackOutlined />}
+                    icon="undo"
                     onClick={mst.undo.bind(mst)}
                 />
                 <ButtonActon
@@ -109,9 +111,7 @@ export default observer(({ graph }: { graph: any }) => {
                             : undefined
                     }
                     disable={!undoManager.canRedo}
-                    icon={
-                        <RollbackOutlined style={{ transform: 'scaleX(-1)' }} />
-                    }
+                    icon="redo"
                     onClick={mst.redo.bind(mst)}
                 />
                 <ButtonActon
@@ -143,7 +143,7 @@ export default observer(({ graph }: { graph: any }) => {
                     Tooltip={Tooltip}
                     title={intl('全景')}
                     color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
-                    icon='container'
+                    icon='full'
                     onClick={mst.graph.container.bind(mst.graph, graph)}
                 />
                 <ButtonActon
@@ -189,9 +189,9 @@ export default observer(({ graph }: { graph: any }) => {
                     }
                     icon={
                         !mst.sys.dagreLayout ? (
-                            <PartitionOutlined />
+                            'dagreLayout'
                         ) : (
-                                <UngroupOutlined />
+                                'relationLayout'
                             )
                     }
                     color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
@@ -207,9 +207,9 @@ export default observer(({ graph }: { graph: any }) => {
                     title={intl('切换底色')}
                     icon={
                         mst.Ui.darkness ? (
-                            <SnippetsFilled />
+                            'darkness'
                         ) : (
-                                <SnippetsOutlined />
+                                'light'
                             )
                     }
                     color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
@@ -236,9 +236,9 @@ export default observer(({ graph }: { graph: any }) => {
                         color={mst.Ui.themeColor}
                         icon={
                             colorPabel ? (
-                                <CloseCircleFilled />
+                                'colorClose'
                             ) : (
-                                    <BgColorsOutlined />
+                                    'colorOpen'
                                 )
                         }
                         onClick={setColorPabel.bind(null, !colorPabel)}

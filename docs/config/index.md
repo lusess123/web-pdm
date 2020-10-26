@@ -152,26 +152,26 @@ export type IComponentConfig = {
 
 ##  IconRenders
 -   说明： 用于替换工具栏的图标组件
--   类型： Record<TIcon, React.ReactNode>
+-   类型： Record<TIconRendersKeys, React.ReactNode>
 -   默认值：undefine
 
 ```
-type TIcon = 'container'  | 'retweet' |  'image' | 'min' | 'max' | 'reload' | 'miniMap' | 'miniMapNo'
+    undo: <RollbackOutlined />,   重做
+    redo: <RollbackOutlined style={{ transform: 'scaleX(-1)' }} />, 撤销
+    min: <ZoomOutOutlined />, 缩小
+    max: <ZoomInOutlined />,  放大
+    full: <BorderOutlined />, 全屏
+    miniMap: <PictureFilled />, 小地图显示
+    miniMapNo: <PictureOutlined />, 小地图关闭
+    dagreLayout: <PartitionOutlined />, 层次布局
+    relationLayout: <UngroupOutlined />, 关联布局
+    reload: <ReloadOutlined />, 刷新
+    image: <DownloadOutlined />, 下载地图
+    darkness: <SnippetsFilled />, 暗黑模型
+    light: <SnippetsOutlined />,  光明模式
+    colorClose: <BgColorsOutlined />, 彩色面板关闭
+    colorOpen: <BgColorsOutlined />   彩色面板打开
 
 ```
-container: 全局显示完整图
 
-retweet: 重新布局
-
-image: 下载图片
-
-min: 缩小
-
-max: 方大
-
-reload: 重新载入
-
-miniMap: 打开小地图
-
-miniMapNo: 关闭小地图
 

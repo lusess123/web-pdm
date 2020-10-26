@@ -4,7 +4,7 @@ import { useMst } from './context'
 import { observer } from 'mobx-react-lite'
 import { Provider, createRootStore } from './context'
 import MSTPage from './components'
-// import { IconRenders } from './components/model-toolbar'
+import { TIconRendersKeys } from './components/model-toolbar'
 import {
     ModelConfig,
     ModuleConfig,
@@ -17,7 +17,6 @@ export * from './type/config'
 
 // type FF = InstanceType<typeof {aa:}>
 
-type TIcon = 'container' | 'arrow-up' | 'arrow-down' | 'arrow-left' | 'arrow-right' | 'retweet' | 'pdm' | 'lock' | 'unlock' | 'image' | 'min' | 'max' | 'reload' | 'miniMap' | 'miniMapNo'
 
 
 /**
@@ -54,7 +53,7 @@ export interface IWebPdmProps {
     onReload?: () => TData
     intl?: 'CH' | 'EN'
     onIntl?: (string) => string
-    IconRenders?: Record<TIcon, React.ReactNode>
+    IconRenders?: Record<TIconRendersKeys, React.ReactNode>
 }
 
 const Page = observer<IWebPdmProps>(
