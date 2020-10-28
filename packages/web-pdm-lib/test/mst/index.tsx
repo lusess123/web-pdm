@@ -57,7 +57,7 @@ ReactDom.render(
             miniMap: <Button size="small" >显示小地图</Button>,
             miniMapNo: <Button size="small" >屏蔽小地图</Button>,
         }}
-        intl='EN'
+        // intl='EN'
         onReload={onReload}
         onModelDetail={a => {
             alert(`打开模型${a.label}(${a.name}) 的查看链接`)

@@ -4,7 +4,7 @@ import { RootInstance, createStore } from './type'
 
 const RootStoreContext = createContext<null | RootInstance>(null)
 export const Provider = RootStoreContext.Provider
-export function useMst () {
+export function useMst() {
     const store = useContext(RootStoreContext)
     if (store === null) {
         throw new Error('Store cannot be null, please add a context provider')
@@ -27,6 +27,7 @@ export const createRootStore = props => {
     const rootStore = createStore(newProps)
     rootStore.setOnReload(props.onReload)
     rootStore.onIntl = props.onIntl
+    rootStore.sys.setOnModelDetail(props?.sys?.onModelDetail)
     //alert('createRootStore')
     if (onIgnoreEdge) rootStore.sys.onIgnoreEdge = onIgnoreEdge
     rootStore.setUndoManager(undoMiddleware(rootStore))

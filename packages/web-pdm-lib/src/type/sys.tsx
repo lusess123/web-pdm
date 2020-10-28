@@ -23,16 +23,16 @@ export class TSys extends Model({
     onIgnoreEdge: (filed: FieldConfig) => boolean
     onModelDetail: (model: ModelConfig) => void
 
-    setOnIgnoreEdge (onIgnoreEdge) {
+    setOnIgnoreEdge(onIgnoreEdge) {
         this.onIgnoreEdge = onIgnoreEdge
     }
 
-    setOnModelDetail (onModelDetail) {
+    setOnModelDetail(onModelDetail) {
         this.onModelDetail = onModelDetail
     }
 
     @modelAction
-    toggleArrangeLayout () {
+    toggleArrangeLayout() {
         this.isArrangeLayout = !this.isArrangeLayout
     }
     @modelAction
@@ -45,12 +45,12 @@ export class TSys extends Model({
         this.checkedKeys = keys
     }
     @modelAction
-    setDisableMiniMap (disableMiniMap: boolean) {
+    setDisableMiniMap(disableMiniMap: boolean) {
         this.disableMiniMap = disableMiniMap
     }
 
     @modelAction
-    setCurrentModel (keys: string[]) {
+    setCurrentModel(keys: string[]) {
         const n0 = +new Date()
         const newKey = keys.length > 1 ? keys[1] : keys[0]
         const root: RootInstance = getRoot(this)
@@ -67,7 +67,7 @@ export class TSys extends Model({
     }
 
     @modelAction
-    centerCurrentModel (keys: string[]) {
+    centerCurrentModel(keys: string[]) {
         const newKey = keys.length > 1 ? keys[1] : keys[0]
         this.currentModel = newKey
         const root: RootInstance = getRoot(this)
@@ -78,6 +78,25 @@ export class TSys extends Model({
             if (item) item.toFront()
             toCenter(item, graph)
             root.graph.setZoom(graph.getZoom())
+        }
+
+        //toCenter(   , root.graph.G6Graph)
+    }
+
+    @modelAction
+    openModel(key: string) {
+        // const newKey = keys.length > 1 ? keys[1] : keys[0]
+        // this.currentModel = newKey
+        const root: RootInstance = getRoot(this)
+        //root.graph.G6Graph
+        const graph = root.graph.G6Graph
+        if (graph) {
+            const item = graph.findById('model-' + key)
+            if (this.onModelDetail)
+                this.onModelDetail(item.getModel().data)
+            // if (item) item.toFront()
+            // toCenter(item, graph)
+            // root.graph.setZoom(graph.getZoom())
         }
 
         //toCenter(   , root.graph.G6Graph)
@@ -101,13 +120,13 @@ export class TSys extends Model({
         this.showNameOrLabel = !this.showNameOrLabel
     }
 
-    onInit () {
+    onInit() {
         // alert('sys onInit')
         // alert(this.tabOrTree)
         this.toggleShowNameOrLabel = this.toggleShowNameOrLabel.bind(this)
     }
     @modelAction
-    setDagreLayout (dagreLayout: boolean) {
+    setDagreLayout(dagreLayout: boolean) {
         this.dagreLayout = dagreLayout
     }
 }

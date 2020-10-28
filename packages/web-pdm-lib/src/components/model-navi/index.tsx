@@ -38,7 +38,11 @@ const getTreeNodeTitle = (
                     },
                     {
                         key: 2,
-                        title: <span> {root.intl('查看')}</span>
+                        title: <span> {root.intl('查看')}</span>,
+                        click: e => {
+                            root.sys.openModel(model.id)
+                            e.stopPropagation()
+                        }
                     }
                     // {
                     //   title: <span> {intlLiteral('移除')}</span>
@@ -50,7 +54,7 @@ const getTreeNodeTitle = (
 }
 
 export default CreateComponent<IModelNaviProps>({
-    render (_) {
+    render(_) {
         const mst = useMst()
         const intl = mst.intl
         const { Input, Button, Dropdown, Menu, Select, Tree } = mst.Ui as any
@@ -59,50 +63,50 @@ export default CreateComponent<IModelNaviProps>({
             () =>
                 !mst.sys.tabOrTree
                     ? mst.moduleList.map(m => {
-                          return (
-                              <TreeNode
-                                  title={
-                                      mst.sys.showNameOrLabel ? m.name : m.label
-                                  }
-                                  key={m.id}
-                              >
-                                  {[...m.models.values()]
-                                      .filter(model => model.filterModel())
-                                      .map(model => {
-                                          return (
-                                              <TreeNode
-                                                  key={model.id}
-                                                  title={getTreeNodeTitle(
-                                                      model,
-                                                      mst,
-                                                      OptionBuilder
-                                                  )}
-                                              />
-                                          )
-                                      })}
-                              </TreeNode>
-                          )
-                      })
+                        return (
+                            <TreeNode
+                                title={
+                                    mst.sys.showNameOrLabel ? m.name : m.label
+                                }
+                                key={m.id}
+                            >
+                                {[...m.models.values()]
+                                    .filter(model => model.filterModel())
+                                    .map(model => {
+                                        return (
+                                            <TreeNode
+                                                key={model.id}
+                                                title={getTreeNodeTitle(
+                                                    model,
+                                                    mst,
+                                                    OptionBuilder
+                                                )}
+                                            />
+                                        )
+                                    })}
+                            </TreeNode>
+                        )
+                    })
                     : [...mst.Models.values()]
-                          .filter(
-                              model =>
-                                  (!mst.sys.currentModule ||
-                                      model.moduleId ===
-                                          mst.sys.currentModule) &&
-                                  model.filterModel()
-                          )
-                          .map(model => {
-                              return (
-                                  <TreeNode
-                                      key={model.id}
-                                      title={getTreeNodeTitle(
-                                          model,
-                                          mst,
-                                          OptionBuilder
-                                      )}
-                                  />
-                              )
-                          }),
+                        .filter(
+                            model =>
+                                (!mst.sys.currentModule ||
+                                    model.moduleId ===
+                                    mst.sys.currentModule) &&
+                                model.filterModel()
+                        )
+                        .map(model => {
+                            return (
+                                <TreeNode
+                                    key={model.id}
+                                    title={getTreeNodeTitle(
+                                        model,
+                                        mst,
+                                        OptionBuilder
+                                    )}
+                                />
+                            )
+                        }),
             [
                 mst.sys.tabOrTree,
                 mst.moduleList,
@@ -111,7 +115,7 @@ export default CreateComponent<IModelNaviProps>({
             ]
         )
 
-        useEffect(() => {}, [mst.Ui.update])
+        useEffect(() => { }, [mst.Ui.update])
 
         const {
             search,
@@ -274,25 +278,25 @@ const useLocal = () => {
     // const setSearch = mst.sys.setSearch;
     return {
         search: text,
-        get modules () {
+        get modules() {
             return mst.moduleList
         },
-        onExpand (expandedKeys: string[]) {
+        onExpand(expandedKeys: string[]) {
             mst.sys.setExpandedKeys(expandedKeys)
         },
 
-        get expandedKeys () {
+        get expandedKeys() {
             return mst.sys.expandedKeys
         },
-        checkAllFun () {
+        checkAllFun() {
             return mst.checkAllFun()
         },
-        checkAllCancleFun () {
+        checkAllCancleFun() {
             return mst.checkAllCancleFun()
         },
         toggleShowNameOrLabel: mst.sys.toggleShowNameOrLabel,
         toggleTabOrTree: mst.sys.toggleTabOrTree.bind(mst.sys),
-        get Sys () {
+        get Sys() {
             return mst.sys
         },
         changeModuleValue: mst.sys.changeModuleValue.bind(mst.sys),
