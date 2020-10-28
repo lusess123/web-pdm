@@ -18,8 +18,9 @@ let TUi = class TUi extends Model({
         super(...arguments);
         this.IconRenders = {};
         this.isToogle = false;
+        this.disableIcons = [];
     }
-    registComponents(components, IconRenders) {
+    registComponents(components, IconRenders, disableIcons) {
         if (components) {
             Object.keys(components).forEach(k => {
                 this[k] = components[k];
@@ -27,6 +28,8 @@ let TUi = class TUi extends Model({
         }
         if (IconRenders)
             this.IconRenders = Object.assign(Object.assign({}, this.IconRenders), IconRenders);
+        if (disableIcons)
+            this.disableIcons = disableIcons;
         if (!this.Tree || !components)
             this.Tree = Tree;
         if (!this.Input || !components)

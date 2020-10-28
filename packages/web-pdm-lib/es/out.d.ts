@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { TIconRendersKeys } from './components/model-toolbar';
 import { ModelConfig, ModuleConfig, FieldConfig, IComponentConfig, TData } from './type/config';
 export * from './type/config';
 /**
@@ -35,7 +34,8 @@ export interface IWebPdmProps {
     onReload?: () => TData;
     intl?: 'CH' | 'EN';
     onIntl?: (string: any) => string;
-    IconRenders?: Record<TIconRendersKeys, React.ReactNode>;
+    IconRenders?: Record<string, React.ReactNode>;
+    disableIcons?: string[];
 }
 /**
  *组件定义

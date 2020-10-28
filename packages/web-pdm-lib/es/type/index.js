@@ -304,9 +304,9 @@ RootInstance = __decorate([
     model('webpdm/RootStore')
 ], RootInstance);
 export { RootInstance };
-export const createStore = (props = { sys: {}, graph: {}, components: {}, Ui: {}, IconRenders: undefined }) => {
+export const createStore = (props = { sys: {}, graph: {}, components: {}, Ui: {}, IconRenders: undefined, disableIcons: [] }) => {
     const ui = new TUi(props.Ui);
-    ui.registComponents(props.components, props.IconRenders);
+    ui.registComponents(props.components, props.IconRenders, props.disableIcons);
     return new RootInstance({
         $modelId: 'webpdm',
         sys: new TSys(Object.assign({ isArrangeLayout: false, layouting: true, search: '' }, props.sys)),

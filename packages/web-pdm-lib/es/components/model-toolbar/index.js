@@ -78,7 +78,11 @@ export default observer(({ graph }) => {
 });
 const ButtonActon = CreateComponent({
     render: props => {
+        const mst = useMst();
+        // const disableIcons = mst.Ui.disableIcons.reduce((pre, cur) => ({ ...pre, [cur]: true }), {})
         const { Tooltip } = props;
+        if (mst.Ui.disableIcons.indexOf(props.icon) >= 0)
+            return null;
         const IconRender = isValidElement(props.icon)
             ? props.icon
             : props.IconRenders[props.icon];

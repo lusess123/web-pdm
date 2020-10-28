@@ -69,7 +69,8 @@ const WebPDM = props => {
             components: props.components,
             onReload: props.onReload,
             onIntl: props.onIntl,
-            IconRenders: props.IconRenders
+            IconRenders: props.IconRenders,
+            disableIcons: props.disableIcons
         });
     });
     return (React.createElement(Provider, { value: rootStore }, rootStore && React.createElement(Page, Object.assign({}, props))));
