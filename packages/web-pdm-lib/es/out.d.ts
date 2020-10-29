@@ -36,6 +36,7 @@ export interface IWebPdmProps {
     onIntl?: (string: any) => string;
     IconRenders?: Record<string, React.ReactNode>;
     disableIcons?: string[];
+    onlyMode?: boolean;
 }
 /**
  *组件定义

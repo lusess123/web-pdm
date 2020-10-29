@@ -14,6 +14,7 @@ declare const TSys_base: import("mobx-keystone")._Model<unknown, {
     dagreLayout: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
     intl: import("mobx-keystone").OptionalModelProp<string, string>;
     disableMiniMap: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
+    onlyMode: import("mobx-keystone").OptionalModelProp<boolean, boolean>;
 }>;
 export declare class TSys extends TSys_base {
     onIgnoreEdge: (filed: FieldConfig) => boolean;

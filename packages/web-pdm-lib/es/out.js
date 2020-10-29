@@ -60,7 +60,8 @@ const WebPDM = props => {
                 height: props.height,
                 onIgnoreEdge: props.onIgnoreEdge,
                 onModelDetail: props.onModelDetail,
-                intl: props.intl
+                intl: props.intl,
+                onlyMode: props.onlyMode
             },
             Ui: {
                 themeColor: props.themeColor,

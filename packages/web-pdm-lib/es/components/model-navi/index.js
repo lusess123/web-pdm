@@ -82,7 +82,7 @@ export default CreateComponent({
                         !mst.sys.showNameOrLabel
                             ? intl('名称')
                             : intl('标签')),
-                    React.createElement(Dropdown, { className: 'right', overlay: React.createElement(Menu, null,
+                    !Sys.onlyMode && React.createElement(Dropdown, { className: 'right', overlay: React.createElement(Menu, null,
                             React.createElement(Menu.Item, { key: '1', onClick: toggleTabOrTree },
                                 Sys.tabOrTree
                                     ? intl('分类')

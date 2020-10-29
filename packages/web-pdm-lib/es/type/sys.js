@@ -20,7 +20,8 @@ let TSys = class TSys extends Model({
     height: prop('100%'),
     dagreLayout: prop(false),
     intl: prop('CH'),
-    disableMiniMap: prop(false)
+    disableMiniMap: prop(false),
+    onlyMode: prop(false)
     // undoData: prop<UndoStore>(() => new UndoStore({})),
 }) {
     constructor() {
