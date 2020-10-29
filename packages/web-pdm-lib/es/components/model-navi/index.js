@@ -24,7 +24,11 @@ const getTreeNodeTitle = (model, root, OptionBuilder) => {
                     key: 2,
                     title: React.createElement("span", null,
                         " ",
-                        root.intl('查看'))
+                        root.intl('查看')),
+                    click: e => {
+                        root.sys.openModel(model.id);
+                        e.stopPropagation();
+                    }
                 }
                 // {
                 //   title: <span> {intlLiteral('移除')}</span>

@@ -88,6 +88,22 @@ let TSys = class TSys extends Model({
         }
         //toCenter(   , root.graph.G6Graph)
     }
+    openModel(key) {
+        // const newKey = keys.length > 1 ? keys[1] : keys[0]
+        // this.currentModel = newKey
+        const root = getRoot(this);
+        //root.graph.G6Graph
+        const graph = root.graph.G6Graph;
+        if (graph) {
+            const item = graph.findById('model-' + key);
+            if (this.onModelDetail)
+                this.onModelDetail(item.getModel().data);
+            // if (item) item.toFront()
+            // toCenter(item, graph)
+            // root.graph.setZoom(graph.getZoom())
+        }
+        //toCenter(   , root.graph.G6Graph)
+    }
     onInit() {
         // alert('sys onInit')
         // alert(this.tabOrTree)
@@ -115,6 +131,9 @@ __decorate([
 __decorate([
     modelAction
 ], TSys.prototype, "centerCurrentModel", null);
+__decorate([
+    modelAction
+], TSys.prototype, "openModel", null);
 __decorate([
     modelAction
 ], TSys.prototype, "toggleTabOrTree", void 0);

@@ -26,6 +26,7 @@ export declare class TSys extends TSys_base {
     setDisableMiniMap(disableMiniMap: boolean): void;
     setCurrentModel(keys: string[]): void;
     centerCurrentModel(keys: string[]): void;
+    openModel(key: string): void;
     toggleTabOrTree: () => void;
     changeModuleValue: (module: string) => void;
     setSearch: (search: string) => void;
