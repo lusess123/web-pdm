@@ -17,7 +17,8 @@ export class TSys extends Model({
     height: prop<number | undefined | string>('100%'),
     dagreLayout: prop(false),
     intl: prop('CH'),
-    disableMiniMap: prop(false)
+    disableMiniMap: prop(false),
+    onlyMode: prop(false)
     // undoData: prop<UndoStore>(() => new UndoStore({})),
 }) {
     onIgnoreEdge: (filed: FieldConfig) => boolean

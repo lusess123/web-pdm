@@ -179,3 +179,8 @@ export type IComponentConfig = {
 -   类型： string[]
 -   默认值：[]
 
+## onlyMode
+-   说明： 是否只有一种模式，开启后默认只有树形模式
+-   类型： boolean
+-   默认值：false
+

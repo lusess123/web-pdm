@@ -202,7 +202,7 @@ export default CreateComponent<IModelNaviProps>({
                                 : intl('标签')}
                         </Button>
                         {
-                            <Dropdown
+                            !Sys.onlyMode && <Dropdown
                                 className='right'
                                 overlay={
                                     <Menu>

@@ -51,6 +51,7 @@ ReactDom.render(
         modules={modules}
         erdkey={'demo'}
         onIntl={onIntl}
+        onlyMode
         disableIcons={['full', 'reload']}
         IconRenders={{
             image: <Button size="small" >下载</Button>,

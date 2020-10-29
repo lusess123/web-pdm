@@ -335,6 +335,7 @@ export class RootInstance extends Model({
 export const createStore = (
     props = { sys: {}, graph: {}, components: {}, Ui: {}, IconRenders: undefined, disableIcons: [] }
 ) => {
+    // alert(JSON.stringify(props.sys.onlyMode))
     const ui = new TUi(props.Ui)
     ui.registComponents(props.components, props.IconRenders, props.disableIcons)
     return new RootInstance({

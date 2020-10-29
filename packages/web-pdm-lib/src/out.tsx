@@ -54,7 +54,8 @@ export interface IWebPdmProps {
     intl?: 'CH' | 'EN'
     onIntl?: (string) => string
     IconRenders?: Record<string, React.ReactNode>
-    disableIcons?: string[]
+    disableIcons?: string[],
+    onlyMode?: boolean
 }
 
 const Page = observer<IWebPdmProps>(
@@ -130,7 +131,8 @@ const WebPDM: FunctionComponent<IWebPdmProps> = props => {
                 height: props.height,
                 onIgnoreEdge: props.onIgnoreEdge,
                 onModelDetail: props.onModelDetail,
-                intl: props.intl
+                intl: props.intl,
+                onlyMode: props.onlyMode
             },
             Ui: {
                 themeColor: props.themeColor,
