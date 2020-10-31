@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import G6 from '@antv/g6';
 import { withoutUndo } from 'mobx-keystone';
+import { useSize } from 'ahooks';
 import { useMst } from '../context';
 import register from './item';
 import { observer } from 'mobx-react-lite';
@@ -13,7 +14,8 @@ import { useUpdateItem } from './hooks';
 // import mst from 'test/mst'
 export default observer(() => {
     // const mst = useMst()
-    const { setRef, erdGraph } = useLocal();
+    const { setRef, erdGraph, containerRef } = useLocal();
+    // const size = useSize(containerRef);
     return (React.createElement(React.Fragment, null,
         React.createElement(ToolBar, { graph: erdGraph }),
         React.createElement("div", { ref: setRef, className: 'graph' })));
@@ -28,6 +30,7 @@ const useLocal = () => {
         register(mst);
     }, []);
     const checkRef = useRef(+new Date());
+    const size = useSize(containerRef);
     useEffect(() => {
         // alert()
         // const { Nodes , edges } = mst
@@ -52,6 +55,21 @@ const useLocal = () => {
             // erdGraphRef.current.fitView(0)
         }
     }, [JSON.stringify(mst.sys.checkedKeys), mst]);
+    useEffect(() => {
+        if (erdGraphRef.current && size.width && size.height) {
+            // alert(erdGraphRef.current['isLayouting'])
+            if (!erdGraphRef.current['isLayouting']) {
+                const documentHeight = window.innerHeight ||
+                    document.documentElement.clientHeight ||
+                    document.body.clientHeight;
+                const height = mst.sys.height === '100%'
+                    ? documentHeight - 45
+                    : mst.sys.height - 45;
+                erdGraphRef.current.changeSize(size.width, height);
+                erdGraphRef.current.fitView(0);
+            }
+        }
+    }, [size.height, size.width]);
     const setRef = useCallback(ref => {
         containerRef.current = ref;
     }, [containerRef]);
@@ -104,7 +122,7 @@ const useLocal = () => {
                         // alert()
                         graph['isLayouting'] = false;
                         // graph['isLayouting'] = false
-                        alert('endlayout');
+                        // alert('endlayout')
                         graph.fitView(0);
                         withoutUndo(() => {
                             mst.graph.setZoom(graph.getZoom());
@@ -252,8 +270,8 @@ const render = (container, nodes, edges, mst) => {
             ]
         },
         plugins: [
-            // toolbar,
-            ...[mst.sys.disableMiniMap ? [] : [miniMap]]
+        // toolbar,
+        // ...[mst.sys.disableMiniMap ? [] : [miniMap]]
         ]
     });
     // alert(mst === window.kkk)
