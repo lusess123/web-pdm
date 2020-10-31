@@ -51,6 +51,7 @@
   "dependencies": {
     "@antv/g6": "^3.6.0",
     "@iarna/rtf-to-html": "^1.1.0",
+    "ahooks": "^2.8.0",
     "antd": "^4.6.3",
     "classnames": "^2.2.6",
     "mobx-keystone": "^0.46.0",

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react'
 import G6, { Graph } from '@antv/g6'
 import { withoutUndo } from 'mobx-keystone'
+import { useSize } from 'ahooks'
 import { useMst } from '../context'
 import register from './item'
 import { observer } from 'mobx-react-lite'
@@ -15,10 +16,13 @@ import { RootInstance } from '../type'
 
 export default observer(() => {
     // const mst = useMst()
-    const { setRef, erdGraph } = useLocal()
+    const { setRef, erdGraph, containerRef } = useLocal()
+    // const size = useSize(containerRef);
+
     return (
         <>
             {/* <div>{mst.sys.checkedKeys.length}</div> */}
+            {/* {JSON.stringify(size)} */}
             <ToolBar graph={erdGraph} />
             <div ref={setRef} className='graph' />
         </>
@@ -36,6 +40,7 @@ const useLocal = () => {
         register(mst)
     }, [])
     const checkRef = useRef(+new Date())
+    const size = useSize(containerRef);
     useEffect(() => {
         // alert()
         // const { Nodes , edges } = mst
@@ -60,6 +65,27 @@ const useLocal = () => {
             // erdGraphRef.current.fitView(0)
         }
     }, [JSON.stringify(mst.sys.checkedKeys), mst])
+
+    useEffect(() => {
+        if (erdGraphRef.current && size.width && size.height) {
+            // alert(erdGraphRef.current['isLayouting'])
+            if (!erdGraphRef.current['isLayouting']) {
+                const documentHeight =
+                    window.innerHeight ||
+                    document.documentElement.clientHeight ||
+                    document.body.clientHeight
+                const height =
+                    mst.sys.height === '100%'
+                        ? documentHeight - 45
+                        : (mst.sys.height as number) - 45
+                erdGraphRef.current.changeSize(size.width, height)
+                erdGraphRef.current.fitView(0)
+
+            }
+
+        }
+
+    }, [size.height, size.width])
     const setRef = useCallback(
         ref => {
             containerRef.current = ref
@@ -117,7 +143,7 @@ const useLocal = () => {
                         // alert()
                         graph['isLayouting'] = false
                         // graph['isLayouting'] = false
-                        alert('endlayout')
+                        // alert('endlayout')
                         graph.fitView(0)
 
                         withoutUndo(() => {
@@ -276,7 +302,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         },
         plugins: [
             // toolbar,
-            ...[mst.sys.disableMiniMap ? [] : [miniMap]]
+            // ...[mst.sys.disableMiniMap ? [] : [miniMap]]
         ]
     })
     // alert(mst === window.kkk)
