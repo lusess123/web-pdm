@@ -1,9 +1,10 @@
-## [0.2.5-27](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-27) (2020-10-29)
+## [0.2.5-28](https://github.com/lusess123/web-pdm/compare/0.2.2...0.2.5-28) (2020-10-31)
 
 
 ### Features
 
 *  IconRenders ([bc5340b](https://github.com/lusess123/web-pdm/commit/bc5340bde21528cdf9fb0230909a364beec3ad0e))
+* autosize ([08b6773](https://github.com/lusess123/web-pdm/commit/08b67737a8b10a2c173a5704c44a3dec55822d8e))
 * disableIcons ([9e9a5a6](https://github.com/lusess123/web-pdm/commit/9e9a5a6c14591a118ebf8942c8b7261e43661022))
 * support onlyMode ([c1155ab](https://github.com/lusess123/web-pdm/commit/c1155abc46674309e443cc8eb07151a26bae4ae7))
 * **eslint:** change eslint conf ([64cdb4e](https://github.com/lusess123/web-pdm/commit/64cdb4e1599302a1f7d7f7454a64bb1127a2d5e6))
