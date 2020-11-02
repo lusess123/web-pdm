@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import { Button } from 'antd'
-// import ModelTest from '../g6-test/mock/model-test'
-// import ModuleTest from '../g6-test/mock/module-test'
-import ModelTest from '../g6-test/with-field-relation/model-test'
-import ModuleTest from '../g6-test/with-field-relation/module-test'
+import ModelTest from '../g6-test/mock/model-test'
+import ModuleTest from '../g6-test/mock/module-test'
+// import ModelTest from '../g6-test/with-field-relation/model-test'
+// import ModuleTest from '../g6-test/with-field-relation/module-test'
 import WebPdm from '../../src'
 
 import CodePdm from '../../../../docs/type-erd'
@@ -52,7 +52,7 @@ ReactDom.render(
         erdkey={'demo'}
         onIntl={onIntl}
         onlyMode
-        disableIcons={['full', 'reload']}
+        // disableIcons={['full', 'reload']}
         IconRenders={{
             image: <Button size="small" >下载</Button>,
             miniMap: <Button size="small" >显示小地图</Button>,
