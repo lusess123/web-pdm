@@ -12,6 +12,8 @@ import { useMst } from '../../context'
 import './style.scss'
 // import mst from '@antv/g6/lib/algorithm/mst';
 
+console.log('hezk test =======');
+
 type IModelNaviProps = {
     modules?: []
     model?: []
@@ -111,7 +113,8 @@ export default CreateComponent<IModelNaviProps>({
                 mst.sys.tabOrTree,
                 mst.moduleList,
                 mst.sys.showNameOrLabel,
-                mst.sys.currentModule
+                mst.sys.currentModule,
+                mst.sys.search
             ]
         )
 
