@@ -114,11 +114,12 @@ export default CreateComponent<IModelNaviProps>({
                 mst.moduleList,
                 mst.sys.showNameOrLabel,
                 mst.sys.currentModule,
-                mst.sys.search
+                mst.sys.search //打包后没有执行，添加search确保执行
             ]
         )
 
         useEffect(() => { }, [mst.Ui.update])
+
 
         const {
             search,
@@ -263,9 +264,13 @@ const useLocal = () => {
     const mst = useMst()
     const [text, setText] = useState(mst.sys.search)
     const [texting, setTexting] = useState(false)
-    useEffect(() => {
-        if (!texting) debounce(() => setText(mst.sys.search), 1000)()
-    }, [mst.sys.search])
+    // 重复setText 导致快速输入时inputValue显示异常
+    // useEffect(() => {
+    //     if (!texting) debounce(() => {
+    //         setText(mst.sys.search);
+
+    //     }, 1000)()//时间设置太长导致input框未能即使更新设置值
+    // }, [mst.sys.search])
 
     const setSearch = useCallback(
         val => {
