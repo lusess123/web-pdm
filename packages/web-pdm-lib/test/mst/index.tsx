@@ -11,8 +11,8 @@ import CodePdm from '../../../../docs/type-erd'
 import { toModels, toModules } from '../g6-test/trantor/datamap'
 // import TestModel from '../g6-test/trantor/mock/models-data.json'
 // import TestModule from '../g6-test/trantor/mock/modules-data.json'
-// import TestModel from '../g6-test/trantor/gw/model.json'
-// import TestModule from '../g6-test/trantor/gw/module.json'
+// import ModelTest from '../g6-test/trantor/gw/model.json'
+// import ModuleTest from '../g6-test/trantor/gw/module.json'
 // import TestModel from '../g6-test/trantor/model'
 // import TestModule from '../g6-test/trantor/module'
 
@@ -21,8 +21,8 @@ import './style.less'
 // const models = toModels(TestModel.res.map(a => a.model))
 // const modules = toModules(TestModule.res)
 
-const models = TestModel
-const modules = TestModule
+const models = ModelTest
+const modules = ModuleTest
 
 function confirmEnding(str, target) {
     if (str.substr(str.length - target.length, target.length) == target)
