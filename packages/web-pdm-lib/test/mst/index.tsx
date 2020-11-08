@@ -8,18 +8,21 @@ import ModuleTest from '../g6-test/mock/module-test'
 import WebPdm from '../../src'
 
 import CodePdm from '../../../../docs/type-erd'
-// import { toModels, toModules } from '../g6-test/trantor/datamap'
+import { toModels, toModules } from '../g6-test/trantor/datamap'
 // import TestModel from '../g6-test/trantor/mock/models-data.json'
 // import TestModule from '../g6-test/trantor/mock/modules-data.json'
 // import TestModel from '../g6-test/trantor/gw/model.json'
 // import TestModule from '../g6-test/trantor/gw/module.json'
-// import Models from '../g6-test/trantor/model'
-// import Modules from '../g6-test/trantor/module'
+// import TestModel from '../g6-test/trantor/model'
+// import TestModule from '../g6-test/trantor/module'
 
 import './style.less'
 
-const models = ModelTest
-const modules = ModuleTest
+// const models = toModels(TestModel.res.map(a => a.model))
+// const modules = toModules(TestModule.res)
+
+const models = TestModel
+const modules = TestModule
 
 function confirmEnding(str, target) {
     if (str.substr(str.length - target.length, target.length) == target)
@@ -51,7 +54,7 @@ ReactDom.render(
         modules={modules}
         erdkey={'demo'}
         onIntl={onIntl}
-        onlyMode
+        onlyMode={false}
         // disableIcons={['full', 'reload']}
         IconRenders={{
             image: <Button size="small" >下载</Button>,

@@ -26,7 +26,7 @@ npm run watch
 
 # 反馈与共建
 
-<img src='http://zyking.xyz:5012/static/group.1959d82a.jpeg' width='260'>
+<img src='http://zyking.xyz:5012/static/group.d05204b1.jpeg' width='260'>
 
 # 更新日志
 

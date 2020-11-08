@@ -95,9 +95,9 @@ const useLocal = () => {
                 return;
             }
             // alert()
-            graph.clear();
-            graph.data({ nodes: mst.Nodes, edges: mst.edges });
-            graph.render();
+            // graph.clear()
+            // graph.data({ nodes: mst.Nodes, edges: mst.edges })
+            // graph.render()
             const isLargar = graph.getNodes().length > 50;
             graph.updateLayout({
                 type: mst.sys.dagreLayout ? 'dagre' : 'force',
@@ -105,7 +105,7 @@ const useLocal = () => {
                 cols: 3,
                 workerEnabled: true,
                 linkDistance: 0,
-                alphaDecay: isLargar ? 0.3 : 0.15,
+                // alphaDecay: isLargar ? 0.3 : 0.15,
                 preventOverlap: true,
                 // collideStrength: 0.5,
                 //   type: 'dagre',
@@ -133,7 +133,7 @@ const useLocal = () => {
             });
             if (mst.sys.dagreLayout) {
                 async(() => {
-                    //  alert()
+                    // alert()
                     graph.fitView(0);
                 }, 1000);
             }
