@@ -4,7 +4,7 @@
 
 一个用 G6 做的 ER 图工具，最终目标是想做成在线版的 powerdesigner
 
-<img target="_bank" src='https://raw.githubusercontent.com/lusess123/web-pdm/master/doc/web-pdm-pre.png'>
+<img target="_bank" src='https://github.com/lusess123/web-pdm/blob/master/doc/erd.jpeg'>
 
 # 缘起
 
