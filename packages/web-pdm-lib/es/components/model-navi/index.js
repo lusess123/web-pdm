@@ -84,7 +84,7 @@ export default CreateComponent({
                             : intl('标签')),
                     !Sys.onlyMode && React.createElement(Dropdown, { className: 'right', overlay: React.createElement(Menu, null,
                             React.createElement(Menu.Item, { key: '1', onClick: toggleTabOrTree },
-                                Sys.tabOrTree
+                                !Sys.tabOrTree
                                     ? intl('分类')
                                     : intl('树形'),
                                 ' ',
