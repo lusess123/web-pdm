@@ -1,22 +1,25 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import { Button } from 'antd'
-// import ModelTest from '../g6-test/mock/model-test'
-// import ModuleTest from '../g6-test/mock/module-test'
-import ModelTest from '../g6-test/with-field-relation/model-test'
-import ModuleTest from '../g6-test/with-field-relation/module-test'
+import ModelTest from '../g6-test/mock/model-test'
+import ModuleTest from '../g6-test/mock/module-test'
+// import ModelTest from '../g6-test/with-field-relation/model-test'
+// import ModuleTest from '../g6-test/with-field-relation/module-test'
 import WebPdm from '../../src'
 
 import CodePdm from '../../../../docs/type-erd'
-// import { toModels, toModules } from '../g6-test/trantor/datamap'
+import { toModels, toModules } from '../g6-test/trantor/datamap'
 // import TestModel from '../g6-test/trantor/mock/models-data.json'
 // import TestModule from '../g6-test/trantor/mock/modules-data.json'
-// import TestModel from '../g6-test/trantor/gw/model.json'
-// import TestModule from '../g6-test/trantor/gw/module.json'
-// import Models from '../g6-test/trantor/model'
-// import Modules from '../g6-test/trantor/module'
+// import ModelTest from '../g6-test/trantor/gw/model.json'
+// import ModuleTest from '../g6-test/trantor/gw/module.json'
+// import TestModel from '../g6-test/trantor/model'
+// import TestModule from '../g6-test/trantor/module'
 
 import './style.less'
+
+// const models = toModels(TestModel.res.map(a => a.model))
+// const modules = toModules(TestModule.res)
 
 const models = ModelTest
 const modules = ModuleTest
@@ -51,8 +54,8 @@ ReactDom.render(
         modules={modules}
         erdkey={'demo'}
         onIntl={onIntl}
-        onlyMode
-        disableIcons={['full', 'reload']}
+        onlyMode={false}
+        // disableIcons={['full', 'reload']}
         IconRenders={{
             image: <Button size="small" >下载</Button>,
             miniMap: <Button size="small" >显示小地图</Button>,

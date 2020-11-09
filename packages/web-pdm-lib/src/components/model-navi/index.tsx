@@ -214,7 +214,7 @@ export default CreateComponent<IModelNaviProps>({
                                             key='1'
                                             onClick={toggleTabOrTree}
                                         >
-                                            {Sys.tabOrTree
+                                            {!Sys.tabOrTree
                                                 ? intl('分类')
                                                 : intl('树形')}{' '}
                                             {intl('模式')}

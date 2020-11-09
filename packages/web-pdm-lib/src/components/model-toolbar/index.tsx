@@ -152,7 +152,7 @@ export default observer(({ graph }: { graph: any }) => {
                     key={6}
                     Tooltip={Tooltip}
                     title={intl(
-                        mst.sys.disableMiniMap ? '显示小地图' : '屏蔽小地图'
+                        !mst.sys.disableMiniMap ? '显示小地图' : '屏蔽小地图'
                     )}
                     color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
                     icon={mst.sys.disableMiniMap ? 'miniMap' : 'miniMapNo'}
@@ -184,7 +184,7 @@ export default observer(({ graph }: { graph: any }) => {
                     key={8}
                     Tooltip={Tooltip}
                     title={
-                        !mst.sys.dagreLayout
+                        mst.sys.dagreLayout
                             ? intl('切换层次布局')
                             : intl('切换关联布局')
                     }
