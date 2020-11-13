@@ -1,28 +1,5 @@
 // import { Tooltip } from 'antd'
-import {
-    // FileMarkdownOutlined,
-    ReloadOutlined,
-    // CloseCircleFilled,
-    PictureOutlined,
-    PictureFilled,
-    SnippetsFilled,
-    SnippetsOutlined,
-    DownloadOutlined,
-    PartitionOutlined,
-    UngroupOutlined,
-    RollbackOutlined,
-    BgColorsOutlined,
-    // UnlockOutlined,
-    // LockOutlined,
-    ZoomOutOutlined,
-    ZoomInOutlined,
-    BorderOutlined,
-    // ArrowUpOutlined,
-    // ArrowDownOutlined,
-    // ArrowLeftOutlined,
-    // ArrowRightOutlined,
-    // RetweetOutlined
-} from '@ant-design/icons'
+
 import classNames from 'classnames'
 import React, { isValidElement, useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
@@ -35,33 +12,16 @@ import { throttle } from 'lodash'
 // import { undoManager } from '../../context'
 //<SnippetsOutlined />
 //<Snip/** @type {*} */
-const IconRenders = {
 
-    undo: <RollbackOutlined />,
-    redo: <RollbackOutlined style={{ transform: 'scaleX(-1)' }} />,
-    min: <ZoomOutOutlined />,
-    max: <ZoomInOutlined />,
-    full: <BorderOutlined />,
-    miniMap: <PictureFilled />,
-    miniMapNo: <PictureOutlined />,
-    dagreLayout: <PartitionOutlined />,
-    relationLayout: <UngroupOutlined />,
-    reload: <ReloadOutlined />,
-    image: <DownloadOutlined />,
-    darkness: <SnippetsFilled />,
-    light: <SnippetsOutlined />,
-    colorClose: <BgColorsOutlined />,
-    colorOpen: <BgColorsOutlined />
-}
-type TIconRenders = typeof IconRenders
-export type TIconRendersKeys = keyof TIconRenders
+// type TIconRenders = typeof IconRenders
+// export type TIconRendersKeys = keyof TIconRenders
 
 export default observer(({ graph }: { graph: any }) => {
     const mst = useMst()
     const intl = mst.intl
     const undoManager = mst.undoManager
     const { Tooltip, Popover } = mst.Ui as any
-    const _IconRenders: any = { ...IconRenders, ...mst.Ui.IconRenders }
+    const _IconRenders: any = { ...mst.Ui.IconRenders }
 
     const [colorPabel, setColorPabel] = useState(false)
     const setColor = useCallback(

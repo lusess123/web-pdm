@@ -8,7 +8,7 @@ import {
 } from 'mobx-keystone'
 import { RootInstance } from '../type'
 import { renderModelTitle } from '../util/label'
-import { computed } from 'mobx'
+// import { computed } from 'mobx'
 
 // aggregateRoot: boolean;
 // aggregateModelKey: string;
@@ -27,14 +27,14 @@ export class TModel extends Model({
     belongAggregate: prop<string>()
 }) {
     // @computed
-    get fields (): any[] {
+    get fields(): any[] {
         const root: RootInstance = getRoot(this)
         const fields = [...root.Fields.values()]
         return fields.filter(a => a.modelId === this.id)
     }
 
     @modelAction
-    renderModelTitle () {
+    renderModelTitle() {
         const root: RootInstance = getRoot(this)
         return renderModelTitle(
             this.label,
@@ -45,7 +45,7 @@ export class TModel extends Model({
     }
 
     @modelAction
-    filterModel () {
+    filterModel() {
         const root: RootInstance = getRoot(this)
         const search = root.sys.search
         return (

@@ -1,4 +1,4 @@
-import { model, Model, prop, modelAction, getRoot } from 'mobx-keystone'
+import { model, Model, prop, modelAction } from 'mobx-keystone'
 import { Graph } from '@antv/g6'
 @model('webpdm/TGraph')
 export class TGraph extends Model({
@@ -6,7 +6,7 @@ export class TGraph extends Model({
 }) {
     G6Graph: Graph
     //  @modelAction
-    setG6Graph (graph: Graph) {
+    setG6Graph(graph: Graph) {
         // alert(this.$modelId)
         this.G6Graph = graph
         // alert(this.$modelId)
@@ -15,12 +15,12 @@ export class TGraph extends Model({
     }
 
     @modelAction
-    setZoom (zoom: number) {
+    setZoom(zoom: number) {
         //  alert(zoom)
         this.zoom = zoom
     }
     @modelAction
-    minZoom (graph: Graph) {
+    minZoom(graph: Graph) {
         // const gwidth = graph.get('width')
         // const gheight = graph.get('height')
         // const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
@@ -33,7 +33,7 @@ export class TGraph extends Model({
     }
 
     @modelAction
-    maxZoom (graph: Graph) {
+    maxZoom(graph: Graph) {
         // const gwidth = graph.get('width')
         // const gheight = graph.get('height')
         // const point = graph.getCanvasByPoint(gwidth / 2, gheight / 2)
@@ -45,13 +45,13 @@ export class TGraph extends Model({
         }
     }
     @modelAction
-    container (graph: Graph) {
+    container(graph: Graph) {
         graph.fitView(0)
         this.zoom = graph.getZoom()
     }
 
     @modelAction
-    downAsImage () {
+    downAsImage() {
         const _graph: any = this.G6Graph
         if (!_graph) return
         const oldZoom = this.G6Graph.getZoom()
@@ -94,7 +94,7 @@ export class TGraph extends Model({
             })
     }
 
-    actionEdges (currentModel: string) {
+    actionEdges(currentModel: string) {
         if (!this.G6Graph) return
         this.G6Graph.getEdges().forEach(edge => {
             const edgeData = edge.getModel()

@@ -52,6 +52,7 @@ export type IComponentConfig = {
     Menu?: React.ComponentType
     Select?: React.ComponentType
     Tooltip?: React.ComponentType
+    Popover?: React.ComponentType
 }
 
 export type TData = {

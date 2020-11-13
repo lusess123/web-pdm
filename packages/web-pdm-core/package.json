@@ -1,7 +1,7 @@
 {
-  "name": "web-pdm",
-  "version": "0.2.5-32",
-  "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
+  "name": "web-pdm-core",
+  "version": "1.0.1",
+  "description": "web-pdm的核心库",
   "main": "es/index.js",
   "module": "es/index.js",
   "files": [
@@ -35,21 +35,34 @@
     "@types/lodash": "^4.14.161",
     "@types/react": "^16.9.22",
     "@types/react-dom": "^16.8.4",
-    "@umijs/plugin-antd": "^0.8.0",
-    "@umijs/plugin-sass": "^1.1.1",
     "ak-webpack": "^1.0.15",
     "conventional-changelog-cli": "^2.1.0",
-    "father": "^2.29.9",
     "mobx": "^6.0.1",
     "rollup-plugin-typescript2": "^0.27.2",
     "typedoc": "^0.19.1",
     "typescript": "^3.8.2",
     "wrappy": "^1.0.2",
     "xdg-basedir": "^4.0.0",
-    "xtend": "^4.0.2"
+    "xtend": "^4.0.2",
+    "antd": "^4.6.3"
   },
   "dependencies": {
-    "antd": "^4.6.3",
-    "web-pdm-core": "^1.0.1"
+    "ahooks": "^2.8.0",
+    "@antv/g6": "^3.6.0",
+    "@iarna/rtf-to-html": "^1.1.0",
+    "classnames": "^2.2.6",
+    "mobx-keystone": "^0.46.0",
+    "mobx-react-lite": "^2.0.7",
+    "react": "^16.8.6",
+    "react-color": "^2.18.1",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dnd": "^9.3.4",
+    "react-dnd-html5-backend": "^9.3.4",
+    "react-dom": "^16.9.0",
+    "react-element-to-jsx-string": "^14.3.1",
+    "react-scrollbars-custom": "^4.0.21",
+    "reactcss": "^1.2.3",
+    "with-dnd-context": "^1.0.4",
+    "xml2js": "^0.4.23"
   }
 }

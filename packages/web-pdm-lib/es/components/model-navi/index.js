@@ -6,6 +6,8 @@ import Scroll from 'react-custom-scrollbars';
 import { CreateComponent } from '../../util';
 import { useMst } from '../../context';
 import './style.scss';
+// import mst from '@antv/g6/lib/algorithm/mst';
+console.log('hezk test =======');
 const getTreeNodeTitle = (model, root, OptionBuilder) => {
     return (React.createElement(OptionBuilder, { data: {
             title: root.renderModelTitle(model),
@@ -61,7 +63,8 @@ export default CreateComponent({
             mst.sys.tabOrTree,
             mst.moduleList,
             mst.sys.showNameOrLabel,
-            mst.sys.currentModule
+            mst.sys.currentModule,
+            mst.sys.search //打包后没有执行，添加search确保执行
         ]);
         useEffect(() => { }, [mst.Ui.update]);
         const { search, onExpand, checkAllFun, checkAllCancleFun, toggleShowNameOrLabel, toggleTabOrTree, Sys, changeModuleValue, setSearch } = useLocal();
@@ -101,10 +104,12 @@ const useLocal = () => {
     const mst = useMst();
     const [text, setText] = useState(mst.sys.search);
     const [texting, setTexting] = useState(false);
-    useEffect(() => {
-        if (!texting)
-            debounce(() => setText(mst.sys.search), 1000)();
-    }, [mst.sys.search]);
+    // 重复setText 导致快速输入时inputValue显示异常
+    // useEffect(() => {
+    //     if (!texting) debounce(() => {
+    //         setText(mst.sys.search);
+    //     }, 1000)()//时间设置太长导致input框未能即使更新设置值
+    // }, [mst.sys.search])
     const setSearch = useCallback(val => {
         setTexting(true);
         setText(val);
