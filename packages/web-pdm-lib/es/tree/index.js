@@ -2,17 +2,6 @@ import { Dropdown, Menu, Tree as AntTree } from 'antd';
 import React, { useState, useCallback } from 'react';
 // import 'antd/dist/antd.less'
 import './style.scss';
-const { TreeNode } = AntTree;
-export default () => {
-    return (React.createElement("div", { className: 'tree-erd' },
-        React.createElement(AntTree, null,
-            React.createElement(TreeNode, { title: '111', key: '1' },
-                React.createElement(TreeNode, { title: '111', key: '2' }),
-                React.createElement(TreeNode, { title: React.createElement(OptionBuilder, { data: {
-                            title: 'ddddd',
-                            options: [{ title: 'aaa' }]
-                        } }), key: '3' })))));
-};
 // const click = () => alert()
 const OptionBuilder = ({ data }) => {
     const { title, options = [] } = data;
