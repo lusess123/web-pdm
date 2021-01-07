@@ -120,13 +120,18 @@ const useLocal = () => {
             // graph.render()
             const isLargar = graph.getNodes().length > 50
             graph.updateLayout({
-                type: mst.sys.dagreLayout ? 'dagre' : 'force',
-                condense: true,
-                cols: 3,
+                type: mst.sys.dagreLayout ? 'dagre' : 'fruchterman',
+                // condense: true,
+                // cols: 3,
                 workerEnabled: true,
                 linkDistance: 0,
                 // alphaDecay: isLargar ? 0.3 : 0.15,
-                preventOverlap: true,
+                // preventOverlap: true,
+                // clustering: true,
+                clusterGravity: 100,
+                speed: 2,
+                gravity: 100,
+                gpuEnabled: true,
                 // collideStrength: 0.5,
                 //   type: 'dagre',
                 //   // controlPoints: true,
@@ -137,7 +142,7 @@ const useLocal = () => {
                 // nodesep: 100, // 节点水平间距(px)
                 // ranksep: 200, // 每一层节点之间间距
 
-                nodeSpacing: isLargar ? -100 : -180,
+                // nodeSpacing: isLargar ? -100 : -180,
                 onLayoutEnd: () => {
                     async(() => {
                         // alert()

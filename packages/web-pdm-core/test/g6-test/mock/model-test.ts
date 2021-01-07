@@ -367,7 +367,7 @@ export default [
     module: 'finance',
     fields: [
       {
-        type: 'nvarchar(50)',
+        type: 'toMany',
         name: 'toMany',
         originalKey: 'FID',
         typeMeta: {

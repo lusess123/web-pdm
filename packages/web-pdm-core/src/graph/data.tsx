@@ -220,13 +220,17 @@ export const createLinks = (root: RootInstance) => {
                             fieldsLength: l,
                             style: style.default.edge,
                             type: 'console-line',
-                            // label: field.type,
+                            label: Relation[field.type] || field.type,
                             labelAutoRotate: true,
                             loopCfg: {
                                 // position: 'top',
                                 clockwise: true, // dist: 200,
                                 dist: 100
-                            }
+                            },
+                            // labelCfg: {
+                            //     refY: 14,
+                            //     refX: 0,
+                            // },
                         }
                     ]
                 }

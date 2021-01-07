@@ -3,9 +3,10 @@ export default () => {
     G6.registerEdge(
         'console-line',
         {
-            labelAutoRotate: true
+            labelAutoRotate: true,
+            label: 'cubic-vertical',
         },
-        'cubic'
+        'line'
     )
 
     G6.registerEdge(
@@ -13,6 +14,6 @@ export default () => {
         {
             labelAutoRotate: true
         },
-        'cubic'
+        'line'
     )
 }
