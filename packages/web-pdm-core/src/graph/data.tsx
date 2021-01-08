@@ -227,10 +227,13 @@ export const createLinks = (root: RootInstance) => {
                                 clockwise: true, // dist: 200,
                                 dist: 100
                             },
-                            // labelCfg: {
-                            //     refY: 14,
-                            //     refX: 0,
-                            // },
+                            labelCfg: {
+                                style: {
+                                    stroke: '#fff',
+                                    lineWidth: 30
+                                }
+
+                            },
                         }
                     ]
                 }
