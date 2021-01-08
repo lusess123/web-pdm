@@ -1,6 +1,6 @@
 {
   "name": "web-pdm-core",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "web-pdm的核心库",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -13,8 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf public &&  NODE_ENV=production webpack --config ./webconfig.config.js --mode production  --colors --max_old_space_size=1024 && rm -rf docker/public  && cp -r ./public docker/public",
     "watch": "time webpack-dev-server  --watch-poll --config ./webconfig.config.js --mode development",
-    "publish-npm": "npm run changelog && git commit -am 'docs: update changelog' && npm run build-lib ; npm version prerelease && npm publish --registry=http://registry.npmjs.org && cnpm sync web-pdm",
-    "publish-npm:patch": "npm run build-lib ; npm version patch && npm publish --registry=http://registry.npmjs.org && cnpm sync web-pdm",
+    "publish-npm": "npm run changelog && git commit -am 'docs: update changelog' && npm run build-lib ; npm version prerelease && npm publish --registry=http://registry.npmjs.org && cnpm sync web-pdm-core",
+    "publish-npm:patch": "npm run build-lib ; npm version patch && npm publish --registry=http://registry.npmjs.org && cnpm sync web-pdm-core",
     "publish-docker": "cd ./docker && sh build.sh",
     "publish-server": "cd ./docker && sh upload.sh",
     "dev": "father doc dev",

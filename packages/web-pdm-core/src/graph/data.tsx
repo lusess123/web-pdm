@@ -83,7 +83,10 @@ const createSysNode = () => {
 const Relation = {
     ToOne: '1:1',
     ToMany: '1:n',
-    lookup: '查找'
+    lookup: '查找',
+    toOne: '1:1',
+    toMany: '1:n',
+    Lookup: '查找'
 }
 
 export const createLinks = (root: RootInstance) => {
