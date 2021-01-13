@@ -1,6 +1,6 @@
 {
   "name": "web-pdm-core",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "web-pdm的核心库",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -63,6 +63,7 @@
     "react-scrollbars-custom": "^4.0.21",
     "reactcss": "^1.2.3",
     "with-dnd-context": "^1.0.4",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "mobx": "^4.15.6"
   }
 }
