@@ -125,6 +125,7 @@ const useLocal = () => {
                 // cols: 3,
                 workerEnabled: true,
                 linkDistance: 0,
+                pixelRatio: 2,
                 // alphaDecay: isLargar ? 0.3 : 0.15,
                 // preventOverlap: true,
                 // clustering: true,
@@ -242,7 +243,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         fitCenter: true,
         enabledStack: true,
         animate: true,
-
+        // pixelRatio: 1,
         // animate: true,
         defaultEdge: styleConfig.default.edge,
         edgeStateStyles: {
