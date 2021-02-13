@@ -1,5 +1,5 @@
 import { EllipsisOutlined } from '@ant-design/icons'
-import { debounce } from 'lodash'
+import { debounce, map } from 'lodash'
 
 // import { Tree } from '../../tree'
 import { TModel } from '../../type/model'
@@ -11,6 +11,7 @@ import { CreateComponent } from '../../util'
 import { useMst } from '../../context'
 import './style.scss'
 // import mst from '@antv/g6/lib/algorithm/mst';
+import { useStore } from '../../store'
 
 console.log('hezk test =======');
 
@@ -20,29 +21,29 @@ type IModelNaviProps = {
 }
 
 const getTreeNodeTitle = (
-    model: TModel,
-    root: RootInstance,
+    model: any,
+    mst: any,
     OptionBuilder: any
 ) => {
     return (
         <OptionBuilder
             data={{
-                title: root.renderModelTitle(model),
+                title: mst.renderModelTitle(model),
 
                 options: [
                     {
-                        title: <span> {root.intl('定位模型')}</span>,
+                        title: <span> {mst.intl('定位模型')}</span>,
                         key: 1,
                         click: e => {
-                            root.sys.centerCurrentModel([model.id])
+                            // root.sys.centerCurrentModel([model.id])
                             e.stopPropagation()
                         }
                     },
                     {
                         key: 2,
-                        title: <span> {root.intl('查看')}</span>,
+                        title: <span> {mst.intl('查看')}</span>,
                         click: e => {
-                            root.sys.openModel(model.id)
+                            // root.sys.openModel(model.id)
                             e.stopPropagation()
                         }
                     }
@@ -57,14 +58,17 @@ const getTreeNodeTitle = (
 
 export default CreateComponent<IModelNaviProps>({
     render(_) {
-        const mst = useMst()
+
+        const mst = useStore()
         const intl = mst.intl
         const { Input, Button, Dropdown, Menu, Select, Tree } = mst.Ui as any
-        const { TreeNode, OptionBuilder } = Tree as any
+        const errUIs = Object.entries({ Input, Button, Dropdown, Menu, Select, Tree }).filter( ([_,v]) => !v )
+
+        const { TreeNode, OptionBuilder } = Tree as any || {}
         const treeNodes = useMemo(
             () =>
                 !mst.sys.tabOrTree
-                    ? mst.moduleList.map(m => {
+                    ? map(mst.Modules).map(m => {
                         return (
                             <TreeNode
                                 title={
@@ -72,8 +76,8 @@ export default CreateComponent<IModelNaviProps>({
                                 }
                                 key={m.id}
                             >
-                                {[...m.models.values()]
-                                    .filter(model => model.filterModel())
+                                { mst.getModelsByModule(m.id!)
+                                    .filter(mst.filterModel)
                                     .map(model => {
                                         return (
                                             <TreeNode
@@ -89,14 +93,8 @@ export default CreateComponent<IModelNaviProps>({
                             </TreeNode>
                         )
                     })
-                    : [...mst.Models.values()]
-                        .filter(
-                            model =>
-                                (!mst.sys.currentModule ||
-                                    model.moduleId ===
-                                    mst.sys.currentModule) &&
-                                model.filterModel()
-                        )
+                    : map(mst.Models)
+                        .filter(model =>(mst.filterModel(model)))
                         .map(model => {
                             return (
                                 <TreeNode
@@ -111,14 +109,14 @@ export default CreateComponent<IModelNaviProps>({
                         }),
             [
                 mst.sys.tabOrTree,
-                mst.moduleList,
+                mst.Modules,
                 mst.sys.showNameOrLabel,
                 mst.sys.currentModule,
                 mst.sys.search //打包后没有执行，添加search确保执行
             ]
         )
 
-        useEffect(() => { }, [mst.Ui.update])
+        useEffect(() => { }, [mst.Ui?.update])
 
 
         const {
@@ -132,6 +130,9 @@ export default CreateComponent<IModelNaviProps>({
             changeModuleValue,
             setSearch
         } = useLocal()
+
+        if(errUIs.length) return `(${errUIs.map(([k])=>k).join(',')}) 组件配置错误`
+
         return (
             <div
                 className='console-models-tree'
@@ -152,19 +153,20 @@ export default CreateComponent<IModelNaviProps>({
                                         value={Sys.currentModule}
                                         className='select-after'
                                         onChange={changeModuleValue}
+                                        style={{minWidth: 80}}
                                     >
                                         {[
                                             <Select.Option value={''}>
-                                                {intl('所有')}
+                                                {mst.sys.showNameOrLabel ? intl('all') : intl('所有')}
                                             </Select.Option>,
-                                            ...[...mst.Modules.values()].map(
+                                            map(mst.Modules).map(
                                                 module => {
                                                     return (
                                                         <Select.Option
                                                             value={module.id}
                                                             key={module.id}
                                                         >
-                                                            {module.label}
+                                                            {mst.sys.showNameOrLabel ? module.name : module.label }
                                                         </Select.Option>
                                                     )
                                                 }
@@ -241,14 +243,14 @@ export default CreateComponent<IModelNaviProps>({
                         <Tree
                             showIcon={false}
                             className='console-models-tree-tree'
-                            onSelect={mst.sys.setCurrentModel.bind(mst.sys)}
+                            onSelect={mst.sys?.setCurrentModel?.bind(mst.sys)}
                             selectedKeys={[mst.sys.currentModel]}
-                            checkedKeys={[...mst.sys.checkedKeys]}
-                            onCheck={mst.setCheckedKeys.bind(mst)}
+                            checkedKeys={[...mst.sys.checkedKeys || []]}
+                            onCheck={mst?.setCheckedKeys?.bind(mst)}
                             checkable
                             onExpand={onExpand}
                             multiple
-                            expandedKeys={[...mst.sys.expandedKeys]}
+                            expandedKeys={[...mst.sys?.expandedKeys || []]}
                         >
                             {treeNodes}
                         </Tree>
@@ -261,7 +263,7 @@ export default CreateComponent<IModelNaviProps>({
 })
 
 const useLocal = () => {
-    const mst = useMst()
+    const mst = useStore()
     const [text, setText] = useState(mst.sys.search)
     const [texting, setTexting] = useState(false)
     // 重复setText 导致快速输入时inputValue显示异常
@@ -290,24 +292,24 @@ const useLocal = () => {
             return mst.moduleList
         },
         onExpand(expandedKeys: string[]) {
-            mst.sys.setExpandedKeys(expandedKeys)
+            mst.sys?.setExpandedKeys(expandedKeys)
         },
 
         get expandedKeys() {
             return mst.sys.expandedKeys
         },
         checkAllFun() {
-            return mst.checkAllFun()
+            return mst?.checkAllFun()
         },
         checkAllCancleFun() {
-            return mst.checkAllCancleFun()
+            return mst?.checkAllCancleFun()
         },
         toggleShowNameOrLabel: mst.sys.toggleShowNameOrLabel,
-        toggleTabOrTree: mst.sys.toggleTabOrTree.bind(mst.sys),
+        toggleTabOrTree: mst.sys?.toggleTabOrTree?.bind(mst.sys),
         get Sys() {
             return mst.sys
         },
-        changeModuleValue: mst.sys.changeModuleValue.bind(mst.sys),
+        changeModuleValue: mst.sys?.changeModuleValue?.bind(mst.sys),
         setSearch
     }
 }

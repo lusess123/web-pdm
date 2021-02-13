@@ -10,65 +10,47 @@ import './model.scss'
 import GraphEvent from './event'
 import { initStyle } from './item/style'
 import { useUpdateItem } from './hooks'
-import { RootInstance } from '../type'
-// import { debounce } from 'lodash'
-// import mst from 'test/mst'
+// import { RootInstance } from '../type'
+import { useStore } from '../store'
+import { useGraph } from '../store/graph'
 
-export default observer(() => {
-    // const mst = useMst()
+
+export default () => {
     const { setRef, erdGraph, containerRef } = useLocal()
-    // const size = useSize(containerRef);
-
     return (
         <>
-            {/* <div>{mst.sys.checkedKeys.length}</div> */}
-            {/* {JSON.stringify(size)} */}
-            <ToolBar graph={erdGraph} />
+            {/* <ToolBar graph={erdGraph} /> */}
             <div ref={setRef} className='graph' />
         </>
     )
-})
+}
 
 const useLocal = () => {
-    const mst = useMst()
-    // window.kkk = mst
-
+    const mst = useStore()
+    const graph = useGraph()
     const containerRef = useRef(null)
-    const erdGraphRef = useRef<Graph>(null)
+    const erdGraphRef = useRef<any>(null)
     const miniMapRef = useRef<any>(null)
     useEffect(() => {
-        register(mst)
+        register()
     }, [])
     const checkRef = useRef(+new Date())
     const size = useSize(containerRef);
     useEffect(() => {
-        // alert()
-        // const { Nodes , edges } = mst
         if (!erdGraphRef.current) {
-            //  alert(mst.Nodes.length)
-            // alert(mst === window.kkk)
-            //alert('erdGraphRef.current = render')
-            const Obj = render(containerRef.current, mst.Nodes, mst.edges, mst)
+            const Obj = render(containerRef.current, graph.Nodes, graph.edges, mst)
             erdGraphRef.current = Obj.graph
             miniMapRef.current = Obj.miniMap
-            //alert('erdGraphRef.current')
-            //  alert(mst.graph.$modelId)
             async(() => {
-                mst.graph.setG6Graph(erdGraphRef.current)
-                // layout(erdGraphRef.current,  Nodes , edges, mst)
+                // mst.graph.setG6Graph(erdGraphRef.current)
             })
-
-            //  window.kkk1 = mst
         } else {
-            //alert('  layout(erdGraphRef.current,  mst.Nodes ' + mst.Nodes.length)
             layout(erdGraphRef.current, mst.Nodes, mst.edges, mst)
-            // erdGraphRef.current.fitView(0)
         }
     }, [JSON.stringify(mst.sys.checkedKeys), mst])
 
     useEffect(() => {
         if (erdGraphRef.current && size.width && size.height) {
-            // alert(erdGraphRef.current['isLayouting'])
             if (!erdGraphRef.current['isLayouting']) {
                 const documentHeight =
                     window.innerHeight ||
@@ -93,7 +75,6 @@ const useLocal = () => {
         [containerRef]
     )
     useEffect(() => {
-        // debounce(()=> {
         const graph = erdGraphRef.current
         if (graph) {
             const gwidth = graph.get('width')
@@ -102,74 +83,44 @@ const useLocal = () => {
 
             graph.zoomTo(mst.graph.zoom, point)
         }
-        // }
-        //  }, 100)()
     }, [mst.graph.zoom])
     const reloadRef = useRef(false)
     useEffect(() => {
-        // debounce(()=> {
         const graph = erdGraphRef.current
         if (graph) {
             if (!reloadRef.current) {
                 reloadRef.current = true
                 return
             }
-            // alert()
-            // graph.clear()
-            // graph.data({ nodes: mst.Nodes, edges: mst.edges })
-            // graph.render()
             const isLargar = graph.getNodes().length > 50
             graph.updateLayout({
                 type: mst.sys.dagreLayout ? 'dagre' : 'fruchterman',
-                // condense: true,
-                // cols: 3,
                 workerEnabled: true,
                 linkDistance: 0,
                 pixelRatio: 2,
-                // alphaDecay: isLargar ? 0.3 : 0.15,
-                // preventOverlap: true,
-                // clustering: true,
                 clusterGravity: 100,
                 speed: 2,
                 gravity: 100,
                 gpuEnabled: true,
-                // collideStrength: 0.5,
-                //   type: 'dagre',
-                //   // controlPoints: true,
-                //   // nodeSize: [40, 20],
-                // nodesep: 1,
-                // ranksep: 1,
-                // align: 'DL',
-                // nodesep: 100, // 节点水平间距(px)
-                // ranksep: 200, // 每一层节点之间间距
-
-                // nodeSpacing: isLargar ? -100 : -180,
                 onLayoutEnd: () => {
                     async(() => {
-                        // alert()
                         graph['isLayouting'] = false
-                        // graph['isLayouting'] = false
-                        // alert('endlayout')
                         graph.fitView(0)
 
-                        withoutUndo(() => {
-                            mst.graph.setZoom(graph.getZoom())
-                        })
-
-                        // alert('onLayoutEnd')
+                        // withoutUndo(() => {
+                        //     mst.graph.setZoom(graph.getZoom())
+                        // })
                     }, 1000)
                 }
             })
             if (mst.sys.dagreLayout) {
                 async(() => {
-                    // alert()
                     graph.fitView(0)
                 }, 1000)
             }
         }
     }, [mst.sys.dagreLayout])
 
-    //  alert('useUpdateItem' + mst.graph.zoom)
     useUpdateItem({
         currentModel: mst.sys.currentModel,
         graph: erdGraphRef.current as any,
@@ -182,7 +133,7 @@ const useLocal = () => {
 
     useEffect(() => {
         if (erdGraphRef.current && miniMapRef.current) {
-            // alert()
+
             if (!mst.sys.disableMiniMap) {
                 erdGraphRef.current?.removePlugin(miniMapRef.current)
             } else {
@@ -206,12 +157,6 @@ const useLocal = () => {
     }
 }
 
-// const MINZOOM = 0.01
-// const toolbar = new G6.ToolBar();
-// const edgeBundling = new G6.Bundling({
-//   bundleThreshold: 0.6,
-//   K: 100,
-// });
 const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
     const documentHeight =
         window.innerHeight ||
@@ -221,12 +166,10 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         mst.sys.height === '100%'
             ? documentHeight - 45
             : (mst.sys.height as number) - 45
-    // const height = mst.sys.height
-    // alert(height)
-    // alert(height)
+
     const styleConfig = initStyle({ primaryColor: mst.Ui.themeColor }).style
     const isLargar = nodes.length > 50
-    // alert(isLargar)
+
     const miniMap = new G6.Minimap({
         type: 'delegate',
         viewportClassName: 'g6-minimap-viewport-erd',
@@ -243,8 +186,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         fitCenter: true,
         enabledStack: true,
         animate: true,
-        // pixelRatio: 1,
-        // animate: true,
+
         defaultEdge: styleConfig.default.edge,
         edgeStateStyles: {
             default: styleConfig.default.edge,
@@ -264,16 +206,16 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
             linkDistance: 0,
             alphaDecay: isLargar ? 0.3 : undefined,
             preventOverlap: true,
-            // collideStrength: 0.5,
+
             nodeSpacing: isLargar ? -100 : -180,
             onLayoutEnd: () => {
                 graph['isLayouting'] = false
                 graph['endLayout'] = true
                 graph.fitView(0)
                 graph['endLayout'] = false
-                withoutUndo(() => {
-                    mst.graph.setZoom(graph.getZoom())
-                })
+                // withoutUndo(() => {
+                //     mst.graph.setZoom(graph.getZoom())
+                // })
             }
         },
 
@@ -283,8 +225,6 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
                 {
                     type: 'zoom-canvas',
                     minZoom: 0.0001,
-                    // enableOptimize: true,
-                    // optimizeZoom: true,
                     maxZoom: 2.1
                     // enableOptimize: true,
                 },
@@ -313,9 +253,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
     })
     // alert(mst === window.kkk)
     GraphEvent(graph, mst)
-    // miniMap.init
-    // const x = nodes[0].x
-    // edgeBundling.bundling({ nodes, edges });
+
     graph.data({ nodes, edges })
     graph['isLayouting'] = true
     graph.render()

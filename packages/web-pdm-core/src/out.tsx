@@ -1,8 +1,10 @@
 import React, { useEffect, useState, FunctionComponent, ReactNode } from 'react'
+import { createContainer } from "unstated-next"
 import { applySnapshot, onSnapshot, withoutUndo } from 'mobx-keystone'
 import { useMst } from './context'
 import { observer } from 'mobx-react-lite'
 import { Provider, createRootStore } from './context'
+import { StoreContent, useStore } from './store'
 import MSTPage from './components'
 // import { TIconRendersKeys } from './components/model-toolbar'
 import {
@@ -75,6 +77,8 @@ export interface IWebPdmProps {
     onlyMode?: boolean
 }
 
+
+
 const Page = observer<IWebPdmProps>(
     ({
         onIntl,
@@ -90,47 +94,58 @@ const Page = observer<IWebPdmProps>(
         components,
         IconRenders
     }) => {
-        const data = useMst()
-        useEffect(() => {
-            // onSnapshot(data, snapshot => {
-            //     sessionStorage.setItem(
-            //         'web-pdm' + erdkey,
-            //         JSON.stringify(snapshot)
-            //     )
-            //     sessionStorage.setItem(
-            //         'web-pdm-fields' + erdkey,
-            //         JSON.stringify(Array.from(data.Fields.entries()))
-            //     )
-            // })
-            const localdata = sessionStorage.getItem('web-pdm' + erdkey)
-            if (!localdata) {
-                withoutUndo(() => data.initData(models, modules))
-            } else {
-                const sdata = JSON.parse(localdata)
-                sdata.sys.height = height
-                withoutUndo(() => {
-                    const localFieldsdata = sessionStorage.getItem(
-                        'web-pdm-fields' + erdkey
-                    )
-                    if (localFieldsdata) {
-                        data.setFields(new Map(JSON.parse(localFieldsdata)))
-                    }
-                    applySnapshot(data, sdata)
-                    data.sys.setOnIgnoreEdge(onIgnoreEdge)
-                    data.sys.setOnModelDetail(onModelDetail)
-                    data.Ui.registComponents(components, IconRenders)
-                    data.setOnReload(onReload!)
-                    data.onIntl = onIntl!
-                })
-            }
-        }, [])
+        // const data = useMst()
+        const store = useStore()
+
+        // useEffect(() => {
+        //     // onSnapshot(data, snapshot => {
+        //     //     sessionStorage.setItem(
+        //     //         'web-pdm' + erdkey,
+        //     //         JSON.stringify(snapshot)
+        //     //     )
+        //     //     sessionStorage.setItem(
+        //     //         'web-pdm-fields' + erdkey,
+        //     //         JSON.stringify(Array.from(data.Fields.entries()))
+        //     //     )
+        //     // })
+        //     const localdata = sessionStorage.getItem('web-pdm' + erdkey)
+        //     if (!localdata) {
+        //         withoutUndo(() => data.initData(models, modules))
+        //     } else {
+        //         const sdata = JSON.parse(localdata)
+        //         sdata.sys.height = height
+        //         withoutUndo(() => {
+        //             const localFieldsdata = sessionStorage.getItem(
+        //                 'web-pdm-fields' + erdkey
+        //             )
+        //             if (localFieldsdata) {
+        //                 data.setFields(new Map(JSON.parse(localFieldsdata)))
+        //             }
+        //             applySnapshot(data, sdata)
+        //             data.sys.setOnIgnoreEdge(onIgnoreEdge)
+        //             data.sys.setOnModelDetail(onModelDetail)
+        //             data.Ui.registComponents(components, IconRenders)
+        //             data.setOnReload(onReload!)
+        //             data.onIntl = onIntl!
+        //         })
+        //     }
+        // }, [])
+
+        // useEffect(() => {
+        //     data.Models.clear()
+        //     data.Modules.clear()
+        //     data.Fields.clear()
+        //     withoutUndo(() => data.initData(models, modules))
+        // }, [models])
+
+        // const store = useStore()
 
         useEffect(() => {
-            data.Models.clear()
-            data.Modules.clear()
-            data.Fields.clear()
-            withoutUndo(() => data.initData(models, modules))
-        }, [models])
+            store.initConfig({ ...components || {}, height: 500 }, modules, models)
+
+        }, [])
+
+
 
         return <MSTPage className={className} style={style} />
     }
@@ -142,30 +157,37 @@ const Page = observer<IWebPdmProps>(
  * @return {*}
  */
 const WebPDM: FunctionComponent<IWebPdmProps> = props => {
-    const [rootStore] = useState(() => {
-        return createRootStore({
-            sys: {
-                height: props.height,
-                onIgnoreEdge: props.onIgnoreEdge,
-                onModelDetail: props.onModelDetail,
-                intl: props.intl,
-                onlyMode: props.onlyMode
-            },
-            Ui: {
-                themeColor: props.themeColor,
-                darkness: props.darkness
-            },
-            components: props.components,
-            onReload: props.onReload,
-            onIntl: props.onIntl,
-            IconRenders: props.IconRenders,
-            disableIcons: props.disableIcons
-        })
-    })
+    // const store = useStore()
+    // const [rootStore] = useState(() => {
+    //     return createRootStore({
+    //         sys: {
+    //             height: props.height,
+    //             onIgnoreEdge: props.onIgnoreEdge,
+    //             onModelDetail: props.onModelDetail,
+    //             intl: props.intl,
+    //             onlyMode: props.onlyMode
+    //         },
+    //         Ui: {
+    //             themeColor: props.themeColor,
+    //             darkness: props.darkness
+    //         },
+    //         components: props.components,
+    //         onReload: props.onReload,
+    //         onIntl: props.onIntl,
+    //         IconRenders: props.IconRenders,
+    //         disableIcons: props.disableIcons
+    //     })
+    // })
+
+
+
     return (
-        <Provider value={rootStore}>
-            {rootStore && <Page {...props} />}
-        </Provider>
+        // <Provider value={rootStore}>
+        //     {rootStore && <Page {...props} />}
+        // </Provider>
+        <StoreContent.Provider>
+            <Page {...props} />
+        </StoreContent.Provider>
     )
 }
 

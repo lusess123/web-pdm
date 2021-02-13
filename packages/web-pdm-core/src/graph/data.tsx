@@ -1,18 +1,16 @@
-// import mst from '@antv/g6/lib/algorithm/mst'
-import { getSnapshot } from 'mobx-keystone'
-import { RootInstance } from '../type'
-// import { mapToArrary } from '../util'
+
 import { initStyle } from './item/style'
+import { TStore } from '../store'
+import { map } from 'lodash'
 
 const getLength = (length: number) => {
     return length >= 20 ? length : 20
 }
 
-export const createData = (root: RootInstance) => {
-    //alert('createData')
-    const t0 = +new Date()
+export const createData = (root: TStore) => {
+    // const t0 = +new Date()
     const { style, colors } = initStyle({ primaryColor: root.Ui.themeColor })
-    const res = [...root.Models.values()]
+    const res = [...map(root.Models)]
         .filter(
             a =>
                 !root.sys.dagreLayout ||
@@ -23,7 +21,7 @@ export const createData = (root: RootInstance) => {
                 id: 'model-' + m.id,
                 type: 'console-model-Node',
                 isKeySharp: root.graph.zoom <= 0.4,
-                visible: !!root.sys.checkedKeys.find(a => a === m.id),
+                visible: !!root.sys.checkedKeys?.find(a => a === m.id),
                 selected: m.id === root.sys.currentModel,
                 showNameOrLabel: root.sys.showNameOrLabel,
                 config: {
@@ -41,7 +39,7 @@ export const createData = (root: RootInstance) => {
                         // ...getSnapshot(a) ,
                         // relationModel: getSnapshot(a.relationModel)
                         ...a,
-                        relationModel: a.relationModel
+                        relationModel: a.typeMeta?.relationModel
                     })),
                     key: m.id,
                     name: m.name,
@@ -58,9 +56,6 @@ export const createData = (root: RootInstance) => {
             }
         })
         .filter(a => a.visible)
-    //const t1 = +new Date()
-    // console.log(res)
-    //alert(res.length +  '   ' + (t1 - t0))
     if (res.length > 0) return res.concat([createSysNode() as any])
 
     return res

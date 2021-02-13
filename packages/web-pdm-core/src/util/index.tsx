@@ -94,7 +94,7 @@ export const renderJson = (value: any, replacer?: any, space?: any) => {
     )
 }
 
-export function mapToArrary<T> (mapObj: Map<string, T>) {
+export function mapToArrary<T>(mapObj: Map<string, T>) {
     return [...mapObj.values()]
 }
 
@@ -119,4 +119,15 @@ export const changeTwoDecimal_f = x => {
     }
     if (s_x >= 100) return 100
     return s_x
+}
+
+export function arraryToMap<T, V extends T>(list: T[], setKeyFun: (item: T) => string, setItemFun: (item: T, key: string) => V): Record<string, V> {
+    return list.reduce((res, item) => {
+        const key = setKeyFun(item);
+        const newItem = setItemFun(item, key);
+        return {
+            ...res,
+            [key]: { ...newItem, id: key }
+        }
+    }, {})
 }

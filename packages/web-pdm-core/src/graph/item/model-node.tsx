@@ -12,7 +12,7 @@ import {
     setNodeStateAttr
 } from './util'
 
-export const register = mst => {
+export const register = () => {
     // const colors = {
     //     blue : '#495D9E',
     //     white: '#FFFFFF',

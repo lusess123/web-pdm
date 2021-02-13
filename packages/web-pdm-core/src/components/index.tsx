@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import { CreateComponent } from '../util'
 import ModelNavi from './model-navi'
 import GraphPage from '../graph'
-import { useMst } from '../context'
+import { useStore } from '../store'
 
 export type IPagePros = {
     style?: any
@@ -13,8 +13,8 @@ export type IPagePros = {
 
 export default CreateComponent<IPagePros>({
     displayName: 'page',
-    render (props) {
-        const mst = useMst()
+    render(props) {
+        const mst = useStore()
 
         // alert( mst.sys.height)
         // debugger

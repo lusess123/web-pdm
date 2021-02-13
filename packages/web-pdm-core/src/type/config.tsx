@@ -27,11 +27,14 @@ export type ModelConfig = {
     aggregateRoot?: boolean
     aggregateModelKey?: string
     belongAggregate?: string
+    id?: string,
+
 }
 
 export type ModuleConfig = {
     name: string
     label: string
+    id?: string
 }
 
 export type SysConfig = {
@@ -42,6 +45,7 @@ export type SysConfig = {
     showNameOrLabel: boolean
     tabOrTree: boolean
     height: number
+    dagreLayout: boolean
 }
 
 export type IComponentConfig = {
