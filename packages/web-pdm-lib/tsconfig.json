@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "esnext",
         "module": "esnext",
+        "target": "es2018",
         "moduleResolution": "node",
         "importHelpers": true,
         "jsx": "react",
@@ -13,10 +13,21 @@
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "skipLibCheck": true
+        //---
+        // "lib": [
+        //     "dom",
+        //     "es6"
+        // ],
+        // "resolveJsonModule": true,
     },
     "include": [
-        "src/*.js",
-        "src/*.tsx",
-        "src/**/*.tsx"
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "es",
+        "dist",
+        "webconfig.config.js",
+        "test"
     ]
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-// import ModelTest from '../g6-test/mock/model-test'
-// import ModuleTest from '../g6-test/mock/module-test'
+import ModelTest from '../g6-test/mock/model-test'
+import ModuleTest from '../g6-test/mock/module-test'
 import { Input, Button, Dropdown, Menu, Select, Tooltip, Popover } from 'antd'
 import {
     // FileMarkdownOutlined,
@@ -43,11 +43,11 @@ import TestModule from '../g6-test/trantor/mock/modules-data.json'
 
 import './style.less'
 
-const models = toModels(TestModel.res.map(a => a.model))
-const modules = toModules(TestModule.res)
+// const models = toModels(TestModel.res.map(a => a.model))
+// const modules = toModules(TestModule.res)
 
-// const models = ModelTest
-// const modules = ModuleTest
+const models = ModelTest
+const modules = ModuleTest
 
 function confirmEnding(str, target) {
     if (str.substr(str.length - target.length, target.length) == target)
