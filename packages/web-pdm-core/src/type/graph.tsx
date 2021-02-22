@@ -1,5 +1,5 @@
 import { model, Model, prop, modelAction } from 'mobx-keystone'
-import { Graph } from '@antv/g6'
+import { Graph } from '@antv/g6/dist/g6.min.js'
 @model('webpdm/TGraph')
 export class TGraph extends Model({
     zoom: prop(0)

@@ -1,5 +1,5 @@
 import { debounce, throttle } from 'lodash'
-import { Graph } from '@antv/g6'
+import { Graph } from '@antv/g6/dist/g6.min.js'
 import { RootInstance } from '../type'
 
 // declare interface Graph {

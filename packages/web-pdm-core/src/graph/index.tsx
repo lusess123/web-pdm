@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback } from 'react'
-import G6, { Graph } from '@antv/g6'
+import G6, { Graph } from '@antv/g6/dist/g6.min.js'
 import { withoutUndo } from 'mobx-keystone'
 import { useSize } from 'ahooks'
 import { useMst } from '../context'
@@ -239,10 +239,11 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         width: container.offsetWidth - 20,
         container,
         fitView: true,
-
+        // workerEnabled: true,
         fitCenter: true,
         enabledStack: true,
         animate: true,
+        gpuEnabled: true,
         // pixelRatio: 1,
         // animate: true,
         defaultEdge: styleConfig.default.edge,
@@ -260,9 +261,11 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
             type: mst.sys.dagreLayout ? 'dagre' : 'force',
             condense: true,
             cols: 3,
-            workerEnabled: true,
+            gpuEnabled: true,
+            // workerEnabled: true,
             linkDistance: 0,
             alphaDecay: isLargar ? 0.3 : undefined,
+
             preventOverlap: true,
             // collideStrength: 0.5,
             nodeSpacing: isLargar ? -100 : -180,

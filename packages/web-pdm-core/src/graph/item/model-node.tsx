@@ -1,4 +1,4 @@
-import G6 from '@antv/g6'
+import G6 from '@antv/g6/dist/g6.min.js'
 import GGroup from '@antv/g-canvas/lib/group'
 import { IModelNodeShapeCfg, Relation } from './type'
 

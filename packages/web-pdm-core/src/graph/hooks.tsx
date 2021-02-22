@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Graph } from '@antv/g6'
+import { Graph } from '@antv/g6/dist/g6.min.js'
 import { isEqual } from 'lodash'
 
 export type IUseUpdateItem = {
