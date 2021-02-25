@@ -1,6 +1,6 @@
 {
   "name": "web-pdm-core",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "web-pdm的核心库",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -38,14 +38,14 @@
     "ak-webpack": "^1.0.15",
     "antd": "^4.6.3",
     "conventional-changelog-cli": "^2.1.0",
-    "mobx": "^4.15.6",
     "rollup-plugin-typescript2": "^0.27.2",
     "ts-loader": "^8.0.12",
     "typedoc": "^0.19.1",
     "typescript": "^3.9.9",
     "wrappy": "^1.0.2",
     "xdg-basedir": "^4.0.0",
-    "xtend": "^4.0.2"
+    "xtend": "^4.0.2",
+    "mobx": "^6.1.7"
   },
   "dependencies": {
     "@antv/g": "^3.4.10",
@@ -53,7 +53,7 @@
     "@iarna/rtf-to-html": "^1.1.0",
     "ahooks": "^2.8.0",
     "classnames": "^2.2.6",
-    "mobx-keystone": "^0.46.0",
+    "mobx-keystone": "^0.53.0",
     "mobx-react-lite": "^2.0.7",
     "react": "^16.8.6",
     "react-color": "^2.18.1",

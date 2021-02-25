@@ -41,7 +41,6 @@
     "ak-webpack": "^1.0.15",
     "conventional-changelog-cli": "^2.1.0",
     "father": "^2.29.9",
-    "mobx": "^6.0.1",
     "rollup-plugin-typescript2": "^0.27.2",
     "typedoc": "^0.19.1",
     "typescript": "^3.9.9",
