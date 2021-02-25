@@ -1,6 +1,6 @@
 {
   "name": "web-pdm",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -46,10 +46,11 @@
     "typescript": "^3.9.9",
     "wrappy": "^1.0.2",
     "xdg-basedir": "^4.0.0",
-    "xtend": "^4.0.2"
+    "xtend": "^4.0.2",
+    "mobx": "^4.15.6"
   },
   "dependencies": {
     "antd": "^4.6.3",
-    "web-pdm-core": "^1.0.4"
+    "web-pdm-core": "^1.0.12"
   }
 }
