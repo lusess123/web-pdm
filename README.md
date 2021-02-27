@@ -13,7 +13,7 @@
 # 在线体验
 
 
-[模型](https://erd.zyking.xyz/_demos/type-erd/ '模型')
+[模型](https://erd.zyking.xyz/~demos/docs-erd '模型')
 
 # 快速启动
 
