@@ -1,6 +1,6 @@
 # 介绍
 
-[详细请查看](http://zyking.xyz:5012/)
+[详细请查看](https://erd.zyking.xyz/)
 
 一个用 G6 做的 ER 图工具，最终目标是想做成在线版的 powerdesigner
 
@@ -12,11 +12,8 @@
 
 # 在线体验
 
-[定制版 Demo](http://zyking.xyz:5080/demo/ '定制版Demo')
 
-[基本版 Demo](http://zyking.xyz:5002/ '基本版Demo')
-
-[模型](http://zyking.xyz:5012/_demos/type-erd/ '模型')
+[模型](https://erd.zyking.xyz/~demos/docs-erd '模型')
 
 # 快速启动
 
@@ -26,7 +23,7 @@ npm run watch
 
 # 反馈与共建
 
-<img src='http://zyking.xyz:5012/static/group.d05204b1.jpeg' width='260'>
+<img src='https://erd.zyking.xyz/static/group.d05204b1.jpeg' width='260'>
 
 # 更新日志
 
