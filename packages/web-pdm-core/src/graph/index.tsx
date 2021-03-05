@@ -262,7 +262,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
             condense: true,
             cols: 3,
             gpuEnabled: true,
-            // workerEnabled: true,
+            workerEnabled: true,
             linkDistance: 0,
             alphaDecay: isLargar ? 0.3 : undefined,
 

@@ -1,6 +1,6 @@
 {
   "name": "web-pdm-core",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "web-pdm的核心库",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -48,8 +48,7 @@
     "mobx": "^6.1.7"
   },
   "dependencies": {
-    "@antv/g": "^3.4.10",
-    "@antv/g6": "^4.1.0",
+    "@antv/g6": "^4.1.16",
     "@iarna/rtf-to-html": "^1.1.0",
     "ahooks": "^2.8.0",
     "classnames": "^2.2.6",
