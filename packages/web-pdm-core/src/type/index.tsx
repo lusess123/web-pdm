@@ -9,6 +9,8 @@ import {
 } from 'mobx-keystone'
 import { computed } from 'mobx'
 import { without, union } from 'lodash'
+import React from 'react'
+import * as icons from '@ant-design/icons'
 import { TModel } from './model'
 import { TModule } from './module'
 // import { TField ,MetaType  } from './field'
@@ -144,12 +146,19 @@ export class RootInstance extends Model({
 
     @modelAction
     renderModelTitle(model: TModel) {
-        return renderModelTitle(
+        const title = renderModelTitle(
             model.label,
             this.sys.search,
             this.sys.showNameOrLabel,
             model.name
         )
+
+        const Icon = model.icon ? (icons[model.icon] || null) : null
+        if(Icon) {
+           return <span><Icon />  {title}</span>
+        }
+
+        return title;
     }
 
     // @modelAction
@@ -183,6 +192,7 @@ export class RootInstance extends Model({
     initData(models: ModelConfig[], modules: ModuleConfig[], sys?: SysConfig) {
         const t0 = +new Date()
         let moduleHas: Record<string, string> = {}
+        let modelsKeys: string[] = []
         modules.forEach(module => {
             const key = NewGuid().toString()
             this.Modules.set(
@@ -191,10 +201,11 @@ export class RootInstance extends Model({
             )
             moduleHas[module.name] = key
             this.sys.expandedKeys.push(key)
+            this.sys.expandedKeys.push(key + "-models")
         })
         const t1 = +new Date()
 
-        let modelsKeys: string[] = []
+    
         let modelHas: Record<string, string> = {}
         // alert(models.length)
         models.forEach(model => {
@@ -208,11 +219,16 @@ export class RootInstance extends Model({
                     aggregateRoot: model.aggregateRoot,
                     label: model.label,
                     name: model.name,
+                    icon: model.icon,
+                    type: model.type,
                     moduleId: moduleHas[model.module] || ''
                 })
             )
             modelHas[model.name] = key
-            modelsKeys.push(key)
+            if(model.type != 'dict') {
+              modelsKeys.push(key)
+            }
+
         })
 
         models.forEach(model => {

@@ -21,6 +21,8 @@ export class TModel extends Model({
     id: prop<string>(),
     name: prop<string>(),
     label: prop(''),
+    icon: prop(''),
+    type: prop(''),
     moduleId: prop(''),
     aggregateRoot: prop(false),
     aggregateModelKey: prop<string>(),

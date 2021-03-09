@@ -44,6 +44,7 @@ export const createData = (root: RootInstance) => {
                         relationModel: a.relationModel
                     })),
                     key: m.id,
+                    type: m.type,
                     name: m.name,
                     tag: 'aggregate',
                     aggregateRoot: m.aggregateRoot,
