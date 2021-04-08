@@ -244,6 +244,7 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
         enabledStack: true,
         animate: true,
         gpuEnabled: true,
+        pixelRatio: 2,
         // pixelRatio: 1,
         // animate: true,
         defaultEdge: styleConfig.default.edge,
@@ -261,8 +262,9 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
             type: mst.sys.dagreLayout ? 'dagre' : 'force',
             condense: true,
             cols: 3,
-            gpuEnabled: true,
+            // gpuEnabled: true,
             workerEnabled: true,
+            // workerScriptURL:'',
             linkDistance: 0,
             alphaDecay: isLargar ? 0.3 : undefined,
 
