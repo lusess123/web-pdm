@@ -1,6 +1,6 @@
 {
   "name": "web-pdm-core",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "web-pdm的核心库",
   "main": "es/index.js",
   "module": "es/index.js",
