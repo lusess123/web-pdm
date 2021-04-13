@@ -33,7 +33,8 @@ export const getSplitStrings = (str: string) => {
 }
 
 export const getEngGroup = (str: string) => {
-    const strs = str.replace(/(?<!^)([A-Z])/g, `-$1`)
+    const regExp = new RegExp("(?<!^)([A-Z]", 'g')
+    const strs = str.replace(regExp, `-$1`)
     return strs.split('-')
 }
 
