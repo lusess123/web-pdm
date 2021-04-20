@@ -123,7 +123,7 @@ export default observer(({ graph }: { graph: any }) => {
                 />
                 <ButtonActon
                     IconRenders={_IconRenders}
-                    key={6}
+                    key={7}
                     Tooltip={Tooltip}
                     title={intl('刷新数据')}
                     color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
@@ -132,7 +132,7 @@ export default observer(({ graph }: { graph: any }) => {
                 />
                 <ButtonActon
                     IconRenders={_IconRenders}
-                    key={7}
+                    key={8}
                     Tooltip={Tooltip}
                     title={intl('下载图片')}
                     color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
@@ -141,7 +141,7 @@ export default observer(({ graph }: { graph: any }) => {
                 />
                 <ButtonActon
                     IconRenders={_IconRenders}
-                    key={8}
+                    key={9}
                     Tooltip={Tooltip}
                     title={
                         mst.sys.dagreLayout
@@ -163,7 +163,7 @@ export default observer(({ graph }: { graph: any }) => {
                 />
                 <ButtonActon
                     IconRenders={_IconRenders}
-                    key={9}
+                    key={10}
                     Tooltip={Tooltip}
                     title={intl('切换底色')}
                     icon={
