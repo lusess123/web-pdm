@@ -3,15 +3,15 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i;
 
 export default defineConfig({
-  description:'一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner',
+  description: '一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner',
   title: 'web-pdm',
   favicon:
-    'http://zyking.xyz/logo.png',
+    'http://erd.zyking.xyz/logo.png',
   logo:
-   'http://zyking.xyz/logo.png',
+    'http://erd.zyking.xyz/logo.png',
   outputPath: 'docs-dist',
   mode: 'site',
-  resolve : {
+  resolve: {
     includes: ['docs']
   },
   dynamicImport: {},
@@ -35,7 +35,7 @@ export default defineConfig({
       },
       {
         title: '其他',
-        children: ['guide/migration', 'guide/faq', 'guide/next','guide/ddd'],
+        children: ['guide/migration', 'guide/faq', 'guide/next', 'guide/ddd'],
       },
     ],
   },
@@ -46,7 +46,7 @@ export default defineConfig({
     { title: 'GitHub', path: 'https://github.com/lusess123/web-pdm' },
     { title: '更新日志', path: 'https://github.com/lusess123/web-pdm/blob/master/packages/web-pdm-lib/CHANGELOG.md' },
   ],
-  chainWebpack(memo){
+  chainWebpack(memo) {
     memo.plugin('CompressionPlugin').use(new CompressionPlugin({
       filename: "[path].gz[query]",
       algorithm: "gzip",

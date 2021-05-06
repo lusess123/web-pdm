@@ -29,3 +29,11 @@ import React from 'react'
 import Groupjpeg from './assets/group.jpeg'
 export default () => <img src={Groupjpeg} width="260" />
 ```
+
+## 赞助
+
+```jsx | inline
+import React from 'react'
+import Groupjpeg from './assets/pay.jpeg'
+export default () => <img src={Groupjpeg} width="260" />
+```
