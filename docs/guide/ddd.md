@@ -10,7 +10,8 @@ redux 有一个最佳实践就是要 data normalization ，简单的说就是拍
 
 巧合的是，另外一个的状态管理框架 mobx 作者官方博客里面直接就这么说：
 
-> Many APIs, public or not, return JSON data that has deeply nested objects. Using data in this kind of structure is often very difficult for JavaScript applications, especially those using Flux or Redux. MobX 背后的第二个重要思想是，对于任何比 TodoMVC 更复杂的应用，您通常需要一个数据图，而不是规范化的树，以一种精神上可管理但最佳的方式存储状态。图形支持引用一致性，并避免数据重复，以便保证派生值永远不会过时。
+> The second important idea behind MobX is that for any app that is more complex than TodoMVC, you will often need a data graph, instead of a normalized tree, to store the state in a mentally manageable yet optimal way. Graphs enable referential consistency and avoid data duplication so that it can be guaranteed that derived values are never stale.
+> MobX 背后的第二个重要思想是，对于任何比 TodoMVC 更复杂的应用，您通常需要一个数据图，而不是规范化的树，以一种精神上可管理但最佳的方式存储状态。图形支持引用一致性，并避免数据重复，以便保证派生值永远不会过时。
 >> (来源：https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254)
 
 有意思的是，facebook 内部 react 团队最新推出的前端状态管理库 Recoli 也是基于关联图形的
