@@ -6,11 +6,12 @@ export default defineConfig({
   description: '一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner',
   title: 'web-pdm',
   favicon:
-    'http://erd.zyking.xyz/logo.png',
+    'http://erd.zyking.xyz/assets/logo.png',
   logo:
-    'http://erd.zyking.xyz/logo.png',
+    'http://erd.zyking.xyz/assets/logo.png',
   outputPath: 'docs-dist',
   mode: 'site',
+  hash: true,
   resolve: {
     includes: ['docs']
   },
