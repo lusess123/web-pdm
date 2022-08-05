@@ -1,9 +1,9 @@
 ---
-title: web-pdm - An ER graph tool made with G6, the ultimate goal is to make an online version of PowerDesigner
+title: web-pdm - An ER graph tool made with G6, the ultimate goal is to make an online PowerDesigner
 order: 10
 hero:
     title: web-pdm
-    desc: An ER graph tool made with G6, the ultimate goal is to make an online version of PowerDesigner
+    desc: An ER graph tool made with G6, the ultimate goal is to make an online PowerDesigner
     actions:
         - text: Getting Started
           link: /guide/getting-started
