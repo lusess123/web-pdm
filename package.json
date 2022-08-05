@@ -1,7 +1,7 @@
 {
   "name": "web-pdm-doc",
   "version": "0.0.1",
-  "description": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner",
+  "description": "An ER graph tool made with G6, the ultimate goal is to make an online PowerDesigner",
   "main": "es/index.js",
   "module": "es/index.js",
   "files": [

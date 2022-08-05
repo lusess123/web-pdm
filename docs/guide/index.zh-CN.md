@@ -1,7 +1,7 @@
 ---
-title: Guide
+title: 指南
 nav:
-    title: Guide
+    title: 指南
     order: 1
 ---
 

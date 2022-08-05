@@ -2,7 +2,7 @@
 order: 1
 nav:
     order: 2
-    title: Config
+    title: 配置项
 toc: menu
 ---
 
@@ -12,8 +12,8 @@ toc: menu
 
 ## models
 
--   Description： Model and Filed init config 
--   Type： ModelConfig[]
+-   说明： 模型和字段的初始化配置
+-   类型： ModelConfig[]
 
 ```
 

@@ -1,9 +1,9 @@
 ---
 order: 1
-title: Demo
+title: 例子
 nav:
     order: 3
-    title: Demo
+    title: 例子
 toc: menu
 ---
 

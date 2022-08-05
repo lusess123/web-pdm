@@ -21,32 +21,63 @@ export default defineConfig({
   antd: {},
   // esbuild: {},
   menus: {
-    '/guide': [
-      {
-        title: '介绍',
-        children: ['guide/index', 'guide/getting-started'],
-      },
-      {
-        title: '模型定义',
-        children: ['guide/model', 'guide/relation'],
-      },
-      {
-        title: '工具栏',
-        children: ['guide/toolbar'],
-      },
-      {
-        title: '其他',
-        children: ['guide/migration', 'guide/faq', 'guide/next', 'guide/ddd'],
-      },
-    ],
+    'en-US': {
+      '/guide': [
+        {
+          title: 'Intro',
+          children: ['guide/index', 'guide/getting-started'],
+        },
+        {
+          title: 'Model Define',
+          children: ['guide/model', 'guide/relation'],
+        },
+        {
+          title: 'Toolbar',
+          children: ['guide/toolbar'],
+        },
+        {
+          title: 'More',
+          children: ['guide/migration', 'guide/faq', 'guide/next', 'guide/ddd'],
+        },
+      ],
+    },
+    'zh-CN': {
+      '/guide': [
+        {
+          title: '介绍',
+          children: ['guide/index', 'guide/getting-started'],
+        },
+        {
+          title: '模型定义',
+          children: ['guide/model', 'guide/relation'],
+        },
+        {
+          title: '工具栏',
+          children: ['guide/toolbar'],
+        },
+        {
+          title: '其他',
+          children: ['guide/migration', 'guide/faq', 'guide/next', 'guide/ddd'],
+        },
+      ],
+    }
+  
   },
-  navs: [
-    null,
-    //http://localhost:8001
-    { title: 'API', path: '/typedoc/' },
-    { title: 'GitHub', path: 'https://github.com/lusess123/web-pdm' },
-    { title: '更新日志', path: 'https://github.com/lusess123/web-pdm/blob/master/packages/web-pdm-lib/CHANGELOG.md' },
-  ],
+  navs: {
+    'en-US':[
+      null, // null 值代表保留约定式生成的导航，只做增量配置
+      { title: 'API', path: '/typedoc/' },
+      { title: 'GitHub', path: 'https://github.com/lusess123/web-pdm' },
+      { title: 'Changelog', path: 'https://github.com/lusess123/web-pdm/blob/master/packages/web-pdm-lib/CHANGELOG.md' },
+    ],
+    'zh-CN': [
+      null, // null 值代表保留约定式生成的导航，只做增量配置
+      { title: 'API', path: '/typedoc/' },
+      { title: 'GitHub', path: 'https://github.com/lusess123/web-pdm' },
+      { title: '更新日志', path: 'https://github.com/lusess123/web-pdm/blob/master/packages/web-pdm-lib/CHANGELOG.md' },
+    ],
+
+  },
   chainWebpack(memo) {
     memo.plugin('CompressionPlugin').use(new CompressionPlugin({
       filename: "[path].gz[query]",
