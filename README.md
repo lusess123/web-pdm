@@ -11,7 +11,7 @@ An ER graph tool made with G6, the ultimate goal is to make an online PowerDesig
 
 # Genesis
 
-[ER 图的设计与实现](https://www.yuque.com/antv/g6-blog/nbaywp)
+[Design and implementation of ER diagram](https://www.yuque.com/antv/g6-blog/nbaywp)
 
 # Online Demo
 
