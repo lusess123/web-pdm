@@ -7,7 +7,7 @@ English | [简体中文](./README.zh-US.md)
 
 An ER graph tool made with G6, the ultimate goal is to make an online PowerDesigner
 
-<img target="_bank" src='https://github.com/lusess123/web-pdm/blob/master/doc/erd.jpeg'>
+<img target="_bank" src='https://erd.zyking.xyz/static/erd.jpeg'>
 
 # Genesis
 
