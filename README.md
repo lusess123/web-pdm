@@ -1,6 +1,6 @@
 
 
-English | [简体中文](./README.zh-US.md)
+English | [简体中文](./README.zh-CN.md)
 # Intro
 
 [Please check for details](https://erd.zyking.xyz/)

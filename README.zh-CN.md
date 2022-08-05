@@ -1,10 +1,11 @@
+[English](./README.md) | 简体中文
 # 介绍
 
 [详细请查看](https://erd.zyking.xyz/)
 
 一个用 G6 做的 ER 图工具，最终目标是想做成在线版的 powerdesigner
 
-<img target="_bank" src='https://github.com/lusess123/web-pdm/blob/master/doc/erd.jpeg'>
+<img target="_bank" src='https://erd.zyking.xyz/static/erd.jpeg'>
 
 # 缘起
 
