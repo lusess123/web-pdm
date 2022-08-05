@@ -10,7 +10,7 @@
   "scripts": {
     "start": "dumi dev",
     "typedoc": "typedoc",
-    "docs:build": "dumi build  &&  npm run typedoc && rm -rf  docker/public && cp -rf ./docs-dist  docker/public",
+    "docs:build": "dumi build  &&  npm run typedoc && rm -rf  docker/public && cp -rf ./docs-dist  docker/public && cp ./doc/erd.jpeg docker/public/static/",
     "publish-docker": "cd ./docker && sh build.sh",
     "build-remote": "ssh root@$SERVER_IP \" cd /root/webpdmdoc-docker; sh build.sh  \" ",
     "publish-server": "cd ./docker && sh upload.sh",
