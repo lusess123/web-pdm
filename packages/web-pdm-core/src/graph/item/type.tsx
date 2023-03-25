@@ -1,5 +1,5 @@
 // import G6 from '@antv/g6'
-import { ModelConfig } from '@antv/g6/lib/types'
+import { ModelConfig } from '@antv/g6'
 
 export interface IModelNodeShapeCfg extends ModelConfig {
     config: {

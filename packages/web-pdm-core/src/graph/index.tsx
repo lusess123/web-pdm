@@ -4,7 +4,7 @@ import { withoutUndo } from 'mobx-keystone'
 import { useSize } from 'ahooks'
 import { useMst } from '../context'
 import register from './item'
-import { observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react'
 import ToolBar from '../components/model-toolbar'
 import './model.scss'
 import GraphEvent from './event'
@@ -40,7 +40,7 @@ const useLocal = () => {
         register(mst)
     }, [])
     const checkRef = useRef(+new Date())
-    const size = useSize(containerRef);
+    const size = useSize(containerRef) || {};
     useEffect(() => {
         // alert()
         // const { Nodes , edges } = mst

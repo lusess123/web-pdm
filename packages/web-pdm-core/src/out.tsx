@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FunctionComponent, ReactNode } from 'react'
 import { applySnapshot, onSnapshot, withoutUndo } from 'mobx-keystone'
 import { useMst } from './context'
-import { observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react'
 import { Provider, createRootStore } from './context'
 import MSTPage from './components'
 // import { TIconRendersKeys } from './components/model-toolbar'

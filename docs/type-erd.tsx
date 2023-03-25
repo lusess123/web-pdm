@@ -1,7 +1,7 @@
 import React from 'react'
 import WebPdm from 'web-pdm'
 import { models, modules } from './typedata'
-import 'antd/dist/antd.css'
+// import 'antd/dist/antd.css'
 import './style.less'
 
 export default () => {

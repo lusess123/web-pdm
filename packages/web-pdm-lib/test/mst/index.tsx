@@ -46,27 +46,31 @@ const onReload = () => {
 const onIntl = a => {
     return ''
 }
+
+export const  TestWebpdm = () => {
+    return  <WebPdm
+    themeColor='green'
+    darkness={false}
+    models={models}
+    modules={modules}
+    erdkey={'demo'}
+    onIntl={onIntl}
+    onlyMode={false}
+    // disableIcons={['full', 'reload']}
+    IconRenders={{
+        image: <Button size="small" >下载</Button>,
+        miniMap: <Button size="small" >显示小地图</Button>,
+        miniMapNo: <Button size="small" >屏蔽小地图</Button>,
+    }}
+    // intl='EN'
+    onReload={onReload}
+    onModelDetail={a => {
+        alert(`打开模型${a.label}(${a.name}) 的查看链接`)
+    }}
+    onIgnoreEdge={onIgnoreEdge}
+/>
+}
 ReactDom.render(
-    <WebPdm
-        themeColor='green'
-        darkness={false}
-        models={models}
-        modules={modules}
-        erdkey={'demo'}
-        onIntl={onIntl}
-        onlyMode={false}
-        // disableIcons={['full', 'reload']}
-        IconRenders={{
-            image: <Button size="small" >下载</Button>,
-            miniMap: <Button size="small" >显示小地图</Button>,
-            miniMapNo: <Button size="small" >屏蔽小地图</Button>,
-        }}
-        // intl='EN'
-        onReload={onReload}
-        onModelDetail={a => {
-            alert(`打开模型${a.label}(${a.name}) 的查看链接`)
-        }}
-        onIgnoreEdge={onIgnoreEdge}
-    />,
+     <TestWebpdm />,
     document.getElementById('app') || document.getElementById('root')
 )

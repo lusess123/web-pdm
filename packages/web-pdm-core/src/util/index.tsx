@@ -1,5 +1,5 @@
-import React, { SFC, isValidElement } from 'react'
-import { observer } from 'mobx-react-lite'
+import React, { FC as SFC, isValidElement } from 'react'
+import { observer } from 'mobx-react'
 import reactString from 'react-element-to-jsx-string'
 
 export interface IComponentOptions<T> {

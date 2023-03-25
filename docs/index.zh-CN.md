@@ -2,13 +2,17 @@
 title: web-pdm - 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner
 order: 10
 hero:
-    title: web-pdm
-    desc: 一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner
-    actions:
-        - text: 快速上手
-          link: /guide/getting-started
-footer: Open-source MIT Licensed | Copyright © 2019-present<br />Powered by self
+  title: web-pdm
+  description: |
+    一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner
+  actions:
+    - text: 立即上手
+      link: /guide/getting-started
+    - text: GitHub
+      link: https://github.com/lusess123/web-pdm
 ---
+
+
 
 ## 安装
 
@@ -20,7 +24,7 @@ $ npm i web-pdm
 
 ## 快速体验
 
- <code src="./type-erd.tsx" defaultShowCode  />
+ <code src="./type-erd.tsx" defaultShowCode  ></code>
 
 ## 反馈与共建
 

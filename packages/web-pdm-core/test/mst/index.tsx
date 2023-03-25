@@ -32,10 +32,10 @@ import { Tree } from '../tree'
 // import ModuleTest from '../g6-test/with-field-relation/module-test'
 import WebPdm from '../../src'
 
-import CodePdm from '../../../../docs/type-erd'
-import { toModels, toModules } from '../g6-test/trantor/datamap'
-import TestModel from '../g6-test/trantor/mock/models-data.json'
-import TestModule from '../g6-test/trantor/mock/modules-data.json'
+// import CodePdm from '../../../../docs/type-erd'
+// import { toModels, toModules } from '../g6-test/trantor/datamap'
+// import TestModel from '../g6-test/trantor/mock/models-data.json'
+// import TestModule from '../g6-test/trantor/mock/modules-data.json'
 // import ModelTest from '../g6-test/trantor/gw/model.json'
 // import ModuleTest from '../g6-test/trantor/gw/module.json'
 // import TestModel from '../g6-test/trantor/model'
@@ -89,8 +89,9 @@ const IconRenders = {
     colorClose: <BgColorsOutlined />,
     colorOpen: <BgColorsOutlined />
 }
-ReactDom.render(
-    <WebPdm
+
+export const TestWebPdm = () => {
+    return <WebPdm
         components={{ Input, Button, Dropdown, Menu, Select, Tooltip, Tree, Popover }}
         themeColor='green'
         darkness={false}
@@ -102,7 +103,7 @@ ReactDom.render(
         // disableIcons={['full', 'reload']}
         IconRenders={{
             ...IconRenders,
-            image: <Button size="small" >下载</Button>,
+            image: <Button size="small" >下载11133311www</Button>,
             miniMap: <Button size="small" >显示小地图</Button>,
             miniMapNo: <Button size="small" >屏蔽小地图</Button>,
 
@@ -113,6 +114,10 @@ ReactDom.render(
             alert(`打开模型${a.label}(${a.name}) 的查看链接`)
         }}
         onIgnoreEdge={onIgnoreEdge}
-    />,
-    document.getElementById('app') || document.getElementById('root')
-)
+    />
+}
+
+export const TestInit = () => { 
+    ReactDom.render(<TestWebPdm></TestWebPdm>, document.getElementById('app') || document.getElementById('root'))
+}
+

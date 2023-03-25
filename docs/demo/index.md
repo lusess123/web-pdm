@@ -7,4 +7,4 @@ nav:
 toc: menu
 ---
 
- <code src="../erd.tsx"  />
+ <code src="../erd.tsx"  ></code>

@@ -1,7 +1,3 @@
 module.exports = {
-    extends: [require.resolve('@umijs/fabric/dist/eslint')],
-    rules: {
-        'import/no-extraneous-dependencies': 0,
-    },
-    globals: {},
-}
+  extends: require.resolve('@umijs/lint/dist/config/eslint'),
+};

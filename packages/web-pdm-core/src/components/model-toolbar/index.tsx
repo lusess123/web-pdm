@@ -2,7 +2,7 @@
 
 import classNames from 'classnames'
 import React, { isValidElement, useState, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react'
 import { changeTwoDecimal_f, CreateComponent } from '../../util'
 import { useMst } from '../../context'
 import { SketchPicker } from 'react-color'

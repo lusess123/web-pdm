@@ -3,11 +3,12 @@ title: web-pdm - An ER graph tool made with G6, the ultimate goal is to make an 
 order: 10
 hero:
     title: web-pdm
-    desc: An ER graph tool made with G6, the ultimate goal is to make an online PowerDesigner
+    description: An ER graph tool made with G6, the ultimate goal is to make an online PowerDesigner
     actions:
         - text: Getting Started
           link: /guide/getting-started
-footer: Open-source MIT Licensed | Copyright © 2019-present<br />Powered by self
+        - text: GitHub
+          link: https://github.com/lusess123/web-pdm
 ---
 
 ## Install
@@ -20,7 +21,7 @@ $ npm i web-pdm
 
 ## Getting Started
 
- <code src="./type-erd.tsx" defaultShowCode  />
+ <code src="./type-erd.tsx" defaultShowCode  ></code>
 
 ## Contributing
 

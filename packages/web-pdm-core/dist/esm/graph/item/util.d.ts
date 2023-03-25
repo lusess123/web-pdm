@@ -1,0 +1,10 @@
+export declare const setNodeStateAttr: (state: any, s: any, cfg: any) => void;
+export declare const isEng: (str: any) => boolean;
+export declare const getSplitStrings: (str: string) => string[];
+export declare const getEngGroup: (str: string) => string[];
+export declare const getLen: (str: string) => number;
+export declare const getTopAnch: (num: any, y?: number) => never[];
+export declare const getBottomAnch: (num: any, y?: number) => never[];
+export declare const getLeftAnch: (num: any, x?: number) => never[];
+export declare const getRightAnch: (num: any, x?: number) => never[];
+export declare const getLength: (length: any) => any;

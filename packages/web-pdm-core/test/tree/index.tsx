@@ -28,7 +28,8 @@ const OptionBuilder = ({ data }) => {
         <div
             className='tree-node-title'
             onMouseEnter={onShowMenu(true)}
-            onMouseLeave={onShowMenu(false)}
+            
+            // onMouseLeave={onShowMenu(false)}
         >
             <span className='tree-node-title-title'>{title}</span>
             {!!options.length && showMenu && (

@@ -8,7 +8,7 @@ toc: menu
 
 # props
 
- <code src="../type-erd.tsx"  inline />
+ <code src="../type-erd.tsx"  inline ></code>
 
 ## models
 

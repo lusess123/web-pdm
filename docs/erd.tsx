@@ -4,7 +4,7 @@ import ModelTest from '../test/g6-test/mock/model-test'
 import ModuleTest from '../test/g6-test/mock/module-test'
 // import "../test/style.less"
 import './style.less'
-import 'antd/dist/antd.css'
+// import 'antd/dist/antd.css'
 
 export default () => {
     return (
