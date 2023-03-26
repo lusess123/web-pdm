@@ -1,15 +1,19 @@
 {
   "name": "web-pdm-core",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
+  "license": "ISC",
+  "author": "",
   "main": "dist/cjs",
   "module": "dist/esm",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "father build"
+    "build": "rm -rf dist && father build",
+    "publish-npm:patch": "npm run build ; npm version patch && npm publish --registry=https://registry.npmjs.org && cnpm sync web-pdm-core",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@antv/g-canvas": "^1.9.40",

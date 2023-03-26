@@ -15,6 +15,6 @@
 export default {
   esm: {},
   cjs: {},
-  extractCSS: true,
+  // extractCSS: true,
   // extraBabelPlugins
 };
