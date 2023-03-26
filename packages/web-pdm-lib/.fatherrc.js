@@ -13,7 +13,8 @@
 //     ]
 // ]
 export default {
-    esm: {},
-    cjs: {}
-    // extraBabelPlugins
-  }
+  esm: {},
+  cjs: {},
+  extractCSS: true,
+  // extraBabelPlugins
+};

@@ -2,34 +2,32 @@
   "name": "web-pdm-doc",
   "version": "0.0.1",
   "description": "A react library developed with dumi",
+  "license": "MIT",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": " npm run dev",
-    "dev": " rm -rf node_modules/.cache && cross-env WATCH_IGNORED=none dumi dev ",
     "build": " cross-env BUILD_TYPE=lib father build",
+    "build-lib": "cd packages/web-pdm-core && npm run build && cd ../../ && cd packages/web-pdm-lib && npm run build",
+    "build-remote": "ssh root@$SERVER_IP \" cd /root/webpdmdoc-docker; sh build.sh  \" ",
     "build:watch": "father dev",
-    "prepare": "husky install && dumi setup",
+    "deploy": "npm update web-pdm && npm i xtend && npm i wrappy &&  npm run deploy:now",
+    "deploy:now": "npm run docs:build  && npm run publish-server && npm run build-remote",
+    "dev": " rm -rf node_modules/.cache && cross-env WATCH_IGNORED=none dumi dev ",
+    "docs:build": "dumi build   && rm -rf  docker/public && cp -rf ./docs-dist  docker/public && cp ./doc/erd.jpeg docker/public/static/",
     "doctor": "father doctor",
     "lint": "npm run lint:es && npm run lint:css",
     "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
     "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "prepare": "husky install && dumi setup",
     "prepublishOnly": "father doctor && npm run build",
-    "build-lib":"cd packages/web-pdm-core && npm run build && cd ../../ && cd packages/web-pdm-lib && npm run build",
-    "docs:build": "dumi build   && rm -rf  docker/public && cp -rf ./docs-dist  docker/public && cp ./doc/erd.jpeg docker/public/static/",
     "publish-docker": "cd ./docker && sh build.sh",
-    "build-remote": "ssh root@$SERVER_IP \" cd /root/webpdmdoc-docker; sh build.sh  \" ",
     "publish-server": "cd ./docker && sh upload.sh",
-    "ln-webpdm": " rm -rf ./node_modules/web-pdm/es &&  ln -s -f `pwd`/packages/web-pdm-lib/src  ./node_modules/web-pdm/es",
-    "deploy": "npm update web-pdm && npm i xtend && npm i wrappy &&  npm run deploy:now",
-    "deploy:now": "npm run docs:build  && npm run publish-server && npm run build-remote",
+    "start": " npm run dev",
     "webpdm-deploy": "cd packages/web-pdm-lib && npm run publish-npm && cd ../../ && npm run deploy"
   },
-  "authors": [],
-  "license": "MIT",
-  "files": [
-    "dist"
-  ],
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -52,26 +50,19 @@
       "prettier --parser=typescript --write"
     ]
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "peerDependencies": {
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
-  },
   "dependencies": {
-    "lodash": "^4.17.21",
     "antd": "^5.3.2",
-    "web-pdm-core": "workspace:*",
-    "web-pdm": "workspace:*"
+    "lodash": "^4.17.21",
+    "web-pdm": "workspace:*",
+    "web-pdm-core": "workspace:*"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
-    "compression-webpack-plugin": "^5.0.2",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@umijs/lint": "^4.0.0",
+    "compression-webpack-plugin": "^5.0.2",
     "cross-env": "^7.0.3",
     "dumi": "^2.0.2",
     "eslint": "^8.23.0",
@@ -84,5 +75,13 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "stylelint": "^14.9.1"
-  }
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": []
 }
