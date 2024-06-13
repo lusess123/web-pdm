@@ -22,7 +22,7 @@ An ER graph tool made with G6, the ultimate goal is to make an online PowerDesig
 
 npm i
 
-npm run watch
+npm run dev
 
 # Contributing
 
