@@ -26,7 +26,7 @@
     "publish-docker": "cd ./docker && sh build.sh",
     "publish-server": "cd ./docker && sh upload.sh",
     "start": " npm run dev",
-    "webpdm-deploy": "cd packages/web-pdm-lib && npm run publish-npm && cd ../../ && npm run deploy"
+    "webpdm-deploy": "cd packages/web-pdm-lib && npm run publish-npm:patch && cd ../../ && npm run deploy"
   },
   "commitlint": {
     "extends": [
