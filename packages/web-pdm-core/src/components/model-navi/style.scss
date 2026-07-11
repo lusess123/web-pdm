@@ -5,10 +5,13 @@
   flex-direction: row;
   overflow: hidden;
   height: 100%;
+
   .g6-graph {
     // width: calc(100% - 250px)
     // padding-left: 16px;
-    margin-right: 16px;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
     flex: 1;
     width: 0;
     height: 100%;
@@ -25,8 +28,9 @@
   }
 
   .g6-modelnavi {
-    width: 270px;
-    margin-bottom: 16px;
+    width: 220px;
+    min-width: 180px;
+    flex: 0 1 220px;
     height: 100%;
 
     .console-models-tree {
@@ -36,7 +40,7 @@
       padding-bottom: 50px;
 
       height: 100%;
-      margin-right: 25px;
+      margin-right: 12px;
 
       .header {
         height: 60px;

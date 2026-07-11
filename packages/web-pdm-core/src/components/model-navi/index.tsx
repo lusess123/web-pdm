@@ -62,6 +62,7 @@ export default CreateComponent<IModelNaviProps>({
           ? mst.moduleList.map((m) => {
               return (
                 <TreeNode
+                  eventKey={m.id}
                   title={mst.sys.showNameOrLabel ? m.name : m.label}
                   key={m.id}
                 >
@@ -70,6 +71,7 @@ export default CreateComponent<IModelNaviProps>({
                     .map((model) => {
                       return (
                         <TreeNode
+                          eventKey={model.id}
                           key={model.id}
                           title={getTreeNodeTitle(model, mst, OptionBuilder)}
                         />
@@ -88,6 +90,7 @@ export default CreateComponent<IModelNaviProps>({
               .map((model) => {
                 return (
                   <TreeNode
+                    eventKey={model.id}
                     key={model.id}
                     title={getTreeNodeTitle(model, mst, OptionBuilder)}
                   />

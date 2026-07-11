@@ -1,7 +1,11 @@
-import { register } from './model-node'
-import lineRegister from './line'
+import lineRegister from './line';
+import { register } from './model-node';
 
-export default (mst) => {
-    register(mst)
-    lineRegister()
-}
+let registered = false;
+
+export default () => {
+  if (registered) return;
+  registered = true;
+  register();
+  lineRegister();
+};

@@ -7,7 +7,6 @@ export type IUseUpdateItem = {
   graph: Graph;
   showNameOrLabel: boolean;
   zoom: number;
-  checkNum: number;
   themeColor: string;
   darkness: boolean;
 };

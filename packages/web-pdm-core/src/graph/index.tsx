@@ -1,7 +1,7 @@
 import { useSize } from 'ahooks';
 import { withoutUndo } from 'mobx-keystone';
 import { observer } from 'mobx-react';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ToolBar from '../components/model-toolbar';
 import { useMst } from '../context';
 import { RootInstance } from '../type';
@@ -14,14 +14,10 @@ import './model.scss';
 // import mst from 'test/mst'
 
 export default observer(() => {
-  // const mst = useMst()
-  const { setRef, erdGraph, containerRef } = useLocal();
-  // const size = useSize(containerRef);
+  const { setRef, erdGraph } = useLocal();
 
   return (
     <>
-      {/* <div>{mst.sys.checkedKeys.length}</div> */}
-      {/* {JSON.stringify(size)} */}
       <ToolBar graph={erdGraph} />
       <div ref={setRef} className="graph" />
     </>
@@ -30,54 +26,44 @@ export default observer(() => {
 
 const useLocal = () => {
   const mst = useMst();
-  // window.kkk = mst
 
   const containerRef = useRef(null);
   const erdGraphRef = useRef<Graph>(null);
   const miniMapRef = useRef<any>(null);
-  useEffect(() => {
-    register(mst);
-  }, []);
-  const checkRef = useRef(+new Date());
-  const size = useSize(containerRef) || {};
-  useEffect(() => {
-    // alert()
-    // const { Nodes , edges } = mst
-    if (!erdGraphRef.current) {
-      //  alert(mst.Nodes.length)
-      // alert(mst === window.kkk)
-      //alert('erdGraphRef.current = render')
-      const Obj = render(containerRef.current, mst.Nodes, mst.edges, mst);
-      erdGraphRef.current = Obj.graph;
-      miniMapRef.current = Obj.miniMap;
-      //alert('erdGraphRef.current')
-      //  alert(mst.graph.$modelId)
-      async(() => {
-        mst.graph.setG6Graph(erdGraphRef.current);
-        // layout(erdGraphRef.current,  Nodes , edges, mst)
-      });
+  const [erdGraph, setErdGraph] = useState<Graph | null>(null);
+  const checkedKeys = mst.sys.checkedKeys.join('|');
 
-      //  window.kkk1 = mst
+  useEffect(() => {
+    register();
+    return () => {
+      erdGraphRef.current?.destroy();
+      erdGraphRef.current = null;
+    };
+  }, []);
+
+  const size = useSize(containerRef) || {};
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const nodes = mst.Nodes;
+    const edges = mst.edges;
+    if (!container || (!erdGraphRef.current && nodes.length === 0)) return;
+
+    if (!erdGraphRef.current) {
+      const result = render(container, nodes, edges, mst);
+      erdGraphRef.current = result.graph;
+      miniMapRef.current = result.miniMap;
+      mst.graph.setG6Graph(result.graph);
+      setErdGraph(result.graph);
     } else {
-      //alert('  layout(erdGraphRef.current,  mst.Nodes ' + mst.Nodes.length)
-      layout(erdGraphRef.current, mst.Nodes, mst.edges, mst);
-      // erdGraphRef.current.fitView(0)
+      layout(erdGraphRef.current, nodes, edges, mst);
     }
-  }, [JSON.stringify(mst.sys.checkedKeys), mst]);
+  }, [checkedKeys, mst]);
 
   useEffect(() => {
     if (erdGraphRef.current && size.width && size.height) {
-      // alert(erdGraphRef.current['isLayouting'])
       if (!erdGraphRef.current['isLayouting']) {
-        const documentHeight =
-          window.innerHeight ||
-          document.documentElement.clientHeight ||
-          document.body.clientHeight;
-        const height =
-          mst.sys.height === '100%'
-            ? documentHeight - 45
-            : (mst.sys.height as number) - 45;
-        erdGraphRef.current.changeSize(size.width, height);
+        erdGraphRef.current.changeSize(size.width, size.height);
         erdGraphRef.current.fitView(0);
       }
     }
@@ -119,16 +105,14 @@ const useLocal = () => {
         type: mst.sys.dagreLayout ? 'dagre' : 'fruchterman',
         // condense: true,
         // cols: 3,
-        workerEnabled: true,
+        workerEnabled: isLargar,
         linkDistance: 0,
-        pixelRatio: 2,
         // alphaDecay: isLargar ? 0.3 : 0.15,
         // preventOverlap: true,
         // clustering: true,
         clusterGravity: 100,
         speed: 2,
         gravity: 100,
-        gpuEnabled: true,
         // collideStrength: 0.5,
         //   type: 'dagre',
         //   // controlPoints: true,
@@ -165,13 +149,11 @@ const useLocal = () => {
     }
   }, [mst.sys.dagreLayout]);
 
-  //  alert('useUpdateItem' + mst.graph.zoom)
   useUpdateItem({
     currentModel: mst.sys.currentModel,
-    graph: erdGraphRef.current as any,
+    graph: erdGraph as any,
     showNameOrLabel: mst.sys.showNameOrLabel,
     zoom: mst.graph.zoom,
-    checkNum: checkRef.current,
     themeColor: mst.Ui.themeColor,
     darkness: mst.Ui.darkness,
   });
@@ -196,9 +178,8 @@ const useLocal = () => {
   }, [mst.sys.disableMiniMap]);
 
   return {
-    containerRef,
     setRef,
-    erdGraph: erdGraphRef.current,
+    erdGraph,
   };
 };
 
@@ -209,17 +190,8 @@ const useLocal = () => {
 //   K: 100,
 // });
 const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
-  const documentHeight =
-    window.innerHeight ||
-    document.documentElement.clientHeight ||
-    document.body.clientHeight;
-  const height =
-    mst.sys.height === '100%'
-      ? documentHeight - 45
-      : (mst.sys.height as number) - 45;
-  // const height = mst.sys.height
-  // alert(height)
-  // alert(height)
+  const width = Math.max(container.clientWidth, 1);
+  const height = Math.max(container.clientHeight, 1);
   const styleConfig = initStyle({ primaryColor: mst.Ui.themeColor }).style;
   const isLargar = nodes.length > 50;
   // alert(isLargar)
@@ -232,14 +204,13 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
   });
   const graph = new G6.Graph({
     height,
-    width: container.offsetWidth - 20,
+    width,
     container,
     fitView: true,
     // workerEnabled: true,
     fitCenter: true,
     enabledStack: true,
     animate: true,
-    gpuEnabled: true,
     pixelRatio: 2,
     // pixelRatio: 1,
     // animate: true,
@@ -253,13 +224,13 @@ const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
     },
 
     minZoom: 0.01,
-    maxZoom: 1.1,
+    maxZoom: 2.1,
     layout: {
       type: mst.sys.dagreLayout ? 'dagre' : 'force',
       condense: true,
       cols: 3,
       // gpuEnabled: true,
-      workerEnabled: true,
+      workerEnabled: isLargar,
       // workerScriptURL:'',
       linkDistance: 0,
       alphaDecay: isLargar ? 0.3 : undefined,

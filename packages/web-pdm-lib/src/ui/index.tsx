@@ -182,6 +182,7 @@ const OptionBuilder = ({ data }: ElementProps) => (
           className="tree-node-title-options"
           type="button"
           aria-label="更多操作"
+          onClick={(event) => event.stopPropagation()}
         >
           <MoreHorizontal size={15} />
         </button>
@@ -191,7 +192,7 @@ const OptionBuilder = ({ data }: ElementProps) => (
 );
 
 const getNodeKey = (node: React.ReactElement<TreeNodeProps>) =>
-  String(node.key ?? node.props.eventKey ?? '');
+  String(node.props.eventKey ?? node.key ?? '').replace(/^\.\$/, '');
 
 const TreeView = ({
   children,
@@ -265,13 +266,20 @@ const TreeView = ({
                   }
                 />
               ) : null}
-              <button
+              <div
                 className="web-pdm-tree-label"
-                type="button"
+                role="button"
+                tabIndex={0}
                 onClick={() => onSelect?.([key])}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    onSelect?.([key]);
+                  }
+                }}
               >
                 {node.props.title}
-              </button>
+              </div>
             </div>
             {hasChildren && isExpanded
               ? renderNodes(childNodes, level + 1)
