@@ -3,8 +3,9 @@ import { throttle } from 'lodash-es';
 import { observer } from 'mobx-react';
 import React, { isValidElement, useCallback, useState } from 'react';
 import { useMst } from '../../context';
+import type { ErdGraphRuntime } from '../../graph/runtime';
 import { createThemeCssVariables } from '../../theme';
-import { changeTwoDecimal_f, CreateComponent } from '../../util';
+import { CreateComponent } from '../../util';
 
 // import StateStack from '../../state-stack'
 // import { undoManager } from '../../context'
@@ -14,7 +15,7 @@ import { changeTwoDecimal_f, CreateComponent } from '../../util';
 // type TIconRenders = typeof IconRenders
 // export type TIconRendersKeys = keyof TIconRenders
 
-export default observer(({ graph }: { graph: any }) => {
+export default observer(({ graph }: { graph: ErdGraphRuntime | null }) => {
   const mst = useMst();
   const intl = mst.intl;
   const undoManager = mst.undoManager;
@@ -35,10 +36,7 @@ export default observer(({ graph }: { graph: any }) => {
     [colorPabel],
   );
 
-  const zoomNum =
-    (graph &&
-      changeTwoDecimal_f(parseFloat(mst.graph?.zoom * 100 + '') + '')) ||
-    0;
+  const zoomNum = graph ? Math.round(mst.graph.zoom * 10_000) / 100 : 0;
 
   if (!graph)
     return (
@@ -82,12 +80,12 @@ export default observer(({ graph }: { graph: any }) => {
           Tooltip={Tooltip}
           title={intl('toolbar.zoomIn')}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
-          disable={zoomNum >= 100}
+          disable={zoomNum >= 210}
           icon="max"
-          onClick={mst.graph.maxZoom.bind(mst.graph, graph)}
+          onClick={() => mst.graph.maxZoom()}
         />
         <span className="zoomNum noselect">
-          {graph && `${zoomNum >= 100 ? 100 : zoomNum}%`}
+          {graph && `${Math.min(zoomNum, 210)}%`}
         </span>
         <ButtonActon
           IconRenders={_IconRenders}
@@ -97,7 +95,7 @@ export default observer(({ graph }: { graph: any }) => {
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           disable={zoomNum < 5}
           icon="min"
-          onClick={mst.graph.minZoom.bind(mst.graph, graph)}
+          onClick={() => mst.graph.minZoom()}
         />
         <ButtonActon
           IconRenders={_IconRenders}
@@ -106,7 +104,7 @@ export default observer(({ graph }: { graph: any }) => {
           title={intl('toolbar.fitView')}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           icon="full"
-          onClick={mst.graph.container.bind(mst.graph, graph)}
+          onClick={() => mst.graph.container()}
         />
         <ButtonActon
           IconRenders={_IconRenders}
@@ -140,7 +138,7 @@ export default observer(({ graph }: { graph: any }) => {
           title={intl('toolbar.downloadImage')}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           icon="image"
-          onClick={mst.graph.downAsImage.bind(mst.graph, graph)}
+          onClick={() => mst.graph.downAsImage()}
         />
         <ButtonActon
           IconRenders={_IconRenders}

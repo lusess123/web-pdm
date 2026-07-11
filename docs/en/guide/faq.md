@@ -6,7 +6,7 @@ title: FAQ
 
 ## Does web-pdm already support G6 5?
 
-Not yet. The current graph layer uses the G6 4.8 compatibility implementation. G6 5 requires a separate migration and regression pass before it can be claimed as supported.
+Yes. The graph layer uses G6 5.1.1, including its asynchronous render lifecycle, custom nodes, named ports, Force and AntV Dagre layouts, Minimap plugin and image export API. The G6 implementation stays behind the component's runtime adapter, so no G6 instance is exposed as part of the public API.
 
 ## Can I use it without Ant Design?
 

@@ -25,6 +25,7 @@
     "test:browser": "node test/browser-smoke.mjs",
     "test:exports": "node test/package-exports.mjs",
     "test:watch": "vitest",
+    "typecheck": "pnpm --filter web-pdm-core typecheck && pnpm typecheck:public",
     "typecheck:public": "pnpm build-lib && tsc --ignoreConfig --noEmit --skipLibCheck --module esnext --moduleResolution bundler test/public-types.ts"
   },
   "commitlint": {

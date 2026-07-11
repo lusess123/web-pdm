@@ -145,3 +145,31 @@ export const models: ModelConfig[] = [
     ],
   },
 ];
+
+const englishLabels: Record<string, string> = {
+  ER图: 'ER diagram',
+  实体模型: 'Entity model',
+  主键: 'Primary key',
+  标签: 'Label',
+  名称: 'Name',
+  模块: 'Module',
+  拥有字段: 'Fields',
+  拥有模型: 'Models',
+  字段: 'Field',
+  关联信息: 'Relation metadata',
+  字段元数据: 'Field metadata',
+};
+
+export const englishModules: ModuleConfig[] = modules.map((module) => ({
+  ...module,
+  label: englishLabels[module.label] ?? module.label,
+}));
+
+export const englishModels: ModelConfig[] = models.map((model) => ({
+  ...model,
+  label: englishLabels[model.label] ?? model.label,
+  fields: model.fields.map((field) => ({
+    ...field,
+    label: englishLabels[field.label] ?? field.label,
+  })),
+}));

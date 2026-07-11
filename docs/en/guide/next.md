@@ -11,6 +11,6 @@ Large ER diagrams stress layout, rendering and interaction at the same time. The
 - avoid recalculating layout on unrelated UI updates;
 - render only the detail level that is useful at the current zoom;
 - measure canvas frame time with representative production schemas;
-- move expensive layout work off the main thread when the selected algorithm supports it.
+- validate the worker asset pipeline before enabling off-main-thread layouts in a published package.
 
-The current G6 4.8 compatibility layer provides the graph primitives, while `web-pdm` owns the schema-specific node rendering, navigation and toolbar behavior. Performance changes should be verified with both sparse diagrams and highly connected schemas; G6 5 migration is a separate compatibility effort.
+The current G6 5.1.1 runtime uses named field ports, level-of-detail nodes and serialized asynchronous operations. Data-only updates preserve node positions. Performance changes should be verified with empty, sparse and highly connected schemas at desktop and mobile viewport sizes.

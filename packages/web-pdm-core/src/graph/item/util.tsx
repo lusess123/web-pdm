@@ -1,20 +1,4 @@
-export const setNodeStateAttr = (state, s, cfg) => {
-  if (cfg.config.styleConfig[state]) {
-    Object.entries(cfg.config.styleConfig[state].node).forEach(([k, v]) => {
-      s.attr(k, v);
-    });
-  }
-};
-
-// const mapNodeStateAttr = (state, s, cfg, isMap) => {
-//   if (cfg.config.styleConfig[state]) {
-//   Object.entries(cfg.config.styleConfig[state].node).forEach(([k, v]) => {
-//     s.attr(k, v)
-//   })
-// }
-// }
-
-export const isEng = (str) => {
+export const isEng = (str: string) => {
   for (let i = 0; i < str.length; i++) {
     const charCode = str.charCodeAt(i);
     if (charCode < 0 || charCode > 128) {
@@ -55,38 +39,4 @@ export const getLen = (str: string) => {
   return realLength;
 }; // tslint:disable-next-line: interface-over-type-literal
 
-export const getTopAnch = (num, y = 0) => {
-  let res = [];
-  for (let i = 0; i < num; i++) {
-    res.push([(i + 1) / num, y]);
-  }
-  return res;
-};
-
-export const getBottomAnch = (num, y = 1) => {
-  let res = [];
-  for (let i = 0; i <= num; i++) {
-    res.push([i / num, y]);
-  }
-  return res;
-};
-
-export const getLeftAnch = (num, x = 0) => {
-  let res = [];
-  for (let i = 0; i < num; i++) {
-    res.push([x, (i + 1) / num]);
-  }
-  return res;
-};
-
-export const getRightAnch = (num, x = 1) => {
-  let res = [];
-  for (let i = 0; i <= num; i++) {
-    res.push([x, i / num]);
-  }
-  return res;
-};
-
-export const getLength = (length) => {
-  return length >= 8 ? length : 8;
-};
+export const getLength = (length: number) => Math.max(length, 1);

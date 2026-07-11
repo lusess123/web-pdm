@@ -1,6 +1,5 @@
 import { getRoot, model, Model, modelAction, prop } from 'mobx-keystone';
 import { normalizeLocale, type LocaleInput } from '../intl';
-import { toCenter } from '../util/graph';
 import { FieldConfig, ModelConfig } from './config';
 import { RootInstance } from './index';
 
@@ -83,14 +82,9 @@ export class TSys extends Model({
   setCurrentModel(keys: string[]) {
     const newKey = keys.length > 1 ? keys[1] : keys[0];
     const root: RootInstance = getRoot(this);
-    //root.graph.G6Graph
-    const graph = root.graph.G6Graph;
-    if (graph) {
-      const item = graph.findById('model-' + newKey);
-      if (item) item.toFront();
-    }
+    root.graph.frontModel(newKey);
+    root.graph.actionEdges(newKey);
     this.currentModel = newKey;
-    //root.graph.actionEdges(newKey)
   }
 
   @modelAction
@@ -98,34 +92,15 @@ export class TSys extends Model({
     const newKey = keys.length > 1 ? keys[1] : keys[0];
     this.currentModel = newKey;
     const root: RootInstance = getRoot(this);
-    //root.graph.G6Graph
-    const graph = root.graph.G6Graph;
-    if (graph) {
-      const item = graph.findById('model-' + newKey);
-      if (item) item.toFront();
-      toCenter(item, graph);
-      root.graph.setZoom(graph.getZoom());
-    }
-
-    //toCenter(   , root.graph.G6Graph)
+    root.graph.focusModel(newKey);
+    root.graph.actionEdges(newKey);
   }
 
   @modelAction
   openModel(key: string) {
-    // const newKey = keys.length > 1 ? keys[1] : keys[0]
-    // this.currentModel = newKey
     const root: RootInstance = getRoot(this);
-    //root.graph.G6Graph
-    const graph = root.graph.G6Graph;
-    if (graph) {
-      const item = graph.findById('model-' + key);
-      if (item && this.onModelDetail) this.onModelDetail(item.getModel().data);
-      // if (item) item.toFront()
-      // toCenter(item, graph)
-      // root.graph.setZoom(graph.getZoom())
-    }
-
-    //toCenter(   , root.graph.G6Graph)
+    const model = root.graph.getModelConfig(key);
+    if (model && this.onModelDetail) this.onModelDetail(model);
   }
 
   @modelAction

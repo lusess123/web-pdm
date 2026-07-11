@@ -7,6 +7,12 @@ import { resolve } from 'node:path';
 export default defineConfig({
   root: 'docs',
   outDir: 'docs-dist',
+  icon: '/brand/web-pdm-icon.svg',
+  logo: {
+    light: '/brand/web-pdm-mark-light.svg',
+    dark: '/brand/web-pdm-mark-dark.svg',
+  },
+  logoText: 'web-pdm',
   lang: 'en',
   locales: [
     {
@@ -31,6 +37,8 @@ export default defineConfig({
       'type-erd.tsx',
       'typedata.tsx',
       '首页.tsx',
+      '品牌标识.tsx',
+      '空图示例.tsx',
       '旧路由跳转.tsx',
     ],
   },

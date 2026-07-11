@@ -23,10 +23,11 @@
     "build": "vite build && cp src/public-types.d.ts dist/index.d.ts",
     "dev": "vite build --watch",
     "publish-npm:patch": "npm run build ; npm version patch && npm publish --registry=https://registry.npmjs.org && cnpm sync web-pdm-core",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@antv/g6": "^4.8.24",
+    "@antv/g6": "^5.1.1",
     "ahooks": "^3.9.7",
     "classnames": "^2.5.1",
     "lodash-es": "^4.18.1",

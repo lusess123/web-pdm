@@ -16,6 +16,6 @@ The package is a component rather than a hosted modeling service. Your applicati
 
 ## Rendering approach
 
-The current graph layer uses the G6 4.8 compatibility implementation. Canvas rendering keeps the workspace responsive when a schema contains many models and relationships, while React remains responsible for navigation and controls. G6 5 migration is tracked as a separate compatibility project.
+The graph layer runs on G6 5.1.1 behind a small runtime adapter. G6 owns canvas rendering, layouts, ports and graph interactions, while React remains responsible for navigation and controls. This boundary keeps the public component API stable and isolates G6's asynchronous lifecycle from the host application.
 
 Continue with [Getting started](/guide/getting-started) or open the [complete example](/demo/).

@@ -99,7 +99,7 @@ const Page = observer(
     themeColor,
   }: PageProps) => {
     const data = useMst();
-    const isFirstDataEffect = useRef(true);
+    const dataPropsRef = useRef({ models, modules });
 
     useEffect(() => {
       let restored = false;
@@ -129,6 +129,9 @@ const Page = observer(
       }
 
       if (!restored) {
+        data.Models.clear();
+        data.Modules.clear();
+        data.Fields.clear();
         withoutUndo(() => data.initData(models, modules));
       }
     }, []);
@@ -163,10 +166,9 @@ const Page = observer(
     ]);
 
     useEffect(() => {
-      if (isFirstDataEffect.current) {
-        isFirstDataEffect.current = false;
-        return;
-      }
+      const previous = dataPropsRef.current;
+      if (previous.models === models && previous.modules === modules) return;
+      dataPropsRef.current = { models, modules };
 
       data.Models.clear();
       data.Modules.clear();

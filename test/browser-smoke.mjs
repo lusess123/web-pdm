@@ -1,5 +1,8 @@
 import { spawn } from 'node:child_process';
+import { stat } from 'node:fs/promises';
 import { chromium } from 'playwright';
+
+const expectedG6Version = '5.1.1';
 
 const port = 43_000 + Math.floor(Math.random() * 1_000);
 const baseUrl = `http://localhost:${port}`;
@@ -37,14 +40,22 @@ const stopServer = () => {
 
 const inspectDiagram = async (page) => {
   await page
-    .locator('.graph canvas')
-    .waitFor({ state: 'visible', timeout: 15_000 });
-  await page.waitForTimeout(3_000);
+    .locator('.graph[data-g6-status="ready"]')
+    .waitFor({ state: 'visible', timeout: 30_000 });
+  await page.waitForFunction(
+    () =>
+      [...document.querySelectorAll('.graph canvas')].some((canvas) => {
+        const bounds = canvas.getBoundingClientRect();
+        return bounds.width > 0 && bounds.height > 0;
+      }),
+    undefined,
+    { timeout: 15_000 },
+  );
 
   return page.evaluate(() => {
     const wrapper = document.querySelector('.console-g6-page');
     const graph = document.querySelector('.graph');
-    const canvas = graph?.querySelector('canvas');
+    const canvases = [...(graph?.querySelectorAll('canvas') ?? [])];
     const toolbarButtons = [...document.querySelectorAll('.command-btn')];
     const menu = document.querySelector('.console-models-tree');
     const menuInput = document.querySelector('.web-pdm-input-group');
@@ -77,28 +88,36 @@ const inspectDiagram = async (page) => {
         Math.round(element.getBoundingClientRect().y),
       ),
     );
-    const context = canvas?.getContext('2d');
     let paintedPixels = 0;
     let contrastPixels = 0;
     let paintedBounds = null;
+    let canvasHeight = 0;
+    let canvasWidth = 0;
 
-    if (canvas && context) {
+    for (const canvas of canvases) {
+      const bounds = canvas.getBoundingClientRect();
+      canvasHeight = Math.max(canvasHeight, bounds.height);
+      canvasWidth = Math.max(canvasWidth, bounds.width);
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      if (!context || canvas.width === 0 || canvas.height === 0) continue;
       const pixels = context.getImageData(
         0,
         0,
         canvas.width,
         canvas.height,
       ).data;
-      let minX = canvas.width;
-      let minY = canvas.height;
-      let maxX = 0;
-      let maxY = 0;
+      let minX = paintedBounds?.minX ?? canvas.width;
+      let minY = paintedBounds?.minY ?? canvas.height;
+      let maxX = paintedBounds?.maxX ?? 0;
+      let maxY = paintedBounds?.maxY ?? 0;
+      let layerPaintedPixels = 0;
       for (let index = 3; index < pixels.length; index += 4) {
         if (pixels[index] === 0) continue;
         const pixel = (index - 3) / 4;
         const x = pixel % canvas.width;
         const y = Math.floor(pixel / canvas.width);
         paintedPixels += 1;
+        layerPaintedPixels += 1;
         if (pixels[index - 3] + pixels[index - 2] + pixels[index - 1] < 690) {
           contrastPixels += 1;
         }
@@ -107,13 +126,23 @@ const inspectDiagram = async (page) => {
         maxX = Math.max(maxX, x);
         maxY = Math.max(maxY, y);
       }
-      if (paintedPixels > 0) paintedBounds = { minX, minY, maxX, maxY };
+      if (layerPaintedPixels > 0) {
+        paintedBounds = { minX, minY, maxX, maxY };
+      }
     }
 
     return {
-      canvasHeight: canvas?.getBoundingClientRect().height ?? 0,
-      canvasWidth: canvas?.getBoundingClientRect().width ?? 0,
+      canvasCount: canvases.length,
+      canvasHeight,
+      canvasWidth,
       contrastPixels,
+      g6EdgeCount: Number(graph?.getAttribute('data-g6-edge-count') ?? NaN),
+      g6Layout: graph?.getAttribute('data-g6-layout'),
+      g6Minimap: graph?.getAttribute('data-g6-minimap'),
+      g6NodeCount: Number(graph?.getAttribute('data-g6-node-count') ?? NaN),
+      g6Status: graph?.getAttribute('data-g6-status'),
+      g6Version: graph?.getAttribute('data-g6-version'),
+      g6Zoom: Number(graph?.getAttribute('data-g6-zoom') ?? NaN),
       graphHeight: graph?.getBoundingClientRect().height ?? 0,
       menuActionRightGap:
         menuActionRow && menuActionMore
@@ -276,8 +305,20 @@ const inspectVisibleSidebarWidth = (page) =>
     return sidebar.getBoundingClientRect().width;
   });
 
-const assertDiagram = (route, state) => {
+const assertDiagram = (route, state, expectedCounts) => {
   const failures = [];
+  if (state.g6Status !== 'ready') failures.push('G6 没有完成真实渲染');
+  if (state.g6Version !== expectedG6Version)
+    failures.push(`G6 版本不是 ${expectedG6Version}`);
+  if (
+    expectedCounts &&
+    (state.g6NodeCount !== expectedCounts.nodes ||
+      state.g6EdgeCount !== expectedCounts.edges)
+  ) {
+    failures.push(
+      `G6 数据数量错误，实际 ${state.g6NodeCount} 节点/${state.g6EdgeCount} 关系边，预期 ${expectedCounts.nodes}/${expectedCounts.edges}`,
+    );
+  }
   if (state.treeLabelCount < 2) failures.push('模型树没有默认展开');
   if (state.toolbarButtonCount < 5) failures.push('工具栏按钮缺失');
   if (state.toolbarRowCount !== 1) failures.push('工具栏没有保持单行');
@@ -299,6 +340,7 @@ const assertDiagram = (route, state) => {
     failures.push('画布容器溢出组件高度');
   if (state.canvasWidth <= 0 || state.canvasHeight <= 0)
     failures.push('画布尺寸无效');
+  if (state.canvasCount < 1) failures.push('G6 没有创建 Canvas 图层');
   if (state.paintedPixels < 5_000 || state.contrastPixels < 1_000) {
     failures.push('画布中没有足够可见的 ER 节点');
   }
@@ -306,6 +348,226 @@ const assertDiagram = (route, state) => {
   if (failures.length > 0) {
     throw new Error(
       `${route} 图形验收失败：${failures.join('；')}\n${JSON.stringify(state)}`,
+    );
+  }
+};
+
+const readGraphDiagnostics = (page) =>
+  page.evaluate(() => {
+    const graph = document.querySelector('.graph');
+    return {
+      compactNodeCount: Number(
+        graph?.getAttribute('data-g6-compact-node-count') ?? NaN,
+      ),
+      edgeCount: Number(graph?.getAttribute('data-g6-edge-count') ?? NaN),
+      layout: graph?.getAttribute('data-g6-layout'),
+      minimap: graph?.getAttribute('data-g6-minimap'),
+      nodeCount: Number(graph?.getAttribute('data-g6-node-count') ?? NaN),
+      status: graph?.getAttribute('data-g6-status'),
+      version: graph?.getAttribute('data-g6-version'),
+      zoom: Number(graph?.getAttribute('data-g6-zoom') ?? NaN),
+    };
+  });
+
+const waitForGraphAttribute = (page, attribute, expected) =>
+  page.waitForFunction(
+    ({ attribute, expected }) =>
+      document.querySelector('.graph')?.getAttribute(attribute) === expected,
+    { attribute, expected },
+    { timeout: 30_000 },
+  );
+
+const waitForNextGraphReady = async (page, action) => {
+  const token = `${Date.now()}-${Math.random()}`;
+  await page.evaluate((token) => {
+    const graph = document.querySelector('.graph');
+    if (!graph) throw new Error('找不到 G6 画布容器');
+    graph.setAttribute('data-g6-test-ready', token);
+    graph.addEventListener(
+      'web-pdm:graph-ready',
+      () => graph.setAttribute('data-g6-test-ready', `${token}:ready`),
+      { once: true },
+    );
+  }, token);
+  await action();
+  await waitForGraphAttribute(page, 'data-g6-test-ready', `${token}:ready`);
+  await page.evaluate(() =>
+    document.querySelector('.graph')?.removeAttribute('data-g6-test-ready'),
+  );
+};
+
+const assertToolbarInteractions = async (page) => {
+  const initial = await readGraphDiagnostics(page);
+  if (
+    initial.status !== 'ready' ||
+    initial.version !== expectedG6Version ||
+    !Number.isFinite(initial.zoom)
+  ) {
+    throw new Error(`工具栏测试前 G6 状态无效：${JSON.stringify(initial)}`);
+  }
+
+  const zoomIn = page.locator('button[aria-label="Zoom in"]');
+  const zoomOut = page.locator('button[aria-label="Zoom out"]');
+  const startsAtMaximum =
+    (await zoomIn.getAttribute('aria-disabled')) === 'true';
+  const firstZoom = startsAtMaximum
+    ? { action: 'zoom-out', button: zoomOut }
+    : { action: 'zoom-in', button: zoomIn };
+  await firstZoom.button.click();
+  await waitForGraphAttribute(page, 'data-g6-last-action', firstZoom.action);
+
+  const reverseZoom = startsAtMaximum
+    ? { action: 'zoom-in', button: zoomIn }
+    : { action: 'zoom-out', button: zoomOut };
+  await reverseZoom.button.click();
+  await waitForGraphAttribute(page, 'data-g6-last-action', reverseZoom.action);
+
+  const fitPreparation =
+    (await zoomIn.getAttribute('aria-disabled')) === 'true'
+      ? { action: 'zoom-out', button: zoomOut }
+      : { action: 'zoom-in', button: zoomIn };
+  await fitPreparation.button.click();
+  await waitForGraphAttribute(
+    page,
+    'data-g6-last-action',
+    fitPreparation.action,
+  );
+  await page.locator('button[aria-label="Fit view"]').click();
+  await waitForGraphAttribute(page, 'data-g6-last-action', 'fit-view');
+
+  const layoutButton = page
+    .locator(
+      'button[aria-label="Switch to hierarchy layout"], button[aria-label="Switch to relation layout"]',
+    )
+    .first();
+  await layoutButton.click();
+  const nextLayout = initial.layout === 'force' ? 'antv-dagre' : 'force';
+  await waitForGraphAttribute(page, 'data-g6-layout', nextLayout);
+
+  if (initial.minimap !== 'false') {
+    throw new Error(`小地图初始状态应关闭：${JSON.stringify(initial)}`);
+  }
+  await page.locator('button[aria-label="Show minimap"]').click();
+  await waitForGraphAttribute(page, 'data-g6-minimap', 'true');
+  await page.locator('button[aria-label="Hide minimap"]').click();
+  await waitForGraphAttribute(page, 'data-g6-minimap', 'false');
+
+  const final = await readGraphDiagnostics(page);
+  if (final.nodeCount !== 4 || final.edgeCount !== 5) {
+    throw new Error(`工具栏操作改变了图数据：${JSON.stringify(final)}`);
+  }
+};
+
+const assertPngDownload = async (page, minimumBytes = 10_000) => {
+  const before = await readGraphDiagnostics(page);
+  const [download] = await Promise.all([
+    page.waitForEvent('download', { timeout: 30_000 }),
+    page.locator('button[aria-label="Download image"]').click(),
+  ]);
+  const filename = download.suggestedFilename();
+  if (!filename.toLowerCase().endsWith('.png')) {
+    throw new Error(`导出文件不是 PNG：${filename}`);
+  }
+  const downloadPath = await download.path();
+  if (!downloadPath) throw new Error('浏览器没有生成导出的 PNG 文件');
+  const file = await stat(downloadPath);
+  if (file.size <= minimumBytes) {
+    throw new Error(`导出的 PNG 内容过小：${file.size} bytes`);
+  }
+  await waitForGraphAttribute(page, 'data-g6-export-status', 'complete');
+  const after = await readGraphDiagnostics(page);
+  if (after.compactNodeCount !== before.compactNodeCount) {
+    throw new Error(
+      `PNG 导出后节点细节状态没有恢复：${JSON.stringify({ before, after })}`,
+    );
+  }
+};
+
+const prepareCompactExport = async (page) => {
+  const zoomOut = page.locator('button[aria-label="Zoom out"]');
+  for (let index = 0; index < 10; index += 1) {
+    const diagnostics = await readGraphDiagnostics(page);
+    if (diagnostics.compactNodeCount === diagnostics.nodeCount) return;
+    await page.evaluate(() =>
+      document.querySelector('.graph')?.removeAttribute('data-g6-last-action'),
+    );
+    await zoomOut.click();
+    await waitForGraphAttribute(page, 'data-g6-last-action', 'zoom-out');
+  }
+  await waitForGraphAttribute(page, 'data-g6-compact-node-count', '4');
+};
+
+const assertViewportFit = async (page, viewport) => {
+  await page.setViewportSize(viewport);
+  await page.waitForFunction(
+    () => {
+      const graph = document.querySelector('.graph[data-g6-status="ready"]');
+      if (!graph) return false;
+      const canvas = graph.querySelector('canvas');
+      const bounds = canvas?.getBoundingClientRect();
+      const width = Number(graph.getAttribute('data-g6-width'));
+      const height = Number(graph.getAttribute('data-g6-height'));
+      return (
+        bounds &&
+        bounds.width > 0 &&
+        bounds.height > 0 &&
+        Math.abs(width - bounds.width) <= 2 &&
+        Math.abs(height - bounds.height) <= 2
+      );
+    },
+    undefined,
+    { timeout: 30_000 },
+  );
+
+  const state = await page.evaluate(() => {
+    const home = document.querySelector('.web-pdm-home');
+    const wrapper = document.querySelector('.console-g6-page');
+    const graph = document.querySelector('.graph');
+    const canvases = [...(graph?.querySelectorAll('canvas') ?? [])];
+    const bottomOverflow = (element) =>
+      element
+        ? Math.max(0, element.getBoundingClientRect().bottom - innerHeight)
+        : Number.POSITIVE_INFINITY;
+    return {
+      canvasHeight: Math.max(
+        0,
+        ...canvases.map((canvas) => canvas.getBoundingClientRect().height),
+      ),
+      canvasWidth: Math.max(
+        0,
+        ...canvases.map((canvas) => canvas.getBoundingClientRect().width),
+      ),
+      graphBottomOverflow: bottomOverflow(graph),
+      graphHeight: graph?.getBoundingClientRect().height ?? 0,
+      graphWidth: graph?.getBoundingClientRect().width ?? 0,
+      g6Height: Number(graph?.getAttribute('data-g6-height') ?? NaN),
+      g6Width: Number(graph?.getAttribute('data-g6-width') ?? NaN),
+      homeBottomOverflow: bottomOverflow(home),
+      wrapperBottomOverflow: bottomOverflow(wrapper),
+    };
+  });
+
+  const failures = [];
+  if (state.homeBottomOverflow > 1) failures.push('首页超过可视区高度');
+  if (state.wrapperBottomOverflow > 1) failures.push('组件超过可视区高度');
+  if (state.graphBottomOverflow > 1) failures.push('画布超过可视区高度');
+  if (
+    state.graphWidth <= 0 ||
+    state.graphHeight <= 0 ||
+    state.canvasWidth <= 0 ||
+    state.canvasHeight <= 0
+  ) {
+    failures.push('响应式调整后画布尺寸无效');
+  }
+  if (
+    Math.abs(state.g6Width - state.canvasWidth) > 2 ||
+    Math.abs(state.g6Height - state.canvasHeight) > 2
+  ) {
+    failures.push('G6 resize 诊断尺寸没有与 Canvas 同步');
+  }
+  if (failures.length) {
+    throw new Error(
+      `${viewport.width}x${viewport.height} 高度/resize 验收失败：${failures.join('；')}\n${JSON.stringify(state)}`,
     );
   }
 };
@@ -319,28 +581,52 @@ try {
   });
   page.setDefaultTimeout(15_000);
   const errors = [];
+  const requestFailures = [];
 
-  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('pageerror', (error) => errors.push(error.stack ?? error.message));
   page.on('console', (message) => {
     if (message.text().startsWith('[rsbuild] HMR update failed')) return;
     if (['error', 'warning'].includes(message.type()))
       errors.push(message.text());
+  });
+  page.on('requestfailed', (request) => {
+    requestFailures.push({
+      errorText: request.failure()?.errorText ?? 'unknown',
+      method: request.method(),
+      url: request.url(),
+    });
   });
 
   for (const route of [
     '/',
     '/guide/getting-started',
     '/demo/',
+    '/demo/empty',
     '/config/',
     '/zh/',
     '/zh/guide/getting-started',
     '/zh/demo/',
+    '/zh/demo/empty',
     '/zh/config/',
   ]) {
     const response = await page.goto(`${baseUrl}${route}`, {
       waitUntil: 'domcontentloaded',
     });
     if (!response?.ok()) throw new Error(`${route} 返回 ${response?.status()}`);
+    if (
+      [
+        '/',
+        '/demo/',
+        '/demo/empty',
+        '/zh/',
+        '/zh/demo/',
+        '/zh/demo/empty',
+      ].includes(route)
+    ) {
+      await page
+        .locator('.graph[data-g6-status="ready"]')
+        .waitFor({ state: 'visible', timeout: 30_000 });
+    }
     console.log(`${route} ok`);
   }
 
@@ -353,7 +639,7 @@ try {
     );
   }
   assertHome(await inspectHome(page));
-  assertDiagram('/', await inspectDiagram(page));
+  assertDiagram('/', await inspectDiagram(page), { nodes: 4, edges: 5 });
   assertPresentation('/', await inspectPresentation(page), {
     locale: 'en',
     theme: 'light',
@@ -365,7 +651,27 @@ try {
     throw new Error('英文组件未显示英文搜索文案');
   }
 
-  await page.locator('.command-btn[aria-label="Switch to dark theme"]').click();
+  await assertToolbarInteractions(page);
+  await prepareCompactExport(page);
+  await assertPngDownload(page);
+
+  for (const viewport of [
+    { width: 1440, height: 1000 },
+    { width: 1365, height: 768 },
+    { width: 390, height: 844 },
+  ]) {
+    await assertViewportFit(page, viewport);
+  }
+  await assertViewportFit(page, { width: 1440, height: 1000 });
+
+  await page.locator('button[aria-label="Show minimap"]').click();
+  await waitForGraphAttribute(page, 'data-g6-minimap', 'true');
+  await page
+    .locator('.web-pdm-minimap')
+    .waitFor({ state: 'visible', timeout: 30_000 });
+  await waitForNextGraphReady(page, () =>
+    page.locator('.command-btn[aria-label="Switch to dark theme"]').click(),
+  );
   await page.waitForFunction(
     () =>
       document
@@ -376,6 +682,12 @@ try {
     locale: 'en',
     theme: 'dark',
   });
+  const minimapBackground = await page
+    .locator('.web-pdm-minimap')
+    .evaluate((element) => getComputedStyle(element).backgroundColor);
+  if (minimapBackground === 'rgb(255, 255, 255)') {
+    throw new Error('暗色主题的小地图仍使用白色背景');
+  }
   await page
     .locator('.console-erd-search.btns button[aria-label="More actions"]')
     .click();
@@ -390,7 +702,7 @@ try {
   if (!chineseHomeText.includes('把复杂的数据关系'))
     throw new Error('中文首页没有显示中文文案');
   assertHome(await inspectHome(page));
-  assertDiagram('/zh/', await inspectDiagram(page));
+  assertDiagram('/zh/', await inspectDiagram(page), { nodes: 4, edges: 5 });
   assertPresentation('/zh/', await inspectPresentation(page), {
     locale: 'zh-CN',
     theme: 'light',
@@ -410,14 +722,49 @@ try {
 
   await page.goto(`${baseUrl}/demo/`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.body.innerText.trim().length > 0);
-  assertDiagram('/demo/', await inspectDiagram(page));
+  assertDiagram('/demo/', await inspectDiagram(page), {
+    nodes: 46,
+    edges: 27,
+  });
 
-  for (const route of ['/demo/', '/config/', '/zh/demo/', '/zh/config/']) {
+  await page.goto(`${baseUrl}/demo/empty`, {
+    waitUntil: 'domcontentloaded',
+  });
+  await page
+    .locator('.graph[data-g6-status="ready"]')
+    .waitFor({ state: 'visible', timeout: 30_000 });
+  const empty = await readGraphDiagnostics(page);
+  if (
+    empty.version !== expectedG6Version ||
+    empty.nodeCount !== 0 ||
+    empty.edgeCount !== 0 ||
+    (await page.locator('.g6-modelnavi').count()) !== 0
+  ) {
+    throw new Error(`空图状态错误：${JSON.stringify(empty)}`);
+  }
+  await assertPngDownload(page, 500);
+
+  for (const route of [
+    '/demo/',
+    '/demo/empty',
+    '/config/',
+    '/zh/demo/',
+    '/zh/demo/empty',
+    '/zh/config/',
+  ]) {
     await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded' });
     if ((await inspectVisibleSidebarWidth(page)) > 0)
       throw new Error(`${route} 没有菜单项时仍显示空侧栏`);
   }
 
+  errors.push(
+    ...requestFailures
+      .filter(({ errorText }) => errorText !== 'net::ERR_ABORTED')
+      .map(
+        ({ errorText, method, url }) =>
+          `资源请求失败：${method} ${url} (${errorText})`,
+      ),
+  );
   if (errors.length > 0)
     throw new Error(`浏览器控制台异常：\n${errors.join('\n')}`);
   console.log('browser smoke ok');

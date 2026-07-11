@@ -123,3 +123,9 @@
     }
   }
 }
+
+@media (width <= 640px) {
+  .console-g6-page .g6-modelnavi {
+    display: none;
+  }
+}

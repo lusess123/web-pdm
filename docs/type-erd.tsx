@@ -1,7 +1,7 @@
 import { useDark, useI18n, useLang } from '@rspress/core/runtime';
 import WebPdm from 'web-pdm';
 import './style.less';
-import { models, modules } from './typedata';
+import { englishModels, englishModules, models, modules } from './typedata';
 
 interface TypeErdProps {
   className?: string;
@@ -15,6 +15,8 @@ export default ({
   const isDark = useDark();
   const lang = useLang();
   const t = useI18n();
+  const localizedModels = lang === 'zh' ? models : englishModels;
+  const localizedModules = lang === 'zh' ? modules : englishModules;
 
   return (
     <WebPdm
@@ -22,7 +24,7 @@ export default ({
       erdkey={`api-${lang}`}
       height={height}
       locale={lang === 'zh' ? 'zh-CN' : 'en'}
-      models={models}
+      models={localizedModels}
       onModelDetail={(a) => {
         alert(
           `${t('modelDetailPrefix')}${a.label}(${a.name})${t(
@@ -30,7 +32,7 @@ export default ({
           )}`,
         );
       }}
-      modules={modules}
+      modules={localizedModules}
       theme={isDark ? 'dark' : 'light'}
       themeColor={isDark ? '#38bdf8' : '#0f6eaa'}
     />

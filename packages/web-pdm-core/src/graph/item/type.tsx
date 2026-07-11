@@ -1,66 +1,47 @@
-// import G6 from '@antv/g6'
-import { ModelConfig } from '@antv/g6';
+import type { WebPdmPalette } from '../../theme';
+import type { ModelConfig } from '../../type/config';
+import type { RectStyleProps } from '../g6';
 
-export interface IModelNodeShapeCfg extends ModelConfig {
-  config: {
-    width: number;
-    headerHeight: number;
-    fieldHeight: number;
-    labelSize: number;
-    styleConfig: {
-      default: {
-        node: any;
-        edge: any;
-      };
-      active: {
-        node: any;
-        edge: any;
-      };
-      selected: {
-        node: any;
-        edge: any;
-      };
-    };
-    colors: any;
-  };
-  data: {
-    aggregateRelationLabel: string;
-    label: string;
-    key: string;
-    fields: IField[];
-    name: string;
-    relationLabels: Record<string, string>;
-    viewDetailsLabel: string;
-    aggregateRoot: boolean;
-    aggregateModelKey: string;
-    belongAggregate: string;
-    moduleKey: string;
-    store: any;
-  };
-  isNoModule?: boolean;
-  isKeySharp?: boolean;
-  active?: boolean;
-  selected?: boolean;
-  into?: boolean;
-  out?: boolean;
-  hide?: boolean;
-  inactive?: boolean;
-  isCardSharp?: boolean;
-  showNameOrLabel?: boolean;
-  themeColor?: string;
-  darkness?: boolean;
-}
-export interface IField {
+export type ErdFieldView = {
   id: string;
   label: string;
   name: string;
   type: string;
-  isForeign?: boolean;
-  relationModel?: any;
-  typeMeta?: any;
+  relationModelId?: string;
+};
+
+export type ErdModelView = {
+  aggregateModelKey?: string;
+  aggregateRelationLabel: string;
+  fields: ErdFieldView[];
+  label: string;
+  modelConfig: ModelConfig;
+  modelId: string;
+  name: string;
+  viewDetailsLabel: string;
+};
+
+export interface ErdNodeStyle extends RectStyleProps {
+  compact: 0 | 1 | 2;
+  erd: ErdModelView;
+  fieldHeight: number;
+  headerHeight: number;
+  palette: WebPdmPalette;
+  selected: boolean;
+  showNameOrLabel: boolean;
 }
 
-export const Relation = {
-  ToOne: '1:1',
-  ToMany: '1:n',
+export const ERD_NODE_WIDTH = 300;
+export const ERD_HEADER_HEIGHT = 48;
+export const ERD_FIELD_HEIGHT = 32;
+
+export const getErdNodeSize = (
+  style: Pick<ErdNodeStyle, 'compact' | 'erd'>,
+): [number, number] => {
+  if (style.compact === 2) return [62, 36];
+  if (style.compact === 1) return [210, 44];
+  return [
+    ERD_NODE_WIDTH,
+    ERD_HEADER_HEIGHT + Math.max(style.erd.fields.length, 1) * ERD_FIELD_HEIGHT,
+  ];
 };

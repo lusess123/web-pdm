@@ -32,12 +32,7 @@ export interface IComponentCreate {
   <T>(options: IComponentCreateOptions<T>): SFC<T>;
 }
 
-export const CreateComponent: IComponentCreate = ({
-  useLocal,
-  useSetup,
-  render,
-  displayName,
-}) => {
+export const CreateComponent: IComponentCreate = ({ render, displayName }) => {
   const Render = observer(render);
   //  const Render = render
   //  const setUp = useSetup
@@ -66,7 +61,10 @@ const handleCircular = () => {
         const type =
           typeof value.type === 'string'
             ? value.type
-            : value.type.displayName || value.type.name || 'Component';
+            : (value.type as { displayName?: string; name?: string })
+                .displayName ||
+              (value.type as { name?: string }).name ||
+              'Component';
         return `[ReactElement ${type}]`;
       }
       const index = cache.indexOf(value);

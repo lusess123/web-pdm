@@ -22,15 +22,17 @@ import { translateWithOverride, type IntlKey, type IntlParams } from '../intl';
 import type { ModelConfig, ModuleConfig, SysConfig } from './config';
 import { TUi } from './ui';
 
-const getLayerRootModel = (models, rootKey, roots = []) => {
+const getLayerRootModel = (
+  models: Array<{ aggregateModelKey?: string; name: string }>,
+  rootKey: string,
+  roots: string[] = [],
+): string[] => {
   const rootModel = models.find((a) => a.name === rootKey);
   const rootsRes = rootModel ? [...roots, rootKey] : roots;
-  const isRoot =
-    rootModel.aggregateModelKey && rootModel.aggregateModelKey !== rootKey;
-  const rootsResList = isRoot
-    ? getLayerRootModel(models, rootModel.aggregateModelKey, rootsRes)
+  const parentKey = rootModel?.aggregateModelKey;
+  return parentKey && parentKey !== rootKey
+    ? getLayerRootModel(models, parentKey, rootsRes)
     : rootsRes;
-  return rootsResList;
 };
 
 export const arrangeShow = (ss, { model }) => {
@@ -48,12 +50,11 @@ export const arrangeShow = (ss, { model }) => {
   };
 };
 
-function S4() {
-  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-}
 function NewGuid() {
-  return S4();
-  //return globaIndex ++
+  return (
+    globalThis.crypto?.randomUUID?.() ??
+    `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+  );
 }
 
 function MapProp<T>() {
@@ -75,7 +76,7 @@ export class RootInstance extends Model({
   graph: prop<TGraph>(() => new TGraph({})),
   Ui: prop<TUi>(() => new TUi({})),
 }) {
-  undoManager: UndoManager;
+  undoManager!: UndoManager;
   Fields: Map<string, any> = new Map();
   onReload?: () => TData;
   onIntl?: (text: string) => string;
@@ -195,8 +196,8 @@ export class RootInstance extends Model({
         key,
         new TModel({
           id: key,
-          belongAggregate: model.belongAggregate,
-          aggregateModelKey: model.aggregateModelKey,
+          belongAggregate: model.belongAggregate ?? '',
+          aggregateModelKey: model.aggregateModelKey ?? '',
           aggregateRoot: model.aggregateRoot,
           label: model.label,
           name: model.name,
@@ -211,7 +212,9 @@ export class RootInstance extends Model({
       model.fields.forEach((field) => {
         // if( i > 3) return
         const _key = NewGuid().toString();
-        const relationModel = field?.typeMeta?.relationModel;
+        const relationModel = Array.isArray(field.typeMeta)
+          ? field.typeMeta.find((meta) => meta.relationModel)?.relationModel
+          : field.typeMeta?.relationModel;
         const tmodel = relationModel
           ? this.Models.get(modelHas[relationModel])
           : undefined;
@@ -333,6 +336,9 @@ export const createStore = (
   const ui = new TUi(props.Ui);
   ui.registComponents(props.components, props.IconRenders, props.disableIcons);
   return new RootInstance({
+    // mobx-keystone accepts an explicit model id at runtime, but omits it from
+    // the generated creation-data type.
+    // @ts-expect-error $modelId is a valid mobx-keystone creation field.
     $modelId: 'webpdm',
     sys: new TSys({
       isArrangeLayout: false,

@@ -82,14 +82,23 @@
 }
 
 .web-pdm-product-mark {
+  --web-pdm-logo-bg: #fff;
+  --web-pdm-logo-border: #ccd6e2;
+  --web-pdm-logo-card: #101828;
+  --web-pdm-logo-row: #fff;
+  --web-pdm-logo-accent: #087eae;
+
   width: clamp(62px, 5vw, 76px);
   height: clamp(62px, 5vw, 76px);
   flex: 0 0 auto;
-  filter: drop-shadow(0 12px 24px rgb(16 24 40 / 20%));
 }
 
 .dark .web-pdm-product-mark {
-  filter: drop-shadow(0 14px 28px rgb(0 0 0 / 34%));
+  --web-pdm-logo-bg: #111923;
+  --web-pdm-logo-border: #334155;
+  --web-pdm-logo-card: #e7f0f7;
+  --web-pdm-logo-row: #182230;
+  --web-pdm-logo-accent: #38bdf8;
 }
 
 .web-pdm-home__intro {
@@ -272,11 +281,9 @@
   height: 100% !important;
 }
 
-.dark .web-pdm-home-diagram .graph,
-.dark .console-g6-page-api .graph,
-.dark .console-g6-page-demo .graph {
-  border-color: var(--home-border, #314158);
-  background-color: #0b1118;
+.console-g6-page[data-web-pdm-theme='dark'] .graph {
+  border-color: var(--web-pdm-border, #314158);
+  background-color: var(--web-pdm-canvas, #0b1118);
   background-image: none;
 }
 

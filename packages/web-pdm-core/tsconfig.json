@@ -1,40 +1,28 @@
 {
-    "compilerOptions": {
-        "module": "esnext",
-        "target": "es2018",
-        "lib": [
-            "dom",
-            "es6"
-        ],
-        "moduleResolution": "node",
-        "importHelpers": true,
-        "jsx": "react",
-        "esModuleInterop": true,
-        "experimentalDecorators": true,
-        "declaration": true,
-        "sourceMap": true,
-        "baseUrl": ".",
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "allowJs": true,
-        "noUnusedParameters": true,
-        "noUnusedLocals": true,
-        "downlevelIteration": true,
-        "emitDecoratorMetadata": true,
-        "allowUnreachableCode": true,
-        "strictNullChecks": true,
-        "forceConsistentCasingInFileNames": true,
-        "isolatedModules": false,
-        "preserveSymlinks": true
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "es",
-        "dist",
-        "webconfig.config.js",
-        "test"
-    ]
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2018",
+    "lib": ["dom", "es2022"],
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "emitDecoratorMetadata": true,
+    "allowUnreachableCode": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": false,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "es", "dist", "webconfig.config.js", "test"]
 }
