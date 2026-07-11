@@ -3,7 +3,14 @@ import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import { Check, ChevronDown, ChevronRight, MoreHorizontal } from 'lucide-react';
-import React, { Children, cloneElement, isValidElement, useMemo } from 'react';
+import React, {
+  Children,
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 
 type ElementProps = Record<string, any>;
 
@@ -101,13 +108,18 @@ export const Dropdown = ({
   overlay,
   className = '',
 }: ElementProps) => {
+  const trigger = children as React.ReactElement<ElementProps>;
   const items = Children.toArray(
     (overlay as React.ReactElement<ElementProps>)?.props?.children,
   ).filter(isValidElement) as React.ReactElement<ElementProps>[];
   return (
     <DropdownPrimitive.Root>
       <DropdownPrimitive.Trigger asChild>
-        {cloneElement(children, { className })}
+        {cloneElement(trigger, {
+          className: [trigger.props.className, className]
+            .filter(Boolean)
+            .join(' '),
+        })}
       </DropdownPrimitive.Trigger>
       <DropdownPrimitive.Portal>
         <DropdownPrimitive.Content className="web-pdm-menu" sideOffset={4}>
@@ -194,6 +206,34 @@ const OptionBuilder = ({ data }: ElementProps) => (
 const getNodeKey = (node: React.ReactElement<TreeNodeProps>) =>
   String(node.props.eventKey ?? node.key ?? '').replace(/^\.\$/, '');
 
+const getLeafKeys = (nodes: React.ReactNode): string[] =>
+  Children.toArray(nodes)
+    .filter(isValidElement)
+    .flatMap((rawNode) => {
+      const node = rawNode as React.ReactElement<TreeNodeProps>;
+      return Children.count(node.props.children) > 0
+        ? getLeafKeys(node.props.children)
+        : [getNodeKey(node)];
+    });
+
+const TreeCheckbox = ({ checked, indeterminate, onChange }: ElementProps) => {
+  const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (ref.current) ref.current.indeterminate = indeterminate;
+  }, [indeterminate]);
+
+  return (
+    <input
+      ref={ref}
+      className="web-pdm-tree-checkbox"
+      type="checkbox"
+      checked={checked}
+      onChange={onChange}
+    />
+  );
+};
+
 const TreeView = ({
   children,
   selectedKeys = [],
@@ -227,42 +267,54 @@ const TreeView = ({
         const childNodes = node.props.children;
         const hasChildren = Children.count(childNodes) > 0;
         const isExpanded = expanded.has(key);
+        const checkKeys = hasChildren ? getLeafKeys(childNodes) : [key];
+        const isChecked =
+          checkKeys.length > 0 && checkKeys.every((id) => checked.has(id));
+        const isIndeterminate =
+          !isChecked && checkKeys.some((id) => checked.has(id));
         return (
           <div className="web-pdm-tree-node" key={key}>
             <div
-              className={`web-pdm-tree-row ${selected.has(key) ? 'is-selected' : ''}`}
-              style={{ paddingLeft: level * 16 }}
+              className={`web-pdm-tree-row ${hasChildren ? 'is-branch' : 'is-leaf'} ${selected.has(key) ? 'is-selected' : ''}`}
+              style={{ paddingLeft: level * 12 }}
             >
-              <button
-                className="web-pdm-tree-toggle"
-                type="button"
-                disabled={!hasChildren}
-                onClick={() =>
-                  onExpand?.(
-                    isExpanded
-                      ? [...expanded].filter((id) => id !== key)
-                      : [...expanded, key],
-                  )
-                }
-              >
-                {hasChildren ? (
-                  isExpanded ? (
+              {hasChildren ? (
+                <button
+                  className="web-pdm-tree-toggle"
+                  type="button"
+                  aria-label={isExpanded ? '收起' : '展开'}
+                  onClick={() =>
+                    onExpand?.(
+                      isExpanded
+                        ? [...expanded].filter((id) => id !== key)
+                        : [...expanded, key],
+                    )
+                  }
+                >
+                  {isExpanded ? (
                     <ChevronDown size={14} />
                   ) : (
                     <ChevronRight size={14} />
-                  )
-                ) : null}
-              </button>
+                  )}
+                </button>
+              ) : (
+                <span
+                  className="web-pdm-tree-toggle-spacer"
+                  aria-hidden="true"
+                />
+              )}
               {checkable ? (
-                <input
-                  type="checkbox"
-                  checked={checked.has(key)}
+                <TreeCheckbox
+                  checked={isChecked}
+                  indeterminate={isIndeterminate}
                   onChange={() =>
-                    onCheck?.(
-                      checked.has(key)
-                        ? [...checked].filter((id) => id !== key)
-                        : [...checked, key],
-                    )
+                    onCheck?.([
+                      ...new Set(
+                        isChecked
+                          ? [...checked].filter((id) => !checkKeys.includes(id))
+                          : [...checked, ...checkKeys],
+                      ),
+                    ])
                   }
                 />
               ) : null}

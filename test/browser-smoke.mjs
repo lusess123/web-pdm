@@ -45,6 +45,31 @@ const inspectDiagram = async (page) => {
     const graph = document.querySelector('.graph');
     const canvas = graph?.querySelector('canvas');
     const toolbarButtons = [...document.querySelectorAll('.command-btn')];
+    const menu = document.querySelector('.console-models-tree');
+    const menuInput = document.querySelector('.web-pdm-input-group');
+    const menuActionRow = document.querySelector('.console-erd-search.btns');
+    const menuActionMore = menuActionRow?.querySelector('.right');
+    const treeRows = [...document.querySelectorAll('.web-pdm-tree-row')];
+    const treeControls = treeRows.map((row) =>
+      row.querySelector('.web-pdm-tree-toggle, .web-pdm-tree-toggle-spacer'),
+    );
+    const treeCenterDeltas = treeRows.map((row) => {
+      const centers = [
+        row.querySelector('.web-pdm-tree-toggle, .web-pdm-tree-toggle-spacer'),
+        row.querySelector('.web-pdm-tree-checkbox'),
+        row.querySelector('.web-pdm-tree-label'),
+        row.querySelector('.tree-node-title-options'),
+      ]
+        .filter(Boolean)
+        .map((element) => {
+          const rect = element.getBoundingClientRect();
+          return rect.y + rect.height / 2;
+        });
+      return Math.max(...centers) - Math.min(...centers);
+    });
+    const branchCheckboxes = treeRows
+      .filter((row) => row.querySelector('.web-pdm-tree-toggle'))
+      .map((row) => row.querySelector('input[type="checkbox"]'));
     const toolbarRows = new Set(
       toolbarButtons.map((element) =>
         Math.round(element.getBoundingClientRect().y),
@@ -88,11 +113,39 @@ const inspectDiagram = async (page) => {
       canvasWidth: canvas?.getBoundingClientRect().width ?? 0,
       contrastPixels,
       graphHeight: graph?.getBoundingClientRect().height ?? 0,
+      menuActionRightGap:
+        menuActionRow && menuActionMore
+          ? menuActionRow.getBoundingClientRect().right -
+            menuActionMore.getBoundingClientRect().right
+          : Number.POSITIVE_INFINITY,
+      menuBottomPadding: Number.parseFloat(
+        menu ? getComputedStyle(menu).paddingBottom : '0',
+      ),
+      menuInputHeight: menuInput?.getBoundingClientRect().height ?? 0,
+      menuMoreButtonCount: document.querySelectorAll('.tree-node-title-options')
+        .length,
       paintedBounds,
       paintedPixels,
+      parentCheckboxesValid:
+        branchCheckboxes.length > 0 &&
+        branchCheckboxes.every(
+          (checkbox) => checkbox?.checked || checkbox?.indeterminate,
+        ),
       toolbarButtonCount: toolbarButtons.length,
       toolbarRowCount: toolbarRows.size,
+      treeControlMaxCenterDelta: Math.max(...treeCenterDeltas),
+      treeControlMinHeight: Math.min(
+        ...treeControls.map(
+          (control) => control?.getBoundingClientRect().height ?? 0,
+        ),
+      ),
       treeLabelCount: document.querySelectorAll('.web-pdm-tree-label').length,
+      treeRowMaxHeight: Math.max(
+        ...treeRows.map((row) => row.getBoundingClientRect().height),
+      ),
+      treeRowMinHeight: Math.min(
+        ...treeRows.map((row) => row.getBoundingClientRect().height),
+      ),
       wrapperHeight: wrapper?.getBoundingClientRect().height ?? 0,
     };
   });
@@ -103,6 +156,18 @@ const assertDiagram = (route, state) => {
   if (state.treeLabelCount < 2) failures.push('模型树没有默认展开');
   if (state.toolbarButtonCount < 5) failures.push('工具栏按钮缺失');
   if (state.toolbarRowCount !== 1) failures.push('工具栏没有保持单行');
+  if (state.menuInputHeight < 28 || state.menuInputHeight > 32)
+    failures.push('菜单搜索框高度未统一为紧凑尺寸');
+  if (state.menuActionRightGap > 4) failures.push('菜单顶部更多按钮没有右对齐');
+  if (state.menuMoreButtonCount < 1) failures.push('树节点更多按钮样式未生效');
+  if (state.treeRowMinHeight < 31 || state.treeRowMaxHeight > 33)
+    failures.push('树节点行高不一致');
+  if (state.treeControlMinHeight < 20)
+    failures.push('树节点展开占位没有与复选框对齐');
+  if (state.treeControlMaxCenterDelta > 1)
+    failures.push('树节点控件没有保持垂直居中');
+  if (!state.parentCheckboxesValid) failures.push('父节点复选状态不正确');
+  if (state.menuBottomPadding > 8) failures.push('菜单底部存在多余留白');
   if (state.graphHeight > state.wrapperHeight + 1)
     failures.push('画布容器溢出组件高度');
   if (state.canvasWidth <= 0 || state.canvasHeight <= 0)
