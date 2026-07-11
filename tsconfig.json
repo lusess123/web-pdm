@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "declaration": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "experimentalDecorators": true,
     "baseUrl": "./",
     "paths": {
-      "@@/*": [".dumi/tmp/*"],
-      "web-pdm": ["src"],
-      "web-pdm/*": ["src/*", "*"]
+      "web-pdm": ["packages/web-pdm-lib/src"],
+      "web-pdm-core": ["packages/web-pdm-core/src"]
     }
   },
-  "include": [".dumi/**/*", ".dumirc.ts", "src/**/*"]
+  "include": ["packages/**/*", "docs/**/*", "rspress.config.ts"]
 }

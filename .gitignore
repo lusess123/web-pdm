@@ -1,7 +1,7 @@
 node_modules
 /dist
-.dumi/tmp
-.dumi/tmp-test
-.dumi/tmp-production
+/docs-dist
+/packages/*/dist
+.rspress/
 .DS_Store
 .ai-doc/

@@ -4,40 +4,47 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist && father build",
+    "build": "vite build && cp src/public-types.d.ts dist/index.d.ts",
+    "dev": "vite build --watch",
     "publish-npm:patch": "npm run build ; npm version patch && npm publish --registry=https://registry.npmjs.org && cnpm sync web-pdm-core",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.0.1",
-    "@antv/g-canvas": "^1.9.40",
-    "@antv/g6": "^4.1.16",
-    "@iarna/rtf-to-html": "^1.1.0",
-    "ahooks": "^3.7.6",
-    "antd": "^5.3.2",
-    "classnames": "^2.3.2",
-    "lodash": "^4.17.21",
-    "mobx": "^6.8.0",
-    "mobx-keystone": "^1.4.1",
-    "mobx-react": "^7.6.0",
-    "react": "^18.2.0",
-    "react-color": "^2.18.1",
-    "react-custom-scrollbars": "^4.2.1",
-    "react-dom": "^18.2.0",
-    "react-element-to-jsx-string": "^15.0.0",
-    "react-scrollbars-custom": "^4.1.1"
+    "@antv/g6": "^4.8.24",
+    "ahooks": "^3.9.7",
+    "classnames": "^2.5.1",
+    "lodash-es": "^4.18.1",
+    "mobx": "^6.16.1",
+    "mobx-keystone": "^1.22.0",
+    "mobx-react": "^9.2.2",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.161",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "conventional-changelog-cli": "^2.1.0",
-    "father": "^4.1.0"
+    "@types/lodash": "^4.17.24",
+    "@types/lodash-es": "^4.17.12",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   }
 }

@@ -1,0 +1,171 @@
+:root {
+  --web-pdm-border: #e2e8f0;
+  --web-pdm-bg: #fff;
+  --web-pdm-fg: #0f172a;
+  --web-pdm-muted: #64748b;
+  --web-pdm-accent: #f1f5f9;
+}
+
+.web-pdm-button,
+.web-pdm-input,
+.web-pdm-select,
+.web-pdm-tree-label,
+.web-pdm-tree-toggle,
+.tree-node-title-options {
+  font: inherit;
+}
+
+.web-pdm-button,
+.web-pdm-tree-label,
+.web-pdm-tree-toggle,
+.tree-node-title-options {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.web-pdm-button {
+  border-radius: 5px;
+  padding: 4px 8px;
+}
+
+.web-pdm-button:hover {
+  background: var(--web-pdm-accent);
+}
+
+.web-pdm-button--small {
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+.web-pdm-input-group {
+  display: flex;
+  min-width: 0;
+  border: 1px solid var(--web-pdm-border);
+  border-radius: 6px;
+  background: var(--web-pdm-bg);
+}
+
+.web-pdm-input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  padding: 5px 8px;
+  background: transparent;
+}
+
+.web-pdm-input-clear {
+  border: 0;
+  background: transparent;
+  color: var(--web-pdm-muted);
+  cursor: pointer;
+}
+
+.web-pdm-input-addon {
+  display: flex;
+  border-left: 1px solid var(--web-pdm-border);
+}
+
+.web-pdm-select {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 84px;
+  border: 0;
+  background: transparent;
+  padding: 4px 7px;
+}
+
+.web-pdm-menu,
+.web-pdm-popover,
+.web-pdm-tooltip {
+  z-index: 1000;
+  border: 1px solid var(--web-pdm-border);
+  border-radius: 7px;
+  background: var(--web-pdm-bg);
+  color: var(--web-pdm-fg);
+  box-shadow: 0 10px 30px rgb(15 23 42 / 14%);
+}
+
+.web-pdm-menu {
+  min-width: 120px;
+  padding: 4px;
+}
+
+.web-pdm-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  outline: none;
+}
+
+.web-pdm-menu-item:hover,
+.web-pdm-menu-item[data-highlighted] {
+  background: var(--web-pdm-accent);
+}
+
+.web-pdm-tooltip {
+  padding: 4px 7px;
+  font-size: 12px;
+}
+
+.web-pdm-popover {
+  padding: 8px;
+}
+
+.web-pdm-tree-row {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 4px;
+}
+
+.web-pdm-tree-row:hover,
+.web-pdm-tree-row.is-selected {
+  background: var(--web-pdm-accent);
+}
+
+.web-pdm-tree-toggle {
+  display: grid;
+  width: 22px;
+  place-items: center;
+}
+
+.web-pdm-tree-toggle:disabled {
+  cursor: default;
+}
+
+.web-pdm-tree-label {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  padding: 4px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-node-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.tree-node-title-title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tree-node-title-options {
+  display: grid;
+  place-items: center;
+}

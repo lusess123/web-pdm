@@ -1,7 +1,7 @@
 {
   "name": "web-pdm-doc",
   "version": "0.0.1",
-  "description": "A react library developed with dumi",
+  "description": "A lightweight ER diagram library and documentation site",
   "license": "MIT",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,24 +9,23 @@
     "dist"
   ],
   "scripts": {
-    "build": " cross-env BUILD_TYPE=lib father build",
-    "build-lib": "cd packages/web-pdm-core && npm run build && cd ../../ && cd packages/web-pdm-lib && npm run build",
-    "build-remote": "ssh root@$SERVER_IP \" cd /root/webpdmdoc-docker; sh build.sh  \" ",
-    "build:watch": "father dev",
-    "deploy": "npm update web-pdm && npm i xtend && npm i wrappy &&  npm run deploy:now",
-    "deploy:now": "npm run docs:build  && npm run publish-server && npm run build-remote",
-    "dev": " rm -rf node_modules/.cache && cross-env WATCH_IGNORED=none dumi dev ",
-    "docs:build": "dumi build   && rm -rf  docker/public && cp -rf ./docs-dist  docker/public && cp ./doc/erd.jpeg docker/public/static/",
-    "doctor": "father doctor",
+    "build": "pnpm build-lib && pnpm docs:build",
+    "build:site": "rspress build",
+    "build:watch": "pnpm --parallel --filter web-pdm-core --filter web-pdm dev",
+    "build-lib": "pnpm --filter web-pdm-core build && pnpm --filter web-pdm build",
+    "dev": "rspress dev",
+    "docs:build": "pnpm build:site",
     "lint": "npm run lint:es && npm run lint:css",
-    "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
-    "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
-    "prepare": "husky install && dumi setup",
-    "prepublishOnly": "father doctor && npm run build",
-    "publish-docker": "cd ./docker && sh build.sh",
-    "publish-server": "cd ./docker && sh upload.sh",
-    "start": " npm run dev",
-    "webpdm-deploy": "cd packages/web-pdm-lib && npm run publish-npm:patch && cd ../../ && npm run deploy"
+    "lint:css": "stylelint \"packages/web-pdm-lib/src/**/*.{css,less,scss}\"",
+    "lint:es": "eslint \"{docs,packages,test}/**/*.{js,jsx,ts,tsx}\"",
+    "prepare": "husky",
+    "prepublishOnly": "pnpm test && pnpm build-lib",
+    "start": "pnpm dev",
+    "test": "vitest run",
+    "test:browser": "node test/browser-smoke.mjs",
+    "test:exports": "node test/package-exports.mjs",
+    "test:watch": "vitest",
+    "typecheck:public": "pnpm build-lib && tsc --ignoreConfig --noEmit --skipLibCheck --module esnext --moduleResolution bundler test/public-types.ts"
   },
   "commitlint": {
     "extends": [
@@ -51,34 +50,46 @@
     ]
   },
   "dependencies": {
-    "antd": "^5.3.2",
-    "lodash": "^4.17.21",
     "web-pdm": "workspace:*",
     "web-pdm-core": "workspace:*"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "@umijs/lint": "^4.0.0",
-    "compression-webpack-plugin": "^5.0.2",
-    "cross-env": "^7.0.3",
-    "dumi": "^2.0.2",
-    "eslint": "^8.23.0",
-    "father": "^4.1.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
-    "prettier-plugin-organize-imports": "^3.0.0",
-    "prettier-plugin-packagejson": "^2.2.18",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "stylelint": "^14.9.1"
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@eslint/js": "^10.0.1",
+    "@rsbuild/plugin-less": "^2.0.1",
+    "@rsbuild/plugin-sass": "^2.0.1",
+    "@rspress/core": "^2.0.17",
+    "@rspress/plugin-preview": "^2.0.17",
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
+    "playwright": "^1.61.1",
+    "prettier": "^3.9.5",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "prettier-plugin-packagejson": "^3.0.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "sass": "^1.101.0",
+    "stylelint": "^17.14.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.63.0",
+    "vite": "^8.1.4",
+    "vitest": "^4.1.10"
   },
   "peerDependencies": {
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "packageManager": "pnpm@11.11.0",
+  "engines": {
+    "node": ">=22.12.0"
   },
   "publishConfig": {
     "access": "public"
