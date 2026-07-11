@@ -1,0 +1,102 @@
+{
+  "navGuide": {
+    "en": "Guide",
+    "zh": "指南"
+  },
+  "navExamples": {
+    "en": "Examples",
+    "zh": "示例"
+  },
+  "navConfig": {
+    "en": "Configuration",
+    "zh": "配置"
+  },
+  "sidebarIntroduction": {
+    "en": "Introduction",
+    "zh": "介绍"
+  },
+  "sidebarGettingStarted": {
+    "en": "Getting started",
+    "zh": "快速开始"
+  },
+  "sidebarModels": {
+    "en": "Models",
+    "zh": "模型"
+  },
+  "sidebarRelations": {
+    "en": "Relationships",
+    "zh": "关联关系"
+  },
+  "sidebarToolbar": {
+    "en": "Toolbar",
+    "zh": "工具栏"
+  },
+  "sidebarMigration": {
+    "en": "Migration",
+    "zh": "升级迁移"
+  },
+  "sidebarFaq": {
+    "en": "FAQ",
+    "zh": "常见问题"
+  },
+  "homeProductLabel": {
+    "en": "web-pdm product mark",
+    "zh": "web-pdm 产品标识"
+  },
+  "homeEyebrow": {
+    "en": "OPEN SOURCE · SCHEMA WORKSPACE",
+    "zh": "开源 · 数据模型工作台"
+  },
+  "homeTitle": {
+    "en": "See every data relationship at a glance.",
+    "zh": "把复杂的数据关系，放进一张清晰的图。"
+  },
+  "homeDescription": {
+    "en": "A lightweight, embeddable and extensible ER diagram workspace for React.",
+    "zh": "轻量、可嵌入、可扩展的 React ER 图工作台。"
+  },
+  "homeInstallLabel": {
+    "en": "Install command",
+    "zh": "安装命令"
+  },
+  "homeGetStarted": {
+    "en": "Get started",
+    "zh": "开始使用"
+  },
+  "homeExamples": {
+    "en": "Full example",
+    "zh": "完整示例"
+  },
+  "homeWorkspaceLabel": {
+    "en": "web-pdm ER diagram workspace",
+    "zh": "web-pdm ER 图工作台"
+  },
+  "homeWorkspaceTitle": {
+    "en": "ER WORKSPACE",
+    "zh": "ER 工作台"
+  },
+  "homeLivePreview": {
+    "en": "Live preview",
+    "zh": "实时预览"
+  },
+  "homeWorkspaceMeta": {
+    "en": "4 models · interactive relationship view",
+    "zh": "4 个模型 · 交互式关系视图"
+  },
+  "modelDetailPrefix": {
+    "en": "Open details for ",
+    "zh": "打开模型"
+  },
+  "modelDetailSuffix": {
+    "en": ".",
+    "zh": " 的查看链接。"
+  },
+  "legacyRedirect": {
+    "en": "This address has moved. Redirecting to the current document…",
+    "zh": "该地址已迁移，正在前往当前文档……"
+  },
+  "legacyContinue": {
+    "en": "Continue to the current document",
+    "zh": "继续前往当前文档"
+  }
+}

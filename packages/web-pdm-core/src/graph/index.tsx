@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ToolBar from '../components/model-toolbar';
 import { useMst } from '../context';
+import type { WebPdmPalette } from '../theme';
 import { RootInstance } from '../type';
 import GraphEvent from './event';
 import G6, { type Graph } from './g6';
@@ -12,6 +13,16 @@ import register from './item';
 import { initStyle } from './item/style';
 import './model.scss';
 // import mst from 'test/mst'
+
+const createMiniMap = (palette: WebPdmPalette) =>
+  new G6.Minimap({
+    type: 'delegate',
+    viewportClassName: 'g6-minimap-viewport-erd',
+    delegateStyle: {
+      fill: palette.minimap,
+      stroke: palette.borderStrong,
+    },
+  });
 
 export default observer(() => {
   const { setRef, erdGraph } = useLocal();
@@ -47,7 +58,7 @@ const useLocal = () => {
     const container = containerRef.current;
     const nodes = mst.Nodes;
     const edges = mst.edges;
-    if (!container || (!erdGraphRef.current && nodes.length === 0)) return;
+    if (!container) return;
 
     if (!erdGraphRef.current) {
       const result = render(container, nodes, edges, mst);
@@ -58,7 +69,7 @@ const useLocal = () => {
     } else {
       layout(erdGraphRef.current, nodes, edges, mst);
     }
-  }, [checkedKeys, mst]);
+  }, [checkedKeys, mst, mst.sys.intl]);
 
   useEffect(() => {
     if (erdGraphRef.current && size.width && size.height) {
@@ -159,23 +170,51 @@ const useLocal = () => {
   });
 
   useEffect(() => {
-    if (erdGraphRef.current && miniMapRef.current) {
-      // alert()
-      if (!mst.sys.disableMiniMap) {
-        erdGraphRef.current?.removePlugin(miniMapRef.current);
-      } else {
-        const miniMap = new G6.Minimap({
-          type: 'delegate',
-          viewportClassName: 'g6-minimap-viewport-erd',
-          delegateStyle: {
-            fill: 'rgba(0,0,0,0.10)',
+    const graph = erdGraphRef.current;
+    if (!graph) return;
+
+    if (miniMapRef.current) graph.removePlugin(miniMapRef.current);
+    const miniMap = createMiniMap(mst.Ui.palette);
+    miniMapRef.current = miniMap;
+    if (mst.sys.disableMiniMap) graph.addPlugin(miniMap);
+  }, [erdGraph, mst.sys.disableMiniMap, mst.Ui.darkness, mst.Ui.themeColor]);
+
+  useEffect(() => {
+    const graph = erdGraphRef.current;
+    if (!graph) return;
+    const palette = mst.Ui.palette;
+
+    graph.getEdges().forEach((edge: any) => {
+      const model: any = edge.getModel();
+      if (model.isSys) return;
+      graph.updateItem(edge, {
+        labelCfg: {
+          ...model.labelCfg,
+          style: {
+            ...model.labelCfg?.style,
+            fill: palette.fieldText,
+            lineWidth: 6,
+            stroke: palette.edgeLabelHalo,
           },
-        });
-        miniMapRef.current = miniMap;
-        erdGraphRef.current?.addPlugin(miniMap);
-      }
-    }
-  }, [mst.sys.disableMiniMap]);
+        },
+        style: {
+          ...model.style,
+          stroke: palette.accent,
+          endArrow: {
+            ...model.style?.endArrow,
+            fill: palette.accent,
+            stroke: palette.accent,
+          },
+          startArrow: {
+            ...model.style?.startArrow,
+            fill: palette.accent,
+            stroke: palette.accent,
+          },
+        },
+      });
+    });
+    graph.paint();
+  }, [erdGraph, mst.Ui.darkness, mst.Ui.themeColor]);
 
   return {
     setRef,
@@ -192,16 +231,13 @@ const useLocal = () => {
 const render = (container: any, nodes: any, edges: any, mst: RootInstance) => {
   const width = Math.max(container.clientWidth, 1);
   const height = Math.max(container.clientHeight, 1);
-  const styleConfig = initStyle({ primaryColor: mst.Ui.themeColor }).style;
+  const { palette, style: styleConfig } = initStyle({
+    primaryColor: mst.Ui.themeColor,
+    darkness: mst.Ui.darkness,
+  });
   const isLargar = nodes.length > 50;
   // alert(isLargar)
-  const miniMap = new G6.Minimap({
-    type: 'delegate',
-    viewportClassName: 'g6-minimap-viewport-erd',
-    delegateStyle: {
-      fill: 'rgba(0,0,0,0.10)',
-    },
-  });
+  const miniMap = createMiniMap(palette);
   const graph = new G6.Graph({
     height,
     width,

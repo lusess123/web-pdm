@@ -6,13 +6,40 @@ import { Check, ChevronDown, ChevronRight, MoreHorizontal } from 'lucide-react';
 import React, {
   Children,
   cloneElement,
+  createContext,
   isValidElement,
+  useContext,
   useEffect,
   useMemo,
   useRef,
+  type CSSProperties,
 } from 'react';
 
 type ElementProps = Record<string, any>;
+
+type UiAdapterContextValue = {
+  style: CSSProperties;
+  theme: 'light' | 'dark';
+  t: (key: string) => string;
+};
+
+const fallbackLabels: Record<string, string> = {
+  'input.clear': 'Clear search',
+  'tree.collapse': 'Collapse',
+  'tree.expand': 'Expand',
+  'tree.moreActions': 'More actions',
+};
+
+const UiAdapterContext = createContext<UiAdapterContextValue>({
+  style: {},
+  theme: 'light',
+  t: (key) => fallbackLabels[key] ?? key,
+});
+
+const useAdapterUi = (value?: UiAdapterContextValue) => {
+  const context = useContext(UiAdapterContext);
+  return value ?? context;
+};
 
 export const Button = ({
   type: _type,
@@ -32,31 +59,43 @@ export const Input = ({
   allowClear,
   size,
   className = '',
+  webPdmUi,
   ...props
-}: ElementProps) => (
-  <div
-    className={`web-pdm-input-group web-pdm-input-group--${size ?? 'default'} ${className}`}
-  >
-    <input className="web-pdm-input" {...props} />
-    {allowClear && props.value ? (
-      <button
-        className="web-pdm-input-clear"
-        type="button"
-        onClick={() => props.onChange?.({ target: { value: '' } })}
-      >
-        ×
-      </button>
-    ) : null}
-    {addonAfter ? (
-      <div className="web-pdm-input-addon">{addonAfter}</div>
-    ) : null}
-  </div>
-);
+}: ElementProps) => {
+  const { t } = useAdapterUi(webPdmUi);
+  return (
+    <div
+      className={`web-pdm-input-group web-pdm-input-group--${size ?? 'default'} ${className}`}
+    >
+      <input className="web-pdm-input" {...props} />
+      {allowClear && props.value ? (
+        <button
+          aria-label={t('input.clear')}
+          className="web-pdm-input-clear"
+          type="button"
+          onClick={() => props.onChange?.({ target: { value: '' } })}
+        >
+          ×
+        </button>
+      ) : null}
+      {addonAfter ? (
+        <div className="web-pdm-input-addon">{addonAfter}</div>
+      ) : null}
+    </div>
+  );
+};
 
 const SelectOption = (_props: ElementProps) => null;
 
 export const Select = Object.assign(
-  ({ children, onChange, className = '', ...props }: ElementProps) => {
+  ({
+    children,
+    onChange,
+    className = '',
+    webPdmUi,
+    ...props
+  }: ElementProps) => {
+    const ui = useAdapterUi(webPdmUi);
     const options = Children.toArray(children).filter(
       isValidElement,
     ) as React.ReactElement<ElementProps>[];
@@ -72,7 +111,12 @@ export const Select = Object.assign(
           </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
         <SelectPrimitive.Portal>
-          <SelectPrimitive.Content className="web-pdm-menu" position="popper">
+          <SelectPrimitive.Content
+            className="web-pdm-menu"
+            data-web-pdm-theme={ui.theme}
+            position="popper"
+            style={ui.style}
+          >
             <SelectPrimitive.Viewport>
               {options.map((option) => (
                 <SelectPrimitive.Item
@@ -107,7 +151,9 @@ export const Dropdown = ({
   children,
   overlay,
   className = '',
+  webPdmUi,
 }: ElementProps) => {
+  const ui = useAdapterUi(webPdmUi);
   const trigger = children as React.ReactElement<ElementProps>;
   const items = Children.toArray(
     (overlay as React.ReactElement<ElementProps>)?.props?.children,
@@ -122,7 +168,12 @@ export const Dropdown = ({
         })}
       </DropdownPrimitive.Trigger>
       <DropdownPrimitive.Portal>
-        <DropdownPrimitive.Content className="web-pdm-menu" sideOffset={4}>
+        <DropdownPrimitive.Content
+          className="web-pdm-menu"
+          data-web-pdm-theme={ui.theme}
+          sideOffset={4}
+          style={ui.style}
+        >
           {items.map((item) => (
             <DropdownPrimitive.Item
               className="web-pdm-menu-item"
@@ -138,70 +189,93 @@ export const Dropdown = ({
   );
 };
 
-export const Tooltip = ({ children, title }: ElementProps) => (
-  <TooltipPrimitive.Provider delayDuration={250}>
-    <TooltipPrimitive.Root>
-      <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
-      <TooltipPrimitive.Portal>
-        <TooltipPrimitive.Content className="web-pdm-tooltip" sideOffset={5}>
-          {title}
-        </TooltipPrimitive.Content>
-      </TooltipPrimitive.Portal>
-    </TooltipPrimitive.Root>
-  </TooltipPrimitive.Provider>
-);
+export const Tooltip = ({ children, title, webPdmUi }: ElementProps) => {
+  const ui = useAdapterUi(webPdmUi);
+  const child = children as React.ReactElement<ElementProps>;
+  const trigger = isValidElement<ElementProps>(child)
+    ? cloneElement(child, {
+        'aria-label': child.props['aria-label'] ?? title,
+      })
+    : children;
+  return (
+    <TooltipPrimitive.Provider delayDuration={250}>
+      <TooltipPrimitive.Root>
+        <TooltipPrimitive.Trigger asChild>{trigger}</TooltipPrimitive.Trigger>
+        <TooltipPrimitive.Portal>
+          <TooltipPrimitive.Content
+            className="web-pdm-tooltip"
+            data-web-pdm-theme={ui.theme}
+            sideOffset={5}
+            style={ui.style}
+          >
+            {title}
+          </TooltipPrimitive.Content>
+        </TooltipPrimitive.Portal>
+      </TooltipPrimitive.Root>
+    </TooltipPrimitive.Provider>
+  );
+};
 
 export const Popover = ({
   children,
   content,
   visible,
   onOpenChange,
-}: ElementProps) => (
-  <PopoverPrimitive.Root open={visible} onOpenChange={onOpenChange}>
-    <PopoverPrimitive.Trigger asChild>{children}</PopoverPrimitive.Trigger>
-    <PopoverPrimitive.Portal>
-      <PopoverPrimitive.Content
-        className="web-pdm-popover"
-        side="right"
-        align="start"
-        sideOffset={6}
-      >
-        {content}
-      </PopoverPrimitive.Content>
-    </PopoverPrimitive.Portal>
-  </PopoverPrimitive.Root>
-);
+  webPdmUi,
+}: ElementProps) => {
+  const ui = useAdapterUi(webPdmUi);
+  return (
+    <PopoverPrimitive.Root open={visible} onOpenChange={onOpenChange}>
+      <PopoverPrimitive.Trigger asChild>{children}</PopoverPrimitive.Trigger>
+      <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
+          align="start"
+          className="web-pdm-popover"
+          data-web-pdm-theme={ui.theme}
+          side="right"
+          sideOffset={6}
+          style={ui.style}
+        >
+          {content}
+        </PopoverPrimitive.Content>
+      </PopoverPrimitive.Portal>
+    </PopoverPrimitive.Root>
+  );
+};
 
 type TreeNodeProps = ElementProps & { eventKey?: React.Key };
 const TreeNode = (_props: TreeNodeProps) => null;
 
-const OptionBuilder = ({ data }: ElementProps) => (
-  <div className="tree-node-title">
-    <span className="tree-node-title-title">{data.title}</span>
-    {data.options?.length ? (
-      <Dropdown
-        overlay={
-          <Menu>
-            {data.options.map((option: ElementProps) => (
-              <Menu.Item key={option.key} onClick={option.click}>
-                {option.title}
-              </Menu.Item>
-            ))}
-          </Menu>
-        }
-      >
-        <button
-          className="tree-node-title-options"
-          type="button"
-          aria-label="更多操作"
-          onClick={(event) => event.stopPropagation()}
+const OptionBuilder = ({ data }: ElementProps) => {
+  const { t } = useAdapterUi();
+  return (
+    <div className="tree-node-title">
+      <span className="tree-node-title-title">{data.title}</span>
+      {data.options?.length ? (
+        <Dropdown
+          overlay={
+            <Menu>
+              {data.options.map((option: ElementProps) => (
+                <Menu.Item key={option.key} onClick={option.click}>
+                  {option.title}
+                </Menu.Item>
+              ))}
+            </Menu>
+          }
         >
-          <MoreHorizontal size={15} />
-        </button>
-      </Dropdown>
-    ) : null}
-  </div>
-);
+          <button
+            aria-label={t('tree.moreActions')}
+            className="tree-node-title-options"
+            type="button"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <MoreHorizontal size={15} />
+          </button>
+        </Dropdown>
+      ) : null}
+    </div>
+  );
+};
 
 const getNodeKey = (node: React.ReactElement<TreeNodeProps>) =>
   String(node.props.eventKey ?? node.key ?? '').replace(/^\.\$/, '');
@@ -244,7 +318,10 @@ const TreeView = ({
   onExpand,
   checkable,
   className = '',
+  webPdmUi,
 }: ElementProps) => {
+  const ui = useAdapterUi(webPdmUi);
+  const { t } = ui;
   const selected = useMemo(
     () => new Set(selectedKeys.map(String)),
     [selectedKeys],
@@ -282,7 +359,7 @@ const TreeView = ({
                 <button
                   className="web-pdm-tree-toggle"
                   type="button"
-                  aria-label={isExpanded ? '收起' : '展开'}
+                  aria-label={t(isExpanded ? 'tree.collapse' : 'tree.expand')}
                   onClick={() =>
                     onExpand?.(
                       isExpanded
@@ -341,9 +418,11 @@ const TreeView = ({
       });
 
   return (
-    <div className={`web-pdm-tree ${className}`} role="tree">
-      {renderNodes(children)}
-    </div>
+    <UiAdapterContext.Provider value={ui}>
+      <div className={`web-pdm-tree ${className}`} role="tree">
+        {renderNodes(children)}
+      </div>
+    </UiAdapterContext.Provider>
   );
 };
 

@@ -7,14 +7,34 @@ import { resolve } from 'node:path';
 export default defineConfig({
   root: 'docs',
   outDir: 'docs-dist',
+  lang: 'en',
+  locales: [
+    {
+      lang: 'en',
+      label: 'English',
+      title: 'web-pdm',
+      description: 'A lightweight, extensible React ER diagram workspace',
+    },
+    {
+      lang: 'zh',
+      label: '简体中文',
+      title: 'web-pdm',
+      description: '轻量、可扩展的 React ER 图工作台',
+    },
+  ],
   // G6 accesses browser APIs during module initialization, so the docs site is
   // emitted as a static client application instead of rendering pages in Node.
   ssg: false,
   route: {
-    exclude: ['erd.tsx', 'type-erd.tsx', 'typedata.tsx'],
+    exclude: [
+      'erd.tsx',
+      'type-erd.tsx',
+      'typedata.tsx',
+      '首页.tsx',
+      '旧路由跳转.tsx',
+    ],
   },
   title: 'web-pdm',
-  description: '轻量、可扩展的在线 ER 图工具',
   globalStyles: resolve(__dirname, 'docs/style.less'),
   plugins: [pluginPreview()],
   builderConfig: {
@@ -27,21 +47,23 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    darkMode: 'auto',
+    localeRedirect: 'never',
     nav: [
-      { text: '指南', link: '/guide/' },
-      { text: '示例', link: '/demo/' },
-      { text: '配置', link: '/config/' },
+      { text: 'navGuide', link: '/guide/' },
+      { text: 'navExamples', link: '/demo/' },
+      { text: 'navConfig', link: '/config/' },
       { text: 'GitHub', link: 'https://github.com/lusess123/web-pdm' },
     ],
     sidebar: {
       '/guide/': [
-        { text: '介绍', link: '/guide/' },
-        { text: '快速开始', link: '/guide/getting-started' },
-        { text: '模型', link: '/guide/model' },
-        { text: '关联关系', link: '/guide/relation' },
-        { text: '工具栏', link: '/guide/toolbar' },
-        { text: '升级', link: '/guide/migration' },
-        { text: '常见问题', link: '/guide/faq' },
+        { text: 'sidebarIntroduction', link: '/guide/' },
+        { text: 'sidebarGettingStarted', link: '/guide/getting-started' },
+        { text: 'sidebarModels', link: '/guide/model' },
+        { text: 'sidebarRelations', link: '/guide/relation' },
+        { text: 'sidebarToolbar', link: '/guide/toolbar' },
+        { text: 'sidebarMigration', link: '/guide/migration' },
+        { text: 'sidebarFaq', link: '/guide/faq' },
       ],
     },
     footer: {

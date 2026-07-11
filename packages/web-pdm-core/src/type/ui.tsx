@@ -1,13 +1,14 @@
 import { model, Model, modelAction, prop } from 'mobx-keystone';
+import { createThemePalette, type WebPdmTheme } from '../theme';
 import type { IComponentConfig } from './config';
 // import { RootInstance } from '../type'
 
 @model('webpdm/TUi')
 export class TUi extends Model({
   update: prop(+new Date()),
-  themeColor: prop('black'),
+  themeColor: prop(''),
   selectedColor: prop('rgba(11,108,149)'),
-  darkness: prop(true),
+  darkness: prop(false),
 }) {
   Tree?: React.ComponentType;
   Input?: React.ComponentType;
@@ -21,6 +22,14 @@ export class TUi extends Model({
 
   isToogle: boolean = false;
   disableIcons: string[] = [];
+
+  get theme() {
+    return this.darkness ? 'dark' : 'light';
+  }
+
+  get palette() {
+    return createThemePalette(this.darkness, this.themeColor);
+  }
 
   registComponents(
     components?: IComponentConfig,
@@ -53,11 +62,16 @@ export class TUi extends Model({
     this.isToogle = !this.isToogle;
   }
   @modelAction
-  setThemeColor(color: string) {
-    this.themeColor = color;
+  setThemeColor(color?: string) {
+    this.themeColor = color ?? '';
   }
   @modelAction
   setDarkness(darkness: boolean) {
     this.darkness = darkness;
+  }
+
+  @modelAction
+  setTheme(theme: WebPdmTheme) {
+    this.darkness = theme === 'dark';
   }
 }

@@ -1,4 +1,5 @@
 import { debounce, throttle } from 'lodash-es';
+import { createThemePalette } from '../theme';
 import { RootInstance } from '../type';
 import type { Graph } from './g6';
 
@@ -222,6 +223,11 @@ export default (graph: Graph, mst: RootInstance) => {
 
   graph.on('node:mousemove', (ev) => {
     const { target, item } = ev; // alert(target.attr('text'))
+    const nodeModel: any = item.getModel();
+    const palette = createThemePalette(
+      Boolean(nodeModel.darkness),
+      nodeModel.themeColor,
+    );
 
     const autoPaint = graph.get('autoPaint');
     graph.get('canvas').set('localRefresh', false);
@@ -245,10 +251,13 @@ export default (graph: Graph, mst: RootInstance) => {
 
         if (sharp.attr('fieldName') === fieldName) {
           sharp.attr('fill-old', sharp.attr('fill'));
-          sharp.attr(
-            'fill',
-            sharp.attr('fieldBg') ? 'rgb(204,204,204)' : 'white',
-          );
+          const role = sharp.get('themeRole');
+          const hoverColor = sharp.attr('fieldBg')
+            ? palette.fieldHover
+            : role === 'relationPort'
+              ? palette.accent
+              : palette.foreground;
+          sharp.attr('fill', hoverColor);
 
           if (sharp.attr('fieldHoverShow')) {
             sharp.attr('opacity-old', sharp.attr('opacity')); // alert(sharp.attr('opacity'))

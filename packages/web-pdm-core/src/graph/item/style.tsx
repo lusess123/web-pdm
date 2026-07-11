@@ -1,64 +1,73 @@
+import { createThemePalette } from '../../theme';
 import G6 from '../g6';
-export const initStyle = ({ primaryColor }) => {
+
+type InitStyleOptions = {
+  primaryColor?: string;
+  darkness?: boolean;
+};
+
+export const initStyle = ({
+  primaryColor,
+  darkness = false,
+}: InitStyleOptions) => {
+  const palette = createThemePalette(darkness, primaryColor);
   const colors = {
-    blue: primaryColor,
-    white: '#FFFFFF',
-    head: primaryColor,
-    black: 'black',
+    ...palette,
+    blue: palette.accent,
+    white: palette.onAccent,
+    head: palette.nodeHeader,
+    black: palette.foreground,
+  };
+
+  const edge = {
+    lineWidth: 2,
+    size: 2,
+    lineAppendWidth: 4,
+    endArrow: {
+      path: G6.Arrow.triangleRect(10, 10, 10, 2, 4),
+      fill: palette.accent,
+      stroke: palette.accent,
+    },
+    startArrow: {
+      path: G6.Arrow.circle(3, 3),
+      d: 6,
+      fill: palette.accent,
+      stroke: palette.accent,
+    },
+    radius: 5,
+    labelCfg: {
+      autoRotate: true,
+      style: {
+        fill: palette.fieldText,
+        fontSize: 34,
+        lineWidth: 6,
+        stroke: palette.edgeLabelHalo,
+      },
+    },
+    stroke: palette.accent,
   };
 
   const style = {
     naviWidth: 370,
     default: {
       node: {
-        fill: '#FFFFFF',
-        shadowColor: 'rgba(0,0,0,0.2)',
+        fill: palette.node,
+        shadowColor: palette.shadow,
         shadowBlur: 10,
         shadowOffsetX: 0.5,
         shadowOffsetY: 0.5,
         radius: 10,
-        // stroke: undefined,
-        lineWidth: 4,
-        opacity: 0.9,
-        stroke: 'rgba(0,0,0,0.01)',
-      },
-      edge: {
         lineWidth: 2,
-        size: 2,
-        lineAppendWidth: 4,
-        endArrow: {
-          path: G6.Arrow.triangleRect(10, 10, 10, 2, 4),
-          // fill: primaryColor,
-        },
-        startArrow: {
-          path: G6.Arrow.circle(3, 3), // 使用内置箭头路径函数，参数为箭头的 宽度、长度、偏移量（默认为 0，与 d 对应）
-          //  fill: primaryColor,
-          //  shadowColor: primaryColor,
-          //  opacity: 1,
-          d: 6,
-        },
-        //  startArrow: {
-        //   //  path: 'M 24,0 L -24,-12 L 8,0 L -24,12 Z',
-        //   //  d: 2,
-        //    fill: 'rgba(11,108,149)',
-        //    shadowColor: 'rgba(0,0,0,0.1)',
-        //   //  opacity: 1,
-        //  },
-        //  opacity: 0.2,
-        radius: 5,
-        labelCfg: {
-          autoRotate: true, // 使文本随边旋转
-          style: {
-            fontSize: 34,
-          },
-        },
-        stroke: primaryColor,
+        opacity: 1,
+        stroke: palette.border,
       },
+      edge,
     },
     selected: {
       node: {
-        stroke: 'rgba(11,108,149)',
-        shadowColor: 'rgba(11,108,149)',
+        fill: palette.node,
+        stroke: palette.accent,
+        shadowColor: palette.accent,
       },
     },
     isNoModule: {
@@ -68,54 +77,31 @@ export const initStyle = ({ primaryColor }) => {
     },
     fieldRelation: {
       node: {
-        fill: '#FFFFFF',
-        shadowColor: 'rgba(0,0,0,0.2)',
+        fill: palette.node,
+        shadowColor: palette.shadow,
         shadowBlur: 10,
         shadowOffsetX: 0.5,
         shadowOffsetY: 0.5,
         radius: 10,
-        // stroke: undefined,
-        lineWidth: 4,
-        opacity: 0.9,
-        stroke: 'rgba(0,0,0,0.01)',
+        lineWidth: 2,
+        opacity: 1,
+        stroke: palette.border,
       },
       edge: {
-        lineWidth: 2,
-        size: 2,
-        lineAppendWidth: 4,
+        ...edge,
         endArrow: {
           path: G6.Arrow.triangle(5, 10, 10),
           d: 10,
+          fill: palette.accent,
+          stroke: palette.accent,
         },
-        startArrow: {
-          path: G6.Arrow.circle(3, 3), // 使用内置箭头路径函数，参数为箭头的 宽度、长度、偏移量（默认为 0，与 d 对应）
-          //  fill: primaryColor,
-          //  shadowColor: primaryColor,
-          //  opacity: 1,
-          d: 6,
-        },
-        //  startArrow: {
-        //   //  path: 'M 24,0 L -24,-12 L 8,0 L -24,12 Z',
-        //   //  d: 2,
-        //    fill: 'rgba(11,108,149)',
-        //    shadowColor: 'rgba(0,0,0,0.1)',
-        //   //  opacity: 1,
-        //  },
-        //  opacity: 0.2,
-        radius: 5,
-        labelCfg: {
-          autoRotate: true, // 使文本随边旋转
-          style: {
-            fontSize: 34,
-          },
-        },
-        stroke: primaryColor,
       },
     },
   };
 
   return {
     colors,
+    palette,
     style,
   };
 };

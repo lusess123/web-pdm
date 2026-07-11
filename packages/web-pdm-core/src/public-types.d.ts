@@ -1,4 +1,15 @@
-import type { ComponentType, FunctionComponent, ReactNode } from 'react';
+import type {
+  ComponentType,
+  CSSProperties,
+  FunctionComponent,
+  ReactNode,
+} from 'react';
+
+export type WebPdmLocale = 'en' | 'zh-CN';
+export type WebPdmTheme = 'light' | 'dark';
+export type WebPdmThemeMode = WebPdmTheme | 'system';
+export type WebPdmStyle = CSSProperties &
+  Partial<Record<`--${string}`, string | number>>;
 
 export type MetaTypeConfig = {
   relationModel: string;
@@ -82,14 +93,19 @@ export interface IWebPdmProps {
   modules: ModuleConfig[];
   erdkey: string;
   className?: string;
-  style?: Record<string, unknown>;
+  style?: WebPdmStyle;
   height?: string | number;
   onIgnoreEdge?: (field: FieldConfig) => boolean;
   components?: IComponentConfig;
   onModelDetail?: (model: ModelConfig) => void;
   themeColor?: string;
+  theme?: WebPdmThemeMode;
+  locale?: WebPdmLocale;
+  showModelNavigation?: boolean;
+  /** @deprecated Use `theme` instead. */
   darkness?: boolean;
   onReload?: () => TData;
+  /** @deprecated Use `locale` instead. */
   intl?: 'CH' | 'EN';
   onIntl?: (text: string) => string;
   IconRenders?: Partial<Record<IconName, ReactNode>>;

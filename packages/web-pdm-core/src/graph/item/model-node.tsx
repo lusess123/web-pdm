@@ -1,3 +1,4 @@
+import { createThemePalette, type WebPdmPalette } from '../../theme';
 import G6 from '../g6';
 import { IModelNodeShapeCfg, Relation } from './type';
 
@@ -9,6 +10,67 @@ import {
   getTopAnch,
   setNodeStateAttr,
 } from './util';
+
+type ThemeRole =
+  | 'keyShape'
+  | 'header'
+  | 'headerText'
+  | 'keyText'
+  | 'fieldBackground'
+  | 'fieldDivider'
+  | 'fieldText'
+  | 'fieldMeta'
+  | 'relationPort';
+
+const applyShapeTheme = (
+  shape: any,
+  role: ThemeRole | undefined,
+  palette: WebPdmPalette,
+  selected: boolean | undefined,
+) => {
+  if (shape.attr('fill-old')) shape.attr('fill-old', undefined);
+  switch (role) {
+    case 'keyShape':
+      shape.attr({
+        fill: palette.node,
+        shadowColor: selected ? palette.accent : palette.shadow,
+        stroke: selected ? palette.accent : palette.border,
+      });
+      break;
+    case 'header':
+      shape.attr('fill', selected ? palette.accent : palette.nodeHeader);
+      break;
+    case 'headerText':
+      shape.attr('fill', selected ? palette.onAccent : palette.foreground);
+      break;
+    case 'keyText':
+      shape.attr('fill', palette.accent);
+      break;
+    case 'fieldBackground':
+      shape.attr('fill', palette.field);
+      break;
+    case 'fieldDivider':
+      shape.attr('stroke', palette.divider);
+      break;
+    case 'fieldText':
+      shape.attr(
+        'fill',
+        shape.get('isForeign') ? palette.accent : palette.fieldText,
+      );
+      break;
+    case 'fieldMeta':
+      shape.attr(
+        'fill',
+        shape.get('isForeign') ? palette.accent : palette.fieldMuted,
+      );
+      break;
+    case 'relationPort':
+      shape.attr('fill', palette.accent);
+      break;
+    default:
+      break;
+  }
+};
 
 export const register = () => {
   // const colors = {
@@ -56,7 +118,6 @@ export const register = () => {
       },
 
       update(cfg: IModelNodeShapeCfg, item) {
-        const whiteBg = 'rgba(7,10,26,0.06)';
         const {
           isKeySharp,
           active,
@@ -71,16 +132,14 @@ export const register = () => {
           themeColor,
           darkness,
         } = cfg;
-        const { colors } = config;
+        const palette = createThemePalette(Boolean(darkness), themeColor);
         const group = item.getContainer();
         const children = group.get('children');
-        const bg = darkness ? themeColor : whiteBg;
-        const font = darkness ? colors.white : themeColor;
-        const mFront = darkness ? colors.white : themeColor;
-        //const bgArrange = cfg.data.aggregateModelKey  && bg ? whiteBg : themeColor
 
         children.forEach((s) => {
           const id = s.attr('id');
+          const themeRole = s.get('themeRole') as ThemeRole | undefined;
+          applyShapeTheme(s, themeRole, palette, selected);
 
           // this.allRender(cfg, s)
 
@@ -94,7 +153,6 @@ export const register = () => {
               //  fill: '#CCFFFF',
               //   stroke: 'red',
               //   opacity: 0.2,
-              setNodeStateAttr('default', s, cfg);
               // isNoModule && setNodeStateAttr('isNoModule', s , cfg)
 
               inactive && setNodeStateAttr('inactive', s, cfg);
@@ -132,14 +190,14 @@ export const register = () => {
                 }
               }
 
+              applyShapeTheme(s, 'keyShape', palette, selected);
+
               if (cfg.data.aggregateModelKey || cfg.data.aggregateRoot) {
                 // stroke: 'rgba(11,108,149)',
                 // shadowColor: 'rgba(11,108,149)',
-                s.attr('stroke', themeColor);
-                s.attr('shadowColor', themeColor);
+                s.attr('stroke', palette.accent);
+                s.attr('shadowColor', palette.accent);
               }
-
-              selected && setNodeStateAttr('selected', s, cfg);
 
               break;
 
@@ -160,12 +218,7 @@ export const register = () => {
                 );
               }
               s.set('visible', !cfg.isKeySharp && !cfg.isCardSharp);
-              s.attr(
-                'fill',
-                selected && !darkness
-                  ? cfg.config.styleConfig.selected.node.stroke
-                  : font,
-              );
+              s.attr('fill', selected ? palette.onAccent : palette.foreground);
 
               // s.attr('opacity', 1)
               break;
@@ -173,12 +226,7 @@ export const register = () => {
               // s.attr('opacity', !cfg.isKeySharp ? 1 : 0)
               // s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : themeColor)
               // s.attr('fill', selected ? cfg.config.styleConfig.selected.node.stroke : 'rgba(7,10,26,0.06)')
-              s.attr(
-                'fill',
-                selected && darkness
-                  ? cfg.config.styleConfig.selected.node.stroke
-                  : bg,
-              );
+              s.attr('fill', selected ? palette.accent : palette.nodeHeader);
               s.set('visible', !cfg.isCardSharp && !cfg.isKeySharp);
               // s.attr('opacity', 1)
               break;
@@ -190,7 +238,7 @@ export const register = () => {
               // s.set('visible', cfg.isKeySharp && !cfg.isCardSharp)
 
               const _showNameOrLabel = s.get('showNameOrLabel');
-              s.attr('fill', themeColor);
+              s.attr('fill', palette.accent);
               if (_showNameOrLabel && showNameOrLabel) {
                 s.set('visible', cfg.isKeySharp && !isCardSharp);
               } else {
@@ -222,12 +270,7 @@ export const register = () => {
                 );
               }
               if (!!s.get('themeColor')) {
-                s.attr(
-                  'fill',
-                  selected
-                    ? cfg.config.styleConfig.selected.node.stroke
-                    : themeColor,
-                );
+                s.attr('fill', palette.accent);
               }
 
               break;
@@ -241,12 +284,7 @@ export const register = () => {
               s.set('visible', !cfg.isKeySharp);
               break;
             case 'themeColor':
-              s.attr(
-                'fill',
-                selected
-                  ? cfg.config.styleConfig.selected.node.stroke
-                  : themeColor,
-              );
+              s.attr('fill', palette.accent);
               break;
 
             default:
@@ -270,18 +308,15 @@ export const register = () => {
           themeColor,
           darkness,
         } = cfg;
-        const whiteBg = 'rgba(7,10,26,0.06)';
-        // const bg = data.aggregateRoot || 1 ? colors.blue : colors.head
-        // const font = data.aggregateRoot || 1 ? colors.white : colors.blue
-        // const mFront = data.aggregateRoot  || 1? colors.white : colors.black
-        const { colors } = config;
-        const bg = darkness ? themeColor : whiteBg;
-        //const bgArrange = cfg.data.aggregateModelKey  && bg ? whiteBg : themeColor
-        const font = darkness ? colors.white : themeColor;
-        const mFront = darkness ? colors.white : themeColor;
-        const nodeColors = { bg, font, mFront };
+        const palette = createThemePalette(Boolean(darkness), themeColor);
+        const nodeColors = {
+          bg: selected ? palette.accent : palette.nodeHeader,
+          font: selected ? palette.onAccent : palette.foreground,
+          mFront: selected ? palette.onAccent : palette.foreground,
+        };
 
         group.addShape('rect', {
+          themeRole: 'header',
           visible: !cfg.isKeySharp,
           name: data.key,
           draggable: true,
@@ -298,17 +333,18 @@ export const register = () => {
             // fontSize: config.fieldHeight - 12,
             // opacity: !cfg.isKeySharp ? 1 : 0,
             className: 'header',
-            shadowColor: 'rgba(0,0,0,0.06)',
+            shadowColor: palette.shadow,
             cursor: 'move',
             // shadowBlur: 1,
             // shadowOffsetX: 1,
             // shadowOffsetY: 2,
             // radius: [2, 4],
-            fill: selected ? config.styleConfig.selected.node.stroke : bg,
+            fill: nodeColors.bg,
           },
         });
 
         group.addShape('text', {
+          themeRole: 'headerText',
           visible: !cfg.isKeySharp,
           name: data.key,
           fontFamily: '',
@@ -336,6 +372,7 @@ export const register = () => {
 
         cfg.data.aggregateModelKey &&
           group.addShape('text', {
+            themeRole: 'headerText',
             visible: cfg.data.aggregateModelKey,
             name: data.key,
             fontFamily: '',
@@ -344,7 +381,7 @@ export const register = () => {
               fontFamily: 'iconFont',
               x: config.width / 2 - 100,
               y: -((getLength(data.fields.length) * config.fieldHeight) / 2),
-              text: '聚合关系',
+              text: data.aggregateRelationLabel,
               arg: cfg.data.aggregateModelKey,
               // text: cfg.data.aggregateModelKey,
               // text: '\ue6b2',
@@ -363,6 +400,7 @@ export const register = () => {
           });
 
         group.addShape('text', {
+          themeRole: 'headerText',
           visible: !cfg.isKeySharp,
           name: data.key,
           fontFamily: '',
@@ -371,7 +409,7 @@ export const register = () => {
             fontFamily: 'iconFont',
             x: config.width / 2 - 40,
             y: -((getLength(data.fields.length) * config.fieldHeight) / 2),
-            text: '查看',
+            text: data.viewDetailsLabel,
             // text: '\ue6b2',
             id: 'headerlabel1',
             cursor: 'pointer',
@@ -420,6 +458,7 @@ export const register = () => {
         const nameLength = nameList.length;
         nameList.forEach((nameText, index) => {
           group.addShape('text', {
+            themeRole: 'keyText',
             visible: cfg.isKeySharp && !showNameOrLabel && !cfg.isCardSharp,
             name: nameText,
             showNameOrLabel: false,
@@ -435,7 +474,7 @@ export const register = () => {
               textBaseline: 'middle',
               textAlign: 'center',
               // radius: [2, 4],
-              fill: themeColor,
+              fill: palette.accent,
             },
           });
         });
@@ -449,6 +488,7 @@ export const register = () => {
         const nameLength1 = nameList.length;
         nameList1.forEach((nameText, index) => {
           group.addShape('text', {
+            themeRole: 'keyText',
             visible: cfg.isKeySharp && showNameOrLabel && !cfg.isCardSharp,
             showNameOrLabel: true,
             name: nameText,
@@ -464,7 +504,7 @@ export const register = () => {
               textBaseline: 'middle',
               textAlign: 'center',
               // radius: [2, 4],
-              fill: themeColor,
+              fill: palette.accent,
             },
           });
         });
@@ -477,6 +517,8 @@ export const register = () => {
 
           const isForeign = field.typeMeta;
           const relationModel = field?.typeMeta?.relationModel;
+          const relationType =
+            data.relationLabels?.[field.type] ?? Relation[field.type] ?? '';
 
           //字段是否存在关系
           // const hasRelation = models.some(item => {
@@ -503,6 +545,7 @@ export const register = () => {
             config.fieldHeight / 2 -
             2;
           group.addShape('rect', {
+            themeRole: 'fieldBackground',
             visible: !cfg.isKeySharp,
             name: field.id,
             draggable: true,
@@ -526,12 +569,13 @@ export const register = () => {
               width: config.width - 4,
               id: 'field',
               height: config.fieldHeight,
-              fill: 'white',
+              fill: palette.field,
               cursor: 'move',
             },
           });
 
           group.addShape('path', {
+            themeRole: 'fieldDivider',
             visible: !cfg.isKeySharp,
             draggable: true,
             name: field.id,
@@ -545,7 +589,7 @@ export const register = () => {
                 ['M', -config.width / 2 + 20, y + 2],
                 ['L', config.width / 2 - 40, y + 2],
               ],
-              stroke: 'rgba(0,0,0,0.60)',
+              stroke: palette.divider,
               lineWidth: 1,
               lineDash: [5, 5],
               opacity: 0.1,
@@ -557,6 +601,7 @@ export const register = () => {
 
           showCircle &&
             group.addShape('circle', {
+              themeRole: 'relationPort',
               visible: true,
               name: field.id,
               draggable: true,
@@ -580,12 +625,14 @@ export const register = () => {
                   2,
                 id: 'field',
                 r: 2,
-                fill: themeColor,
+                fill: palette.accent,
                 cursor: 'move',
               },
             });
 
           group.addShape('text', {
+            isForeign: Boolean(isForeign),
+            themeRole: 'fieldText',
             visible: !cfg.isKeySharp,
             name: field.id,
             draggable: true,
@@ -615,7 +662,7 @@ export const register = () => {
               cursor: 'move',
               id: 'field',
               textAlign: 'start',
-              fill: isForeign ? themeColor : 'rgba(0,0,0,0.60)', // fill: 'rgb(153,153,153)',
+              fill: isForeign ? palette.accent : palette.fieldText,
             },
           });
           const relationModelText = showNameOrLabel
@@ -623,6 +670,8 @@ export const register = () => {
             : field?.relationModel?.label;
           // console.log(relationModelText)
           group.addShape('text', {
+            isForeign: Boolean(isForeign),
+            themeRole: 'fieldMeta',
             visible: !cfg.isKeySharp,
             name: field.id,
             draggable: true,
@@ -646,17 +695,13 @@ export const register = () => {
                   ? relationModelText
                   : `${field.type || ''}`,
               fieldLable: isForeign
-                ? field.type && Relation[field.type]
-                  ? `${field?.relationModel?.name}(${
-                      Relation[field.type] || ''
-                    })`
+                ? field.type && relationType
+                  ? `${field?.relationModel?.name}(${relationType})`
                   : field?.relationModel?.name
                 : `${field.type || ''}`,
               nameLable: isForeign
-                ? field.type && Relation[field.type]
-                  ? `${
-                      field?.relationModel?.label
-                    }(${Relation[field.type] || ''})`
+                ? field.type && relationType
+                  ? `${field?.relationModel?.label}(${relationType})`
                   : field?.relationModel?.label
                 : `${field.type || ''}`,
               id: 'field',
@@ -667,12 +712,13 @@ export const register = () => {
               click: isForeign ? 'fieldSelect' : undefined,
               textAlign: 'right',
               cursor: isForeign ? 'pointer' : 'undefined',
-              fill: isForeign ? themeColor : 'rgba(0,0,0,0.30)',
+              fill: isForeign ? palette.accent : palette.fieldMuted,
             },
           });
 
           isForeign &&
             group.addShape('circle', {
+              themeRole: 'relationPort',
               visible: true,
               name: field.id,
               draggable: true,
@@ -697,7 +743,7 @@ export const register = () => {
                 id: 'field',
                 r: 2,
 
-                fill: themeColor,
+                fill: palette.accent,
                 cursor: 'move',
               },
             });
@@ -708,6 +754,7 @@ export const register = () => {
           for (let i = 0; i < diffLength; i++) {
             // ---
             group.addShape('rect', {
+              themeRole: 'fieldBackground',
               name: i,
               draggable: true,
               visible: !cfg.isKeySharp,
@@ -725,7 +772,7 @@ export const register = () => {
                 width: config.width - 4,
                 id: 'field',
                 height: config.fieldHeight,
-                fill: 'white',
+                fill: palette.field,
                 cursor: 'move',
               },
 
@@ -741,6 +788,7 @@ export const register = () => {
           config.headerHeight +
           getLength(data.fields.length) * config.fieldHeight;
         let keyShape = group!.addShape('rect', {
+          themeRole: 'keyShape',
           name: data.key,
           draggable: true,
           // visible: false,

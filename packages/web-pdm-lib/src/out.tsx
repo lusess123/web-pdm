@@ -47,20 +47,22 @@ const IconRenders = {
   colorOpen: <Palette />,
 };
 
+const UiComponents = {
+  Input,
+  Button,
+  Dropdown,
+  Menu,
+  Select,
+  Tooltip,
+  Tree,
+  Popover,
+};
+
 const WebPdm: React.FunctionComponent<IWebPdmProps> = (props) => {
   return (
     <WebPdmCore
       IconRenders={IconRenders}
-      components={{
-        Input,
-        Button,
-        Dropdown,
-        Menu,
-        Select,
-        Tooltip,
-        Tree,
-        Popover,
-      }}
+      components={UiComponents}
       {...props}
     />
   );

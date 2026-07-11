@@ -1,0 +1,89 @@
+---
+title: 配置
+sidebar: false
+pageType: doc-wide
+---
+
+import TypeErd from '../../type-erd';
+
+# 配置
+
+<TypeErd />
+
+## 必填数据
+
+| 属性      | 类型             | 说明                         |
+| --------- | ---------------- | ---------------------------- |
+| `models`  | `ModelConfig[]`  | 画布中展示的模型和字段。     |
+| `modules` | `ModuleConfig[]` | 左侧模型导航使用的分组。     |
+| `erdkey`  | `string`         | 当前 ER 图稳定且唯一的标识。 |
+
+```ts
+type ModuleConfig = {
+  name: string;
+  label: string;
+};
+
+type ModelConfig = {
+  name: string;
+  label: string;
+  fields: FieldConfig[];
+  module: string;
+  type?: string;
+  aggregateRoot?: boolean;
+  aggregateModelKey?: string;
+  belongAggregate?: string;
+};
+
+type FieldConfig = {
+  name: string;
+  label: string;
+  type?: string;
+  typeMeta?: MetaTypeConfig | FieldMetaTypeConfig[];
+};
+```
+
+## 布局与外观
+
+| 属性 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `height` | `string \| number` | `min(720px, 100dvh)` | 整个工作台的高度。 |
+| `className` | `string` | — | 应用到根元素的类名。 |
+| `style` | `CSSProperties` | — | 根元素的行内样式。 |
+| `themeColor` | `string` | 内置蓝色 | 模型和控件的强调色。 |
+| `theme` | `'light' \| 'dark' \| 'system'` | `'light'` | 整个工作台的主题。 |
+| `showModelNavigation` | `boolean` | 自动 | 强制显示或隐藏模型导航；空导航默认隐藏。 |
+| `onlyMode` | `boolean` | `false` | 只保留树形导航模式。 |
+
+## 事件
+
+| 属性            | 签名                        | 说明                 |
+| --------------- | --------------------------- | -------------------- |
+| `onIgnoreEdge`  | `(field) => boolean`        | 隐藏指定的关系连线。 |
+| `onModelDetail` | `(model) => void`           | 处理模型详情操作。   |
+| `onReload`      | `() => { models, modules }` | 返回刷新后的图数据。 |
+
+## 国际化
+
+| 属性     | 类型                       | 说明                                 |
+| -------- | -------------------------- | ------------------------------------ |
+| `locale` | `'en' \| 'zh-CN'`          | 选择内置英文或中文文案，默认英文。   |
+| `onIntl` | `(text: string) => string` | 使用应用自己的翻译函数替换内置文案。 |
+
+```tsx
+<WebPdm locale="zh-CN" theme="system" {...props} />
+```
+
+旧的 `intl="EN" | "CH"` 和 `darkness` 属性继续兼容，但新项目应使用 `locale` 和 `theme`。
+
+## UI 适配器
+
+`components` 可以替换 `Tree`、`Input`、`Button`、`Dropdown`、`Menu`、`Select`、`Tooltip` 和 `Popover`。`IconRenders` 用于替换工具栏图标，`disableIcons` 用于移除不需要的操作。
+
+```tsx
+<WebPdm
+  components={{ Tooltip: ProductTooltip }}
+  disableIcons={['reload', 'image']}
+  {...props}
+/>
+```

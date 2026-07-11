@@ -3,6 +3,7 @@ import { throttle } from 'lodash-es';
 import { observer } from 'mobx-react';
 import React, { isValidElement, useCallback, useState } from 'react';
 import { useMst } from '../../context';
+import { createThemeCssVariables } from '../../theme';
 import { changeTwoDecimal_f, CreateComponent } from '../../util';
 
 // import StateStack from '../../state-stack'
@@ -19,6 +20,11 @@ export default observer(({ graph }: { graph: any }) => {
   const undoManager = mst.undoManager;
   const { Tooltip, Popover } = mst.Ui as any;
   const _IconRenders: any = { ...mst.Ui.IconRenders };
+  const webPdmUi = {
+    style: createThemeCssVariables(mst.Ui.palette),
+    t: mst.intl,
+    theme: mst.Ui.theme,
+  };
 
   const [colorPabel, setColorPabel] = useState(false);
   const setColor = useCallback(
@@ -36,7 +42,7 @@ export default observer(({ graph }: { graph: any }) => {
 
   if (!graph)
     return (
-      <div className="console-erd-toolbar">{intl('正在初始化中')}....</div>
+      <div className="console-erd-toolbar">{intl('toolbar.initializing')}</div>
     );
 
   return (
@@ -46,7 +52,7 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={1}
           Tooltip={Tooltip}
-          title={intl('撤销')}
+          title={intl('toolbar.undo')}
           color={
             mst.Ui.darkness && undoManager.canUndo
               ? mst.Ui.themeColor
@@ -60,7 +66,7 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={2}
           Tooltip={Tooltip}
-          title={intl('重做')}
+          title={intl('toolbar.redo')}
           color={
             mst.Ui.darkness && undoManager.canRedo
               ? mst.Ui.themeColor
@@ -74,7 +80,7 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={3}
           Tooltip={Tooltip}
-          title={intl('放大')}
+          title={intl('toolbar.zoomIn')}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           disable={zoomNum >= 100}
           icon="max"
@@ -87,7 +93,7 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={4}
           Tooltip={Tooltip}
-          title={intl('缩小')}
+          title={intl('toolbar.zoomOut')}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           disable={zoomNum < 5}
           icon="min"
@@ -97,7 +103,7 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={5}
           Tooltip={Tooltip}
-          title={intl('全景')}
+          title={intl('toolbar.fitView')}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           icon="full"
           onClick={mst.graph.container.bind(mst.graph, graph)}
@@ -106,7 +112,11 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={6}
           Tooltip={Tooltip}
-          title={intl(!mst.sys.disableMiniMap ? '显示小地图' : '屏蔽小地图')}
+          title={intl(
+            !mst.sys.disableMiniMap
+              ? 'toolbar.showMinimap'
+              : 'toolbar.hideMinimap',
+          )}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           icon={mst.sys.disableMiniMap ? 'miniMap' : 'miniMapNo'}
           onClick={mst.sys.setDisableMiniMap.bind(
@@ -118,7 +128,7 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={7}
           Tooltip={Tooltip}
-          title={intl('刷新数据')}
+          title={intl('toolbar.refreshData')}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           icon="reload"
           onClick={mst.reload.bind(mst)}
@@ -127,7 +137,7 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={8}
           Tooltip={Tooltip}
-          title={intl('下载图片')}
+          title={intl('toolbar.downloadImage')}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
           icon="image"
           onClick={mst.graph.downAsImage.bind(mst.graph, graph)}
@@ -137,7 +147,9 @@ export default observer(({ graph }: { graph: any }) => {
           key={9}
           Tooltip={Tooltip}
           title={
-            mst.sys.dagreLayout ? intl('切换层次布局') : intl('切换关联布局')
+            mst.sys.dagreLayout
+              ? intl('toolbar.switchToHierarchyLayout')
+              : intl('toolbar.switchToRelationLayout')
           }
           icon={!mst.sys.dagreLayout ? 'dagreLayout' : 'relationLayout'}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
@@ -147,36 +159,43 @@ export default observer(({ graph }: { graph: any }) => {
           IconRenders={_IconRenders}
           key={10}
           Tooltip={Tooltip}
-          title={intl('切换底色')}
-          icon={mst.Ui.darkness ? 'darkness' : 'light'}
+          title={intl(
+            mst.Ui.darkness
+              ? 'toolbar.switchToLightTheme'
+              : 'toolbar.switchToDarkTheme',
+          )}
+          icon={mst.Ui.darkness ? 'light' : 'darkness'}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
-          onClick={mst.Ui.setDarkness.bind(mst.Ui, !mst.Ui.darkness)}
+          onClick={mst.Ui.setTheme.bind(
+            mst.Ui,
+            mst.Ui.darkness ? 'light' : 'dark',
+          )}
         />
-        {/* <ButtonActon Tooltip={Tooltip} title='切换' icon='image' onClick={mst.Ui.toggle.bind(mst.Ui, components)}  /> */}
         <Popover
           placement="rightTop"
           arrowPointAtCenter
           footer={null}
           content={
             <input
-              aria-label={intl('选择颜色')}
+              aria-label={intl('toolbar.chooseColor')}
               type="color"
               value={
                 /^#[0-9a-f]{6}$/i.test(mst.Ui.themeColor)
                   ? mst.Ui.themeColor
-                  : '#000000'
+                  : mst.Ui.palette.accent
               }
               onChange={(event) => setColor(event.target.value)}
             />
           }
           visible={colorPabel}
+          webPdmUi={webPdmUi}
         >
           <ButtonActon
             IconRenders={_IconRenders}
             Tooltip={Tooltip}
-            title={`${intl('点击')}${
-              colorPabel ? intl('关闭') : intl('打开')
-            } ${intl('颜色面板')}`}
+            title={intl(
+              colorPabel ? 'toolbar.closeColorPanel' : 'toolbar.openColorPanel',
+            )}
             color={mst.Ui.themeColor}
             icon={colorPabel ? 'colorClose' : 'colorOpen'}
             onClick={setColorPabel.bind(null, !colorPabel)}
@@ -203,22 +222,29 @@ const ButtonActon = CreateComponent<IButtonActon>({
     // const disableIcons = mst.Ui.disableIcons.reduce((pre, cur) => ({ ...pre, [cur]: true }), {})
 
     const { Tooltip } = props;
+    const webPdmUi = {
+      style: createThemeCssVariables(mst.Ui.palette),
+      t: mst.intl,
+      theme: mst.Ui.theme,
+    };
     if (mst.Ui.disableIcons.indexOf(props.icon as any) >= 0) return null;
     const IconRender = isValidElement(props.icon)
       ? props.icon
       : props.IconRenders[props.icon as string];
     return (
-      <Tooltip title={props.title}>
-        <span
+      <Tooltip title={props.title} webPdmUi={webPdmUi}>
+        <button
+          aria-disabled={props.disable}
           style={{ color: props.color }}
           className={classNames({
             enable: !props.disable,
             'command-btn': true,
           })}
           onClick={!props.disable ? props.onClick : undefined}
+          type="button"
         >
           {IconRender}
-        </span>
+        </button>
       </Tooltip>
     );
   },

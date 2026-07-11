@@ -1,16 +1,6 @@
-:root {
-  --web-pdm-border: #e2e8f0;
-  --web-pdm-bg: #fff;
-  --web-pdm-fg: #0f172a;
-  --web-pdm-muted: #64748b;
-  --web-pdm-accent: #f1f5f9;
-  --web-pdm-primary: #2563eb;
-  --web-pdm-branch: #f8fafc;
-}
-
 .console-g6-page {
-  background: var(--web-pdm-bg);
-  color: var(--web-pdm-fg);
+  background: var(--web-pdm-bg, #fff);
+  color: var(--web-pdm-fg, #0f172a);
 }
 
 .web-pdm-button,
@@ -38,7 +28,7 @@
 }
 
 .web-pdm-button:hover {
-  background: var(--web-pdm-accent);
+  background: var(--web-pdm-elevated, #eef3f8);
 }
 
 .web-pdm-button--small {
@@ -53,9 +43,9 @@
 .web-pdm-input-group {
   display: flex;
   min-width: 0;
-  border: 1px solid var(--web-pdm-border);
+  border: 1px solid var(--web-pdm-border, #dbe3ed);
   border-radius: 6px;
-  background: var(--web-pdm-bg);
+  background: var(--web-pdm-surface, #fff);
 }
 
 .web-pdm-input-group--small {
@@ -70,6 +60,8 @@
   outline: 0;
   padding: 0 8px;
   background: transparent;
+  color: inherit;
+  caret-color: var(--web-pdm-accent, #2563eb);
   font-size: 13px;
   line-height: 1;
 }
@@ -77,13 +69,13 @@
 .web-pdm-input-clear {
   border: 0;
   background: transparent;
-  color: var(--web-pdm-muted);
+  color: var(--web-pdm-muted, #64748b);
   cursor: pointer;
 }
 
 .web-pdm-input-addon {
   display: flex;
-  border-left: 1px solid var(--web-pdm-border);
+  border-left: 1px solid var(--web-pdm-border, #dbe3ed);
 }
 
 .web-pdm-select {
@@ -94,6 +86,7 @@
   min-width: 84px;
   border: 0;
   background: transparent;
+  color: inherit;
   padding: 4px 7px;
 }
 
@@ -101,11 +94,11 @@
 .web-pdm-popover,
 .web-pdm-tooltip {
   z-index: 1000;
-  border: 1px solid var(--web-pdm-border);
+  border: 1px solid var(--web-pdm-border, #dbe3ed);
   border-radius: 7px;
-  background: var(--web-pdm-bg);
-  color: var(--web-pdm-fg);
-  box-shadow: 0 10px 30px rgb(15 23 42 / 14%);
+  background: var(--web-pdm-elevated, #fff);
+  color: var(--web-pdm-fg, #0f172a);
+  box-shadow: 0 10px 30px var(--web-pdm-shadow, rgb(15 23 42 / 14%));
 }
 
 .web-pdm-menu {
@@ -128,7 +121,7 @@
 
 .web-pdm-menu-item:hover,
 .web-pdm-menu-item[data-highlighted] {
-  background: var(--web-pdm-accent);
+  background: var(--web-pdm-node-header, #eef3f8);
 }
 
 .web-pdm-tooltip {
@@ -151,13 +144,13 @@
 }
 
 .web-pdm-tree-row.is-branch {
-  background: var(--web-pdm-branch);
+  background: var(--web-pdm-node-header, #eef3f8);
   font-weight: 600;
 }
 
 .web-pdm-tree-row:hover,
 .web-pdm-tree-row.is-selected {
-  background: var(--web-pdm-accent);
+  background: var(--web-pdm-elevated, #eef3f8);
 }
 
 .web-pdm-tree-toggle,
@@ -174,7 +167,7 @@
 }
 
 .web-pdm-tree-toggle:hover {
-  background: var(--web-pdm-accent);
+  background: var(--web-pdm-elevated, #eef3f8);
 }
 
 .web-pdm-tree-checkbox {
@@ -185,16 +178,16 @@
   appearance: none;
   place-content: center;
   margin: 0;
-  border: 1px solid #94a3b8;
+  border: 1px solid var(--web-pdm-border-strong, #94a3b8);
   border-radius: 3px;
-  background: #fff;
+  background: var(--web-pdm-field, #fff);
   cursor: pointer;
 }
 
 .web-pdm-tree-checkbox::after {
   width: 7px;
   height: 4px;
-  border: solid #fff;
+  border: solid var(--web-pdm-on-accent, #fff);
   border-width: 0 0 2px 2px;
   content: '';
   transform: rotate(-45deg) scale(0);
@@ -202,8 +195,8 @@
 
 .web-pdm-tree-checkbox:checked,
 .web-pdm-tree-checkbox:indeterminate {
-  border-color: var(--web-pdm-primary);
-  background: var(--web-pdm-primary);
+  border-color: var(--web-pdm-accent, #2563eb);
+  background: var(--web-pdm-accent, #2563eb);
 }
 
 .web-pdm-tree-checkbox:checked::after {
@@ -214,7 +207,7 @@
   width: 7px;
   height: 2px;
   border: 0;
-  background: #fff;
+  background: var(--web-pdm-on-accent, #fff);
   transform: none;
 }
 
@@ -222,7 +215,7 @@
 .web-pdm-tree-toggle:focus-visible,
 .web-pdm-tree-label:focus-visible,
 .tree-node-title-options:focus-visible {
-  outline: 2px solid rgb(37 99 235 / 35%);
+  outline: 2px solid var(--web-pdm-accent, #2563eb);
   outline-offset: 1px;
 }
 
@@ -266,12 +259,12 @@
   flex: 0 0 24px;
   place-items: center;
   border-radius: 4px;
-  color: var(--web-pdm-muted);
+  color: var(--web-pdm-muted, #64748b);
   opacity: 0.7;
 }
 
 .tree-node-title-options:hover,
 .tree-node-title-options[data-state='open'] {
-  background: var(--web-pdm-accent);
+  background: var(--web-pdm-elevated, #eef3f8);
   opacity: 1;
 }

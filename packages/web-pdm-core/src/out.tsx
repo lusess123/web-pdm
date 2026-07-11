@@ -1,172 +1,258 @@
-import React, { useEffect, useState, FunctionComponent, ReactNode } from 'react'
-import { applySnapshot, onSnapshot, withoutUndo } from 'mobx-keystone'
-import { useMst } from './context'
-import { observer } from 'mobx-react'
-import { Provider, createRootStore } from './context'
-import MSTPage from './components'
-// import { TIconRendersKeys } from './components/model-toolbar'
-import {
-    ModelConfig,
-    ModuleConfig,
-    FieldConfig,
-    IComponentConfig,
-    TData
-} from './type/config'
-export * from './type/config'
-// import './style.scss'
+import { applySnapshot, withoutUndo } from 'mobx-keystone';
+import { observer } from 'mobx-react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type FunctionComponent,
+  type ReactNode,
+} from 'react';
+import MSTPage from './components';
+import { createRootStore, Provider, useMst } from './context';
+import { normalizeLocale, type LegacyLocale, type Locale } from './intl';
+import type { WebPdmTheme, WebPdmThemeMode } from './theme';
+import type {
+  FieldConfig,
+  IComponentConfig,
+  ModelConfig,
+  ModuleConfig,
+  TData,
+} from './type/config';
 
-// type FF = InstanceType<typeof {aa:}>
+export type { IntlKey, IntlParams, Locale } from './intl';
+export type { WebPdmTheme, WebPdmThemeMode } from './theme';
+export * from './type/config';
 
+export type IconName =
+  | 'undo'
+  | 'redo'
+  | 'min'
+  | 'max'
+  | 'full'
+  | 'miniMap'
+  | 'miniMapNo'
+  | 'dagreLayout'
+  | 'relationLayout'
+  | 'reload'
+  | 'image'
+  | 'darkness'
+  | 'light'
+  | 'colorClose'
+  | 'colorOpen';
 
-type TIconRendersKeys = {
+type IconRenders = Partial<Record<IconName, ReactNode>>;
 
-    undo: ReactNode,
-    redo: ReactNode,
-    min: ReactNode,
-    max: ReactNode,
-    full: ReactNode,
-    miniMap: ReactNode,
-    miniMapNo: ReactNode,
-    dagreLayout: ReactNode,
-    relationLayout: ReactNode,
-    reload: ReactNode,
-    image: ReactNode,
-    darkness: ReactNode,
-    light: ReactNode,
-    colorClose: ReactNode,
-    colorOpen: ReactNode
-}
-/**
- *组件的props接口
- *
- * @export
- * @interface IWebPdmProps
- */
+export type WebPdmStyle = CSSProperties &
+  Partial<Record<`--${string}`, string | number>>;
+
 export interface IWebPdmProps {
-    /**
-     *传入的模型数据
-     *
-     * @type {ModelConfig[]}
-     * @memberof IWebPdmProps
-     */
-    models: ModelConfig[]
-
-    /**
-     *传入的模块数据
-     *
-     * @type {ModuleConfig[]}
-     * @memberof IWebPdmProps
-     */
-    modules: ModuleConfig[]
-    erdkey: string
-    className?: string
-    style?: any
-    height?: string | number
-    onIgnoreEdge?: (field: FieldConfig) => boolean
-    components?: IComponentConfig
-    onModelDetail?: (model: ModelConfig) => void
-    themeColor?: string
-    darkness?: boolean
-    onReload?: () => TData
-    intl?: 'CH' | 'EN'
-    onIntl?: (string) => string
-    IconRenders?: Partial<TIconRendersKeys>,
-    disableIcons?: string[],
-    onlyMode?: boolean
+  models: ModelConfig[];
+  modules: ModuleConfig[];
+  erdkey: string;
+  className?: string;
+  style?: WebPdmStyle;
+  height?: string | number;
+  onIgnoreEdge?: (field: FieldConfig) => boolean;
+  components?: IComponentConfig;
+  onModelDetail?: (model: ModelConfig) => void;
+  themeColor?: string;
+  theme?: WebPdmThemeMode;
+  locale?: Locale;
+  showModelNavigation?: boolean;
+  onReload?: () => TData;
+  onIntl?: (text: string) => string;
+  IconRenders?: IconRenders;
+  disableIcons?: IconName[];
+  onlyMode?: boolean;
+  /** @deprecated Use `theme="dark"` or `theme="light"` instead. */
+  darkness?: boolean;
+  /** @deprecated Use `locale="en"` or `locale="zh-CN"` instead. */
+  intl?: LegacyLocale;
 }
 
-const Page = observer<IWebPdmProps>(
-    ({
-        onIntl,
-        onReload,
-        onModelDetail,
-        models,
-        modules,
-        erdkey,
-        className,
-        style,
-        height,
-        onIgnoreEdge,
-        components,
-        IconRenders
-    }) => {
-        const data = useMst()
-        useEffect(() => {
-            // onSnapshot(data, snapshot => {
-            //     sessionStorage.setItem(
-            //         'web-pdm' + erdkey,
-            //         JSON.stringify(snapshot)
-            //     )
-            //     sessionStorage.setItem(
-            //         'web-pdm-fields' + erdkey,
-            //         JSON.stringify(Array.from(data.Fields.entries()))
-            //     )
-            // })
-            const localdata = sessionStorage.getItem('web-pdm' + erdkey)
-            if (!localdata) {
-                withoutUndo(() => data.initData(models, modules))
-            } else {
-                const sdata = JSON.parse(localdata)
-                sdata.sys.height = height
-                withoutUndo(() => {
-                    const localFieldsdata = sessionStorage.getItem(
-                        'web-pdm-fields' + erdkey
-                    )
-                    if (localFieldsdata) {
-                        data.setFields(new Map(JSON.parse(localFieldsdata)))
-                    }
-                    applySnapshot(data, sdata)
-                    data.sys.setOnIgnoreEdge(onIgnoreEdge)
-                    data.sys.setOnModelDetail(onModelDetail)
-                    data.Ui.registComponents(components, IconRenders)
-                    data.setOnReload(onReload!)
-                    data.onIntl = onIntl!
-                })
+type PageProps = IWebPdmProps & {
+  resolvedHeight: number | string;
+  resolvedLocale: Locale;
+  resolvedTheme: WebPdmTheme;
+};
+
+const Page = observer(
+  ({
+    IconRenders,
+    className,
+    components,
+    disableIcons,
+    erdkey,
+    models,
+    modules,
+    onIgnoreEdge,
+    onIntl,
+    onModelDetail,
+    onReload,
+    onlyMode,
+    resolvedHeight,
+    resolvedLocale,
+    resolvedTheme,
+    showModelNavigation,
+    style,
+    themeColor,
+  }: PageProps) => {
+    const data = useMst();
+    const isFirstDataEffect = useRef(true);
+
+    useEffect(() => {
+      let restored = false;
+
+      try {
+        const localData = sessionStorage.getItem(`web-pdm${erdkey}`);
+        if (localData) {
+          const snapshot = JSON.parse(localData);
+          const localFieldsData = sessionStorage.getItem(
+            `web-pdm-fields${erdkey}`,
+          );
+          withoutUndo(() => {
+            if (localFieldsData) {
+              data.setFields(new Map(JSON.parse(localFieldsData)));
             }
-        }, [])
+            applySnapshot(data, snapshot);
+          });
+          restored = true;
+        }
+      } catch {
+        try {
+          sessionStorage.removeItem(`web-pdm${erdkey}`);
+          sessionStorage.removeItem(`web-pdm-fields${erdkey}`);
+        } catch {
+          // Storage can be unavailable in privacy-restricted browser contexts.
+        }
+      }
 
-        useEffect(() => {
-            data.Models.clear()
-            data.Modules.clear()
-            data.Fields.clear()
-            withoutUndo(() => data.initData(models, modules))
-        }, [models])
+      if (!restored) {
+        withoutUndo(() => data.initData(models, modules));
+      }
+    }, []);
 
-        return <MSTPage className={className} style={style} />
-    }
-)
-/**
- *组件定义
- *
- * @param {*} props 属性接口
- * @return {*}
- */
-const WebPDM: FunctionComponent<IWebPdmProps> = props => {
-    const [rootStore] = useState(() => {
-        return createRootStore({
-            sys: {
-                height: props.height,
-                onIgnoreEdge: props.onIgnoreEdge,
-                onModelDetail: props.onModelDetail,
-                intl: props.intl,
-                onlyMode: props.onlyMode
-            },
-            Ui: {
-                themeColor: props.themeColor,
-                darkness: props.darkness
-            },
-            components: props.components,
-            onReload: props.onReload,
-            onIntl: props.onIntl,
-            IconRenders: props.IconRenders,
-            disableIcons: props.disableIcons
-        })
-    })
-    return (
-        <Provider value={rootStore}>
-            {rootStore && <Page {...props} />}
-        </Provider>
+    useEffect(() => {
+      data.sys.setHeight(resolvedHeight);
+      data.sys.setIntl(resolvedLocale);
+      data.sys.setOnlyMode(onlyMode);
+      data.sys.setShowModelNavigation(showModelNavigation);
+      data.sys.setOnIgnoreEdge(onIgnoreEdge);
+      data.sys.setOnModelDetail(onModelDetail);
+      data.Ui.setTheme(resolvedTheme);
+      data.Ui.setThemeColor(themeColor);
+      data.Ui.registComponents(components, IconRenders, disableIcons);
+      data.setOnReload(onReload);
+      data.setOnIntl(onIntl);
+    }, [
+      IconRenders,
+      components,
+      data,
+      disableIcons,
+      onIgnoreEdge,
+      onIntl,
+      onModelDetail,
+      onReload,
+      onlyMode,
+      resolvedHeight,
+      resolvedLocale,
+      resolvedTheme,
+      showModelNavigation,
+      themeColor,
+    ]);
+
+    useEffect(() => {
+      if (isFirstDataEffect.current) {
+        isFirstDataEffect.current = false;
+        return;
+      }
+
+      data.Models.clear();
+      data.Modules.clear();
+      data.Fields.clear();
+      withoutUndo(() => data.initData(models, modules));
+    }, [data, models, modules]);
+
+    return <MSTPage className={className} style={style} />;
+  },
+);
+
+const getSystemTheme = (): WebPdmTheme => {
+  if (typeof window === 'undefined' || !window.matchMedia) return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+};
+
+const useResolvedTheme = (theme: WebPdmThemeMode): WebPdmTheme => {
+  const [systemTheme, setSystemTheme] = useState(getSystemTheme);
+
+  useEffect(() => {
+    if (
+      theme !== 'system' ||
+      typeof window === 'undefined' ||
+      !window.matchMedia
     )
-}
+      return;
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateTheme = () => setSystemTheme(media.matches ? 'dark' : 'light');
+    updateTheme();
+    media.addEventListener('change', updateTheme);
+    return () => media.removeEventListener('change', updateTheme);
+  }, [theme]);
 
-export default WebPDM
+  return theme === 'system' ? systemTheme : theme;
+};
+
+const DEFAULT_HEIGHT = 'min(720px, 100dvh)';
+
+const resolveThemeMode = ({
+  darkness,
+  theme,
+}: Pick<IWebPdmProps, 'darkness' | 'theme'>): WebPdmThemeMode => {
+  if (theme) return theme;
+  if (darkness === undefined) return 'light';
+  return darkness ? 'dark' : 'light';
+};
+
+const WebPDM: FunctionComponent<IWebPdmProps> = (props) => {
+  const themeMode = resolveThemeMode(props);
+  const resolvedTheme = useResolvedTheme(themeMode);
+  const resolvedLocale = normalizeLocale(props.locale ?? props.intl);
+  const resolvedHeight = props.height ?? DEFAULT_HEIGHT;
+  const [rootStore] = useState(() =>
+    createRootStore({
+      sys: {
+        height: resolvedHeight,
+        intl: resolvedLocale,
+        onIgnoreEdge: props.onIgnoreEdge,
+        onModelDetail: props.onModelDetail,
+        onlyMode: props.onlyMode,
+        showModelNavigation: props.showModelNavigation,
+      },
+      Ui: {
+        darkness: resolvedTheme === 'dark',
+        themeColor: props.themeColor ?? '',
+      },
+      components: props.components,
+      onReload: props.onReload,
+      onIntl: props.onIntl,
+      IconRenders: props.IconRenders,
+      disableIcons: props.disableIcons,
+    }),
+  );
+
+  return (
+    <Provider value={rootStore}>
+      <Page
+        {...props}
+        resolvedHeight={resolvedHeight}
+        resolvedLocale={resolvedLocale}
+        resolvedTheme={resolvedTheme}
+      />
+    </Provider>
+  );
+};
+
+export default WebPDM;

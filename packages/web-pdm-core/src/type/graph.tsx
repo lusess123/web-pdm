@@ -1,5 +1,6 @@
-import { model, Model, modelAction, prop } from 'mobx-keystone';
+import { getRoot, model, Model, modelAction, prop } from 'mobx-keystone';
 import type { Graph } from '../graph/g6';
+import type { RootInstance } from './index';
 @model('webpdm/TGraph')
 export class TGraph extends Model({
   zoom: prop(0),
@@ -54,6 +55,7 @@ export class TGraph extends Model({
   downAsImage() {
     const _graph: any = this.G6Graph;
     if (!_graph) return;
+    const root = getRoot<RootInstance>(this);
     const oldZoom = this.G6Graph.getZoom();
     //const newZoom = 100
 
@@ -76,8 +78,8 @@ export class TGraph extends Model({
     // _graph.paint()
     // this.setZoom(0.6)
     _graph.zoomTo(0.8);
-    _graph.downloadFullImage('模型图', undefined, {
-      backgroundColor: 'rgb(245, 247, 255)',
+    _graph.downloadFullImage(root.intl('graph.downloadFileName'), undefined, {
+      backgroundColor: root.Ui.palette.canvas,
     });
     _graph.isExporting = undefined;
     _graph.zoomTo(oldZoom);

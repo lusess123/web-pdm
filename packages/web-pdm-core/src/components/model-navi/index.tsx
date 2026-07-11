@@ -3,6 +3,7 @@ import { debounce } from 'lodash-es';
 // import { Tree } from '../../tree'
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMst } from '../../context';
+import { createThemeCssVariables } from '../../theme';
 import { RootInstance } from '../../type';
 import { TModel } from '../../type/model';
 import { CreateComponent } from '../../util';
@@ -26,7 +27,7 @@ const getTreeNodeTitle = (
 
         options: [
           {
-            title: <span> {root.intl('定位模型')}</span>,
+            title: <span> {root.intl('navigation.locateModel')}</span>,
             key: 1,
             click: (e) => {
               root.sys.centerCurrentModel([model.id]);
@@ -35,15 +36,12 @@ const getTreeNodeTitle = (
           },
           {
             key: 2,
-            title: <span> {root.intl('查看')}</span>,
+            title: <span> {root.intl('navigation.viewDetails')}</span>,
             click: (e) => {
               root.sys.openModel(model.id);
               e.stopPropagation();
             },
           },
-          // {
-          //   title: <span> {intlLiteral('移除')}</span>
-          // },
         ],
       }}
     />
@@ -54,6 +52,11 @@ export default CreateComponent<IModelNaviProps>({
   render(_) {
     const mst = useMst();
     const intl = mst.intl;
+    const webPdmUi = {
+      style: createThemeCssVariables(mst.Ui.palette),
+      t: mst.intl,
+      theme: mst.Ui.theme,
+    };
     const { Input, Button, Dropdown, Menu, Select, Tree } = mst.Ui as any;
     const { TreeNode, OptionBuilder } = Tree as any;
     const treeNodes = useMemo(
@@ -102,6 +105,7 @@ export default CreateComponent<IModelNaviProps>({
         mst.sys.showNameOrLabel,
         mst.sys.currentModule,
         mst.sys.search, //打包后没有执行，添加search确保执行
+        mst.sys.intl,
       ],
     );
 
@@ -123,7 +127,10 @@ export default CreateComponent<IModelNaviProps>({
         <div className="header">
           <div className="console-erd-search">
             <Input
+              aria-label={intl('navigation.searchPlaceholder')}
               allowClear
+              placeholder={intl('navigation.searchPlaceholder')}
+              webPdmUi={webPdmUi}
               value={search}
               size="small"
               onChange={(e) => setSearch(e.target.value)}
@@ -135,9 +142,12 @@ export default CreateComponent<IModelNaviProps>({
                     value={Sys.currentModule}
                     className="select-after"
                     onChange={changeModuleValue}
+                    webPdmUi={webPdmUi}
                   >
                     {[
-                      <Select.Option value={''}>{intl('所有')}</Select.Option>,
+                      <Select.Option value={''}>
+                        {intl('navigation.allModules')}
+                      </Select.Option>,
                       ...[...mst.Modules.values()].map((module) => {
                         return (
                           <Select.Option value={module.id} key={module.id}>
@@ -154,34 +164,40 @@ export default CreateComponent<IModelNaviProps>({
           <div className="console-erd-search btns">
             {mst.sys.tabOrTree && (
               <Button size="small" type="text" onClick={checkAllFun}>
-                {intl('选择所有')}
+                {intl('navigation.selectAll')}
               </Button>
             )}
             {mst.sys.tabOrTree && (
               <Button size="small" type="text" onClick={checkAllCancleFun}>
-                {intl('清除所有')}
+                {intl('navigation.clearAll')}
               </Button>
             )}
-            {/* {!mst.sys.tabOrTree && <Button size="small" type="link" onClick={toggleTabOrTree}>{mst.sys.tabOrTree?'分类':'树形'}模式</Button>} */}
             <Button size="small" type="text" onClick={toggleShowNameOrLabel}>
-              {intl('显示')}
-              {!mst.sys.showNameOrLabel ? intl('名称') : intl('标签')}
+              {intl(
+                !mst.sys.showNameOrLabel
+                  ? 'navigation.showName'
+                  : 'navigation.showLabel',
+              )}
             </Button>
             {!Sys.onlyMode && (
               <Dropdown
                 className="right"
+                webPdmUi={webPdmUi}
                 overlay={
                   <Menu>
                     <Menu.Item key="1" onClick={toggleTabOrTree}>
-                      {!Sys.tabOrTree ? intl('分类') : intl('树形')}{' '}
-                      {intl('模式')}
+                      {intl(
+                        !Sys.tabOrTree
+                          ? 'navigation.categoryMode'
+                          : 'navigation.treeMode',
+                      )}
                     </Menu.Item>
                   </Menu>
                 }
               >
-                <span>
+                <button aria-label={intl('tree.moreActions')} type="button">
                   <span aria-hidden="true">⋯</span>
-                </span>
+                </button>
               </Dropdown>
             )}
           </div>
@@ -199,6 +215,7 @@ export default CreateComponent<IModelNaviProps>({
               onExpand={onExpand}
               multiple
               expandedKeys={[...mst.sys.expandedKeys]}
+              webPdmUi={webPdmUi}
             >
               {treeNodes}
             </Tree>

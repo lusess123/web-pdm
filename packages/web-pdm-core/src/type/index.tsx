@@ -18,7 +18,7 @@ import { TGraph } from './graph';
 import { TSys } from './sys';
 // import StateStack from '../state-stack'
 // import { undoManager } from '../context'
-import IntlMap from '../intl';
+import { translateWithOverride, type IntlKey, type IntlParams } from '../intl';
 import type { ModelConfig, ModuleConfig, SysConfig } from './config';
 import { TUi } from './ui';
 
@@ -77,22 +77,19 @@ export class RootInstance extends Model({
 }) {
   undoManager: UndoManager;
   Fields: Map<string, any> = new Map();
-  onReload: () => TData;
-  onIntl: (text: string) => string;
+  onReload?: () => TData;
+  onIntl?: (text: string) => string;
 
-  setOnReload(onReload: () => TData) {
+  setOnReload(onReload?: () => TData) {
     this.onReload = onReload;
   }
 
-  intl(text: string) {
-    const newText = this.onIntl && this.onIntl(text);
-    if (newText) {
-      return newText;
-    }
-    const intlmap = IntlMap[this.sys.intl];
-    if (intlmap) return intlmap[text] || text;
-    else return text;
-    //    return text
+  setOnIntl(onIntl?: (text: string) => string) {
+    this.onIntl = onIntl;
+  }
+
+  intl(key: IntlKey, params?: IntlParams) {
+    return translateWithOverride(this.sys.intl, key, params, this.onIntl);
   }
 
   setUndoManager(undoManager: UndoManager) {
@@ -179,7 +176,6 @@ export class RootInstance extends Model({
 
   @modelAction
   initData(models: ModelConfig[], modules: ModuleConfig[], sys?: SysConfig) {
-    const t0 = +new Date();
     let moduleHas: Record<string, string> = {};
     modules.forEach((module) => {
       const key = NewGuid().toString();
@@ -190,8 +186,6 @@ export class RootInstance extends Model({
       moduleHas[module.name] = key;
       this.sys.expandedKeys.push(key);
     });
-    const t1 = +new Date();
-
     let modelsKeys: string[] = [];
     let modelHas: Record<string, string> = {};
     // alert(models.length)
@@ -231,19 +225,15 @@ export class RootInstance extends Model({
           typeMeta: field.typeMeta,
           relationModel: tmodel && getSnapshot(tmodel),
         });
-        if (tmodel) console.log(tmodel.name);
         // this.Fields.set(_key, new TField({}).init({ id: _key, typeMeta: (field.typeMeta ? new  MetaType(field.typeMeta ) : undefined ), label: field.label, name: field.name, type: field.type || 'string', modelId: key }))
       });
       // modelsKeys.push(key)
     });
 
-    const t2 = +new Date();
     this.sys.setCheckedKeys(modelsKeys);
     if (sys?.height) {
       this.sys.height = sys.height;
     }
-    const t = +new Date();
-    // alert('initData  :' +  (t1 - t0) + '   ' + (t2 -t1) + '   ' +  (t - t2) )
   }
   @modelAction
   reload() {

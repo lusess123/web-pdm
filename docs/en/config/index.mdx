@@ -1,0 +1,89 @@
+---
+title: Configuration
+sidebar: false
+pageType: doc-wide
+---
+
+import TypeErd from '../../type-erd';
+
+# Configuration
+
+<TypeErd />
+
+## Required data
+
+| Prop      | Type             | Description                               |
+| --------- | ---------------- | ----------------------------------------- |
+| `models`  | `ModelConfig[]`  | Models and fields rendered on the canvas. |
+| `modules` | `ModuleConfig[]` | Groups used by the model navigator.       |
+| `erdkey`  | `string`         | Stable, unique identity for this diagram. |
+
+```ts
+type ModuleConfig = {
+  name: string;
+  label: string;
+};
+
+type ModelConfig = {
+  name: string;
+  label: string;
+  fields: FieldConfig[];
+  module: string;
+  type?: string;
+  aggregateRoot?: boolean;
+  aggregateModelKey?: string;
+  belongAggregate?: string;
+};
+
+type FieldConfig = {
+  name: string;
+  label: string;
+  type?: string;
+  typeMeta?: MetaTypeConfig | FieldMetaTypeConfig[];
+};
+```
+
+## Layout and appearance
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `height` | `string \| number` | `min(720px, 100dvh)` | Height of the complete workspace. |
+| `className` | `string` | — | Class applied to the root element. |
+| `style` | `CSSProperties` | — | Inline styles for the root element. |
+| `themeColor` | `string` | internal blue | Accent color for nodes and controls. |
+| `theme` | `'light' \| 'dark' \| 'system'` | `'light'` | Complete workspace theme. |
+| `showModelNavigation` | `boolean` | automatic | Force the model navigator to show or hide. Empty navigation is hidden automatically. |
+| `onlyMode` | `boolean` | `false` | Keep only the tree navigation mode. |
+
+## Events
+
+| Prop | Signature | Description |
+| --- | --- | --- |
+| `onIgnoreEdge` | `(field) => boolean` | Suppress selected relationship edges. |
+| `onModelDetail` | `(model) => void` | Handle the model detail action. |
+| `onReload` | `() => { models, modules }` | Return refreshed diagram data. |
+
+## Internationalization
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `locale` | `'en' \| 'zh-CN'` | Select the built-in copy. English is the default. |
+| `onIntl` | `(text: string) => string` | Replace built-in copy with an application translator. |
+
+```tsx
+<WebPdm locale="en" theme="system" {...props} />
+```
+
+The legacy `intl="EN" | "CH"` and `darkness` props remain available for compatibility, but new integrations should use `locale` and `theme`.
+
+## UI adapters
+
+`components` can replace `Tree`, `Input`, `Button`, `Dropdown`, `Menu`, `Select`, `Tooltip` and `Popover`. `IconRenders` replaces individual toolbar icons, while `disableIcons` removes unwanted actions.
+
+```tsx
+<WebPdm
+  components={{ Tooltip: ProductTooltip }}
+  disableIcons={['reload', 'image']}
+  {...props}
+/>
+```

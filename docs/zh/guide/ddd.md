@@ -1,5 +1,5 @@
 ---
-legacy: /ddd
+title: 模型驱动的前端开发
 ---
 
 # 模型驱动前端开发
@@ -12,12 +12,13 @@ redux 有一个最佳实践就是要 data normalization ，简单的说就是拍
 
 > The second important idea behind MobX is that for any app that is more complex than TodoMVC, you will often need a data graph, instead of a normalized tree, to store the state in a mentally manageable yet optimal way. Graphs enable referential consistency and avoid data duplication so that it can be guaranteed that derived values are never stale.
 > MobX 背后的第二个重要思想是，对于任何比 TodoMVC 更复杂的应用，您通常需要一个数据图，而不是规范化的树，以一种精神上可管理但最佳的方式存储状态。图形支持引用一致性，并避免数据重复，以便保证派生值永远不会过时。
->> (来源：https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254)
+>
+> > (来源：https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254)
 
 有意思的是，facebook 内部 react 团队最新推出的前端状态管理库 Recoli 也是基于关联图形的
 
-  <img src='https://pic1.zhimg.com/80/v2-acc79877c4337e90c1d107c7ffbddeb9_1440w.jpg' /> 
-  
+  <img src='https://pic1.zhimg.com/80/v2-acc79877c4337e90c1d107c7ffbddeb9_1440w.jpg' />
+
   <img  src="https://pic3.zhimg.com/80/v2-821e9e52949a3004b5eab05f855deefb_1440w.jpg" />
 
 redux, mobx, recoli 的实践都指向这个启示，在复杂的应用里面，设计状态的结构和存储就应该象图形一样，贴近问题域模型，遵循关系数据的范式设计，这样可以尽可能保持引用一致性，避免数据重复。

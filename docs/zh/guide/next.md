@@ -1,5 +1,5 @@
 ---
-legacy: /next
+title: G6 实践与性能优化
 ---
 
 <a name="tPlOC"></a>
@@ -119,14 +119,14 @@ legacy: /next
 
 ```javascript
 const createSysNode = () => {
-    return {
-        id: 'model-SYS-CENTER-POINT',
-        type: 'circle',
-        isSys: true,
-        isKeySharp: true,
-        size: 10,
-    }
-}
+  return {
+    id: 'model-SYS-CENTER-POINT',
+    type: 'circle',
+    isSys: true,
+    isKeySharp: true,
+    size: 10,
+  };
+};
 ```
 
 <br />最终结果：<br />
@@ -166,34 +166,34 @@ const createSysNode = () => {
 
 ```javascript
 export const useFpsHook = () => {
-    const fpsRef = useRef(null)
-    useEffect(() => {
-        if (
-            fpsRef.current &&
-            window.SYS_backEndConfig &&
-            window.SYS_backEndConfig.ERD_FPS
-        ) {
-            const stats = new Stats() // alert(stats.dom)
+  const fpsRef = useRef(null);
+  useEffect(() => {
+    if (
+      fpsRef.current &&
+      window.SYS_backEndConfig &&
+      window.SYS_backEndConfig.ERD_FPS
+    ) {
+      const stats = new Stats(); // alert(stats.dom)
 
-            stats.showPanel(0) // 0: fps, 1: ms, 2: mb, 3+: custom
+      stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 
-            fpsRef.current.appendChild(stats.dom)
-            stats.dom.style.position = 'relative'
+      fpsRef.current.appendChild(stats.dom);
+      stats.dom.style.position = 'relative';
 
-            function animate() {
-                stats.begin() // monitored code goes here
+      function animate() {
+        stats.begin(); // monitored code goes here
 
-                stats.end()
-                requestAnimationFrame(animate)
-            }
+        stats.end();
+        requestAnimationFrame(animate);
+      }
 
-            requestAnimationFrame(animate)
-        }
-    }, [])
-    return {
-        fpsRef,
+      requestAnimationFrame(animate);
     }
-}
+  }, []);
+  return {
+    fpsRef,
+  };
+};
 ```
 
 ![21D2E555-F70B-4BD7-A799-174B8B102A2E.png](https://cdn.nlark.com/yuque/0/2020/png/250863/1588147821658-ce332202-2378-4b2b-ac4a-9615cca7c734.png#align=left&display=inline&height=294&margin=%5Bobject%20Object%5D&name=21D2E555-F70B-4BD7-A799-174B8B102A2E.png&originHeight=294&originWidth=494&size=93996&status=done&style=none&width=494)<br />从最开始的 FPS 个位数，800 个模型情况，到现在的 20 左右 ，以下记录一些优化心得。<br />
@@ -207,17 +207,17 @@ export const useFpsHook = () => {
 
 ```javascript
 <Popover
-    footer={false}
-    content={
-        <RadioGroup value={zoomNum * 2} onChange={zoomChange}>
-            <Radio value={200}>100%</Radio>
-            <Radio value={100}>50%</Radio>
-            <Radio value={20}>10%</Radio>
-        </RadioGroup>
-    }
-    placement="bottom"
+  footer={false}
+  content={
+    <RadioGroup value={zoomNum * 2} onChange={zoomChange}>
+      <Radio value={200}>100%</Radio>
+      <Radio value={100}>50%</Radio>
+      <Radio value={20}>10%</Radio>
+    </RadioGroup>
+  }
+  placement="bottom"
 >
-    {graph && `${zoomNum * 2}%`}
+  {graph && `${zoomNum * 2}%`}
 </Popover>
 ```
 
@@ -234,67 +234,65 @@ export const useFpsHook = () => {
 
 ```javascript
 graph.on(
-    'beforepaint',
-    _.throttle(() => {
-        // alert()
-        const gWidth = graph.get('width')
-        const gHeight = graph.get('height')
-        // 获取视窗左上角对应画布的坐标点
-        const topLeft = graph.getPointByCanvas(0, 0) // 获取视窗右下角对应画布坐标点
+  'beforepaint',
+  _.throttle(() => {
+    // alert()
+    const gWidth = graph.get('width');
+    const gHeight = graph.get('height');
+    // 获取视窗左上角对应画布的坐标点
+    const topLeft = graph.getPointByCanvas(0, 0); // 获取视窗右下角对应画布坐标点
 
-        const bottomRight = graph.getPointByCanvas(gWidth, gHeight)
-        graph
-            .getNodes()
-            .filter((a) => !a.isSys)
-            .forEach((node) => {
-                const model = node.getModel()
-                if (model.isSys) {
-                    node.getContainer().hide()
-                    return
-                }
-                const { config, data: _data } = model
-                const h =
-                    (config.headerHeight +
-                        _data.fields.length * config.fieldHeight +
-                        4) /
-                    2
-                const w = config.width / 2 // 如果节点不在视窗中，隐藏该节点，则不绘制
-                // note:由于此应用中有minimap，直接隐藏节点会影响缩略图视图，直接隐藏节点具体内容
+    const bottomRight = graph.getPointByCanvas(gWidth, gHeight);
+    graph
+      .getNodes()
+      .filter((a) => !a.isSys)
+      .forEach((node) => {
+        const model = node.getModel();
+        if (model.isSys) {
+          node.getContainer().hide();
+          return;
+        }
+        const { config, data: _data } = model;
+        const h =
+          (config.headerHeight + _data.fields.length * config.fieldHeight + 4) /
+          2;
+        const w = config.width / 2; // 如果节点不在视窗中，隐藏该节点，则不绘制
+        // note:由于此应用中有minimap，直接隐藏节点会影响缩略图视图，直接隐藏节点具体内容
 
-                if (
-                    !model.selected &&
-                    (model.x + w < topLeft.x - 200 ||
-                        model.x - w > bottomRight.x ||
-                        model.y + h < topLeft.y ||
-                        model.y - h > bottomRight.y)
-                ) {
-                    node.getContainer().hide()
-                } else {
-                    // 节点在视窗中，则展示
-                    node.getContainer().show()
-                }
-            })
-        const edges = graph.getEdges()
-        edges.forEach((edge) => {
-            let sourceNode = edge.get('sourceNode')
-            let targetNode = edge.get('targetNode')
+        if (
+          !model.selected &&
+          (model.x + w < topLeft.x - 200 ||
+            model.x - w > bottomRight.x ||
+            model.y + h < topLeft.y ||
+            model.y - h > bottomRight.y)
+        ) {
+          node.getContainer().hide();
+        } else {
+          // 节点在视窗中，则展示
+          node.getContainer().show();
+        }
+      });
+    const edges = graph.getEdges();
+    edges.forEach((edge) => {
+      let sourceNode = edge.get('sourceNode');
+      let targetNode = edge.get('targetNode');
 
-            if (targetNode.getModel().isSys) {
-                edge.hide()
-                return
-            }
+      if (targetNode.getModel().isSys) {
+        edge.hide();
+        return;
+      }
 
-            if (
-                !sourceNode.getContainer().get('visible') &&
-                !targetNode.getContainer().get('visible')
-            ) {
-                edge.hide()
-            } else {
-                edge.show()
-            }
-        })
-    }, 10)
-)
+      if (
+        !sourceNode.getContainer().get('visible') &&
+        !targetNode.getContainer().get('visible')
+      ) {
+        edge.hide();
+      } else {
+        edge.show();
+      }
+    });
+  }, 10),
+);
 ```
 
 1. 在 graph “beforepaint”里面做判断显示和隐藏逻辑，
