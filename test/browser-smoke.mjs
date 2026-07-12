@@ -226,6 +226,14 @@ const inspectHome = (page) =>
           'a.web-pdm-home__install[href="https://www.npmjs.com/package/web-pdm"]',
         ),
       ),
+      npmActionText:
+        document
+          .querySelector('.web-pdm-home__npm-action')
+          ?.textContent?.trim() ?? '',
+      npmBrandText:
+        document
+          .querySelector('.web-pdm-home__npm-brand')
+          ?.textContent?.trim() ?? '',
       hasDemoAnchor: Boolean(
         document.querySelector('a.web-pdm-home__link[href="#live-demo"]'),
       ),
@@ -257,6 +265,7 @@ const assertHome = (state) => {
   if (!state.hasProductMark) failures.push('首页缺少产品标识');
   if (!state.hasDemoAnchor) failures.push('首页缺少 Demo 页内入口');
   if (!state.hasNpmPackageLink) failures.push('首页缺少 npm 包链接');
+  if (state.npmBrandText !== 'npm') failures.push('首页缺少醒目的 npm 标识');
   if (state.githubStarCount < 217) failures.push('首页 GitHub Star 数无效');
   if (state.githubStarImageCount > 1)
     failures.push('首页同时加载了多张 Star 趋势图');
@@ -1024,6 +1033,9 @@ try {
   ) {
     throw new Error('英文首页的 Star 数据来源文案错误');
   }
+  if ((await inspectHome(page)).npmActionText !== 'View package') {
+    throw new Error('英文首页缺少明确的 npm 包入口文案');
+  }
   await assertDemoAnchorScroll(page);
   assertDiagram('/', await inspectDiagram(page), { nodes: 4, edges: 5 });
   assertPresentation('/', await inspectPresentation(page), {
@@ -1114,6 +1126,9 @@ try {
     'RepoStars 实时数据'
   ) {
     throw new Error('中文首页的 Star 数据来源没有完成国际化');
+  }
+  if ((await inspectHome(page)).npmActionText !== '查看包') {
+    throw new Error('中文首页的 npm 包入口没有完成国际化');
   }
   await assertDemoAnchorScroll(page);
   assertDiagram('/zh/', await inspectDiagram(page), { nodes: 4, edges: 5 });

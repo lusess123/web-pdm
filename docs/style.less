@@ -212,13 +212,37 @@
 
 .web-pdm-home__install:hover,
 .web-pdm-home__github-stars:hover {
-  border-color: var(--home-accent);
   background: var(--home-link-hover-bg);
 }
 
-.web-pdm-home__install span {
-  color: var(--home-accent);
-  font-weight: 700;
+.web-pdm-home__install:hover {
+  border-color: #cb3837;
+}
+
+.web-pdm-home__github-stars:hover {
+  border-color: var(--home-accent);
+}
+
+.web-pdm-home__install:focus-visible {
+  outline: 2px solid #cb3837;
+  outline-offset: 2px;
+}
+
+.web-pdm-home__npm-brand {
+  display: inline-flex;
+  width: 34px;
+  height: 20px;
+  flex: 0 0 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: #cb3837;
+  color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .web-pdm-home__install code {
@@ -241,6 +265,12 @@
   font-size: 10px;
   gap: 4px;
   white-space: nowrap;
+}
+
+.web-pdm-home__npm-action {
+  color: var(--home-command-text);
+  font-family: inherit;
+  font-weight: 700;
 }
 
 .web-pdm-home__npm-version svg {
@@ -1237,6 +1267,11 @@
 
   .web-pdm-home__install {
     height: 42px;
+  }
+
+  .web-pdm-home__npm-action,
+  .web-pdm-home__npm-version > span:nth-child(2) {
+    display: none;
   }
 
   .web-pdm-home__link {

@@ -244,10 +244,16 @@ export default function 首页() {
                 rel="noreferrer"
                 target="_blank"
               >
-                <span aria-hidden="true">$</span>
+                <span aria-hidden="true" className="web-pdm-home__npm-brand">
+                  npm
+                </span>
                 <code>pnpm add web-pdm</code>
                 <span className="web-pdm-home__npm-version">
-                  v0.4.0
+                  <span className="web-pdm-home__npm-action">
+                    {t('homeNpmAction')}
+                  </span>
+                  <span>·</span>
+                  <span>v0.4.0</span>
                   <外部链接 />
                 </span>
               </a>

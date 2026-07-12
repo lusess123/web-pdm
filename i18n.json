@@ -56,8 +56,12 @@
     "zh": "轻量、可嵌入、可扩展的 React ER 图工作台。"
   },
   "homeInstallLabel": {
-    "en": "Install command",
-    "zh": "安装命令"
+    "en": "Open web-pdm on npm",
+    "zh": "在 npm 查看 web-pdm"
+  },
+  "homeNpmAction": {
+    "en": "View package",
+    "zh": "查看包"
   },
   "homeGetStarted": {
     "en": "Get started",

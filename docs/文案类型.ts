@@ -4,6 +4,7 @@ export type 文案类型 = {
   homeEyebrow: string;
   homeGetStarted: string;
   homeInstallLabel: string;
+  homeNpmAction: string;
   homeLivePreview: string;
   homeProductLabel: string;
   homeTitle: string;
