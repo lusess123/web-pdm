@@ -49,7 +49,7 @@
   },
   "homeTitle": {
     "en": "See every data relationship at a glance.",
-    "zh": "把复杂的数据关系，放进一张清晰的图。"
+    "zh": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner"
   },
   "homeDescription": {
     "en": "A lightweight, embeddable and extensible ER diagram workspace for React.",
@@ -64,8 +64,8 @@
     "zh": "开始使用"
   },
   "homeExamples": {
-    "en": "Full example",
-    "zh": "完整示例"
+    "en": "Live demo",
+    "zh": "在线 Demo"
   },
   "homeWorkspaceLabel": {
     "en": "web-pdm ER diagram workspace",

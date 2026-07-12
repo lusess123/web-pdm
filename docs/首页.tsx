@@ -2,6 +2,7 @@ import { useI18n, useLang } from '@rspress/core/runtime';
 import 产品预览图 from './assets/erd.jpeg';
 import 共建二维码 from './assets/group.jpeg';
 import 赞助二维码 from './assets/pay.jpeg';
+import GitHub星标趋势 from './GitHub星标趋势';
 import TypeErd from './type-erd';
 import 品牌标识 from './品牌标识';
 import type { 文案类型 } from './文案类型';
@@ -35,6 +36,10 @@ const 外部链接 = () => (
 const 首页文案 = {
   en: {
     vision: 'THE OPEN-SOURCE ONLINE POWERDESIGNER',
+    starChartLabel: 'GitHub Star growth since March 2020',
+    starCountLabel: 'GitHub Stars',
+    starRangeLabel: 'MAR 2020 — NOW',
+    starSourceLabel: 'Live via RepoStars',
     performanceEyebrow: '01 / CANVAS FIRST',
     performanceTitle: 'A Canvas workspace built toward thousand-model schemas.',
     performanceDescription:
@@ -119,6 +124,10 @@ const 首页文案 = {
   },
   zh: {
     vision: '面向 WEB 的开源在线 POWERDESIGNER',
+    starChartLabel: 'GitHub Star 自 2020 年 3 月以来的增长趋势',
+    starCountLabel: 'GitHub 星标',
+    starRangeLabel: '2020.03 — 至今',
+    starSourceLabel: 'RepoStars 实时数据',
     performanceEyebrow: '01 / CANVAS 优先',
     performanceTitle: '持续面向千级模型场景优化的 Canvas 工作台。',
     performanceDescription:
@@ -227,12 +236,27 @@ export default function 首页() {
           </div>
 
           <div className="web-pdm-home__launch">
-            <div
-              className="web-pdm-home__install"
-              aria-label={t('homeInstallLabel')}
-            >
-              <span aria-hidden="true">$</span>
-              <code>pnpm add web-pdm</code>
+            <div className="web-pdm-home__release-signals">
+              <a
+                aria-label={t('homeInstallLabel')}
+                className="web-pdm-home__install"
+                href="https://www.npmjs.com/package/web-pdm"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <span aria-hidden="true">$</span>
+                <code>pnpm add web-pdm</code>
+                <span className="web-pdm-home__npm-version">
+                  v0.4.0
+                  <外部链接 />
+                </span>
+              </a>
+              <GitHub星标趋势
+                chartLabel={copy.starChartLabel}
+                countLabel={copy.starCountLabel}
+                rangeLabel={copy.starRangeLabel}
+                sourceLabel={copy.starSourceLabel}
+              />
             </div>
             <div className="web-pdm-home__links">
               <a
@@ -242,18 +266,26 @@ export default function 首页() {
                 {t('homeGetStarted')}
                 <箭头 />
               </a>
-              <a className="web-pdm-home__link" href={localeLink('/demo/')}>
+              <a className="web-pdm-home__link" href="#live-demo">
                 {t('homeExamples')}
               </a>
-              <span className="web-pdm-home__version">v0.3.11</span>
+              <span className="web-pdm-home__version">v0.4.0</span>
             </div>
           </div>
         </section>
 
-        <section
-          aria-label={t('homeWorkspaceLabel')}
-          className="web-pdm-home__workspace"
-        >
+        <a className="web-pdm-home__scroll-cue" href="#live-demo">
+          <span>{isChinese ? '查看在线 Demo' : 'View the live demo'}</span>
+          <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+
+      <section
+        aria-label={t('homeWorkspaceLabel')}
+        className="web-pdm-home__demo"
+        id="live-demo"
+      >
+        <div className="web-pdm-home__workspace">
           <header className="web-pdm-home__workspace-bar">
             <div className="web-pdm-home__workspace-title">
               <span aria-hidden="true" className="web-pdm-home__status" />
@@ -267,13 +299,8 @@ export default function 首页() {
           <div className="web-pdm-home__diagram">
             <TypeErd className="web-pdm-home-diagram" height="100%" />
           </div>
-        </section>
-
-        <a className="web-pdm-home__scroll-cue" href="#product-capabilities">
-          <span>{isChinese ? '了解产品' : 'Explore the product'}</span>
-          <span aria-hidden="true">↓</span>
-        </a>
-      </div>
+        </div>
+      </section>
 
       <div className="web-pdm-home__content" id="product-capabilities">
         <section className="web-pdm-home__performance">

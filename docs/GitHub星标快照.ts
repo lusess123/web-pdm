@@ -1,0 +1,37 @@
+export const GitHub仓库地址 = 'https://github.com/lusess123/web-pdm';
+export const GitHub仓库接口 = 'https://api.github.com/repos/lusess123/web-pdm';
+
+export const GitHub星标快照 = {
+  capturedAt: '2026-07-12',
+  count: 217,
+  firstStarAt: '2020-03-16',
+  points: [
+    { date: '2020-Q1', stars: 3 },
+    { date: '2020-Q2', stars: 23 },
+    { date: '2020-Q3', stars: 45 },
+    { date: '2020-Q4', stars: 71 },
+    { date: '2021-Q1', stars: 90 },
+    { date: '2021-Q2', stars: 104 },
+    { date: '2021-Q3', stars: 125 },
+    { date: '2021-Q4', stars: 154 },
+    { date: '2022-Q1', stars: 168 },
+    { date: '2022-Q2', stars: 176 },
+    { date: '2022-Q3', stars: 189 },
+    { date: '2022-Q4', stars: 193 },
+    { date: '2023-Q1', stars: 200 },
+    { date: '2023-Q2', stars: 204 },
+    { date: '2023-Q3', stars: 204 },
+    { date: '2023-Q4', stars: 208 },
+    { date: '2024-Q1', stars: 210 },
+    { date: '2024-Q2', stars: 211 },
+    { date: '2024-Q3', stars: 214 },
+    { date: '2024-Q4', stars: 214 },
+    { date: '2025-Q1', stars: 215 },
+    { date: '2025-Q2', stars: 216 },
+    { date: '2025-Q3', stars: 217 },
+    { date: '2025-Q4', stars: 217 },
+    { date: '2026-Q1', stars: 217 },
+    { date: '2026-Q2', stars: 217 },
+    { date: '2026-07', stars: 217 },
+  ],
+} as const;

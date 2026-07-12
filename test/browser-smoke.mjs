@@ -193,23 +193,24 @@ const inspectHome = (page) =>
   page.evaluate(() => {
     const home = document.querySelector('.web-pdm-home');
     const masthead = document.querySelector('.web-pdm-home__masthead');
+    const demo = document.querySelector('.web-pdm-home__demo');
     const workspace = document.querySelector('.web-pdm-home__workspace');
     const diagram = document.querySelector('.web-pdm-home__diagram');
+    const starCard = document.querySelector('.web-pdm-home__github-stars');
+    const starChart = document.querySelector('[data-github-star-chart]');
     const rect = (element) => element?.getBoundingClientRect();
     const homeRect = rect(home);
+    const demoRect = rect(demo);
     const workspaceRect = rect(workspace);
     const diagramRect = rect(diagram);
-    const diagramVisibleHeight = diagramRect
-      ? Math.max(
-          0,
-          Math.min(diagramRect.bottom, innerHeight) -
-            Math.max(diagramRect.top, 0),
-        )
-      : 0;
 
     return {
-      diagramHeightRatio: diagramRect?.height / innerHeight || 0,
-      diagramVisibleHeightRatio: diagramVisibleHeight / innerHeight,
+      demoHeightRatio: demoRect?.height / (homeRect?.height || 1) || 0,
+      demoStartDelta:
+        demoRect && homeRect
+          ? Math.abs(demoRect.top - homeRect.bottom)
+          : Number.POSITIVE_INFINITY,
+      diagramHeightRatio: diagramRect?.height / (homeRect?.height || 1) || 0,
       hasCapabilities: Boolean(
         document.querySelector('.web-pdm-home__capabilities'),
       ),
@@ -220,25 +221,53 @@ const inspectHome = (page) =>
         document.querySelector('.web-pdm-home__direction img'),
       ),
       hasProductMark: Boolean(document.querySelector('.web-pdm-product-mark')),
+      hasNpmPackageLink: Boolean(
+        document.querySelector(
+          'a.web-pdm-home__install[href="https://www.npmjs.com/package/web-pdm"]',
+        ),
+      ),
+      hasDemoAnchor: Boolean(
+        document.querySelector('a.web-pdm-home__link[href="#live-demo"]'),
+      ),
       hasRspressOutline: Boolean(
         document.querySelector('.rp-doc-layout__outline'),
       ),
+      githubStarCount: Number(
+        starCard?.getAttribute('data-github-star-count') ?? NaN,
+      ),
+      githubStarImageCount: document.querySelectorAll(
+        '.web-pdm-home__star-image',
+      ).length,
       homeWidthRatio: homeRect?.width / innerWidth || 0,
+      homeScrollTop: home?.scrollTop ?? Number.POSITIVE_INFINITY,
       isScrollable: Boolean(
         home && home.scrollHeight > home.clientHeight + 100,
       ),
       mastheadHeightRatio:
         masthead?.getBoundingClientRect().height / (homeRect?.height || 1) || 0,
-      workspaceBottomOverflow: workspaceRect
-        ? Math.max(0, workspaceRect.bottom - innerHeight)
-        : Number.POSITIVE_INFINITY,
-      workspaceWidthRatio: workspaceRect?.width / innerWidth || 0,
+      starChartHeight: starChart?.getBoundingClientRect().height ?? 0,
+      starChartSource: starChart?.getAttribute('src') ?? 'inline-fallback',
+      starChartWidth: starChart?.getBoundingClientRect().width ?? 0,
+      workspaceWidthRatio: workspaceRect?.width / (homeRect?.width || 1) || 0,
     };
   });
 
 const assertHome = (state) => {
   const failures = [];
   if (!state.hasProductMark) failures.push('首页缺少产品标识');
+  if (!state.hasDemoAnchor) failures.push('首页缺少 Demo 页内入口');
+  if (!state.hasNpmPackageLink) failures.push('首页缺少 npm 包链接');
+  if (state.githubStarCount < 217) failures.push('首页 GitHub Star 数无效');
+  if (state.githubStarImageCount > 1)
+    failures.push('首页同时加载了多张 Star 趋势图');
+  if (state.starChartWidth < 40 || state.starChartHeight < 20)
+    failures.push('首页 GitHub Star 增长曲线不可见');
+  if (
+    state.starChartSource !== 'inline-fallback' &&
+    !state.starChartSource.includes('repostars.dev/api/embed')
+  ) {
+    failures.push('首页没有使用动态 Star 历史服务');
+  }
   if (!state.hasCapabilities) failures.push('首页缺少产品能力介绍');
   if (!state.hasProductDirection)
     failures.push('首页缺少原有产品方向或产品截图');
@@ -248,17 +277,66 @@ const assertHome = (state) => {
   if (state.homeWidthRatio < 0.95) failures.push('首页没有铺满可视宽度');
   if (state.mastheadHeightRatio < 0.98)
     failures.push('首页首屏没有覆盖浏览器可视区域');
+  if (state.homeScrollTop > 1) failures.push('首页初始位置不在产品首屏');
+  if (state.demoStartDelta > 1) failures.push('Demo 没有紧接在产品首屏下方');
+  if (state.demoHeightRatio < 0.98 || state.demoHeightRatio > 1.02)
+    failures.push('Demo 没有占满一个浏览器可视高度');
   if (state.workspaceWidthRatio < 0.9) failures.push('ER 工作台宽度不足');
-  if (state.workspaceBottomOverflow > 1)
-    failures.push('ER 工作台初始化高度超出浏览器可视区域');
-  if (state.diagramHeightRatio < 0.6) failures.push('ER 图高度占比不足');
-  if (state.diagramVisibleHeightRatio < 0.55)
-    failures.push('首屏可见的 ER 图区域不足');
+  if (state.diagramHeightRatio < 0.82)
+    failures.push('满屏 Demo 的 ER 图高度不足');
 
   if (failures.length > 0) {
     throw new Error(
       `首页布局验收失败：${failures.join('；')}\n${JSON.stringify(state)}`,
     );
+  }
+};
+
+const assertDemoAnchorScroll = async (page) => {
+  await page.locator('a.web-pdm-home__link[href="#live-demo"]').click();
+  await page.waitForFunction(
+    () => {
+      const home = document.querySelector('.web-pdm-home');
+      const demo = document.querySelector('.web-pdm-home__demo');
+      const homeRect = home?.getBoundingClientRect();
+      const demoRect = demo?.getBoundingClientRect();
+      return Boolean(
+        homeRect && demoRect && Math.abs(homeRect.top - demoRect.top) <= 2,
+      );
+    },
+    undefined,
+    { timeout: 15_000 },
+  );
+
+  const state = await page.evaluate(() => {
+    const home = document.querySelector('.web-pdm-home');
+    const demo = document.querySelector('.web-pdm-home__demo');
+    const homeRect = home?.getBoundingClientRect();
+    const demoRect = demo?.getBoundingClientRect();
+    const visibleHeight =
+      homeRect && demoRect
+        ? Math.max(
+            0,
+            Math.min(demoRect.bottom, homeRect.bottom) -
+              Math.max(demoRect.top, homeRect.top),
+          )
+        : 0;
+    return {
+      hash: location.hash,
+      scrollDelta:
+        homeRect && demoRect
+          ? Math.abs(homeRect.top - demoRect.top)
+          : Number.POSITIVE_INFINITY,
+      visibleRatio: visibleHeight / (homeRect?.height || 1),
+    };
+  });
+
+  if (
+    state.hash !== '#live-demo' ||
+    state.scrollDelta > 2 ||
+    state.visibleRatio < 0.98
+  ) {
+    throw new Error(`Demo 页内滚动验收失败：${JSON.stringify(state)}`);
   }
 };
 
@@ -759,6 +837,19 @@ const prepareCompactExport = async (page) => {
 
 const assertViewportFit = async (page, viewport) => {
   await page.setViewportSize(viewport);
+  await page.evaluate(() => {
+    const home = document.querySelector('.web-pdm-home');
+    history.replaceState(null, '', `${location.pathname}${location.search}`);
+    if (home) home.scrollTop = 0;
+  });
+  await page.waitForFunction(
+    () => (document.querySelector('.web-pdm-home')?.scrollTop ?? Infinity) <= 1,
+  );
+  assertHome({
+    ...(await inspectHome(page)),
+    viewport: `${viewport.width}x${viewport.height}`,
+  });
+  await assertDemoAnchorScroll(page);
   await page.waitForFunction(
     () => {
       const graph = document.querySelector('.graph[data-g6-status="ready"]');
@@ -914,12 +1005,19 @@ try {
   await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.body.innerText.trim().length > 0);
   const homeText = await page.locator('body').innerText();
-  if (!homeText.includes('0.3.11')) {
+  if (!homeText.includes('0.4.0')) {
     throw new Error(
       `首页未显示版本号。页面内容：\n${homeText.slice(0, 500)}\n浏览器异常：\n${errors.join('\n')}`,
     );
   }
   assertHome(await inspectHome(page));
+  if (
+    (await page.locator('.web-pdm-home__star-source').textContent())?.trim() !==
+    'Live via RepoStars'
+  ) {
+    throw new Error('英文首页的 Star 数据来源文案错误');
+  }
+  await assertDemoAnchorScroll(page);
   assertDiagram('/', await inspectDiagram(page), { nodes: 4, edges: 5 });
   assertPresentation('/', await inspectPresentation(page), {
     locale: 'en',
@@ -943,10 +1041,23 @@ try {
     { width: 1365, height: 768 },
     { width: 390, height: 844 },
     { width: 320, height: 800 },
+    { width: 320, height: 568 },
+    { width: 844, height: 390 },
   ]) {
     await assertViewportFit(page, viewport);
   }
   await assertViewportFit(page, { width: 1440, height: 1000 });
+
+  await page.evaluate(() => document.documentElement.classList.add('dark'));
+  await page.waitForFunction(() => {
+    const chart = document.querySelector('.web-pdm-home__star-image');
+    return !chart || chart.getAttribute('src')?.includes('theme=dark');
+  });
+  await page.evaluate(() => document.documentElement.classList.remove('dark'));
+  await page.waitForFunction(() => {
+    const chart = document.querySelector('.web-pdm-home__star-image');
+    return !chart || chart.getAttribute('src')?.includes('theme=minimal');
+  });
 
   await page.locator('button[aria-label="Show minimap"]').click();
   await waitForGraphAttribute(page, 'data-g6-minimap', 'true');
@@ -983,9 +1094,21 @@ try {
   await page.goto(`${baseUrl}/zh/`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.body.innerText.trim().length > 0);
   const chineseHomeText = await page.locator('body').innerText();
-  if (!chineseHomeText.includes('把复杂的数据关系'))
-    throw new Error('中文首页没有显示中文文案');
+  if (
+    !chineseHomeText.includes(
+      '一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner',
+    )
+  ) {
+    throw new Error('中文首页没有恢复原始 slogan');
+  }
   assertHome(await inspectHome(page));
+  if (
+    (await page.locator('.web-pdm-home__star-source').textContent())?.trim() !==
+    'RepoStars 实时数据'
+  ) {
+    throw new Error('中文首页的 Star 数据来源没有完成国际化');
+  }
+  await assertDemoAnchorScroll(page);
   assertDiagram('/zh/', await inspectDiagram(page), { nodes: 4, edges: 5 });
   assertPresentation('/zh/', await inspectPresentation(page), {
     locale: 'zh-CN',
@@ -1092,9 +1215,21 @@ try {
     }
   }
 
+  await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
+  await page.locator('.web-pdm-home__star-image').evaluate((image) => {
+    image.dispatchEvent(new Event('error', { bubbles: true }));
+  });
+  await page
+    .locator('.web-pdm-home__star-fallback')
+    .waitFor({ state: 'visible' });
+  assertHome(await inspectHome(page));
+
   errors.push(
     ...requestFailures
       .filter(({ errorText }) => errorText !== 'net::ERR_ABORTED')
+      .filter(
+        ({ url }) => !url.startsWith('https://www.repostars.dev/api/embed'),
+      )
       .map(
         ({ errorText, method, url }) =>
           `资源请求失败：${method} ${url} (${errorText})`,

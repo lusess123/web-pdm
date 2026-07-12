@@ -37,6 +37,8 @@ export default defineConfig({
       'type-erd.tsx',
       'typedata.tsx',
       '首页.tsx',
+      'GitHub星标快照.ts',
+      'GitHub星标趋势.tsx',
       '品牌标识.tsx',
       '空图示例.tsx',
       '旧路由跳转.tsx',
