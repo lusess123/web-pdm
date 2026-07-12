@@ -1,6 +1,6 @@
 {
   "name": "web-pdm",
-  "version": "0.3.11",
+  "version": "0.4.0",
   "description": "A lightweight, embeddable React ER diagram workspace powered by G6 5",
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "build": "vite build && cp src/public-types.d.ts dist/index.d.ts",
     "dev": "vite build --watch",
     "prepublishOnly": "corepack pnpm test && corepack pnpm typecheck && corepack pnpm build",
-    "publish-npm:patch": "corepack pnpm build && npm version patch && corepack pnpm publish --registry=https://registry.npmjs.org && cnpm sync web-pdm",
+    "release:next": "corepack pnpm publish --tag next --access public --no-git-checks",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
