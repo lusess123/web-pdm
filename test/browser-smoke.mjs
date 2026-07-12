@@ -1010,6 +1010,13 @@ try {
       `首页未显示版本号。页面内容：\n${homeText.slice(0, 500)}\n浏览器异常：\n${errors.join('\n')}`,
     );
   }
+  if (
+    !homeText.includes(
+      'An ER graph tool made with G6, the ultimate goal is to make an online PowerDesigner',
+    )
+  ) {
+    throw new Error('英文首页没有恢复原始 slogan');
+  }
   assertHome(await inspectHome(page));
   if (
     (await page.locator('.web-pdm-home__star-source').textContent())?.trim() !==
@@ -1096,7 +1103,7 @@ try {
   const chineseHomeText = await page.locator('body').innerText();
   if (
     !chineseHomeText.includes(
-      '一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner',
+      '一个用 G6 做的 ER 图工具，最终目标是想做成在线版的 powerdesigner',
     )
   ) {
     throw new Error('中文首页没有恢复原始 slogan');

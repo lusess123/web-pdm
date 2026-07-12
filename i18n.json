@@ -48,8 +48,8 @@
     "zh": "开源 · 数据模型工作台"
   },
   "homeTitle": {
-    "en": "See every data relationship at a glance.",
-    "zh": "一个用G6做的ER图工具，最终目标是想做成在线版的 powerdesigner"
+    "en": "An ER graph tool made with G6, the ultimate goal is to make an online PowerDesigner",
+    "zh": "一个用 G6 做的 ER 图工具，最终目标是想做成在线版的 powerdesigner"
   },
   "homeDescription": {
     "en": "A lightweight, embeddable and extensible ER diagram workspace for React.",
