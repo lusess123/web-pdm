@@ -6,7 +6,7 @@ const expectedG6Version = '5.1.1';
 
 const port = 43_000 + Math.floor(Math.random() * 1_000);
 const baseUrl = `http://localhost:${port}`;
-const server = spawn('pnpm', ['dev', '--port', String(port)], {
+const server = spawn('corepack', ['pnpm', 'dev', '--port', String(port)], {
   detached: true,
   stdio: ['ignore', 'pipe', 'pipe'],
 });
@@ -192,6 +192,7 @@ const inspectDiagram = async (page) => {
 const inspectHome = (page) =>
   page.evaluate(() => {
     const home = document.querySelector('.web-pdm-home');
+    const masthead = document.querySelector('.web-pdm-home__masthead');
     const workspace = document.querySelector('.web-pdm-home__workspace');
     const diagram = document.querySelector('.web-pdm-home__diagram');
     const rect = (element) => element?.getBoundingClientRect();
@@ -209,11 +210,25 @@ const inspectHome = (page) =>
     return {
       diagramHeightRatio: diagramRect?.height / innerHeight || 0,
       diagramVisibleHeightRatio: diagramVisibleHeight / innerHeight,
+      hasCapabilities: Boolean(
+        document.querySelector('.web-pdm-home__capabilities'),
+      ),
+      hasCommunityHistory:
+        document.querySelectorAll('.web-pdm-home__community-card img').length >=
+        2,
+      hasProductDirection: Boolean(
+        document.querySelector('.web-pdm-home__direction img'),
+      ),
       hasProductMark: Boolean(document.querySelector('.web-pdm-product-mark')),
       hasRspressOutline: Boolean(
         document.querySelector('.rp-doc-layout__outline'),
       ),
       homeWidthRatio: homeRect?.width / innerWidth || 0,
+      isScrollable: Boolean(
+        home && home.scrollHeight > home.clientHeight + 100,
+      ),
+      mastheadHeightRatio:
+        masthead?.getBoundingClientRect().height / (homeRect?.height || 1) || 0,
       workspaceBottomOverflow: workspaceRect
         ? Math.max(0, workspaceRect.bottom - innerHeight)
         : Number.POSITIVE_INFINITY,
@@ -224,8 +239,15 @@ const inspectHome = (page) =>
 const assertHome = (state) => {
   const failures = [];
   if (!state.hasProductMark) failures.push('首页缺少产品标识');
+  if (!state.hasCapabilities) failures.push('首页缺少产品能力介绍');
+  if (!state.hasProductDirection)
+    failures.push('首页缺少原有产品方向或产品截图');
+  if (!state.hasCommunityHistory) failures.push('首页缺少原有共建或赞助信息');
   if (state.hasRspressOutline) failures.push('首页仍显示文档目录栏');
+  if (!state.isScrollable) failures.push('首页没有保留首屏下方的完整产品介绍');
   if (state.homeWidthRatio < 0.95) failures.push('首页没有铺满可视宽度');
+  if (state.mastheadHeightRatio < 0.98)
+    failures.push('首页首屏没有覆盖浏览器可视区域');
   if (state.workspaceWidthRatio < 0.9) failures.push('ER 工作台宽度不足');
   if (state.workspaceBottomOverflow > 1)
     failures.push('ER 工作台初始化高度超出浏览器可视区域');
@@ -273,6 +295,9 @@ const inspectPresentation = (page) =>
 
     return {
       graphBackground: graph ? getComputedStyle(graph).backgroundColor : '',
+      graphBackgroundImage: graph
+        ? getComputedStyle(graph).backgroundImage
+        : '',
       locale: wrapper?.getAttribute('data-web-pdm-locale'),
       menuContrast: elementContrast(menu),
       rootContrast: elementContrast(wrapper),
@@ -290,6 +315,8 @@ const assertPresentation = (route, state, expected) => {
   if (state.menuContrast < 4.5) failures.push('模型导航文字对比度不足');
   if (!state.graphBackground || state.graphBackground === 'rgba(0, 0, 0, 0)')
     failures.push('画布没有主题背景色');
+  if (state.graphBackgroundImage !== 'none')
+    failures.push('画布不应显示网格背景');
 
   if (failures.length > 0) {
     throw new Error(
@@ -304,6 +331,21 @@ const inspectVisibleSidebarWidth = (page) =>
     if (!sidebar || getComputedStyle(sidebar).display === 'none') return 0;
     return sidebar.getBoundingClientRect().width;
   });
+
+const inspectVisibleDocChromeWidth = (page) =>
+  page.evaluate(() =>
+    [
+      document.querySelector('.rp-doc-layout__sidebar'),
+      document.querySelector('.rp-doc-layout__outline'),
+    ].reduce(
+      (width, element) =>
+        width +
+        (element && getComputedStyle(element).display !== 'none'
+          ? element.getBoundingClientRect().width
+          : 0),
+      0,
+    ),
+  );
 
 const assertDiagram = (route, state, expectedCounts) => {
   const failures = [];
@@ -396,6 +438,181 @@ const waitForNextGraphReady = async (page, action) => {
   );
 };
 
+const findSelectedDetailButton = (page) =>
+  page.evaluate(() => {
+    const graph = document.querySelector('.graph');
+    const wrapper = document.querySelector('.console-g6-page');
+    if (!graph || !wrapper) throw new Error('找不到 ER 图容器');
+
+    const accent = getComputedStyle(wrapper)
+      .getPropertyValue('--web-pdm-accent')
+      .trim();
+    const match = /^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(accent);
+    if (!match) throw new Error(`无法识别主题色：${accent}`);
+    const target = match
+      .slice(1)
+      .map((channel) => Number.parseInt(channel, 16));
+    const zoom = Number(graph.getAttribute('data-g6-zoom'));
+    if (!Number.isFinite(zoom)) throw new Error('无法读取 G6 缩放比例');
+
+    const fullNodeWidth = 300;
+    const fullHeaderHeight = 48;
+    const detailButtonCenterInset = 24;
+    let bestMatch;
+
+    for (const canvas of graph.querySelectorAll('canvas')) {
+      const bounds = canvas.getBoundingClientRect();
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      if (!context || !canvas.width || !canvas.height) continue;
+
+      const pixels = context.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+      ).data;
+      const scaleX = bounds.width / canvas.width;
+      const scaleY = bounds.height / canvas.height;
+      const windowWidth = Math.round((fullNodeWidth * zoom) / scaleX);
+      const windowHeight = Math.round((fullHeaderHeight * zoom) / scaleY);
+      if (windowWidth > canvas.width || windowHeight > canvas.height) continue;
+
+      const stride = canvas.width + 1;
+      const sums = new Uint32Array(stride * (canvas.height + 1));
+      for (let y = 1; y <= canvas.height; y += 1) {
+        let rowMatches = 0;
+        for (let x = 1; x <= canvas.width; x += 1) {
+          const index = ((y - 1) * canvas.width + x - 1) * 4;
+          if (
+            pixels[index + 3] > 200 &&
+            Math.abs(pixels[index] - target[0]) <= 3 &&
+            Math.abs(pixels[index + 1] - target[1]) <= 3 &&
+            Math.abs(pixels[index + 2] - target[2]) <= 3
+          ) {
+            rowMatches += 1;
+          }
+          sums[y * stride + x] = sums[(y - 1) * stride + x] + rowMatches;
+        }
+      }
+
+      const step = Math.max(1, Math.round(2 / Math.min(scaleX, scaleY)));
+      for (let y = 0; y <= canvas.height - windowHeight; y += step) {
+        for (let x = 0; x <= canvas.width - windowWidth; x += step) {
+          const right = x + windowWidth;
+          const bottom = y + windowHeight;
+          const matches =
+            sums[bottom * stride + right] -
+            sums[y * stride + right] -
+            sums[bottom * stride + x] +
+            sums[y * stride + x];
+          if (!bestMatch || matches > bestMatch.matches) {
+            bestMatch = {
+              bounds,
+              matches,
+              scaleX,
+              scaleY,
+              windowHeight,
+              windowWidth,
+              x,
+              y,
+            };
+          }
+        }
+      }
+    }
+
+    if (
+      !bestMatch ||
+      bestMatch.matches / (bestMatch.windowWidth * bestMatch.windowHeight) < 0.5
+    ) {
+      throw new Error('无法从真实 Canvas 定位选中节点的详情图标');
+    }
+
+    return {
+      x:
+        bestMatch.bounds.left +
+        (bestMatch.x +
+          bestMatch.windowWidth -
+          (detailButtonCenterInset * zoom) / bestMatch.scaleX) *
+          bestMatch.scaleX,
+      y:
+        bestMatch.bounds.top +
+        (bestMatch.y + bestMatch.windowHeight / 2) * bestMatch.scaleY,
+    };
+  });
+
+const showFullNodes = async (page) => {
+  const zoomIn = page.locator('button[aria-label="Zoom in"]');
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    if ((await readGraphDiagnostics(page)).compactNodeCount === 0) return;
+    if ((await zoomIn.getAttribute('aria-disabled')) === 'true') break;
+    await page.evaluate(() =>
+      document.querySelector('.graph')?.removeAttribute('data-g6-last-action'),
+    );
+    await zoomIn.click();
+    await waitForGraphAttribute(page, 'data-g6-last-action', 'zoom-in');
+    await page.waitForTimeout(50);
+  }
+  throw new Error('无法将 ER 节点放大到完整模式');
+};
+
+const assertDetailIconInteraction = async (page) => {
+  const fieldLabel = page
+    .locator('.web-pdm-tree-label')
+    .filter({ hasText: /^Field$/ })
+    .first();
+  await waitForNextGraphReady(page, () => fieldLabel.click());
+  await page.evaluate(() =>
+    document.querySelector('.graph')?.removeAttribute('data-g6-last-action'),
+  );
+  await fieldLabel.locator('..').locator('.tree-node-title-options').click();
+  await page
+    .locator('.web-pdm-menu-item')
+    .filter({ hasText: 'Locate model' })
+    .click();
+  await waitForGraphAttribute(page, 'data-g6-last-action', 'focus-model');
+  await showFullNodes(page);
+  await page.evaluate(
+    () =>
+      new Promise((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(resolve)),
+      ),
+  );
+
+  let point;
+  let locationError;
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    try {
+      point = await findSelectedDetailButton(page);
+      break;
+    } catch (error) {
+      locationError = error;
+      await page.waitForTimeout(100);
+    }
+  }
+  if (!point) throw locationError;
+
+  await page.mouse.move(point.x, point.y);
+  await page.waitForFunction(
+    () =>
+      document.querySelector('.graph')?.getAttribute('title') ===
+      'View details',
+  );
+
+  const dialogPromise = page
+    .waitForEvent('dialog', { timeout: 15_000 })
+    .then(async (dialog) => {
+      const message = dialog.message();
+      await dialog.accept();
+      return message;
+    });
+  await page.mouse.click(point.x, point.y);
+  const dialogMessage = await dialogPromise;
+  if (!dialogMessage.includes('Field')) {
+    throw new Error(`详情按钮打开了错误模型：${dialogMessage}`);
+  }
+};
+
 const assertToolbarInteractions = async (page) => {
   const initial = await readGraphDiagnostics(page);
   if (
@@ -435,11 +652,16 @@ const assertToolbarInteractions = async (page) => {
   await page.locator('button[aria-label="Fit view"]').click();
   await waitForGraphAttribute(page, 'data-g6-last-action', 'fit-view');
 
-  const layoutButton = page
-    .locator(
-      'button[aria-label="Switch to hierarchy layout"], button[aria-label="Switch to relation layout"]',
-    )
-    .first();
+  const layoutButtonLabel =
+    initial.layout === 'force'
+      ? 'Switch to hierarchy layout'
+      : 'Switch to relation layout';
+  const layoutButton = page.locator(
+    `button[aria-label="${layoutButtonLabel}"]`,
+  );
+  if ((await layoutButton.count()) !== 1) {
+    throw new Error(`布局按钮文案与当前布局不一致：${initial.layout}`);
+  }
   await layoutButton.click();
   const nextLayout = initial.layout === 'force' ? 'antv-dagre' : 'force';
   await waitForGraphAttribute(page, 'data-g6-layout', nextLayout);
@@ -456,6 +678,44 @@ const assertToolbarInteractions = async (page) => {
   if (final.nodeCount !== 4 || final.edgeCount !== 5) {
     throw new Error(`工具栏操作改变了图数据：${JSON.stringify(final)}`);
   }
+};
+
+const assertColorPopover = async (page) => {
+  await page.locator('button[aria-label="Open color panel"]').click();
+  const popover = page.locator('.web-pdm-popover');
+  await popover.waitFor({ state: 'visible' });
+  const state = await popover.evaluate((element) => {
+    const bounds = element.getBoundingClientRect();
+    return {
+      bottom: bounds.bottom,
+      hasColorInput: Boolean(element.querySelector('input[type="color"]')),
+      left: bounds.left,
+      right: bounds.right,
+      top: bounds.top,
+    };
+  });
+  if (
+    !state.hasColorInput ||
+    state.left < 0 ||
+    state.top < 0 ||
+    state.right > 1440 ||
+    state.bottom > 1000
+  ) {
+    throw new Error(`颜色面板没有显示在可视区域内：${JSON.stringify(state)}`);
+  }
+
+  await page.keyboard.press('Escape');
+  await popover.waitFor({ state: 'hidden' });
+
+  await page.locator('button[aria-label="Open color panel"]').click();
+  await popover.waitFor({ state: 'visible' });
+  await page.locator('.graph').click({ position: { x: 8, y: 8 } });
+  await popover.waitFor({ state: 'hidden' });
+
+  await page.locator('button[aria-label="Open color panel"]').click();
+  await popover.waitFor({ state: 'visible' });
+  await page.locator('button[aria-label="Close color panel"]').click();
+  await popover.waitFor({ state: 'hidden' });
 };
 
 const assertPngDownload = async (page, minimumBytes = 10_000) => {
@@ -523,6 +783,7 @@ const assertViewportFit = async (page, viewport) => {
     const home = document.querySelector('.web-pdm-home');
     const wrapper = document.querySelector('.console-g6-page');
     const graph = document.querySelector('.graph');
+    const toolbar = document.querySelector('.console-erd-toolbar');
     const canvases = [...(graph?.querySelectorAll('canvas') ?? [])];
     const bottomOverflow = (element) =>
       element
@@ -543,6 +804,9 @@ const assertViewportFit = async (page, viewport) => {
       g6Height: Number(graph?.getAttribute('data-g6-height') ?? NaN),
       g6Width: Number(graph?.getAttribute('data-g6-width') ?? NaN),
       homeBottomOverflow: bottomOverflow(home),
+      toolbarHorizontalOverflow: toolbar
+        ? Math.max(0, toolbar.scrollWidth - toolbar.clientWidth)
+        : Number.POSITIVE_INFINITY,
       wrapperBottomOverflow: bottomOverflow(wrapper),
     };
   });
@@ -551,6 +815,8 @@ const assertViewportFit = async (page, viewport) => {
   if (state.homeBottomOverflow > 1) failures.push('首页超过可视区高度');
   if (state.wrapperBottomOverflow > 1) failures.push('组件超过可视区高度');
   if (state.graphBottomOverflow > 1) failures.push('画布超过可视区高度');
+  if (state.toolbarHorizontalOverflow > 1)
+    failures.push('窄屏工具栏仍需要横向滚动');
   if (
     state.graphWidth <= 0 ||
     state.graphHeight <= 0 ||
@@ -583,11 +849,22 @@ try {
   const errors = [];
   const requestFailures = [];
 
-  page.on('pageerror', (error) => errors.push(error.stack ?? error.message));
+  page.on('pageerror', (error) =>
+    errors.push(
+      `${new URL(page.url()).pathname}: ${error.stack ?? error.message}`,
+    ),
+  );
   page.on('console', (message) => {
     if (message.text().startsWith('[rsbuild] HMR update failed')) return;
-    if (['error', 'warning'].includes(message.type()))
-      errors.push(message.text());
+    if (
+      message
+        .text()
+        .startsWith('Canvas2D: Multiple readback operations using getImageData')
+    )
+      return;
+    if (['error', 'warning'].includes(message.type())) {
+      errors.push(`${new URL(page.url()).pathname}: ${message.text()}`);
+    }
   });
   page.on('requestfailed', (request) => {
     requestFailures.push({
@@ -602,11 +879,13 @@ try {
     '/guide/getting-started',
     '/demo/',
     '/demo/empty',
+    '/demo/empty.html',
     '/config/',
     '/zh/',
     '/zh/guide/getting-started',
     '/zh/demo/',
     '/zh/demo/empty',
+    '/zh/demo/empty.html',
     '/zh/config/',
   ]) {
     const response = await page.goto(`${baseUrl}${route}`, {
@@ -618,9 +897,11 @@ try {
         '/',
         '/demo/',
         '/demo/empty',
+        '/demo/empty.html',
         '/zh/',
         '/zh/demo/',
         '/zh/demo/empty',
+        '/zh/demo/empty.html',
       ].includes(route)
     ) {
       await page
@@ -651,7 +932,9 @@ try {
     throw new Error('英文组件未显示英文搜索文案');
   }
 
+  await assertDetailIconInteraction(page);
   await assertToolbarInteractions(page);
+  await assertColorPopover(page);
   await prepareCompactExport(page);
   await assertPngDownload(page);
 
@@ -659,6 +942,7 @@ try {
     { width: 1440, height: 1000 },
     { width: 1365, height: 768 },
     { width: 390, height: 844 },
+    { width: 320, height: 800 },
   ]) {
     await assertViewportFit(page, viewport);
   }
@@ -726,6 +1010,22 @@ try {
     nodes: 46,
     edges: 27,
   });
+  const englishDemoNavigation = await page
+    .locator('.console-models-tree')
+    .innerText();
+  if (/[\u3400-\u9fff]/u.test(englishDemoNavigation)) {
+    throw new Error('英文完整示例仍显示中文模型数据');
+  }
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const demoBottomOverflow = await page
+    .locator('.console-g6-page-demo')
+    .evaluate((element) =>
+      Math.max(0, element.getBoundingClientRect().bottom - innerHeight),
+    );
+  if (demoBottomOverflow > 1) {
+    throw new Error(`完整示例超出首屏：${demoBottomOverflow}px`);
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
 
   await page.goto(`${baseUrl}/demo/empty`, {
     waitUntil: 'domcontentloaded',
@@ -744,17 +1044,52 @@ try {
   }
   await assertPngDownload(page, 500);
 
+  await page.goto(`${baseUrl}/~demos/docs-erd`, {
+    waitUntil: 'domcontentloaded',
+  });
+  await page.waitForURL(`${baseUrl}/demo/`);
+  await page
+    .locator('.graph[data-g6-status="ready"]')
+    .waitFor({ state: 'visible', timeout: 30_000 });
+
+  for (const route of [
+    '/guide/',
+    '/guide/index.html',
+    '/zh/guide/',
+    '/zh/guide/index.html',
+  ]) {
+    await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+    const sidebarItems = page.locator('.rp-doc-layout__sidebar a[href]');
+    await sidebarItems.first().waitFor({ state: 'visible' });
+    const sidebarWidth = await inspectVisibleSidebarWidth(page);
+    const sidebarLinks = await sidebarItems.count();
+    if (sidebarWidth < 180 || sidebarLinks < 7) {
+      throw new Error(
+        `${route} 应显示有效指南菜单，实际宽度 ${sidebarWidth}px / ${sidebarLinks} 项`,
+      );
+    }
+  }
+
   for (const route of [
     '/demo/',
     '/demo/empty',
+    '/demo/empty.html',
     '/config/',
     '/zh/demo/',
     '/zh/demo/empty',
+    '/zh/demo/empty.html',
     '/zh/config/',
   ]) {
     await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded' });
     if ((await inspectVisibleSidebarWidth(page)) > 0)
       throw new Error(`${route} 没有菜单项时仍显示空侧栏`);
+  }
+
+  for (const route of ['/demo/empty.html', '/zh/demo/empty.html']) {
+    await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded' });
+    if ((await inspectVisibleDocChromeWidth(page)) > 0) {
+      throw new Error(`${route} 仍显示空白文档侧栏或目录`);
+    }
   }
 
   errors.push(

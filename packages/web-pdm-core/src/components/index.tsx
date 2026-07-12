@@ -1,4 +1,3 @@
-import classnames from 'classnames';
 import React, { type CSSProperties } from 'react';
 import { useMst } from '../context';
 import GraphPage from '../graph';
@@ -29,9 +28,13 @@ export default CreateComponent<IPagePros>({
 
     return (
       <div
-        className={classnames('console-g6-page', props.className, {
-          'console-g6-page--without-navigation': !showModelNavigation,
-        })}
+        className={[
+          'console-g6-page',
+          props.className,
+          !showModelNavigation && 'console-g6-page--without-navigation',
+        ]
+          .filter(Boolean)
+          .join(' ')}
         data-web-pdm-locale={locale}
         data-web-pdm-theme={palette.theme}
         style={{

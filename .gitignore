@@ -3,5 +3,7 @@ node_modules
 /docs-dist
 /packages/*/dist
 .rspress/
+.wrangler/
+.umi/
 .DS_Store
 .ai-doc/

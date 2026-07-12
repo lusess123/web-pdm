@@ -1,4 +1,3 @@
-import { union, without } from 'lodash-es';
 import { computed } from 'mobx';
 import {
   getSnapshot,
@@ -21,6 +20,15 @@ import { TSys } from './sys';
 import { translateWithOverride, type IntlKey, type IntlParams } from '../intl';
 import type { ModelConfig, ModuleConfig, SysConfig } from './config';
 import { TUi } from './ui';
+
+const mergeUnique = (...values: Array<readonly string[] | undefined>) => [
+  ...new Set(values.flatMap((items) => items ?? [])),
+];
+
+const exclude = (values: readonly string[], excluded: readonly string[]) => {
+  const excludedValues = new Set(excluded);
+  return values.filter((value) => !excludedValues.has(value));
+};
 
 const getLayerRootModel = (
   models: Array<{ aggregateModelKey?: string; name: string }>,
@@ -283,7 +291,7 @@ export class RootInstance extends Model({
     const modelIds = currentModule
       ? this.Modules.get(currentModule)?.models?.map((a) => a.id)
       : [...this.Models.values()].map((a) => a.id);
-    this.sys.checkedKeys = union(this.sys.checkedKeys, modelIds);
+    this.sys.checkedKeys = mergeUnique(this.sys.checkedKeys, modelIds);
   }
   @modelAction
   checkAllCancleFun() {
@@ -291,9 +299,7 @@ export class RootInstance extends Model({
     if (!currentModule) this.sys.checkedKeys = [];
     // const models = [...this.Models.values()]
     const modelIds = this.Modules.get(currentModule)?.models?.map((a) => a.id);
-    this.sys.checkedKeys = [
-      ...without([...this.sys.checkedKeys], ...(modelIds || [])),
-    ];
+    this.sys.checkedKeys = exclude(this.sys.checkedKeys, modelIds ?? []);
   }
 
   @modelAction
@@ -307,9 +313,9 @@ export class RootInstance extends Model({
             !this.sys.currentModule || a.moduleId === this.sys.currentModule,
         )
         .map((a) => a.id);
-      const withoutKeys = without(modelKeys, ...keys);
-      this.sys.checkedKeys = union(
-        without(this.sys.checkedKeys, ...withoutKeys),
+      const withoutKeys = exclude(modelKeys, keys);
+      this.sys.checkedKeys = mergeUnique(
+        exclude(this.sys.checkedKeys, withoutKeys),
         keys,
       );
     }

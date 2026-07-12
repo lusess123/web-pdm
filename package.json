@@ -1,32 +1,31 @@
 {
   "name": "web-pdm-doc",
   "version": "0.0.1",
+  "private": true,
   "description": "A lightweight ER diagram library and documentation site",
   "license": "MIT",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "build": "pnpm build-lib && pnpm docs:build",
+    "build": "corepack pnpm build-lib && corepack pnpm docs:build",
     "build:site": "rspress build",
-    "build:watch": "pnpm --parallel --filter web-pdm-core --filter web-pdm dev",
-    "build-lib": "pnpm --filter web-pdm-core build && pnpm --filter web-pdm build",
+    "build:watch": "corepack pnpm --parallel --filter web-pdm-core --filter web-pdm dev",
+    "build-lib": "corepack pnpm --filter web-pdm-core build && corepack pnpm --filter web-pdm build",
+    "deploy:cloudflare": "corepack pnpm build:site && wrangler deploy",
+    "deploy:cloudflare:dry-run": "corepack pnpm build:site && wrangler deploy --dry-run",
     "dev": "rspress dev",
-    "docs:build": "pnpm build:site",
+    "docs:build": "corepack pnpm build:site",
     "lint": "npm run lint:es && npm run lint:css",
-    "lint:css": "stylelint \"packages/web-pdm-lib/src/**/*.{css,less,scss}\"",
+    "lint:css": "stylelint \"packages/*/src/**/*.{css,less,scss}\"",
     "lint:es": "eslint \"{docs,packages,test}/**/*.{js,jsx,ts,tsx}\"",
     "prepare": "husky",
-    "prepublishOnly": "pnpm test && pnpm build-lib",
-    "start": "pnpm dev",
+    "prepublishOnly": "corepack pnpm test && corepack pnpm build-lib",
+    "start": "corepack pnpm dev",
     "test": "vitest run",
     "test:browser": "node test/browser-smoke.mjs",
     "test:exports": "node test/package-exports.mjs",
     "test:watch": "vitest",
-    "typecheck": "pnpm --filter web-pdm-core typecheck && pnpm typecheck:public",
-    "typecheck:public": "pnpm build-lib && tsc --ignoreConfig --noEmit --skipLibCheck --module esnext --moduleResolution bundler test/public-types.ts"
+    "typecheck": "corepack pnpm typecheck:workspace && corepack pnpm typecheck:public",
+    "typecheck:public": "corepack pnpm build-lib && tsc --ignoreConfig --noEmit --skipLibCheck --module esnext --moduleResolution bundler test/public-types.ts",
+    "typecheck:workspace": "tsc --noEmit"
   },
   "commitlint": {
     "extends": [
@@ -37,7 +36,7 @@
     "*.{md,json}": [
       "prettier --write --no-error-on-unmatched-pattern"
     ],
-    "*.{css,less}": [
+    "*.{css,less,scss}": [
       "stylelint --fix",
       "prettier --write"
     ],
@@ -65,7 +64,6 @@
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.3",
     "eslint": "^10.7.0",
     "globals": "^17.7.0",
     "husky": "^9.1.7",
@@ -82,18 +80,15 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.63.0",
     "vite": "^8.1.4",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "wrangler": "^4.110.0"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
-  "packageManager": "pnpm@11.11.0",
+  "packageManager": "pnpm@11.12.0",
   "engines": {
-    "node": ">=22.12.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "authors": []
+    "node": ">=22.13.0"
+  }
 }

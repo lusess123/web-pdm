@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "web-pdm-erd",
+  "compatibility_date": "2026-07-12",
+  "assets": {
+    "directory": "./docs-dist",
+    "not_found_handling": "single-page-application",
+  },
+  "routes": [
+    {
+      "pattern": "erd.zyking.xyz",
+      "custom_domain": true,
+    },
+  ],
+}

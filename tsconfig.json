@@ -9,10 +9,9 @@
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
-    "baseUrl": "./",
     "paths": {
-      "web-pdm": ["packages/web-pdm-lib/src"],
-      "web-pdm-core": ["packages/web-pdm-core/src"]
+      "web-pdm": ["./packages/web-pdm-lib/src"],
+      "web-pdm-core": ["./packages/web-pdm-core/src"]
     }
   },
   "include": ["packages/**/*", "docs/**/*", "rspress.config.ts"]

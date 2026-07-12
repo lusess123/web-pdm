@@ -1,7 +1,11 @@
-import classNames from 'classnames';
-import { throttle } from 'lodash-es';
 import { observer } from 'mobx-react';
-import React, { isValidElement, useCallback, useState } from 'react';
+import React, {
+  isValidElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useMst } from '../../context';
 import type { ErdGraphRuntime } from '../../graph/runtime';
 import { createThemeCssVariables } from '../../theme';
@@ -28,12 +32,21 @@ export default observer(({ graph }: { graph: ErdGraphRuntime | null }) => {
   };
 
   const [colorPabel, setColorPabel] = useState(false);
+  const colorFrame = useRef<number | undefined>(undefined);
+  useEffect(
+    () => () => {
+      if (colorFrame.current) cancelAnimationFrame(colorFrame.current);
+    },
+    [],
+  );
   const setColor = useCallback(
-    throttle((color: string) => {
-      mst.Ui.setThemeColor(color);
-      //  setColorPabel(false)
-    }, 200),
-    [colorPabel],
+    (color: string) => {
+      if (colorFrame.current) cancelAnimationFrame(colorFrame.current);
+      colorFrame.current = requestAnimationFrame(() =>
+        mst.Ui.setThemeColor(color),
+      );
+    },
+    [mst.Ui],
   );
 
   const zoomNum = graph ? Math.round(mst.graph.zoom * 10_000) / 100 : 0;
@@ -146,8 +159,8 @@ export default observer(({ graph }: { graph: ErdGraphRuntime | null }) => {
           Tooltip={Tooltip}
           title={
             mst.sys.dagreLayout
-              ? intl('toolbar.switchToHierarchyLayout')
-              : intl('toolbar.switchToRelationLayout')
+              ? intl('toolbar.switchToRelationLayout')
+              : intl('toolbar.switchToHierarchyLayout')
           }
           icon={!mst.sys.dagreLayout ? 'dagreLayout' : 'relationLayout'}
           color={mst.Ui.darkness ? mst.Ui.themeColor : undefined}
@@ -186,6 +199,7 @@ export default observer(({ graph }: { graph: ErdGraphRuntime | null }) => {
             />
           }
           visible={colorPabel}
+          onOpenChange={setColorPabel}
           webPdmUi={webPdmUi}
         >
           <ButtonActon
@@ -234,10 +248,7 @@ const ButtonActon = CreateComponent<IButtonActon>({
         <button
           aria-disabled={props.disable}
           style={{ color: props.color }}
-          className={classNames({
-            enable: !props.disable,
-            'command-btn': true,
-          })}
+          className={`command-btn${props.disable ? '' : ' enable'}`}
           onClick={!props.disable ? props.onClick : undefined}
           type="button"
         >

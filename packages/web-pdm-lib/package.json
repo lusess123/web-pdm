@@ -1,9 +1,13 @@
 {
   "name": "web-pdm",
   "version": "0.3.11",
-  "description": "",
-  "license": "ISC",
-  "author": "",
+  "description": "A lightweight, embeddable React ER diagram workspace powered by G6 5",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lusess123/web-pdm.git",
+    "directory": "packages/web-pdm-lib"
+  },
+  "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
@@ -22,8 +26,10 @@
   "scripts": {
     "build": "vite build && cp src/public-types.d.ts dist/index.d.ts",
     "dev": "vite build --watch",
-    "publish-npm:patch": "npm run build ; npm version patch && git commit -m 'chore: publish new ' && pnpm publish --registry=https://registry.npmjs.org && cnpm sync web-pdm-core",
-    "test": "vitest run"
+    "prepublishOnly": "corepack pnpm test && corepack pnpm typecheck && corepack pnpm build",
+    "publish-npm:patch": "corepack pnpm build && npm version patch && corepack pnpm publish --registry=https://registry.npmjs.org && cnpm sync web-pdm",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.1.20",

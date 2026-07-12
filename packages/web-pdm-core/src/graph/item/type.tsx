@@ -37,11 +37,7 @@ export const ERD_FIELD_HEIGHT = 32;
 
 export const getErdNodeSize = (
   style: Pick<ErdNodeStyle, 'compact' | 'erd'>,
-): [number, number] => {
-  if (style.compact === 2) return [62, 36];
-  if (style.compact === 1) return [210, 44];
-  return [
-    ERD_NODE_WIDTH,
-    ERD_HEADER_HEIGHT + Math.max(style.erd.fields.length, 1) * ERD_FIELD_HEIGHT,
-  ];
-};
+): [number, number] => [
+  ERD_NODE_WIDTH,
+  ERD_HEADER_HEIGHT + Math.max(style.erd.fields.length, 1) * ERD_FIELD_HEIGHT,
+];

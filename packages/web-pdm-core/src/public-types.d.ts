@@ -6,6 +6,47 @@ import type {
 } from 'react';
 
 export type WebPdmLocale = 'en' | 'zh-CN';
+export type Locale = WebPdmLocale;
+export type IntlParams = Record<string, string | number>;
+export type IntlKey =
+  | 'navigation.locateModel'
+  | 'navigation.searchPlaceholder'
+  | 'navigation.viewDetails'
+  | 'navigation.allModules'
+  | 'navigation.selectAll'
+  | 'navigation.clearAll'
+  | 'navigation.showName'
+  | 'navigation.showLabel'
+  | 'navigation.categoryMode'
+  | 'navigation.treeMode'
+  | 'input.clear'
+  | 'toolbar.initializing'
+  | 'toolbar.undo'
+  | 'toolbar.redo'
+  | 'toolbar.zoomIn'
+  | 'toolbar.zoomOut'
+  | 'toolbar.fitView'
+  | 'toolbar.showMinimap'
+  | 'toolbar.hideMinimap'
+  | 'toolbar.refreshData'
+  | 'toolbar.downloadImage'
+  | 'toolbar.switchToHierarchyLayout'
+  | 'toolbar.switchToRelationLayout'
+  | 'toolbar.toggleBackground'
+  | 'toolbar.switchToDarkTheme'
+  | 'toolbar.switchToLightTheme'
+  | 'toolbar.chooseColor'
+  | 'toolbar.openColorPanel'
+  | 'toolbar.closeColorPanel'
+  | 'tree.moreActions'
+  | 'tree.collapse'
+  | 'tree.expand'
+  | 'graph.aggregateRelation'
+  | 'graph.viewDetails'
+  | 'graph.lookupRelation'
+  | 'graph.fieldRelationTooltip'
+  | 'graph.relationTooltip'
+  | 'graph.downloadFileName';
 export type WebPdmTheme = 'light' | 'dark';
 export type WebPdmThemeMode = WebPdmTheme | 'system';
 export type WebPdmStyle = CSSProperties &
@@ -109,7 +150,7 @@ export interface IWebPdmProps {
   intl?: 'CH' | 'EN';
   onIntl?: (text: string) => string;
   IconRenders?: Partial<Record<IconName, ReactNode>>;
-  disableIcons?: IconName[];
+  disableIcons?: string[];
   onlyMode?: boolean;
 }
 

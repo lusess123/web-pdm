@@ -1,7 +1,11 @@
-import { debounce } from 'lodash-es';
-
 // import { Tree } from '../../tree'
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useMst } from '../../context';
 import { createThemeCssVariables } from '../../theme';
 import { RootInstance } from '../../type';
@@ -230,24 +234,25 @@ export default CreateComponent<IModelNaviProps>({
 const useLocal = () => {
   const mst = useMst();
   const [text, setText] = useState(mst.sys.search);
-  // 重复setText 导致快速输入时inputValue显示异常
-  // useEffect(() => {
-  //     if (!texting) debounce(() => {
-  //         setText(mst.sys.search);
+  const searchTimer = useRef<number | undefined>(undefined);
 
-  //     }, 1000)()//时间设置太长导致input框未能即使更新设置值
-  // }, [mst.sys.search])
+  useEffect(
+    () => () => {
+      if (searchTimer.current) window.clearTimeout(searchTimer.current);
+    },
+    [],
+  );
 
   const setSearch = useCallback(
     (val) => {
       setText(val);
-      debounce(() => {
+      if (searchTimer.current) window.clearTimeout(searchTimer.current);
+      searchTimer.current = window.setTimeout(() => {
         mst.sys.setSearch(val);
-      }, 500)();
+      }, 500);
     },
-    [mst.sys.setSearch, setText],
+    [mst.sys],
   );
-  // const setSearch = mst.sys.setSearch;
   return {
     search: text,
     get modules() {

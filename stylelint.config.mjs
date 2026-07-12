@@ -4,7 +4,6 @@ export default {
     'docs-dist/**',
     '**/dist/**',
     'docs/style.less',
-    'packages/web-pdm-core/**',
     'packages/*/test/**',
     'node_modules/**',
   ],

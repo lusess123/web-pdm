@@ -1,4 +1,3 @@
-import { useSize } from 'ahooks';
 import { observer } from 'mobx-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ToolBar from '../components/model-toolbar';
@@ -6,6 +5,33 @@ import { useMst } from '../context';
 import registerGraphExtensions from './item';
 import './model.scss';
 import { ErdGraphRuntime } from './runtime';
+
+type ElementSize = { height: number; width: number };
+
+const useElementSize = (element: HTMLElement | null) => {
+  const [size, setSize] = useState<ElementSize>();
+
+  useEffect(() => {
+    if (!element) return;
+    const update = () => {
+      const next = {
+        height: element.clientHeight,
+        width: element.clientWidth,
+      };
+      setSize((current) =>
+        current?.height === next.height && current.width === next.width
+          ? current
+          : next,
+      );
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [element]);
+
+  return size;
+};
 
 export default observer(() => {
   const { runtime, setContainer } = useGraphRuntime();
@@ -26,7 +52,7 @@ const useGraphRuntime = () => {
   const dataVersionRef = useRef('');
   const structureRef = useRef('');
   const themeVersionRef = useRef('');
-  const size = useSize(container);
+  const size = useElementSize(container);
 
   const compactLevel =
     root.graph.zoom <= 0.1 ? 2 : root.graph.zoom <= 0.4 ? 1 : 0;

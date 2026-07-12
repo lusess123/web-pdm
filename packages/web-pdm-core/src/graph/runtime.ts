@@ -14,36 +14,257 @@ import { getErdNodeSize, type ErdNodeStyle } from './item/type';
 const MINIMAP_KEY = 'web-pdm-minimap';
 const TOOLTIP_KEY = 'web-pdm-edge-tooltip';
 const MINIMAP_RENDER_DELAY = 128;
+const OVERLAP_CELL_SIZE = 384;
+const OVERLAP_MAX_PASSES = 64;
+const OVERLAP_EPSILON = 0.01;
 
-const layoutNodeSize = (node: NodeData) => {
+type PositionedNode = {
+  height: number;
+  index: number;
+  width: number;
+  x: number;
+  y: number;
+};
+
+const compareNodePositions = (
+  first: PositionedNode,
+  second: PositionedNode,
+) => {
+  if (first.y !== second.y) return first.y - second.y;
+  if (first.x !== second.x) return first.x - second.x;
+  return first.index - second.index;
+};
+
+export const layoutNodeSize = (node: NodeData) => {
   const style = node.style as unknown as ErdNodeStyle;
   return getErdNodeSize({ compact: 0, erd: style.erd });
 };
 
-const createLayout = (hierarchy: boolean, nodes: NodeData[]) => {
+const forceIterationOptions = (nodeCount: number) => {
+  if (nodeCount <= 100) return { maxIteration: 2000, minMovement: 0 };
+  if (nodeCount <= 300) return { maxIteration: 1000, minMovement: 0.15 };
+  return { maxIteration: 400, minMovement: 0.25 };
+};
+
+const spatialPairs = (nodes: PositionedNode[]) => {
+  const cells = new Map<string, number[]>();
+  const seen = new Set<number>();
+  const pairs: [number, number][] = [];
+
+  nodes.forEach((node, nodeIndex) => {
+    const halfWidth = node.width / 2;
+    const halfHeight = node.height / 2;
+    const minColumn = Math.floor((node.x - halfWidth) / OVERLAP_CELL_SIZE);
+    const maxColumn = Math.floor((node.x + halfWidth) / OVERLAP_CELL_SIZE);
+    const minRow = Math.floor((node.y - halfHeight) / OVERLAP_CELL_SIZE);
+    const maxRow = Math.floor((node.y + halfHeight) / OVERLAP_CELL_SIZE);
+
+    for (let column = minColumn; column <= maxColumn; column += 1) {
+      for (let row = minRow; row <= maxRow; row += 1) {
+        const key = `${column}:${row}`;
+        const cell = cells.get(key);
+        if (cell) cell.push(nodeIndex);
+        else cells.set(key, [nodeIndex]);
+      }
+    }
+  });
+
+  cells.forEach((cell) => {
+    for (let left = 0; left < cell.length; left += 1) {
+      for (let right = left + 1; right < cell.length; right += 1) {
+        const first = Math.min(cell[left], cell[right]);
+        const second = Math.max(cell[left], cell[right]);
+        const key = first * nodes.length + second;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        pairs.push([first, second]);
+      }
+    }
+  });
+
+  return pairs;
+};
+
+const sweepRemainingOverlaps = (nodes: PositionedNode[]) => {
+  const columns = new Map<number, PositionedNode[]>();
+  let moved = false;
+
+  [...nodes].sort(compareNodePositions).forEach((node) => {
+    const halfWidth = node.width / 2;
+    const minColumn = Math.floor((node.x - halfWidth) / OVERLAP_CELL_SIZE);
+    const maxColumn = Math.floor((node.x + halfWidth) / OVERLAP_CELL_SIZE);
+    const candidates = new Set<PositionedNode>();
+    for (let column = minColumn; column <= maxColumn; column += 1) {
+      columns.get(column)?.forEach((candidate) => candidates.add(candidate));
+    }
+
+    candidates.forEach((candidate) => {
+      const overlapX =
+        (node.width + candidate.width) / 2 - Math.abs(node.x - candidate.x);
+      if (overlapX <= 0) return;
+      const nextY =
+        candidate.y + (candidate.height + node.height) / 2 + OVERLAP_EPSILON;
+      if (node.y >= nextY) return;
+      node.y = nextY;
+      moved = true;
+    });
+
+    for (let column = minColumn; column <= maxColumn; column += 1) {
+      const items = columns.get(column);
+      if (items) items.push(node);
+      else columns.set(column, [node]);
+    }
+  });
+
+  return moved;
+};
+
+export const resolveNodeOverlaps = (nodes: NodeData[]): NodeData[] => {
+  const positions = nodes.flatMap((node, index): PositionedNode[] => {
+    const x = Number(node.style?.x);
+    const y = Number(node.style?.y);
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return [];
+    const [width, height] = layoutNodeSize(node);
+    return [{ height, index, width, x, y }];
+  });
+  if (positions.length < 2) return nodes;
+  const originalCenter = positions.reduce(
+    (center, position) => ({
+      x: center.x + position.x / positions.length,
+      y: center.y + position.y / positions.length,
+    }),
+    { x: 0, y: 0 },
+  );
+
+  let changed = false;
+  for (let pass = 0; pass < OVERLAP_MAX_PASSES; pass += 1) {
+    let moved = false;
+
+    spatialPairs(positions).forEach(([firstIndex, secondIndex]) => {
+      const first = positions[firstIndex];
+      const second = positions[secondIndex];
+      const deltaX = second.x - first.x;
+      const deltaY = second.y - first.y;
+      const overlapX = (first.width + second.width) / 2 - Math.abs(deltaX);
+      const overlapY = (first.height + second.height) / 2 - Math.abs(deltaY);
+      if (overlapX <= 0 || overlapY <= 0) return;
+
+      if (overlapX <= overlapY) {
+        const direction = deltaX === 0 ? 1 : Math.sign(deltaX);
+        const distance = (overlapX + OVERLAP_EPSILON) / 2;
+        first.x -= direction * distance;
+        second.x += direction * distance;
+      } else {
+        const direction = deltaY === 0 ? 1 : Math.sign(deltaY);
+        const distance = (overlapY + OVERLAP_EPSILON) / 2;
+        first.y -= direction * distance;
+        second.y += direction * distance;
+      }
+      moved = true;
+      changed = true;
+    });
+
+    if (!moved) break;
+  }
+
+  if (sweepRemainingOverlaps(positions)) changed = true;
+
+  if (!changed) return nodes;
+  const resolvedCenter = positions.reduce(
+    (center, position) => ({
+      x: center.x + position.x / positions.length,
+      y: center.y + position.y / positions.length,
+    }),
+    { x: 0, y: 0 },
+  );
+  positions.forEach((position) => {
+    position.x += originalCenter.x - resolvedCenter.x;
+    position.y += originalCenter.y - resolvedCenter.y;
+  });
+  const positionsByIndex = new Map(
+    positions.map((position) => [position.index, position]),
+  );
+  return nodes.map((node, index) => {
+    const position = positionsByIndex.get(index);
+    if (!position) return node;
+    return {
+      ...node,
+      style: { ...node.style, x: position.x, y: position.y },
+    };
+  });
+};
+
+const portOnSide = (port: string | undefined, side: 'left' | 'right') =>
+  port?.replace(/-(?:left|right)$/u, `-${side}`);
+
+export const orientRelationPorts = (
+  nodes: NodeData[],
+  edges: EdgeData[],
+): EdgeData[] => {
+  const xByNode = new Map(
+    nodes.flatMap((node) => {
+      const x = Number(node.style?.x);
+      return Number.isFinite(x) ? [[node.id, x] as const] : [];
+    }),
+  );
+
+  return edges.map((edge) => {
+    const sourceX = xByNode.get(edge.source);
+    const targetX = xByNode.get(edge.target);
+    if (sourceX === undefined || targetX === undefined) return edge;
+    const sourceIsLeft = edge.source === edge.target || sourceX <= targetX;
+    const sourcePort = portOnSide(
+      edge.style?.sourcePort,
+      sourceIsLeft ? 'right' : 'left',
+    );
+    const targetPort = portOnSide(
+      edge.style?.targetPort,
+      sourceIsLeft ? 'left' : 'right',
+    );
+    if (
+      sourcePort === edge.style?.sourcePort &&
+      targetPort === edge.style?.targetPort
+    ) {
+      return edge;
+    }
+    return {
+      ...edge,
+      style: { ...edge.style, sourcePort, targetPort },
+    };
+  });
+};
+
+export const createLayout = (hierarchy: boolean, nodes: NodeData[]) => {
+  if (!hierarchy) {
+    return {
+      type: 'force',
+      preventOverlap: true,
+      nodeSize: (node: NodeData) => Math.hypot(...layoutNodeSize(node)),
+      nodeSpacing: 80,
+      collideStrength: 1,
+      linkDistance: 360,
+      nodeStrength: 1200,
+      edgeStrength: 100,
+      gravity: 3,
+      ...forceIterationOptions(nodes.length),
+      damping: 0.82,
+      maxSpeed: 100,
+      interval: 0.015,
+    };
+  }
+
   const sizes = nodes.map(layoutNodeSize);
   const maxWidth = Math.max(...sizes.map(([width]) => width), 300);
   const maxHeight = Math.max(...sizes.map(([, height]) => height), 80);
 
-  return hierarchy
-    ? {
-        type: 'antv-dagre',
-        rankdir: 'LR',
-        align: 'UL',
-        nodesep: 28,
-        ranksep: 96,
-        nodeSize: [maxWidth, maxHeight] as [number, number],
-      }
-    : {
-        type: 'force',
-        preventOverlap: true,
-        nodeSize: Math.max(maxWidth, maxHeight),
-        nodeSpacing: 32,
-        linkDistance: 380,
-        nodeStrength: 900,
-        edgeStrength: 180,
-        gravity: 8,
-      };
+  return {
+    type: 'antv-dagre',
+    rankdir: 'LR',
+    align: 'UL',
+    nodesep: 28,
+    ranksep: 96,
+    nodeSize: [maxWidth, maxHeight] as [number, number],
+  };
 };
 
 const downloadDataUrl = (dataUrl: string, filename: string) => {
@@ -144,7 +365,13 @@ export class ErdGraphRuntime {
     };
 
     this.graph = new Graph(options);
-    bindGraphEvents(this.graph, root, container, () => this.disposed);
+    bindGraphEvents(
+      this.graph,
+      root,
+      container,
+      () => this.disposed,
+      () => this.refreshRelationPorts(),
+    );
     this.container.dataset.g6Version = version;
     this.container.dataset.g6Status = 'initializing';
     this.container.dataset.g6Width = String(Math.round(this.width));
@@ -155,6 +382,7 @@ export class ErdGraphRuntime {
   render() {
     return this.enqueue(async () => {
       await this.graph.render();
+      await this.settleLayout();
       await this.fitRenderedGraph();
       this.markReady();
     });
@@ -175,9 +403,10 @@ export class ErdGraphRuntime {
           nodes.length ? createLayout(this.hierarchy, nodes) : [],
         );
         await this.graph.render();
+        await this.settleLayout();
         await this.fitRenderedGraph();
       } else {
-        await this.graph.draw();
+        await this.settleLayout(true);
       }
       this.markReady();
     });
@@ -216,6 +445,7 @@ export class ErdGraphRuntime {
       }
       this.graph.setLayout(createLayout(hierarchy, nodes));
       await this.graph.layout();
+      await this.settleLayout();
       await this.fitRenderedGraph();
       this.container.dataset.g6LastAction = 'set-layout';
       this.markReady();
@@ -447,6 +677,49 @@ export class ErdGraphRuntime {
     await waitForCanvasPaint();
     await this.graph.fitView({ direction: 'both', when: 'always' }, false);
     this.syncZoom();
+  }
+
+  private async settleLayout(drawWhenUnchanged = false) {
+    const nodes = this.graph.getNodeData();
+    const resolved = this.hierarchy ? nodes : resolveNodeOverlaps(nodes);
+    const nodeUpdates = resolved.flatMap((node, index) => {
+      const previous = nodes[index];
+      if (
+        node.style?.x === previous.style?.x &&
+        node.style?.y === previous.style?.y
+      )
+        return [];
+      return [
+        {
+          id: node.id,
+          style: { x: node.style?.x, y: node.style?.y },
+        },
+      ];
+    });
+    if (nodeUpdates.length > 0) this.graph.updateNodeData(nodeUpdates);
+
+    const edges = this.graph.getEdgeData();
+    const edgeUpdates = orientRelationPorts(resolved, edges).filter(
+      (edge, index) => edge !== edges[index] && edge.id,
+    );
+    if (edgeUpdates.length > 0) this.graph.updateEdgeData(edgeUpdates);
+
+    if (drawWhenUnchanged || nodeUpdates.length > 0 || edgeUpdates.length > 0) {
+      await this.graph.draw();
+    }
+  }
+
+  private refreshRelationPorts() {
+    return this.enqueue(async () => {
+      const nodes = this.graph.getNodeData();
+      const edges = this.graph.getEdgeData();
+      const updates = orientRelationPorts(nodes, edges).filter(
+        (edge, index) => edge !== edges[index] && edge.id,
+      );
+      if (updates.length === 0) return;
+      this.graph.updateEdgeData(updates);
+      await this.graph.draw();
+    });
   }
 
   private keepNodePositions(nodes: NodeData[]): NodeData[] {

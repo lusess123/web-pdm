@@ -2,6 +2,7 @@ import { useDark, useI18n, useLang } from '@rspress/core/runtime';
 import WebPdm from 'web-pdm';
 import './style.less';
 import { englishModels, englishModules, models, modules } from './typedata';
+import type { 文案类型 } from './文案类型';
 
 interface TypeErdProps {
   className?: string;
@@ -14,7 +15,7 @@ export default ({
 }: TypeErdProps) => {
   const isDark = useDark();
   const lang = useLang();
-  const t = useI18n();
+  const t = useI18n<文案类型>();
   const localizedModels = lang === 'zh' ? models : englishModels;
   const localizedModules = lang === 'zh' ? modules : englishModules;
 

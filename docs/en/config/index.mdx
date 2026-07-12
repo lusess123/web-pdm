@@ -10,21 +10,64 @@ import TypeErd from '../../type-erd';
 
 <TypeErd />
 
-## Required data
+## Stable public contract
 
-| Prop      | Type             | Description                               |
-| --------- | ---------------- | ----------------------------------------- |
-| `models`  | `ModelConfig[]`  | Models and fields rendered on the canvas. |
-| `modules` | `ModuleConfig[]` | Groups used by the model navigator.       |
-| `erdkey`  | `string`         | Stable, unique identity for this diagram. |
+`WebPdm` continues to use model metadata as its primary input. The original `models`, `modules`, `erdkey`, `className`, `height`, `style`, `themeColor`, events, UI adapters and toolbar configuration remain available. The current release only adds `locale`, `theme` and `showModelNavigation` on top of that contract.
 
 ```ts
-type ModuleConfig = {
+interface IWebPdmProps {
+  models: ModelConfig[];
+  modules: ModuleConfig[];
+  erdkey: string;
+  className?: string;
+  style?: WebPdmStyle;
+  height?: string | number;
+  themeColor?: string;
+  theme?: 'light' | 'dark' | 'system';
+  locale?: 'en' | 'zh-CN';
+  showModelNavigation?: boolean;
+  onIgnoreEdge?: (field: FieldConfig) => boolean;
+  onModelDetail?: (model: ModelConfig) => void;
+  onReload?: () => TData;
+  onIntl?: (text: string) => string;
+  components?: IComponentConfig;
+  IconRenders?: Partial<Record<IconName, React.ReactNode>>;
+  disableIcons?: string[];
+  onlyMode?: boolean;
+  /** @deprecated Use theme. */
+  darkness?: boolean;
+  /** @deprecated Use locale. */
+  intl?: 'CH' | 'EN';
+}
+```
+
+## Model data
+
+### `models`
+
+- Description: initial models and fields rendered on the canvas.
+- Type: `ModelConfig[]`.
+- Required: yes.
+
+### `modules`
+
+- Description: groups used by the model navigator.
+- Type: `ModuleConfig[]`.
+- Required: yes; pass an empty array when no groups are needed.
+
+### `erdkey`
+
+- Description: a stable, unique identity that isolates state for this diagram.
+- Type: `string`.
+- Required: yes.
+
+```ts
+export type ModuleConfig = {
   name: string;
   label: string;
 };
 
-type ModelConfig = {
+export type ModelConfig = {
   name: string;
   label: string;
   fields: FieldConfig[];
@@ -35,55 +78,164 @@ type ModelConfig = {
   belongAggregate?: string;
 };
 
-type FieldConfig = {
+export type MetaTypeConfig = {
+  relationModel: string;
+  type: 'Relation';
+};
+
+export type FieldMetaTypeConfig = {
+  relationModel: string;
+  field: string;
+  type?: 'Relation';
+};
+
+export type FieldConfig = {
   name: string;
   label: string;
-  type?: string;
   typeMeta?: MetaTypeConfig | FieldMetaTypeConfig[];
+  type?: string;
+};
+
+export type TData = {
+  models: ModelConfig[];
+  modules: ModuleConfig[];
 };
 ```
+
+`name` is the stable technical identifier used by relationships and state; `label` is the display name. `ModelConfig.module` should match a `ModuleConfig.name`. Field relationships use `typeMeta` to identify the target model and can optionally use `field` to target a specific field. See [Relationships](/guide/relation) for complete examples.
+
+The aggregate fields `aggregateRoot`, `aggregateModelKey` and `belongAggregate` preserve the original data shape. Supply them only when the domain needs to express DDD aggregate boundaries.
 
 ## Layout and appearance
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `height` | `string \| number` | `min(720px, 100dvh)` | Height of the complete workspace. |
+| `height` | `string \| number` | `min(720px, 100dvh)` | Height of the entire workspace; the default does not exceed the initial viewport. |
 | `className` | `string` | — | Class applied to the root element. |
-| `style` | `CSSProperties` | — | Inline styles for the root element. |
-| `themeColor` | `string` | internal blue | Accent color for nodes and controls. |
-| `theme` | `'light' \| 'dark' \| 'system'` | `'light'` | Complete workspace theme. |
-| `showModelNavigation` | `boolean` | automatic | Force the model navigator to show or hide. Empty navigation is hidden automatically. |
-| `onlyMode` | `boolean` | `false` | Keep only the tree navigation mode. |
+| `style` | `CSSProperties` | — | Root inline styles, including CSS custom properties. |
+| `themeColor` | `string` | built-in blue | Accent used by models, relationships and controls, with a readability fallback. |
+| `theme` | `'light' \| 'dark' \| 'system'` | `'light'` | Shared theme for canvas, models, controls and overlays. |
+| `showModelNavigation` | `boolean` | automatic | Force navigation to show or hide; it always disappears when both models and modules are empty. |
+| `onlyMode` | `boolean` | `false` | Use only the tree-navigation mode. |
 
 ## Events
 
-| Prop | Signature | Description |
-| --- | --- | --- |
-| `onIgnoreEdge` | `(field) => boolean` | Suppress selected relationship edges. |
-| `onModelDetail` | `(model) => void` | Handle the model detail action. |
-| `onReload` | `() => { models, modules }` | Return refreshed diagram data. |
+### `onIgnoreEdge`
+
+- Signature: `(field: FieldConfig) => boolean`.
+- Description: returning `true` prevents relationships for that field from being created.
+
+### `onModelDetail`
+
+- Signature: `(model: ModelConfig) => void`.
+- Description: receives the complete public model when the user selects its detail icon.
+
+### `onReload`
+
+- Signature: `() => TData`.
+- Default: `undefined`.
+- Description: returns new `models` and `modules` after the user requests a refresh. The stable contract returns synchronously; perform asynchronous loading in the host and then update props.
+
+```tsx
+<WebPdm
+  onIgnoreEdge={(field) => field.type === 'internal'}
+  onModelDetail={(model) => openModelPanel(model)}
+  onReload={() => ({ models: readModels(), modules: readModules() })}
+  {...props}
+/>
+```
 
 ## Internationalization
 
-| Prop | Type | Description |
-| --- | --- | --- |
-| `locale` | `'en' \| 'zh-CN'` | Select the built-in copy. English is the default. |
-| `onIntl` | `(text: string) => string` | Replace built-in copy with an application translator. |
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `locale` | `'en' \| 'zh-CN'` | `'en'` | Select built-in English or Simplified Chinese copy. |
+| `onIntl` | `(text: string) => string` | `undefined` | Transform built-in copy with the host translator. |
+| `intl` | `'EN' \| 'CH'` | — | Legacy-compatible alias; new code should use `locale`. |
 
 ```tsx
 <WebPdm locale="en" theme="system" {...props} />
 ```
 
-The legacy `intl="EN" | "CH"` and `darkness` props remain available for compatibility, but new integrations should use `locale` and `theme`.
+The historical documentation used `'CH'` as the default. The current product defaults to English. Existing projects that explicitly pass `intl="CH"` or `intl="EN"` remain compatible.
 
-## UI adapters
+## Light and dark theme compatibility
 
-`components` can replace `Tree`, `Input`, `Button`, `Dropdown`, `Menu`, `Select`, `Tooltip` and `Popover`. `IconRenders` replaces individual toolbar icons, while `disableIcons` removes unwanted actions.
+`theme="light" | "dark" | "system"` is the current API. The legacy `darkness: boolean` remains compatible: `true` selects dark and `false` selects light. When both are supplied, `theme` wins.
+
+```tsx
+// Current
+<WebPdm theme="system" {...props} />
+
+// Legacy-compatible
+<WebPdm darkness {...props} />
+```
+
+## UI component adapters
+
+`components` preserves the original ability to replace default UI elements. The `web-pdm` package now ships lightweight controls; override them only when integrating a product design system.
+
+```ts
+export type IComponentConfig = {
+  Tree?: React.ComponentType;
+  Input?: React.ComponentType;
+  Button?: React.ComponentType;
+  Dropdown?: React.ComponentType;
+  Menu?: React.ComponentType;
+  Select?: React.ComponentType;
+  Tooltip?: React.ComponentType;
+  Popover?: React.ComponentType;
+};
+```
+
+`Tree`, `Input`, `Button`, `Dropdown`, `Menu`, `Select`, `Tooltip` and `Popover` all existed in the original contract. Early examples commonly supplied Ant Design components. The default package no longer depends on Ant Design, but the adapter seam has not been removed.
+
+```tsx
+<WebPdm components={{ Tooltip: ProductTooltip }} {...props} />
+```
+
+## Toolbar icons
+
+`IconRenders` replaces toolbar icons by key and has the type `Partial<Record<IconName, ReactNode>>`. Historical docs used Ant Design icons in examples; the current default package uses Lucide while retaining the keys.
+
+| Key | Action | Historical default example |
+| --- | --- | --- |
+| `undo` | Undo | `RollbackOutlined` |
+| `redo` | Redo | horizontally mirrored `RollbackOutlined` |
+| `min` | Zoom out | `ZoomOutOutlined` |
+| `max` | Zoom in | `ZoomInOutlined` |
+| `full` | Fit/full canvas | `BorderOutlined` |
+| `miniMap` | Show minimap | `PictureFilled` |
+| `miniMapNo` | Hide minimap | `PictureOutlined` |
+| `dagreLayout` | Hierarchical layout | `PartitionOutlined` |
+| `relationLayout` | Relationship/Force layout | `UngroupOutlined` |
+| `reload` | Refresh data | `ReloadOutlined` |
+| `image` | Download image | `DownloadOutlined` |
+| `darkness` | Switch to dark | `SnippetsFilled` |
+| `light` | Switch to light | `SnippetsOutlined` |
+| `colorClose` | Close color panel | `BgColorsOutlined` |
+| `colorOpen` | Open color panel | `BgColorsOutlined` |
 
 ```tsx
 <WebPdm
-  components={{ Tooltip: ProductTooltip }}
+  IconRenders={{ reload: <MyReloadIcon /> }}
   disableIcons={['reload', 'image']}
   {...props}
 />
 ```
+
+For source compatibility, `disableIcons` continues to accept `string[]`. It defaults to `[]` and removes actions that do not belong in the product. Use the separately exported `IconName[]` when strict autocomplete is useful; the available keys match the table.
+
+## Legacy-to-current mapping
+
+| Legacy pattern | Current recommendation | Compatibility |
+| --- | --- | --- |
+| `models` / `modules` | Unchanged | Compatible |
+| `erdkey` | Unchanged | Compatible and required by both legacy and current releases |
+| `intl="CH" \| "EN"` | `locale="zh-CN" \| "en"` | Legacy form compatible |
+| `darkness` | `theme` | Legacy form compatible |
+| Ant Design `components` | Lightweight defaults or custom adapters | Seam retained; re-test concrete component props |
+| Ant Design `IconRenders` | Lucide defaults or custom ReactNode | Keys compatible |
+| Direct old G6 graph calls | WebPdm props and events | Internal G6 APIs are not compatible |
+
+See [Migration](/guide/migration) for the step-by-step upgrade path.

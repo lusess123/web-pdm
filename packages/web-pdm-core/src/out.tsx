@@ -63,7 +63,7 @@ export interface IWebPdmProps {
   onReload?: () => TData;
   onIntl?: (text: string) => string;
   IconRenders?: IconRenders;
-  disableIcons?: IconName[];
+  disableIcons?: string[];
   onlyMode?: boolean;
   /** @deprecated Use `theme="dark"` or `theme="light"` instead. */
   darkness?: boolean;

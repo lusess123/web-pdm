@@ -16,12 +16,6 @@
     flex: 1;
     width: 0;
     height: 100%;
-    .ant-spin-nested-loading {
-      height: 100%;
-      .ant-spin-container {
-        height: 100%;
-      }
-    }
   }
 
   .g6-info {
@@ -109,6 +103,7 @@
 
         .console-erd-add {
           font-size: 20px;
+
           // margin-right: 25px;
           color: var(--web-pdm-muted, #64748b);
           cursor: pointer;

@@ -226,7 +226,9 @@ export const Popover = ({
   const ui = useAdapterUi(webPdmUi);
   return (
     <PopoverPrimitive.Root open={visible} onOpenChange={onOpenChange}>
-      <PopoverPrimitive.Trigger asChild>{children}</PopoverPrimitive.Trigger>
+      <PopoverPrimitive.Trigger asChild>
+        <span className="web-pdm-popover-anchor">{children}</span>
+      </PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align="start"
@@ -323,15 +325,15 @@ const TreeView = ({
   const ui = useAdapterUi(webPdmUi);
   const { t } = ui;
   const selected = useMemo(
-    () => new Set(selectedKeys.map(String)),
+    () => new Set<string>(selectedKeys.map(String)),
     [selectedKeys],
   );
   const checked = useMemo(
-    () => new Set(checkedKeys.map(String)),
+    () => new Set<string>(checkedKeys.map(String)),
     [checkedKeys],
   );
   const expanded = useMemo(
-    () => new Set(expandedKeys.map(String)),
+    () => new Set<string>(expandedKeys.map(String)),
     [expandedKeys],
   );
 

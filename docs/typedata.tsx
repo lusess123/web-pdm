@@ -153,6 +153,7 @@ const englishLabels: Record<string, string> = {
   标签: 'Label',
   名称: 'Name',
   模块: 'Module',
+  模型: 'Model',
   拥有字段: 'Fields',
   拥有模型: 'Models',
   字段: 'Field',

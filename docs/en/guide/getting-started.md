@@ -10,12 +10,19 @@ title: Getting started
 pnpm add web-pdm
 ```
 
+Projects using npm can keep the original installation command:
+
+```bash
+npm i web-pdm
+```
+
 `react` and `react-dom` are peer dependencies. React 18 and React 19 are supported.
 
 ## Render your first diagram
 
 ```tsx
 import WebPdm, { type ModelConfig, type ModuleConfig } from 'web-pdm';
+import 'web-pdm/style.css';
 
 const modules: ModuleConfig[] = [{ name: 'sales', label: 'Sales' }];
 

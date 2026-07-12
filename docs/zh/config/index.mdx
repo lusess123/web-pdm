@@ -10,21 +10,64 @@ import TypeErd from '../../type-erd';
 
 <TypeErd />
 
-## 必填数据
+## 稳定的公开接口
 
-| 属性      | 类型             | 说明                         |
-| --------- | ---------------- | ---------------------------- |
-| `models`  | `ModelConfig[]`  | 画布中展示的模型和字段。     |
-| `modules` | `ModuleConfig[]` | 左侧模型导航使用的分组。     |
-| `erdkey`  | `string`         | 当前 ER 图稳定且唯一的标识。 |
+`WebPdm` 继续以模型元数据作为主要输入。原有的 `models`、`modules`、`erdkey`、`className`、`height`、`style`、`themeColor`、事件、UI 适配器和工具栏配置均保留；新版只在其上增加了 `locale`、`theme` 与 `showModelNavigation`。
 
 ```ts
-type ModuleConfig = {
+interface IWebPdmProps {
+  models: ModelConfig[];
+  modules: ModuleConfig[];
+  erdkey: string;
+  className?: string;
+  style?: WebPdmStyle;
+  height?: string | number;
+  themeColor?: string;
+  theme?: 'light' | 'dark' | 'system';
+  locale?: 'en' | 'zh-CN';
+  showModelNavigation?: boolean;
+  onIgnoreEdge?: (field: FieldConfig) => boolean;
+  onModelDetail?: (model: ModelConfig) => void;
+  onReload?: () => TData;
+  onIntl?: (text: string) => string;
+  components?: IComponentConfig;
+  IconRenders?: Partial<Record<IconName, React.ReactNode>>;
+  disableIcons?: string[];
+  onlyMode?: boolean;
+  /** @deprecated 使用 theme */
+  darkness?: boolean;
+  /** @deprecated 使用 locale */
+  intl?: 'CH' | 'EN';
+}
+```
+
+## 模型数据
+
+### `models`
+
+- 说明：模型和字段的初始化配置。
+- 类型：`ModelConfig[]`。
+- 是否必填：是。
+
+### `modules`
+
+- 说明：左侧模型导航使用的分组配置。
+- 类型：`ModuleConfig[]`。
+- 是否必填：是；不需要分组时可以传空数组。
+
+### `erdkey`
+
+- 说明：当前 ER 图稳定且唯一的标识，用于隔离实例状态。
+- 类型：`string`。
+- 是否必填：是。
+
+```ts
+export type ModuleConfig = {
   name: string;
   label: string;
 };
 
-type ModelConfig = {
+export type ModelConfig = {
   name: string;
   label: string;
   fields: FieldConfig[];
@@ -35,55 +78,164 @@ type ModelConfig = {
   belongAggregate?: string;
 };
 
-type FieldConfig = {
+export type MetaTypeConfig = {
+  relationModel: string;
+  type: 'Relation';
+};
+
+export type FieldMetaTypeConfig = {
+  relationModel: string;
+  field: string;
+  type?: 'Relation';
+};
+
+export type FieldConfig = {
   name: string;
   label: string;
-  type?: string;
   typeMeta?: MetaTypeConfig | FieldMetaTypeConfig[];
+  type?: string;
+};
+
+export type TData = {
+  models: ModelConfig[];
+  modules: ModuleConfig[];
 };
 ```
+
+`name` 是关系和状态使用的稳定技术标识，`label` 是展示名称。`ModelConfig.module` 应匹配某个 `ModuleConfig.name`。字段级关系通过 `typeMeta` 指向目标模型，可选 `field` 指向具体目标字段；完整示例见[关联关系](/zh/guide/relation)。
+
+聚合相关的 `aggregateRoot`、`aggregateModelKey` 和 `belongAggregate` 延续旧版数据结构，只有需要表达 DDD 聚合边界时才传入。
 
 ## 布局与外观
 
 | 属性 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `height` | `string \| number` | `min(720px, 100dvh)` | 整个工作台的高度。 |
+| `height` | `string \| number` | `min(720px, 100dvh)` | 整个工作台高度；默认不会超过初始浏览器可视区。 |
 | `className` | `string` | — | 应用到根元素的类名。 |
-| `style` | `CSSProperties` | — | 根元素的行内样式。 |
-| `themeColor` | `string` | 内置蓝色 | 模型和控件的强调色。 |
-| `theme` | `'light' \| 'dark' \| 'system'` | `'light'` | 整个工作台的主题。 |
-| `showModelNavigation` | `boolean` | 自动 | 强制显示或隐藏模型导航；空导航默认隐藏。 |
-| `onlyMode` | `boolean` | `false` | 只保留树形导航模式。 |
+| `style` | `CSSProperties` | — | 根元素行内样式，也支持 CSS 自定义属性。 |
+| `themeColor` | `string` | 内置蓝色 | 模型、关系和控件的强调色；不可读时会回退。 |
+| `theme` | `'light' \| 'dark' \| 'system'` | `'light'` | 画布、模型、控件和浮层共同使用的主题。 |
+| `showModelNavigation` | `boolean` | 自动 | 强制显示或隐藏模型导航；模型和模块都为空时始终隐藏。 |
+| `onlyMode` | `boolean` | `false` | 只使用树形导航模式。 |
 
 ## 事件
 
-| 属性            | 签名                        | 说明                 |
-| --------------- | --------------------------- | -------------------- |
-| `onIgnoreEdge`  | `(field) => boolean`        | 隐藏指定的关系连线。 |
-| `onModelDetail` | `(model) => void`           | 处理模型详情操作。   |
-| `onReload`      | `() => { models, modules }` | 返回刷新后的图数据。 |
+### `onIgnoreEdge`
+
+- 签名：`(field: FieldConfig) => boolean`。
+- 说明：返回 `true` 时，不为该字段创建关系连线。
+
+### `onModelDetail`
+
+- 签名：`(model: ModelConfig) => void`。
+- 说明：用户点击模型详情图标时回传完整公开模型数据。
+
+### `onReload`
+
+- 签名：`() => TData`。
+- 默认值：`undefined`。
+- 说明：用户点击刷新后，返回新的 `models` 和 `modules`。当前稳定接口是同步返回；异步加载应在宿主应用完成后更新 Props。
+
+```tsx
+<WebPdm
+  onIgnoreEdge={(field) => field.type === 'internal'}
+  onModelDetail={(model) => openModelPanel(model)}
+  onReload={() => ({ models: readModels(), modules: readModules() })}
+  {...props}
+/>
+```
 
 ## 国际化
 
-| 属性     | 类型                       | 说明                                 |
-| -------- | -------------------------- | ------------------------------------ |
-| `locale` | `'en' \| 'zh-CN'`          | 选择内置英文或中文文案，默认英文。   |
-| `onIntl` | `(text: string) => string` | 使用应用自己的翻译函数替换内置文案。 |
+| 属性 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `locale` | `'en' \| 'zh-CN'` | `'en'` | 选择内置英文或简体中文文案。 |
+| `onIntl` | `(text: string) => string` | `undefined` | 使用宿主应用的翻译函数转换内置文案。 |
+| `intl` | `'EN' \| 'CH'` | — | 旧版兼容别名，新代码请使用 `locale`。 |
 
 ```tsx
 <WebPdm locale="zh-CN" theme="system" {...props} />
 ```
 
-旧的 `intl="EN" | "CH"` 和 `darkness` 属性继续兼容，但新项目应使用 `locale` 和 `theme`。
+旧文档中的默认语言是 `'CH'`；当前产品按需求调整为英文默认。显式传入 `intl="CH"` 或 `intl="EN"` 的旧项目仍然兼容。
 
-## UI 适配器
+## 明暗主题兼容
 
-`components` 可以替换 `Tree`、`Input`、`Button`、`Dropdown`、`Menu`、`Select`、`Tooltip` 和 `Popover`。`IconRenders` 用于替换工具栏图标，`disableIcons` 用于移除不需要的操作。
+`theme="light" | "dark" | "system"` 是当前写法。旧的 `darkness: boolean` 继续兼容：`true` 对应暗色，`false` 对应亮色；同时传入时以 `theme` 为准。
+
+```tsx
+// 当前写法
+<WebPdm theme="system" {...props} />
+
+// 旧版兼容写法
+<WebPdm darkness {...props} />
+```
+
+## UI 组件适配器
+
+`components` 延续原有“替换默认 UI 组件”的能力。当前 `web-pdm` 包已经提供轻量控件；只有需要接入产品自有设计系统时才建议覆盖。
+
+```ts
+export type IComponentConfig = {
+  Tree?: React.ComponentType;
+  Input?: React.ComponentType;
+  Button?: React.ComponentType;
+  Dropdown?: React.ComponentType;
+  Menu?: React.ComponentType;
+  Select?: React.ComponentType;
+  Tooltip?: React.ComponentType;
+  Popover?: React.ComponentType;
+};
+```
+
+`Tree`、`Input`、`Button`、`Dropdown`、`Menu`、`Select`、`Tooltip` 和 `Popover` 都是旧接口已有成员。早期示例通常传入 Ant Design 组件，当前默认实现不依赖 Ant Design，但自定义适配入口没有删除。
+
+```tsx
+<WebPdm components={{ Tooltip: ProductTooltip }} {...props} />
+```
+
+## 工具栏图标
+
+`IconRenders` 用于按 key 替换工具栏图标，类型为 `Partial<Record<IconName, ReactNode>>`。旧文档使用 Ant Design 图标举例；当前默认包使用 Lucide，key 保持不变。
+
+| key              | 操作            | 旧版默认示例                  |
+| ---------------- | --------------- | ----------------------------- |
+| `undo`           | 撤销            | `RollbackOutlined`            |
+| `redo`           | 重做            | 水平翻转的 `RollbackOutlined` |
+| `min`            | 缩小            | `ZoomOutOutlined`             |
+| `max`            | 放大            | `ZoomInOutlined`              |
+| `full`           | 适应/完整画布   | `BorderOutlined`              |
+| `miniMap`        | 显示小地图      | `PictureFilled`               |
+| `miniMapNo`      | 隐藏小地图      | `PictureOutlined`             |
+| `dagreLayout`    | 层次布局        | `PartitionOutlined`           |
+| `relationLayout` | 关系/Force 布局 | `UngroupOutlined`             |
+| `reload`         | 刷新数据        | `ReloadOutlined`              |
+| `image`          | 下载图片        | `DownloadOutlined`            |
+| `darkness`       | 切换到暗色      | `SnippetsFilled`              |
+| `light`          | 切换到亮色      | `SnippetsOutlined`            |
+| `colorClose`     | 关闭颜色面板    | `BgColorsOutlined`            |
+| `colorOpen`      | 打开颜色面板    | `BgColorsOutlined`            |
 
 ```tsx
 <WebPdm
-  components={{ Tooltip: ProductTooltip }}
+  IconRenders={{ reload: <MyReloadIcon /> }}
   disableIcons={['reload', 'image']}
   {...props}
 />
 ```
+
+`disableIcons` 为兼容旧项目继续接受 `string[]`，默认 `[]`，用于移除产品中不需要的操作。需要严格自动补全时，可以让数组满足单独导出的 `IconName[]`；可用 key 与上表相同。
+
+## 旧版到当前版本的对应关系
+
+| 旧版写法 | 当前推荐写法 | 兼容情况 |
+| --- | --- | --- |
+| `models` / `modules` | 保持不变 | 兼容 |
+| `erdkey` | 保持不变 | 兼容，旧版和当前版本均为必填 |
+| `intl="CH" \| "EN"` | `locale="zh-CN" \| "en"` | 旧写法兼容 |
+| `darkness` | `theme` | 旧写法兼容 |
+| Ant Design `components` | 默认轻量 UI 或自定义适配器 | 接口保留，具体组件 Props 需复测 |
+| Ant Design `IconRenders` | Lucide 默认图标或自定义 ReactNode | key 兼容 |
+| 直接调用旧 G6 graph API | 使用 WebPdm Props 与事件 | G6 内部 API 不兼容 |
+
+详细升级步骤见[升级迁移](/zh/guide/migration)。

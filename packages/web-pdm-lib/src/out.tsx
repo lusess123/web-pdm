@@ -14,9 +14,10 @@ import {
   Undo2,
 } from 'lucide-react';
 import React from 'react';
-import WebPdmCore, { IWebPdmProps } from 'web-pdm-core';
+import WebPdmCore, { type IWebPdmProps } from 'web-pdm-core';
 export * from 'web-pdm-core';
 
+import '../../web-pdm-core/src/style.scss';
 import {
   Button,
   Dropdown,
@@ -58,12 +59,16 @@ const UiComponents = {
   Popover,
 };
 
-const WebPdm: React.FunctionComponent<IWebPdmProps> = (props) => {
+const WebPdm: React.FunctionComponent<IWebPdmProps> = ({
+  IconRenders: iconOverrides,
+  components: componentOverrides,
+  ...props
+}) => {
   return (
     <WebPdmCore
-      IconRenders={IconRenders}
-      components={UiComponents}
       {...props}
+      IconRenders={{ ...IconRenders, ...iconOverrides }}
+      components={{ ...UiComponents, ...componentOverrides }}
     />
   );
 };

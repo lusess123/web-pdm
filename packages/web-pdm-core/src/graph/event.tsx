@@ -28,6 +28,7 @@ export const bindGraphEvents = (
   root: RootInstance,
   container: HTMLElement,
   isDisposed: () => boolean,
+  onNodeDragEnd?: () => void,
 ) => {
   let hoveredShape: InteractiveShape | undefined;
   let hoveredFill: unknown;
@@ -54,6 +55,11 @@ export const bindGraphEvents = (
   graph.on(CanvasEvent.DRAG_END, () => {
     if (isDisposed()) return;
     container.style.cursor = 'grab';
+  });
+
+  graph.on(NodeEvent.DRAG_END, () => {
+    if (isDisposed()) return;
+    onNodeDragEnd?.();
   });
 
   graph.on(NodeEvent.CLICK, (event: IElementEvent) => {
@@ -93,6 +99,10 @@ export const bindGraphEvents = (
   graph.on(NodeEvent.POINTER_MOVE, (event: IElementEvent) => {
     if (isDisposed()) return;
     const shape = event.originalTarget as InteractiveShape;
+    const tooltip = readShapeAttribute(shape, 'tooltip', 'dataTooltip');
+    if (typeof tooltip === 'string') container.title = tooltip;
+    else container.removeAttribute('title');
+
     const fieldName = readShapeAttribute(shape, 'fieldName', 'dataFieldName');
     if (!fieldName || shape === hoveredShape) return;
 
@@ -105,6 +115,8 @@ export const bindGraphEvents = (
   });
 
   graph.on(NodeEvent.POINTER_OUT, () => {
-    if (!isDisposed()) restoreHoveredShape();
+    if (isDisposed()) return;
+    container.removeAttribute('title');
+    restoreHoveredShape();
   });
 };

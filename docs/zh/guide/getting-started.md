@@ -10,12 +10,19 @@ title: 快速开始
 pnpm add web-pdm
 ```
 
+使用 npm 的项目可以沿用原有安装方式：
+
+```bash
+npm i web-pdm
+```
+
 `react` 和 `react-dom` 是 peer dependencies，同时支持 React 18 和 React 19。
 
 ## 渲染第一张 ER 图
 
 ```tsx
 import WebPdm, { type ModelConfig, type ModuleConfig } from 'web-pdm';
+import 'web-pdm/style.css';
 
 const modules: ModuleConfig[] = [{ name: 'sales', label: '销售' }];
 
